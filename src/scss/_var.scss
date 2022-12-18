@@ -1,0 +1,168 @@
+// Mobile, portrait	320px	iPhone SE
+// 375px	iPhone 6, 7, 8, X
+// 414px	iPhone 8 Plus
+// Mobile, landscape	568px	iPhone SE
+// 667px	iPhone 6, 7, 8
+// 736px	iPhone 8 Plus
+// 812px	iPhone X
+// Tablet, portrait	768px	iPad Air, iPad Mini, iPad Pro 9"
+// 834px	iPad Pro 10"
+// Tablet, landscape	1024px	iPad Air, iPad Mini, iPad Pro 9"
+// 1024px	iPad Pro 12" (portrait)
+// 1112px	iPad Pro 10"
+// Laptop displays	1366px	HD laptops (768p)
+// 1366px	iPad Pro 12" (landscape)
+// 1440px	13" MacBook Pro (2x scaling)
+// Desktop displays	1680px	13" MacBook Pro (1.5x scaling)
+// 1920px	1080p displays
+$animation-time: var(--animation-time);
+// very small screen / phone
+$screen-xs-min: 320px;
+// Small screen / tablet
+$screen-sm-min: 640px;
+// Medium screen / desktop
+$screen-md-min: 960px;
+// Large screen / wide desktop
+$screen-lg-min: 1600px;
+// HD+ screen / wide desktop
+$screen-xl-min: 2560px;
+
+$screen-lg-max: $screen-xl-min - 1;
+$screen-xs-max: $screen-sm-min - 1;
+$screen-sm-max: $screen-md-min - 1;
+$screen-md-max: $screen-lg-min - 1;
+//font style
+$font-family: 'Roboto';
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-bold: 500;
+//major
+$color-major: var(--color-major);
+$color-major-l1: var(--color-major-l1);
+//minor
+$color-minor: var(--color-minor);
+$color-minor-l1: var(--color-minor-l1);
+
+//colorfor positive
+$color-safe: var(--color-safe);
+$color-safe-l1: var(--color-safe-l1);
+
+//color for negative
+$color-danger: var(--color-danger);
+$color-danger-l1: var(--color-danger-l1);
+
+//color for neutral
+$color-tip: var(--color-tip);
+$color-tip-l1: var(--color-tip-l1);
+
+//color for rainbow
+$color-r0: var(--color-r0);
+$color-r1: var(--color-r1);
+$color-r2: var(--color-r2);
+$color-r3: var(--color-r3);
+$color-r4: var(--color-r4);
+$color-r5: var(--color-r5);
+$color-r6: var(--color-r6);
+$color-r7: var(--color-r7);
+$color-r8: var(--color-r8);
+$color-r9: var(--color-r9);
+
+//gray level
+$color-0: var(--color-0);
+$color-1: var(--color-1);
+$color-2: var(--color-2);
+$color-3: var(--color-3);
+$color-4: var(--color-4);
+$color-5: var(--color-5);
+$color-6: var(--color-6);
+$color-7: var(--color-7);
+$color-8: var(--color-8);
+$color-9: var(--color-9);
+$color-a: var(--color-a);
+$color-b: var(--color-b);
+$color-c: var(--color-c);
+$color-d: var(--color-d);
+$color-e: var(--color-e);
+$color-f: var(--color-f);
+
+$color-default: var(--color-default);
+$color-default-l1: var(--color-default-l1);
+$color-bg-default: var(--color-bg-default);
+$color-bg-default-l1: var(--color-bg-default-l1);
+
+$color: var(--color);
+$color-l1: var(--color-l1);
+$color-border: var(--color-border);
+$color-bg: var(--color-bg);
+$color-bg-l1: var(--color-bg-l1);
+
+$color-active: var(--color-active);
+$color-active-bg: var(--color-active-bg);
+$color-active-border: var(--color-active-border);
+//color for disable
+$color-disabled: var(--color-disabled);
+
+//color for link
+$color-link-default: var(--color-link);
+$color-link-default-hover: var(--color-link-hover);
+
+$line-height-1: var(--line-height-1);
+$line-height-2: var(--line-height-2);
+$line-height-3: var(--line-height-3);
+
+$font-size-1: var(--font-size-1);
+$font-size-2: var(--font-size-2);
+$font-size-3: var(--font-size-3);
+$font-size-4: var(--font-size-4);
+$font-size-5: var(--font-size-5);
+$font-size-6: var(--font-size-6);
+$font-size-7: var(--font-size-7);
+
+$gxs: var(--gxs);
+$g0: var(--g0);
+$g1: var(--g1);
+$g2: var(--g2);
+$g3: var(--g3);
+$g4: var(--g4);
+$g5: var(--g5);
+
+$section-gap-x: var(--section-gap-x);
+$section-gap-y: var(--section-gap-y);
+
+$panel-gap-x: var(--panel-gap-x);
+$panel-gap-y: var(--panel-gap-y);
+
+$comp-gap-x: var(--comp-gap-x);
+$comp-gap-y: var(--comp-gap-y);
+$comp-height: var(--comp-height);
+$comp-font-size: var(--comp-font-size);
+$comp-border-radius: var(--comp-border-radius);
+$comp-max-width: var(--comp-max-width);
+$comp-line-height: var(--comp-line-height);
+
+$comp-size-1: var(--comp-size-1);
+$comp-size-2: var(--comp-size-2);
+$comp-size-3: var(--comp-size-3);
+$comp-size-4: var(--comp-size-4);
+
+$radius-0: var(--radius-0);
+$radius-1: var(--radius-1);
+$radius-2: var(--radius-2);
+$radius-3: var(--radius-3);
+$radius-4: var(--radius-4);
+
+//z-index
+$ui-tooltip-index: 1000;
+$ui-popover-index: 1050;
+$ui-buttongroup-index: 1100;
+$ui-pin-index: 1930;
+$ui-pin-hover-index: 1940;
+$ui-stick-index: 1960;
+$ui-header-overlay: 1990;
+$ui-header-index: 2000;
+$ui-header-list-index: 2010;
+$ui-datepicker-index: 2100;
+$ui-gautocomplete-index: 3000;
+$ui-dropdown-index: 3100;
+$ui-dialog-overlay: 10000;
+$ui-dialog-index: 10010;

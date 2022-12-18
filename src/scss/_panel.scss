@@ -1,0 +1,15 @@
+@include comp-color('panel');
+.panel {
+	@include gap-size();
+	margin-top: var(--panel-gap-y);
+	margin-bottom: var(--panel-gap-y);
+	padding-left: var(--panel-gap-x);
+	padding-right: var(--panel-gap-x);
+
+	&.inline {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: var(--panel-gap-default-y);
+		padding-bottom: var(--panel-gap-default-y);
+	}
+}

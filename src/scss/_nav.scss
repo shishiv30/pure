@@ -1,0 +1,34 @@
+.nav {
+	@include comp();
+	@include box-line();
+	color: $color;
+	background-color: $color-bg;
+	&.sticky {
+		position: sticky;
+		top: 0;
+		z-index: $ui-stick-index;
+	}
+	> ul {
+		margin: 0 auto;
+		max-width: fit-content;
+	}
+	a {
+		padding: $comp-gap-y $comp-gap-x;
+		border-bottom: 2px solid transparent;
+		font-size: $font-size-5;
+		color: $color;
+		background-color: $color-bg;
+		display: inline-block;
+		height: $comp-height;
+		line-height: $comp-line-height;
+		@include hover() {
+			font-weight: $font-weight-bold;
+		}
+		&.active {
+			font-weight: $font-weight-bold;
+			border-bottom-color: $color-active-border;
+			color: $color;
+			background-color: $color-bg;
+		}
+	}
+}

@@ -1,0 +1,44 @@
+{
+	"name": "pure",
+	"version": "1.0.0",
+	"description": "try to made light performance first ui framework",
+	"main": "index.js",
+	"scripts": {
+		"dev": "webpack-dev-server --config webpack.config.dev.js --open",
+		"stage": "webpack --config webpack.config.build.js && node server.js",
+		"prd": "webpack --config webpack.config.build.js --env production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/shishiv30/pure.git"
+	},
+	"keywords": [
+		"pure",
+		"light",
+		"fast",
+		"uiframework"
+	],
+	"author": "conjee zou",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/shishiv30/pure/issues"
+	},
+	"homepage": "https://github.com/shishiv30/pure#readme",
+	"devDependencies": {
+		"babel-loader": "^9.1.0",
+		"css-loader": "^6.7.3",
+		"html-loader": "^4.2.0",
+		"html-webpack-plugin": "^5.5.0",
+		"mini-css-extract-plugin": "^2.7.2",
+		"sass": "^1.57.0",
+		"sass-loader": "^13.2.0",
+		"webpack": "^5.75.0",
+		"webpack-cli": "^5.0.1",
+		"webpack-dev-server": "^4.11.1"
+	},
+	"dependencies": {
+		"cash-dom": "^8.1.2",
+		"lodash": "^4.17.21",
+		"webpack-merge": "^5.8.0"
+	}
+}

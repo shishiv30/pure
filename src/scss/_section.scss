@@ -1,0 +1,16 @@
+@include comp-color('section');
+.section {
+	@include gap-size();
+	--section-gap-default-x: var(--g2);
+	--section-gap-default-y: var(--g5);
+	margin-top: var(--section-gap-default-y);
+	margin-bottom: var(--section-gap-default-y);
+	padding-left: var(--section-gap-default-x);
+	padding-right: var(--section-gap-default-x);
+	&.inline {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: var(--section-gap-default-y);
+		padding-bottom: var(--section-gap-default-y);
+	}
+}

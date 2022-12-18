@@ -1,0 +1,131 @@
+* {
+	box-sizing: border-box;
+}
+
+input,
+div,
+span,
+ul,
+li,
+ol,
+p,
+select,
+textarea,
+dl,
+dt,
+dd,
+html,
+body,
+select,
+form {
+	margin: 0;
+	padding: 0;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+html {
+	font-family: $font-family, 'Helvetica Neue', Arial, sans-serif;
+	font-weight: $font-weight-regular;
+	font-style: normal;
+	font-size: 16px;
+	line-height: $line-height-1;
+	@media screen and (max-width: $screen-xs-min) {
+		font-size: 14px;
+	}
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	color: var(--color);
+	background-color: var(--color-bg);
+	min-height: 100%;
+}
+
+fieldset {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+legend {
+	color: inherit;
+}
+
+label[for] {
+	cursor: pointer;
+}
+
+input,
+select,
+textarea,
+button {
+	line-height: normal;
+	outline: none;
+	border: 1px solid transparent;
+	margin: 0;
+	padding: 0;
+	color: $color;
+	font-family: $font-family, 'Helvetica Neue', Arial, sans-serif;
+	font-style: normal;
+	font-size: $font-size-5;
+	font-weight: $font-weight-regular;
+}
+button {
+	background: none;
+}
+
+input::-ms-clear {
+	width: 0;
+	height: 0;
+}
+
+input,
+select {
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+img {
+	border: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	line-height: inherit;
+	font-weight: inherit;
+	font-size: inherit;
+}
+
+abbr[title],
+acronym[title] {
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+
+q:after,
+q:before {
+	content: '';
+}
+
+b {
+	font-weight: $font-weight-bold;
+}
+
+button {
+	max-width: 100%;
+	overflow: hidden;
+}

@@ -1,0 +1,67 @@
+.font-light {
+	@include font-light();
+}
+
+.font-bold {
+	@include font-bold();
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-shadow {
+	@include text-shadow();
+}
+
+.text-white {
+	color: $color-bg;
+}
+
+.text-darkgray {
+	color: $color;
+}
+
+.text-gray {
+	color: $color-l1;
+}
+
+.text-lightgray {
+	color: $color-l1;
+}
+
+.text-safe {
+	color: $color-safe;
+}
+
+.text-minor {
+	color: $color-minor;
+}
+
+.text-danger {
+	color: $color-danger;
+}
+
+.text-major {
+	color: $color-major;
+}
+
+.text-uppercase {
+	text-transform: uppercase;
+}
+
+.text-lowercase {
+	text-transform: lowercase;
+}
+
+.text-capitalize {
+	text-transform: capitalize;
+}

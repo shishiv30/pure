@@ -1,0 +1,187 @@
+.input {
+	position: relative;
+	display: block;
+
+	> select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		background: transparent;
+		cursor: pointer;
+		background: $color-bg;
+		&[disabled] {
+			color: $color-l1;
+		}
+	}
+	option[disabled] {
+		color: $color-l1;
+	}
+	> input::placeholder {
+		color: inherit;
+	}
+	> input,
+	> select {
+		width: 100%;
+		border: 1px solid $color-l1;
+		@include form-default-1();
+		padding-left: $g1;
+		padding-right: $g1;
+	}
+
+	> label,
+	> i,
+	> span,
+	> a,
+	> button,
+	> .btn {
+		position: absolute;
+		top: 0;
+		z-index: 1;
+		text-align: center;
+		width: $comp-size-3;
+		@include form-default-1();
+		line-height: 1.618;
+	}
+
+	> .btn {
+		--color: inhert;
+		--color-bg: inhert;
+		--color-border: inhert;
+		border-radius: 0;
+	}
+
+	&.left {
+		> input,
+		> select {
+			padding-left: $comp-size-3;
+		}
+		> label,
+		> span,
+		> i,
+		> a,
+		> button,
+		> .btn {
+			left: 0;
+			right: auto;
+		}
+	}
+
+	&.right {
+		> input,
+		> select {
+			padding-right: $comp-size-3;
+			~ label,
+			~ span,
+			~ i,
+			~ a,
+			~ button,
+			~ .btn {
+				right: 0;
+				left: auto;
+			}
+		}
+	}
+
+	&.small {
+		> input,
+		> select {
+			@include form-small();
+		}
+
+		> label,
+		> i,
+		> span,
+		> a,
+		> button,
+		> .btn {
+			@include form-small();
+			width: $comp-size-2;
+		}
+
+		&.right {
+			> input,
+			> select {
+				padding-right: $comp-size-2;
+			}
+		}
+
+		&.left {
+			> input,
+			> select {
+				padding-left: $comp-size-2;
+			}
+		}
+	}
+
+	&.large {
+		> input,
+		> select {
+			@include form-large-1();
+		}
+
+		> label,
+		> i,
+		> span,
+		> a,
+		> button,
+		> .btn {
+			@include form-large-1();
+			width: $comp-size-4;
+		}
+
+		&.right {
+			> input,
+			> select {
+				padding-right: $comp-size-4;
+			}
+		}
+
+		&.left {
+			> input,
+			> select {
+				padding-left: $comp-size-4;
+			}
+		}
+	}
+
+	&.has-success {
+		color: $color;
+	}
+
+	&.has-error {
+		color: $color-danger;
+	}
+
+	&.has-error,
+	&.has-success {
+		.tooltip {
+			margin-top: 0;
+			top: 0;
+			left: 0 !important;
+			right: 0 !important;
+			max-width: initial !important;
+			transform: translateY(50%);
+			padding: 0;
+			top: 0;
+			.tooltip-inner {
+				border: none !important;
+				background: transparent !important;
+				border: none !important;
+				box-shadow: none !important;
+				text-align: right !important;
+				margin: 0 0.5rem !important;
+			}
+			.tooltip-arrow {
+				display: none !important;
+			}
+			&.in {
+				transform: translateY(0);
+			}
+		}
+	}
+	&.has-error {
+		.tooltip-inner {
+			color: $color-danger-l1;
+		}
+	}
+}
