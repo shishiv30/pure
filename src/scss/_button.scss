@@ -1,12 +1,29 @@
 @include comp-size('btn');
 @include comp-color('btn');
 .btn {
+	display: inline-block;
 	text-align: center;
-	transition: opacity $animation-time ease-in-out;
-	opacity: 0.95;
-
+	position: relative;
+	@include singleline();
+	&:before {
+		transition: transform $animation-time ease-in-out;
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		bottom: 0;
+		opacity: 0.1;
+		transform: scale(0);
+		background-color: var(--color-bg);
+		pointer-events: none;
+	}
 	@include hover() {
-		opacity: 1;
+		&:before {
+			transform: scale(1);
+		}
 	}
 	&[disabled] {
 		--color: #{$color-default-l1} !important;
@@ -17,7 +34,6 @@
 		--color-active-border: #{$color-default-l1} !important;
 	}
 	&.loading {
-		opacity: 0.5 !important;
 		cursor: wait !important;
 	}
 }

@@ -101,8 +101,8 @@ hr {
 		position: relative;
 		z-index: 2;
 		display: flex;
-		padding: $panel-gap-y $panel-gap-x;
-		gap: $panel-gap-y $panel-gap-x;
+		padding: var(--panel-gap-y) var(--panel-gap-x);
+		gap: var(--panel-gap-y) var(--panel-gap-x);
 		justify-content: center;
 		margin-left: auto;
 		margin-right: auto;

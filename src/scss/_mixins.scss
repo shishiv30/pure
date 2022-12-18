@@ -16,12 +16,27 @@
 		--#{$name}-color-active-hover: var(--color-active-hover);
 		--#{$name}-color-active-bg-hover: var(--color-active-bg-hover);
 		--#{$name}-color-active-border-hover: var(--color-active-border-hover);
-		&,
+		--#{$name}-border-weight: 1px;
+		color: var(--#{$name}-color);
+		background-color: var(--#{$name}-color-bg);
+		box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
+			var(--#{$name}-color-border);
+		&.active {
+			color: var(--#{$name}-color-active);
+			background-color: var(--#{$name}-color-active-bg);
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
+				var(--#{$name}-color-active-border);
+		}
+	}
+}
+
+@mixin comp-color-hover($name) {
+	.#{$name} {
 		&:link,
 		&:visited {
 			color: var(--#{$name}-color);
 			background-color: var(--#{$name}-color-bg);
-			box-shadow: inset 0 0 var(--#{$name}-border-weight)
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
 				var(--#{$name}-color-border);
 		}
 		&:active,
@@ -35,8 +50,9 @@
 		&.active {
 			color: var(--#{$name}-color-active);
 			background-color: var(--#{$name}-color-active-bg);
-			box-shadow: inset 0 0 var(--#{$name}-border-weight)
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
 				var(--#{$name}-color-active-border);
+			&:active,
 			&:hover {
 				color: var(--#{$name}-color-active-hover);
 				background-color: var(--#{$name}-color-active-bg-hover);
@@ -56,8 +72,7 @@
 			--#{$name}-size: var(--comp-size-3);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-font-weight: #{$font-weight-regular};
-			--#{$name}-width: auto;
-			--#{$name}-border-weight: 1px;
+			--#{$name}-width: fit-content;
 		}
 
 		&.tiny {
@@ -96,6 +111,12 @@
 		--color-active: #{$color-bg-default};
 		--color-active-bg: #{$color-default};
 		--color-active-border: #{$color-bg-default};
+		--color-hover: #{$color-default};
+		--color-bg-hover: #{$color-bg-default};
+		--color-border-hover: #{$color-default-l1};
+		--color-active-hover: #{$color-bg-default};
+		--color-active-bg-hover: #{$color-default};
+		--color-active-border-hover: #{$color-bg-default};
 	}
 	.gray {
 		--color: #{$color-default-l1};
@@ -104,6 +125,12 @@
 		--color-active: #{$color-bg-l1};
 		--color-active-bg: #{$color-default-l1};
 		--color-active-border: #{$color-default-l1};
+		--color-hover: #{$color-default-l1};
+		--color-bg-hover: #{$color-bg-l1};
+		--color-border-hover: #{$color-default-l1};
+		--color-active-hover: #{$color-bg-l1};
+		--color-active-bg-hover: #{$color-default-l1};
+		--color-active-border-hover: #{$color-default-l1};
 	}
 	.major {
 		--color: #{$color-major};
@@ -112,6 +139,12 @@
 		--color-active: #{$color-major-l1};
 		--color-active-bg: #{$color-major};
 		--color-active-border: #{$color-major};
+		--color-hover: #{$color-major};
+		--color-bg-hover: #{$color-major-l1};
+		--color-border-hover: #{$color-major};
+		--color-active-hover: #{$color-major-l1};
+		--color-active-bg-hover: #{$color-major};
+		--color-active-border-hover: #{$color-major};
 	}
 	.minor {
 		--color: #{$color-minor};
@@ -120,6 +153,12 @@
 		--color-border: #{$color-minor};
 		--color-active-bg: #{$color-minor};
 		--color-active-border: #{$color-minor};
+		--color-hover: #{$color-minor};
+		--color-bg-hover: #{$color-minor-l1};
+		--color-border-hover: #{$color-minor};
+		--color-active-hover: #{$color-minor-l1};
+		--color-active-bg-hover: #{$color-minor};
+		--color-active-border-hover: #{$color-minor};
 	}
 	.danger {
 		--color: #{$color-danger};
@@ -128,6 +167,12 @@
 		--color-border: #{$color-danger};
 		--color-active-bg: #{$color-danger};
 		--color-active-border: #{$color-danger};
+		--color-hover: #{$color-danger};
+		--color-bg-hover: #{$color-danger-l1};
+		--color-border-hover: #{$color-danger};
+		--color-active-hover: #{$color-danger-l1};
+		--color-active-bg-hover: #{$color-danger};
+		--color-active-border-hover: #{$color-danger};
 	}
 	.safe {
 		--color: #{$color-safe};
@@ -136,6 +181,12 @@
 		--color-border: #{$color-safe};
 		--color-active-bg: #{$color-safe};
 		--color-active-border: #{$color-safe};
+		--color-hover: #{$color-safe};
+		--color-bg-hover: #{$color-safe-l1};
+		--color-border-hover: #{$color-safe};
+		--color-active-hover: #{$color-safe-l1};
+		--color-active-bg-hover: #{$color-safe};
+		--color-active-border-hover: #{$color-safe};
 	}
 	.tip {
 		--color: #{$color-tip};
@@ -144,6 +195,12 @@
 		--color-border: #{$color-tip};
 		--color-active-bg: #{$color-tip};
 		--color-active-border: #{$color-tip};
+		--color-hover: #{$color-tip};
+		--color-bg-hover: #{$color-tip-l1};
+		--color-border-hover: #{$color-tip};
+		--color-active-hover: #{$color-tip-l1};
+		--color-active-bg-hover: #{$color-tip};
+		--color-active-border-hover: #{$color-tip};
 	}
 }
 
@@ -446,26 +503,26 @@ $blur-size: $blur-width $card-height;
 @mixin gap-size() {
 	&,
 	&.normal {
-		--section-gap-default-x: var(--g3);
-		--section-gap-default-y: var(--g5);
+		--section-gap-x: var(--g3);
+		--section-gap-y: var(--g5);
 		--panel-gap-x: var(--g2);
 		--panel-gap-y: var(--g3);
 	}
 	&.tiny {
-		--section-gap-default-x: 0;
-		--section-gap-default-y: 0;
+		--section-gap-x: 0;
+		--section-gap-y: 0;
 		--panel-gap-x: 0;
 		--panel-gap-y: 0;
 	}
 	&.small {
-		--section-gap-default-x: var(--g2);
-		--section-gap-default-y: var(--g4);
+		--section-gap-x: var(--g2);
+		--section-gap-y: var(--g4);
 		--panel-gap-x: var(--g2);
 		--panel-gap-y: var(--g1);
 	}
 	&.large {
-		--section-gap-default-x: var(--g4);
-		--section-gap-default-y: var(--g6);
+		--section-gap-x: var(--g4);
+		--section-gap-y: var(--g6);
 		--panel-gap-x: var(--g3);
 		--panel-gap-y: var(--g4);
 	}

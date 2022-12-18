@@ -215,22 +215,16 @@
 	}
 
 	&.left {
-		justify-content: flex-start;
+		justify-items: start;
 	}
 	&.right {
-		justify-content: flex-end;
+		justify-items: end;
 	}
 	&.center {
-		justify-content: center;
-	}
-	&.space-around {
-		justify-content: space-around;
-	}
-	&.space-between {
-		justify-content: space-between;
+		justify-items: center;
 	}
 	&.top {
-		align-items: flex-start;
+		align-items: start;
 	}
 	&.middle {
 		align-items: center;
@@ -239,6 +233,6 @@
 		align-items: baseline;
 	}
 	&.bottom {
-		align-items: flex-end;
+		align-items: end;
 	}
 }

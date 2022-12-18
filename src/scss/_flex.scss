@@ -1,11 +1,11 @@
 .flex {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
+	justify-content: start;
 	align-items: baseline;
 	width: 100%;
 	@include gap-size();
-	gap: $panel-gap-y $panel-gap-x;
+	gap: var(--panel-gap-y) var(--panel-gap-x);
 	&.nowrap {
 		overflow: hidden;
 		> :not(.nowrap) {
@@ -29,7 +29,7 @@
 	}
 	&.vertical {
 		flex-direction: column;
-		gap: $panel-gap-x $panel-gap-y;
+		gap: var(--panel-gap-x) var(--panel-gap-y);
 		> div {
 			width: 100%;
 		}
@@ -60,10 +60,10 @@
 		}
 	}
 	&.left {
-		justify-content: flex-start;
+		justify-content: start;
 	}
 	&.right {
-		justify-content: flex-end;
+		justify-content: end;
 	}
 	&.center {
 		justify-content: center;
@@ -75,15 +75,15 @@
 		justify-content: space-between;
 	}
 	&.top {
-		align-items: flex-start;
+		align-content: start;
 	}
 	&.middle {
-		align-items: center;
+		align-content: center;
 	}
 	&.baseline {
-		align-items: baseline;
+		align-content: baseline;
 	}
 	&.bottom {
-		align-items: flex-end;
+		align-content: end;
 	}
 }
