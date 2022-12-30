@@ -1,0 +1,90 @@
+import { emit } from '../core/event.js';
+export default {
+	name: 'ranger',
+	defaultOpt: {
+		max: 100,
+		min: 0,
+		target: null,
+		step: 0,
+		decimals: 0,
+		connect: null,
+		orientation: 'horizontal',
+		start: null,
+		range: null,
+		changebefore: null,
+		changeafter: null,
+		input: [],
+	},
+	init: function ($this, opt, exportObj) {
+		var $input = $this.find('input');
+		var $target = opt.target ? $(opt.target) : null;
+		if (!opt.connect) {
+			opt.connect = [true];
+			$input.each(function (index) {
+				opt.connect.push(index % 2 === 1);
+			});
+		}
+		if (!opt.start) {
+			opt.start = [];
+			$input.each(function () {
+				opt.start.push($(this).val());
+			});
+		}
+		var $ele = $('<div></div>');
+		($target || $this).append($ele);
+		noUiSlider.create($ele[0], {
+			start: opt.start,
+			step: opt.step,
+			connect: opt.connect,
+			orientation: opt.orientation,
+			range: opt.range || {
+				min: opt.min,
+				max: opt.max,
+			},
+			format: {
+				to: function (value) {
+					return value !== undefined && value.toFixed(opt.decimals);
+				},
+				from: function (value) {
+					return value;
+				},
+			},
+		});
+		exportObj.range = $ele[0].noUiSlider;
+		exportObj.get = function () {
+			return this.range.get();
+		};
+		exportObj.set = function (values) {
+			this.range.set(values);
+			var result = this.range.get();
+			if ($.isNumeric(result)) {
+				result = [result];
+			}
+			$input.each(function (index) {
+				$(this).val(result[index]).trigger('input');
+			});
+			return result;
+		};
+		$input.on('change', function () {
+			var values = [];
+			$input.each(function () {
+				values.push($(this).val());
+			});
+			exportObj.set(values);
+		});
+		exportObj.range.on('update', function (e, t) {
+			opt.changebefore &&
+				emit(opt.changebefore, $this, opt, exportObj, e, t);
+			$input.each(function (index) {
+				$(this).val(e[index]).trigger('input');
+			});
+			opt.changeafter &&
+				emit(opt.changeafter, $this, opt, exportObj, e, t);
+		});
+	},
+	setOptionsBefore: null,
+	setOptionsAfter: null,
+	initBefore: null,
+	initAfter: null,
+	destroyBefore: null,
+};

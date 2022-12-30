@@ -19,6 +19,7 @@ module.exports = {
 		quotes: ['error', 'single'],
 	},
 	parserOptions: {
+		ecmaVersion: 2022,
 		sourceType: 'module',
 	},
 };
