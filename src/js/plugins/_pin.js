@@ -9,13 +9,12 @@ export default {
 	init: function ($this, opt, exportObj) {
 		var $target = $(opt.target);
 		$this.css('position', 'relative');
-		$target.addClass('pin');
+		$target.classList.add('pin');
 		var offsetTop = 0;
 		var offsetBottom = 0;
 		var reposition = function () {
 			offsetTop = $this.offset().top - opt.top;
-			offsetBottom =
-				offsetTop + $this.height() - $target.height() - opt.bottom;
+			offsetBottom = offsetTop + $this.height() - $target.height() - opt.bottom;
 		};
 		var _pin = function () {
 			$target.css({

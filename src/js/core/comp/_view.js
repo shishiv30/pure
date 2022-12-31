@@ -87,11 +87,11 @@ export default {
 				  };
 			if (animation) {
 				isAnimating = true;
-				$wrapper.addClass('animating');
+				$wrapper.classList.add('animating');
 				$wrapper.css(animateFrame);
 				setTimeout(function () {
 					isAnimating = false;
-					$wrapper.removeClass('animating');
+					$wrapper.classList.remove('animating');
 					dfd && dfd.resolve();
 				}, 210);
 			} else {
@@ -157,7 +157,7 @@ export default {
 			}
 		};
 		var _moving = function (direction, distance, isRelativeValue) {
-			$wrapper.addClass('dragging');
+			$wrapper.classList.add('dragging');
 			if (isRelativeValue) {
 				currPos = currPos - distance;
 			} else {
@@ -171,7 +171,7 @@ export default {
 			);
 		};
 		var _moved = function (direction, distance, animateTime) {
-			$wrapper.removeClass('dragging');
+			$wrapper.classList.remove('dragging');
 			var itemSize;
 			var end;
 			var start;
@@ -229,8 +229,8 @@ export default {
 				});
 		};
 		var disable = (exportObj.disable = function () {
-			$this.removeClass('view-scroll');
-			$this.addClass('original-scroll');
+			$this.classList.remove('view-scroll');
+			$this.classList.add('original-scroll');
 			$this.off('mousewheel');
 			$this.off('drag');
 			$this.off('dragging');
@@ -238,8 +238,8 @@ export default {
 		});
 
 		var enable = (exportObj.enable = function () {
-			$this.addClass('view-scroll');
-			$this.removeClass('original-scroll');
+			$this.classList.add('view-scroll');
+			$this.classList.remove('original-scroll');
 
 			$this.on('mousewheel', function (event) {
 				var delta;

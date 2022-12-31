@@ -1,7 +1,7 @@
 // script lib - event
 const eventList = {};
 const eventNames = ['click'];
-import { logError } from './log.js';
+import { logError, logInfo } from './log.js';
 
 const on = function (str, cb, opts) {
 	if (!cb || typeof cb !== 'function') {
@@ -66,7 +66,7 @@ const emit = function (str, data) {
 		let [name, namespace] = event;
 		namespace = namespace || 'DEFAULT';
 		if (!eventList[name]) {
-			logError('event ' + name + ' is not exist');
+			logInfo('event ' + name + ' emited, but no oberserver');
 			return;
 		}
 		let params = Array.isArray(data) ? data : [data];
@@ -77,7 +77,7 @@ const emit = function (str, data) {
 				});
 			}
 		} else if (!eventList[name][namespace]) {
-			logError('event ' + event + ' is not exist');
+			logInfo('event ' + event + ' emited, but no oberserver');
 		} else {
 			eventList[name][namespace].forEach((cb) => {
 				cb.apply(this, params);
@@ -86,4 +86,18 @@ const emit = function (str, data) {
 	});
 };
 
-export { on, once, off, emit };
+const trigger = function (name) {
+	var params = Array.prototype.slice.call(arguments);
+	params = params.slice(1, params.length);
+	if (typeof name === 'function') {
+		name.apply(this, params);
+	} else if (typeof name === 'string') {
+		if (typeof window[name] === 'function') {
+			window[name].apply(this, params);
+		} else {
+			emit.apply(this, [name, params]);
+		}
+	}
+};
+
+export { on, once, off, emit, trigger };

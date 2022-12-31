@@ -1,27 +1,15 @@
-.collapse-expand {
-	height: auto !important;
-	max-height: 999999px !important;
+.collapse-line {
+	&.shown {
+		overflow: initial !important;
+		text-overflow: initial !important;
+		-webkit-line-clamp: initial !important;
+	}
 }
-
-.collapse-menu {
+.collapse-panel {
 	display: none;
-	position: absolute;
-	z-index: $ui-dropdown-index;
-	left: 0;
-	right: 0;
-	padding: 5px;
-	border: 1px solid $color-l1;
-	background: #fff;
-	box-shadow: 1px 1px 1px $color-l1;
-}
-
-.collapse-more {
-	position: absolute;
-	padding-left: 30px;
-	right: 0;
-	bottom: 0;
-	background: linear-gradient(to right, transparent -10%, white 20%);
-	opacity: 1;
+	&.shown {
+		display: block;
+	}
 }
 
 [data-role*='collapse'] {

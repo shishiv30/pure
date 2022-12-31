@@ -1,79 +1,35 @@
-import { emit } from '../core/event.js';
+import { trigger } from '../core/event.js';
 import { select } from '../core/query.js';
 export default {
 	name: 'collapse',
 	defaultOpt: {
-		showtext: null,
-		hidetext: null,
-		once: false,
-		isexpand: false,
+		shown: false,
 		showbefore: null,
 		showafter: null,
 		hidebefore: null,
 		hideafter: null,
 		target: null,
 	},
-	init: function ($this, opt, exportObj) {
+	init: function ($el, opt, exportObj) {
 		var $target = select(opt.target);
-		opt.id = $.guid++;
-		var _showtext = function () {
-			if (opt.showtext) {
-				if ($this.find('span').length > 0) {
-					$this.find('span').text(opt.showtext);
-				} else {
-					$this.text(opt.showtext);
-				}
-			}
-			if (opt.once) {
-				$this.hide();
-			}
+
+		exportObj.show = function () {
+			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);
+			$el.classList.add('shown');
+			$target.classList.add('shown');
+			exportObj.shown = true;
+			opt.showafter && trigger(opt.showafter, $el, opt, exportObj);
 		};
-		var _hidetext = function () {
-			if (opt.hidetext) {
-				if ($this.find('span').length > 0) {
-					$this.find('span').text(opt.hidetext);
-				} else {
-					$this.text(opt.hidetext);
-				}
-			}
+		exportObj.hide = function () {
+			opt.hidebefore && trigger(opt.hidebefore, $el, opt, exportObj);
+			$el.classList.remove('shown');
+			$target.classList.remove('shown');
+			exportObj.shown = false;
+			opt.hideafter && trigger(opt.hideafter, $el, opt, exportObj);
 		};
-		if (opt.isexpand) {
-			exportObj.show = function () {
-				opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
-				$this.addClass('shown');
-				$target.addClass('collapse-expand');
-				_showtext();
-				$(document).trigger('dom.load.image');
-				opt.showafter && emit(opt.showafter, $this, opt, exportObj);
-			};
-			exportObj.hide = function () {
-				opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
-				$this.removeClass('shown');
-				$target.removeClass('collapse-expand');
-				_hidetext();
-				$(document).trigger('dom.load');
-				opt.hideafter && emit(opt.hideafter, $this, opt, exportObj);
-			};
-		} else {
-			exportObj.show = function () {
-				opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
-				$this.addClass('shown');
-				$target.show();
-				_showtext();
-				$(document).trigger('dom.load');
-				opt.showafter && emit(opt.showafter, $this, opt, exportObj);
-			};
-			exportObj.hide = function () {
-				opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
-				$this.removeClass('shown');
-				$target.hide();
-				_hidetext();
-				$(document).trigger('dom.load');
-				opt.hideafter && emit(opt.hideafter, $this, opt, exportObj);
-			};
-		}
+
 		exportObj.toggle = function () {
-			if ($this.hasClass('shown')) {
+			if ($el.classList.contains('shown')) {
 				exportObj.hide();
 			} else {
 				exportObj.show();
@@ -83,34 +39,15 @@ export default {
 	setOptionsBefore: null,
 	setOptionsAfter: null,
 	initBefore: null,
-	initAfter: function ($this, opt, exportObj) {
-		var $target = select(opt.target);
-
-		var _resetForExpand = function () {
-			if (!$this.hasClass('shown')) {
-				if (
-					$target.prop('scrollHeight') > $target.prop('offsetHeight')
-				) {
-					$this.css('visibility', 'visible');
-				} else {
-					$this.css('visibility', 'hidden');
-				}
-			}
-		};
-		if (opt.isexpand) {
-			$(document).on('dom.resize.collapse' + opt.id, _resetForExpand);
-			_resetForExpand();
+	initAfter: function ($el, opt, exportObj) {
+		if (opt.shown) {
+			exportObj.show();
 		} else {
-			if (!$this.hasClass('shown')) {
-				exportObj.hide();
-			} else {
-				exportObj.show();
-			}
+			exportObj.hide();
 		}
-		$this.on('click.collapse', exportObj.toggle);
+		$el.addEventListener('click', exportObj.toggle);
 	},
-	destroyBefore: function ($this, opt) {
-		$(document).off('dom.resize.collapse' + opt.id);
-		$this.off('click.collapse');
+	destroyBefore: function ($el) {
+		$el.off('click.collapse');
 	},
 };

@@ -119,9 +119,7 @@ var initalCustomMarker = function () {
 			if (self.showPop) {
 				var $pin = $(div);
 				var html = $.renderHtml(self.popTmp, self.popData);
-				var $content = $(
-					'<div class="pop-content"><div>' + html + '</div></div>',
-				);
+				var $content = $('<div class="pop-content"><div>' + html + '</div></div>');
 				var tippopover = $pin.find('.pin').cui_tooltip({
 					content: $content,
 					placement: 'top',
@@ -135,20 +133,12 @@ var initalCustomMarker = function () {
 				});
 				setTimeout(function () {
 					tippopover.show();
-					window.google.maps.event.addListener(
-						self.map,
-						'zoom_changed',
-						function () {
-							tippopover.hide();
-						},
-					);
-					window.google.maps.event.addListener(
-						self.map,
-						'dragstart',
-						function () {
-							tippopover.hide();
-						},
-					);
+					window.google.maps.event.addListener(self.map, 'zoom_changed', function () {
+						tippopover.hide();
+					});
+					window.google.maps.event.addListener(self.map, 'dragstart', function () {
+						tippopover.hide();
+					});
 					$(window).one('click', function () {
 						tippopover.hide();
 					});
@@ -208,11 +198,7 @@ var initalCustomMarker = function () {
 		window.CustomMarker.prototype.getPosition = function () {
 			return this.latlng;
 		};
-		window.CustomMarker.prototype.refreshPop = function (
-			popData,
-			popTmp,
-			onclick,
-		) {
+		window.CustomMarker.prototype.refreshPop = function (popData, popTmp, onclick) {
 			this.popData = popData;
 			this.popTmp = popTmp;
 			this.showPop = popData && popTmp;
@@ -353,7 +339,7 @@ export default {
 				return marker;
 			},
 			destory: function (marker) {
-				$(marker).addClass('removeing');
+				$(marker).classList.add('removeing');
 				$(document).one('mouseup', function () {
 					marker.setMap(null);
 				});
@@ -365,24 +351,17 @@ export default {
 		};
 		var panorama = null;
 		exportObj.showStreetView = function () {
-			var streetViewLocation = new window.google.maps.LatLng(
-				opt.lat,
-				opt.lng,
-			);
+			var streetViewLocation = new window.google.maps.LatLng(opt.lat, opt.lng);
 			var sv = new window.google.maps.StreetViewService();
-			sv.getPanoramaByLocation(
-				streetViewLocation,
-				50,
-				function (data, status) {
-					if (status == 'OK') {
-						panorama = map.getStreetView();
-						panorama.setPosition(streetViewLocation);
-						panorama.setVisible(true);
-					} else {
-						$(document).trigger('gmap.streetview.error');
-					}
-				},
-			);
+			sv.getPanoramaByLocation(streetViewLocation, 50, function (data, status) {
+				if (status == 'OK') {
+					panorama = map.getStreetView();
+					panorama.setPosition(streetViewLocation);
+					panorama.setVisible(true);
+				} else {
+					$(document).trigger('gmap.streetview.error');
+				}
+			});
 		};
 		exportObj.hideStreetView = function () {
 			panorama.setVisible(false);
@@ -463,12 +442,7 @@ export default {
 				var bounds = new window.google.maps.LatLngBounds();
 				for (var i = 0; i < list.length; i++) {
 					if (list[i].lat && list[i].lng) {
-						bounds.extend(
-							new window.google.maps.LatLng(
-								list[i].lat,
-								list[i].lng,
-							),
-						);
+						bounds.extend(new window.google.maps.LatLng(list[i].lat, list[i].lng));
 					}
 				}
 				map.fitBounds(bounds);
@@ -480,60 +454,40 @@ export default {
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
 		var map = exportObj.gmap;
-		window.google.maps.event.addListenerOnce(
-			map,
-			'tilesloaded',
-			function () {
-				//click event
-				opt.onclick && emit(opt.onclick, $this, opt, exportObj);
-				//drag event
-				if (opt.draggable) {
-					if (opt.ondrag) {
-						window.google.maps.event.addListener(
-							map,
-							'dragstart',
-							function () {
-								emit(opt.ondrag, $this, opt, exportObj);
-							},
-						);
-					}
-					if (opt.ondraged) {
-						window.google.maps.event.addListener(
-							map,
-							'dragend',
-							function () {
-								emit(opt.ondraged, $this, opt, exportObj);
-							},
-						);
-					}
+		window.google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+			//click event
+			opt.onclick && emit(opt.onclick, $this, opt, exportObj);
+			//drag event
+			if (opt.draggable) {
+				if (opt.ondrag) {
+					window.google.maps.event.addListener(map, 'dragstart', function () {
+						emit(opt.ondrag, $this, opt, exportObj);
+					});
 				}
-				if (opt.zoomable && opt.onzoom) {
-					window.google.maps.event.addListener(
-						map,
-						'zoom_changed',
-						function () {
-							emit(opt.onzoom, $this, opt, exportObj);
-						},
-					);
+				if (opt.ondraged) {
+					window.google.maps.event.addListener(map, 'dragend', function () {
+						emit(opt.ondraged, $this, opt, exportObj);
+					});
 				}
-				if (opt.onload) {
-					emit(opt.onload, $this, opt, exportObj);
-				}
-			},
-		);
+			}
+			if (opt.zoomable && opt.onzoom) {
+				window.google.maps.event.addListener(map, 'zoom_changed', function () {
+					emit(opt.onzoom, $this, opt, exportObj);
+				});
+			}
+			if (opt.onload) {
+				emit(opt.onload, $this, opt, exportObj);
+			}
+		});
 		if (opt.onresize) {
 			window.google.maps.event.addListener(map, 'resize', function () {
 				emit(opt.onresize, $this, opt, exportObj);
 			});
 		}
 		if (opt.autoresize) {
-			window.google.maps.event.addDomListener(
-				window,
-				'resize',
-				function () {
-					exportObj.eset();
-				},
-			);
+			window.google.maps.event.addDomListener(window, 'resize', function () {
+				exportObj.eset();
+			});
 		}
 		if (opt.streetview) {
 			exportObj.showStreetView();

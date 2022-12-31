@@ -36,8 +36,7 @@ export default {
 				? $wrapper.outerWidth() - outerWidth
 				: $wrapper.outerHeight() - outerHeight;
 			max = Math.max(0, max);
-			var limitation =
-				(opt.horizontal ? outerWidth : outerHeight) * opt.limitation;
+			var limitation = (opt.horizontal ? outerWidth : outerHeight) * opt.limitation;
 			var newIndex = null;
 			var position = null;
 			var offset = 0;
@@ -88,11 +87,11 @@ export default {
 				  };
 			if (animation) {
 				isAnimating = true;
-				$wrapper.addClass('animating');
+				$wrapper.classList.add('animating');
 				$wrapper.css(animateFrame);
 				setTimeout(function () {
 					isAnimating = false;
-					$wrapper.removeClass('animating');
+					$wrapper.classList.remove('animating');
 					dfd && dfd.resolve();
 				}, 210);
 			} else {
@@ -130,37 +129,15 @@ export default {
 				} else {
 					eventName = opt.horizontal ? opt.onoverleft : opt.onovertop;
 				}
-				eventName &&
-					emit(
-						eventName,
-						$this,
-						opt,
-						exportObj,
-						currPos,
-						prePos,
-						info,
-					);
+				eventName && emit(eventName, $this, opt, exportObj, currPos, prePos, info);
 				return true;
 			} else if (Math.abs(currPos) > info.max) {
 				if (moved) {
-					eventName = opt.horizontal
-						? opt.onpushright
-						: opt.onpushbottom;
+					eventName = opt.horizontal ? opt.onpushright : opt.onpushbottom;
 				} else {
-					eventName = opt.horizontal
-						? opt.onoverright
-						: opt.onoverbottom;
+					eventName = opt.horizontal ? opt.onoverright : opt.onoverbottom;
 				}
-				eventName &&
-					emit(
-						eventName,
-						$this,
-						opt,
-						exportObj,
-						currPos,
-						prePos,
-						info,
-					);
+				eventName && emit(eventName, $this, opt, exportObj, currPos, prePos, info);
 				return true;
 			}
 			return false;
@@ -180,7 +157,7 @@ export default {
 			}
 		};
 		var _moving = function (direction, distance, isRelativeValue) {
-			$wrapper.addClass('dragging');
+			$wrapper.classList.add('dragging');
 			if (isRelativeValue) {
 				currPos = currPos - distance;
 			} else {
@@ -194,7 +171,7 @@ export default {
 			);
 		};
 		var _moved = function (direction, distance, animateTime) {
-			$wrapper.removeClass('dragging');
+			$wrapper.classList.remove('dragging');
 			var itemSize;
 			var end;
 			var start;
@@ -218,8 +195,7 @@ export default {
 				if (opt.snapable) {
 					// _scrollWithInertia(distance, animateTime);
 					//if too move too slow revert and move less than one third, else snap to next slider
-					var isSlow =
-						Math.abs(distance) / animateTime < opt.sensitive;
+					var isSlow = Math.abs(distance) / animateTime < opt.sensitive;
 					var isSlight = Math.abs(distance) < itemSize / 3;
 					var isRevert = isSlow && isSlight;
 					if (isRevert) {
@@ -244,15 +220,7 @@ export default {
 			_scroll(currPos, true)
 				.then(function () {
 					opt.onchange &&
-						emit(
-							opt.onchange,
-							$this,
-							opt,
-							exportObj,
-							currPos,
-							prePos,
-							info,
-						);
+						emit(opt.onchange, $this, opt, exportObj, currPos, prePos, info);
 					prePos = currPos;
 				})
 				.always(function () {
@@ -261,8 +229,8 @@ export default {
 				});
 		};
 		var disable = (exportObj.disable = function () {
-			$this.removeClass('view-scroll');
-			$this.addClass('original-scroll');
+			$this.classList.remove('view-scroll');
+			$this.classList.add('original-scroll');
 			$this.off('mousewheel');
 			$this.off('drag');
 			$this.off('dragging');
@@ -270,8 +238,8 @@ export default {
 		});
 
 		var enable = (exportObj.enable = function () {
-			$this.addClass('view-scroll');
-			$this.removeClass('original-scroll');
+			$this.classList.add('view-scroll');
+			$this.classList.remove('original-scroll');
 
 			$this.on('mousewheel', function (event) {
 				var delta;

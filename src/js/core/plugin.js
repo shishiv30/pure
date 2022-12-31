@@ -1,33 +1,31 @@
 import loadMap from './load.map.js';
-import { emit } from './event.js';
-import { logInfo } from './log.js';
+import { emit, trigger } from './event.js';
+import { logError, logInfo } from './log.js';
 import Base from './base.js';
 class Plugin extends Base {
 	constructor(setting) {
 		super(setting.name, 'plugin');
 		let defaultSetting = {
 			name: '',
-			defaultOption: {},
+			defaultOpt: {},
 			init: null,
 			load: null,
 			render: null,
 			destroy: null,
 		};
 		const assginSetting = Object.assign(defaultSetting, setting);
-		if (!Plugin.isRegisted(assginSetting.name)) {
+		let plugin = Plugin.getPlugin(assginSetting.name);
+		this.setting = assginSetting;
+		if (!plugin) {
 			Plugin.register.apply(this, [assginSetting]);
 		}
-		this.setting = assginSetting;
 	}
 	static namespace = 'cui';
 	static records = {};
 
-	static getPluginByName(name) {
-		return window[Plugin.namespace + '_' + name];
+	static getPlugin(name) {
+		return Plugin.records[Plugin.namespace + '_' + name];
 	}
-	static isRegisted = function (key) {
-		return Plugin.records[key] !== undefined;
-	};
 	static dependenceHandler(key) {
 		if (key == 'googlemap') {
 			return loadMap(window.googleMapKey);
@@ -35,116 +33,110 @@ class Plugin extends Base {
 	}
 
 	static register(setting) {
-		var name = Plugin.namespace + '_' + setting.name;
-		var that = this;
-
-		Plugin.records[name] = function (options) {
-			var exportObj = this.dataset(setting.name);
+		let name = Plugin.namespace + '_' + setting.name;
+		let that = this;
+		let plugin = function ($el, options) {
+			if (!$el) {
+				logError('html node is required');
+			}
+			//if el is inited return instance of plugin
+			let exportObj = $el.dataset[setting.name];
 			if (exportObj && typeof exportObj !== 'string') {
 				if (options) {
 					exportObj.setOptions && exportObj.setOptions(options);
 				}
 				return exportObj;
+			} else {
+				exportObj = {};
 			}
-			//todo start made all lifecircle point handler only return function as handler
+			//else init plugin
 			var excutePlugin = function () {
-				var obj = that.create(this, options);
-				this.dataset(setting.name, obj);
-				return obj;
+				that.init($el, options, exportObj);
+				$el.dataset[setting.name] = exportObj;
+				return exportObj;
 			};
 			if (setting.dependence) {
 				Plugin.dependenceHandler(setting.dependence).then(function () {
-					excutePlugin();
+					return excutePlugin();
 				});
 			} else {
 				return excutePlugin();
 			}
 		};
+		Plugin.records[name] = plugin;
+		// return plugin;
 	}
 
-	trigger(name) {
-		var params = Array.prototype.slice.call(arguments);
-		params = params.slice(1, params.length);
-		if (typeof name === 'function') {
-			name.apply(this, params);
-		} else if (typeof name === 'string') {
-			if (typeof window[name] === 'function') {
-				window[name].apply(this, params);
-			} else {
-				emit.apply(this, [name, params]);
-			}
-		}
-	}
-	onInit() {
+	initBefore($el, options, exportObj) {
 		logInfo('init');
-		if (this.setting.onInit) {
-			this.trigger(this.setting.onInit);
+		if (this.setting.initBefore) {
+			trigger(this.setting.initBefore, $el, options, exportObj);
 		}
 	}
-	onInited() {
+	initAfter($el, options, exportObj) {
 		logInfo('inited');
-		if (this.setting.onInited) {
-			this.trigger(this.setting.onInited);
+		if (this.setting.initAfter) {
+			trigger(this.setting.initAfter, $el, options, exportObj);
 		}
 	}
-	onLoad() {
-		logInfo('load');
-		if (this.setting.onLoad) {
-			this.trigger(this.setting.onLoad);
+	loadBefore($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}load`);
+		if (this.setting.loadBefore) {
+			trigger(this.setting.loadBefore, $el, options, exportObj);
 		}
 	}
-	onLoaded() {
-		logInfo('loaded');
-		if (this.setting.onLoaded) {
-			this.trigger(this.setting.onLoaded);
+	loadAfter($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}loaded`);
+		if (this.setting.loadAfter) {
+			trigger(this.setting.loadAfter, $el, options, exportObj);
 		}
 	}
-	onRender() {
-		logInfo('render');
-		if (this.setting.onRender) {
-			this.trigger(this.setting.onRender);
+	renderBefore($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}render`);
+		if (this.setting.renderBefore) {
+			trigger(this.setting.renderBefore, $el, options, exportObj);
 		}
 	}
-	onRendered() {
-		logInfo('rendered');
-		if (this.setting.onRendered) {
-			this.trigger(this.setting.onRendered);
+	renderAfter($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}rendered`);
+		if (this.setting.renderAfter) {
+			trigger(this.setting.renderAfter, $el, options, exportObj);
 		}
 	}
-	onDestroy() {
-		logInfo('destroy');
-		if (this.setting.onDestroy) {
-			this.trigger(this.setting.onDestroy);
+	destroyBefore($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}destroy`);
+		if (this.setting.destroyBefore) {
+			trigger(this.setting.destroyBefore, $el, options, exportObj);
 		}
 	}
-	onDestoried() {
-		logInfo('destoried');
-		if (this.setting.onDestoried) {
-			this.trigger(this.setting.onDestoried);
+	destroyAfter($el, options, exportObj) {
+		logInfo(`${options && options.role ? options.role + ' ' : ''}destoried`);
+		if (this.setting.destroyAfter) {
+			trigger(this.setting.destroyAfter, $el, options, exportObj);
 		}
 	}
 
-	async init() {
+	async init($el, options, exportObj) {
 		//init
-		this.onInit();
+		this.initBefore($el, options, exportObj);
 		if (this.setting.init) {
-			this.setting.init.call(this);
+			this.setting.init.apply(this, [$el, options, exportObj]);
 		}
-		this.onInited();
+		this.initAfter($el, options, exportObj);
 
 		//load page data
-		this.onLoad();
+		this.loadBefore($el, options, exportObj);
 		if (this.setting.load) {
-			await this.setting.load.call(this);
+			await this.setting.load.apply(this, [$el, options, exportObj]);
 		}
-		this.onLoaded();
+		this.loadAfter($el, options, exportObj);
 
 		//render page
-		this.onRender();
+		this.renderBefore($el, options, exportObj);
 		if (this.setting.render) {
-			this.setting.render.call(this);
+			this.setting.render.apply(this, [$el, options, exportObj]);
 		}
-		this.onRendered();
+		this.renderAfter($el, options, exportObj);
 	}
 }
 export default Plugin;

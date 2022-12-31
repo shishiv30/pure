@@ -3,8 +3,8 @@ var animationDuration = 200;
 
 function generateTip($parent, opt) {
 	var $container = $(opt.template);
-	$container.addClass(opt.theme);
-	$container.addClass(opt.placement);
+	$container.classList.add(opt.theme);
+	$container.classList.add(opt.placement);
 	$container.find('.tooltip-inner').html(opt.content);
 	$parent.append($container);
 	$container.on('click', function (e) {
@@ -65,39 +65,37 @@ export default {
 			var css = {};
 			$container.show();
 			setTimeout(function () {
-				$container.addClass('in');
+				$container.classList.add('in');
 			}, 10);
 			switch (opt.placement) {
 				case 'top':
 				case 'bottom':
-					$container.removeClass(
-						`${opt.placement}-left ${opt.placement}-right`,
-					);
+					$container.classList.remove(`${opt.placement}-left`, `${opt.placement}-right`);
 					x = Math.abs(tWidth - cWidth) / 2;
 					if (x > offset.left) {
 						css = {
 							left: 0,
 							right: '',
 						};
-						$container.addClass(`${opt.placement}-left`);
+						$container.classList.add(`${opt.placement}-left`);
 					} else if (offset.left + tWidth + x > wWidth) {
 						css = {
 							left: '',
 							right: 0,
 						};
-						$container.addClass(`${opt.placement}-right`);
+						$container.classList.add(`${opt.placement}-right`);
 					} else {
 						css = {
 							left: (tWidth - cWidth) / 2,
 							right: '',
 						};
-						$container.addClass(opt.placement);
+						$container.classList.add(opt.placement);
 					}
 					$container.css(css);
 					break;
 				case 'left':
 				case 'right':
-					$container.removeClass(opt.placement);
+					$container.classList.remove(opt.placement);
 					if (opt.placement === 'left') {
 						x = cWidth * -1;
 					} else {
@@ -109,7 +107,7 @@ export default {
 						right: '',
 					};
 					$container.css(css);
-					$container.addClass(opt.placement);
+					$container.classList.add(opt.placement);
 					break;
 			}
 			if (opt.showafter) {
@@ -121,7 +119,7 @@ export default {
 			updateTip($this, opt, exportObj);
 			exportObj.$parent.css('position', '');
 			opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
-			exportObj.$container.removeClass('in');
+			exportObj.$container.classList.remove('in');
 			opt._timer = setTimeout(function () {
 				exportObj.$container.hide();
 				opt.hideafter && emit(opt.hideafter, $this, opt, exportObj);

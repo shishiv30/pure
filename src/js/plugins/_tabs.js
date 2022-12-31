@@ -8,7 +8,7 @@ export default {
 			$items.each(function (index, item) {
 				var $item = $(item);
 				var $target = $($item.attr('data-target')).hide();
-				if ($item.hasClass('active')) {
+				if ($item.classList.contains('active')) {
 					$target.show();
 					$(document).trigger('dom.load.tab');
 				} else {
@@ -18,8 +18,8 @@ export default {
 		};
 		$items.each(function () {
 			$(this).on('click', function () {
-				$items.removeClass('active');
-				$(this).addClass('active');
+				$items.classList.remove('active');
+				$(this).classList.add('active');
 				_switchActiveTab();
 			});
 		});

@@ -60,8 +60,7 @@ export default {
 			return {
 				scrollTop: $container.scrollTop(),
 				scrollBottom:
-					$container.scrollTop() +
-					Math.min($container.outerHeight(), window.innerHeight),
+					$container.scrollTop() + Math.min($container.outerHeight(), window.innerHeight),
 				offsetTop: $this.offset().top,
 				offsetBottom: $this.offset().top + $this.height(),
 			};
@@ -128,24 +127,24 @@ export default {
 					var $img = $item.find('img');
 					var src = $img.data('src');
 					if (src) {
-						$item.addClass('flow-loading');
+						$item.classList.add('flow-loading');
 						$img.on('load', function () {
-							$item.removeClass('flow-loading');
-							$item.addClass('flow-loaded');
+							$item.classList.remove('flow-loading');
+							$item.classList.add('flow-loaded');
 						});
 						$img.on('error', function () {
-							$item.removeClass('flow-loading');
-							$item.addClass('flow-error');
+							$item.classList.remove('flow-loading');
+							$item.classList.add('flow-error');
 						});
 						$img.attr('src', src);
 					} else {
-						$item.addClass('flow-loaded');
+						$item.classList.add('flow-loaded');
 					}
 				}
 			});
 		};
 		var _moveByScroll = function (isScrollDown) {
-			var verticalBottom = $this.hasClass('verticalBottom');
+			var verticalBottom = $this.classList.contains('verticalBottom');
 			var heightList = $this.find('> ul').map(function (index, item) {
 				return $(item).outerHeight();
 			});
@@ -154,8 +153,7 @@ export default {
 			if (isScrollDown) {
 				minHeight = !verticalBottom ? minHeight : 0;
 				if (
-					positionInfo.scrollTop >
-						positionInfo.offsetTop + minHeight &&
+					positionInfo.scrollTop > positionInfo.offsetTop + minHeight &&
 					positionInfo.scrollBottom < positionInfo.offsetBottom
 				) {
 					needMove = true;
@@ -164,29 +162,28 @@ export default {
 				minHeight = verticalBottom ? minHeight : 0;
 				if (
 					positionInfo.scrollTop > positionInfo.offsetTop &&
-					positionInfo.scrollBottom <
-						positionInfo.offsetBottom - minHeight
+					positionInfo.scrollBottom < positionInfo.offsetBottom - minHeight
 				) {
 					needMove = true;
 				}
 			}
 			if (needMove) {
 				if (isScrollDown) {
-					$this.removeClass('scrollUP');
+					$this.classList.remove('scrollUP');
 					var containerHeight = $this.height();
 					$this.children('ul').each(function (index, item) {
 						var $item = $(item);
 						var offsetY = containerHeight - $item.height();
 						$item.css('transform', 'translateY(' + offsetY + 'px)');
 					});
-					$this.addClass('verticalBottom');
+					$this.classList.add('verticalBottom');
 				} else {
-					$this.addClass('scrollUP');
+					$this.classList.add('scrollUP');
 					$this.children('ul').each(function (index, item) {
 						var $item = $(item);
 						$item.css('transform', 'translateY(' + 0 + ')');
 					});
-					$this.removeClass('verticalBottom');
+					$this.classList.remove('verticalBottom');
 				}
 			}
 		};
@@ -202,9 +199,9 @@ export default {
 					$li.css({
 						paddingTop: item.ratio * 100 + '%',
 					});
-					$li.addClass('flow-ratio');
+					$li.classList.add('flow-ratio');
 				} else {
-					$li.addClass('flow-unratio');
+					$li.classList.add('flow-unratio');
 				}
 				$li.css({
 					paddingTop: item.ratio * 100 + '%',
@@ -213,7 +210,7 @@ export default {
 				var newRatio = $ul.data('ratio') + (item.ratio || 1);
 				$ul.data('ratio', newRatio);
 			});
-			$this.addClass('flow');
+			$this.classList.add('flow');
 			$this.empty();
 			$.each(ulList, function (index, ul) {
 				$this.append(ul);
@@ -238,8 +235,7 @@ export default {
 			'scroll',
 			$.throttle(function () {
 				var currentPositionInfo = _getpositionInfo();
-				var isDown =
-					positionInfo.scrollTop < currentPositionInfo.scrollTop;
+				var isDown = positionInfo.scrollTop < currentPositionInfo.scrollTop;
 				positionInfo = currentPositionInfo;
 				_moveByScroll(isDown);
 				_loadImage();

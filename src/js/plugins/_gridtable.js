@@ -33,19 +33,23 @@ export default {
 					keymaxwidth = keywidth;
 				}
 			}
-			$list.addClass('close');
+			$list.classList.add('close');
 			return classname;
 		};
 		$list.each(function (index, item) {
 			$(item).on('click', function () {
-				if (!$(this).hasClass('open')) {
-					$list.filter('.open').removeClass('open').addClass('close');
-					$(this).addClass('open').removeClass('close');
+				if (!$(this).classList.contains('open')) {
+					$list
+						.filter('.open')
+						.classList.remove('open')
+						.$list.filter('.open')
+						.classList.add('close');
+					$(this).classList.add('open').classList.remove('close');
 				}
 			});
 		});
 
-		$this.addClass(inital());
+		$this.classList.add(inital());
 	},
 	setOptionsBefore: null,
 	setOptionsAfter: null,

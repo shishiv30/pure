@@ -4,6 +4,7 @@ import { isMobile } from './validate.js';
 import { select, selectAll } from './query.js';
 import { emit, on } from './event.js';
 import throttle from 'lodash/throttle';
+import { debounce } from 'lodash';
 
 class Page extends Plugin {
 	constructor(ctx) {
@@ -16,7 +17,6 @@ class Page extends Plugin {
 	}
 
 	static getSettingByCtx(ctx) {
-		let that = this;
 		return {
 			name: ctx.name || 'page',
 			init: function () {
@@ -48,15 +48,16 @@ class Page extends Plugin {
 			},
 			render: function () {
 				// Page.renderComponent();
-				Page.eventListener.apply(that);
+				Page.eventListener();
+				emit('dom.load');
 			},
 		};
 	}
-	static scrollTop() {
+	static getScrollTop() {
 		return window.pageYOffset || document.documentElement.scrollTop;
 	}
 	static isLandscape() {
-		return window.innerWidth > window.innerHeight;
+		return Page.width > Page.height;
 	}
 	static getHeight() {
 		return window.innerHeight;
@@ -69,12 +70,15 @@ class Page extends Plugin {
 		return ['TEXTAREA', 'INPUT', 'SELECT'].indexOf(tagName) > -1;
 	}
 	static init;
+	static width;
+	static height;
+	static landscape;
+	static scrollTop;
+	static originalScrollTop;
 
-	onResize() {
-		this.ctx.width = Page.getWidth();
-		this.ctx.height = Page.getHeight();
-		this.ctx.isLandscape = Page.isLandscape();
-		if (this.ctx.isLandscape) {
+	static onResize() {
+		Page.updatePageInfo();
+		if (Page.landscape) {
 			select('body').classList.add('landscape');
 			select('body').classList.remove('portrait');
 		} else {
@@ -84,15 +88,15 @@ class Page extends Plugin {
 		emit('dom.resize');
 	}
 
-	onScroll() {
-		this.ctx.originalScrollTop = this.ctx.scrollTop;
-		this.ctx.scrollTop = Page.scrollTop();
-		if (this.ctx.scrollTop > this.ctx.originalScrollTop) {
-			this.ctx.isScrollDown = true;
+	static onScroll() {
+		Page.originalScrollTop = Page.scrollTop;
+		Page.scrollTop = Page.getScrollTop();
+		if (Page.scrollTop > Page.originalScrollTop) {
+			Page.isScrollDown = true;
 		} else {
-			this.ctx.isScrollDown = false;
+			Page.isScrollDown = false;
 		}
-		if (this.ctx.isScrollDown) {
+		if (Page.isScrollDown) {
 			select('body').classList.add('scroll-down');
 		} else {
 			select('body').classList.remove('scroll-down');
@@ -100,11 +104,19 @@ class Page extends Plugin {
 		emit('dom.scroll');
 	}
 
+	static updatePageInfo() {
+		Page.width = Page.getWidth();
+		Page.height = Page.getHeight();
+		Page.scrollTop = Page.getScrollTop();
+		Page.landscape = Page.isLandscape();
+	}
+
 	static initCtxByWindow() {
+		Page.updatePageInfo();
 		return {
-			isLandscape: Page.isLandscape(),
-			scrollTop: Page.scrollTop(),
-			height: Page.getHeight(),
+			isLandscape: Page.height,
+			scrollTop: Page.width,
+			height: Page.height,
 			width: Page.getWidth(),
 		};
 	}
@@ -154,10 +166,9 @@ class Page extends Plugin {
 					item.setAttribute('loaded', true);
 					types = types.trim(' ').split(/\s+/g);
 					types.forEach((type) => {
-						let pluginName = Plugin.namespace + '_' + type;
-						let plugin = Plugin.getPluginByName(pluginName);
+						let plugin = Plugin.getPlugin(type);
 						if (plugin) {
-							plugin.call(item, data);
+							item.dataset[type] = plugin(item, data);
 						}
 					});
 				});
@@ -165,17 +176,17 @@ class Page extends Plugin {
 		);
 		window.addEventListener(
 			'resize',
-			throttle(() => {
+			debounce(() => {
 				if (!Page.inputing()) {
-					this.onResize();
+					Page.onResize();
 				}
-			}),
+			}, 100),
 		);
 		window.addEventListener(
 			'scroll',
-			throttle(() => {
-				this.onScroll();
-			}),
+			debounce(() => {
+				Page.onScroll();
+			}, 100),
 		);
 	}
 }

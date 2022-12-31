@@ -34,9 +34,7 @@ export default {
 			switch (column.type) {
 				case 'number':
 					if ($.isNumeric(value)) {
-						return column.format
-							? value.toFixed(column.format * 1)
-							: value;
+						return column.format ? value.toFixed(column.format * 1) : value;
 					} else {
 						return '';
 					}
@@ -80,25 +78,20 @@ export default {
 				var $tr = $('<tr></tr>');
 				for (var j = 0; j < opt.columns.length; j++) {
 					var column = opt.columns[j];
-					var display =
-						column.display !== undefined
-							? column.display
-							: column.key;
+					var display = column.display !== undefined ? column.display : column.key;
 
 					var $td = $('<th></th>');
 					if (column.sortable) {
 						var $link = $(
-							'<a href="javascript:;" class="datatable-sort">' +
-								display +
-								'</a>',
+							'<a href="javascript:;" class="datatable-sort">' + display + '</a>',
 						);
 						$link.data('column', column);
 						$link.on('click', function () {
 							var $this = $(this);
-							var isDesc = $this.hasClass('desc');
+							var isDesc = $this.classList.contains('desc');
 							_sort($this.data('column'), isDesc);
-							$thead.find('.active').removeClass('active');
-							$this.toggleClass('desc').addClass('active');
+							$thead.find('.active').classList.remove('active');
+							$this.toggleClass('desc').classList.add('active');
 						});
 						$td.append($link);
 					} else {

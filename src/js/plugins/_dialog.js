@@ -27,10 +27,10 @@ export default {
 			}
 			$(document).trigger('dialog.hidden.except', [opt.id]);
 			opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
-			$('html').addClass('dialog-model');
+			$('html').classList.add('dialog-model');
 			$dialog.show();
 			setTimeout(function () {
-				$dialog.addClass('dialog-active');
+				$dialog.classList.add('dialog-active');
 				opt.showafter && emit(opt.showafter, $this, opt, exportObj);
 			}, 50);
 			$(document).on('dialog.hidden.except' + opt.id, function (e, id) {
@@ -42,31 +42,25 @@ export default {
 		var _hide = (exportObj.hide = function () {
 			if ($dialog) {
 				opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
-				$dialog.removeClass('dialog-active');
+				$dialog.classList.remove('dialog-active');
 				setTimeout(function () {
 					$dialog.hide();
-					$('html').removeClass('dialog-model');
-					opt.hideafter &&
-						emit(opt.hidebefore, $this, opt, exportObj);
+					$('html').classList.remove('dialog-model');
+					opt.hideafter && emit(opt.hidebefore, $this, opt, exportObj);
 					if (!opt.cache) {
 						$dialog.remove();
 						$dialog = null;
-						$(document).off(
-							'dialog.hidden.except' + opt.id,
-							function (e, id) {
-								if (id != opt.id) {
-									exportObj.hide();
-								}
-							},
-						);
+						$(document).off('dialog.hidden.except' + opt.id, function (e, id) {
+							if (id != opt.id) {
+								exportObj.hide();
+							}
+						});
 					}
 				}, 500);
 			}
 		});
 		var _render = (exportObj.render = function () {
-			$dialog = $(
-				`<div class="dialog dialog-${opt.theme}" tabIndex="-1"></div>`,
-			);
+			$dialog = $(`<div class="dialog dialog-${opt.theme}" tabIndex="-1"></div>`);
 			$dialogPanel = $('<div class="dialog-panel"></div>');
 			$dialogBody = $(
 				'<div class="dialog-body"><a class="dialog-title-close" dialog-close href="javascript:;;">X</a></div>',

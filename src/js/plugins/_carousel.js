@@ -18,10 +18,7 @@ function _updateWidth($this, $scroller, opt) {
 		}
 	}
 	count = Math.min(count, opt.length);
-	$this[0].style.setProperty(
-		'--carousel-height',
-		(width * opt.ratio) / count + 'px',
-	);
+	$this[0].style.setProperty('--carousel-height', (width * opt.ratio) / count + 'px');
 	_checkArraow($this, $scroller);
 	$scroller.attr('count', count);
 	opt.width = width;
@@ -35,14 +32,14 @@ function _checkArraow($this, $scroller) {
 	var innerWidth = $scroller.innerWidth();
 	var scrollWidth = $scroller.prop('scrollWidth');
 	if (scrollLeft + innerWidth >= scrollWidth - 100) {
-		$this.removeClass('hasNext');
+		$this.classList.remove('hasNext');
 	} else {
-		$this.addClass('hasNext');
+		$this.classList.add('hasNext');
 	}
 	if (scrollLeft <= 100) {
-		$this.removeClass('hasPrev');
+		$this.classList.remove('hasPrev');
 	} else {
-		$this.addClass('hasPrev');
+		$this.classList.add('hasPrev');
 	}
 }
 function _getOffset($el, next) {
@@ -85,7 +82,7 @@ export default {
 		exportObj.next = function () {
 			var width = opt.width;
 			var count = opt.count;
-			if (!$this.hasClass('hasNext')) {
+			if (!$this.classList.contains('hasNext')) {
 				return;
 			}
 			var offset;
@@ -105,7 +102,7 @@ export default {
 		exportObj.prev = function () {
 			var width = opt.width;
 			var count = opt.count;
-			if (!$this.hasClass('hasPrev')) {
+			if (!$this.classList.contains('hasPrev')) {
 				return;
 			}
 			var offset;

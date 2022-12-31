@@ -30,8 +30,8 @@ var customValidate = {
 	},
 };
 var _showValidate = function ($element, message) {
-	$element.closest('.input').removeClass('has-success');
-	$element.closest('.input').addClass('has-error');
+	$element.closest('.input').classList.remove('has-success');
+	$element.closest('.input').classList.add('has-error');
 	if (message) {
 		$element
 			.closest('.input')
@@ -50,16 +50,16 @@ var _passValidate = function ($element, isRequried) {
 	if ($element.closest('.input').data('tooltip')) {
 		$element.closest('.input').data('tooltip').hide();
 	}
-	$element.closest('.input').removeClass('has-error');
+	$element.closest('.input').classList.remove('has-error');
 	if ($element.is('[id]')) {
-		$('[for=' + $element.attr('id') + ']').removeClass('error-text');
+		$('[for=' + $element.attr('id') + ']').classList.remove('error-text');
 	}
 	if (isRequried) {
-		$element.closest('.input').addClass('has-success');
+		$element.closest('.input').classList.add('has-success');
 	} else if ($element.val()) {
-		$element.closest('.input').addClass('has-success');
+		$element.closest('.input').classList.add('has-success');
 	} else {
-		$element.closest('.input').removeClass('has-success');
+		$element.closest('.input').classList.remove('has-success');
 	}
 };
 var _validate = function ($element, type, errorText, addition) {

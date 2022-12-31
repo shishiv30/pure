@@ -10,13 +10,12 @@ export default {
 	init: function ($this, opt, exportObj) {
 		exportObj.lock = function () {
 			opt.onbeforelock && emit(opt.onbeforelock, $this, opt, exportObj);
-			$this.addClass('locked');
+			$this.classList.add('locked');
 			opt.onafterlock && emit(opt.onafterlock, $this, opt, exportObj);
 		};
 		exportObj.unlock = function () {
-			opt.onbeforeunlock &&
-				emit(opt.onbeforeunlock, $this, opt, exportObj);
-			$this.removeClass('locked');
+			opt.onbeforeunlock && emit(opt.onbeforeunlock, $this, opt, exportObj);
+			$this.classList.remove('locked');
 			opt.onafterunlock && emit(opt.onafterunlock, $this, opt, exportObj);
 		};
 	},

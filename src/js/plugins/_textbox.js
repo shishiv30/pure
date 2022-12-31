@@ -6,20 +6,20 @@ export default {
 		var $input = $this.find('input');
 		var _switchLabel = function () {
 			if ($input.val()) {
-				$this.addClass('focus');
+				$this.classList.add('focus');
 			} else {
-				$this.removeClass('focus');
+				$this.classList.remove('focus');
 			}
 		};
 		if (!$input.length) {
 			$input = $this.find('textarea');
 		}
 		$input.on('focusin', function () {
-			$this.addClass('focus');
+			$this.classList.add('focus');
 		});
 		$input.on('focusout', function () {
 			if (!$input.val()) {
-				$this.removeClass('focus');
+				$this.classList.remove('focus');
 			}
 		});
 		$input.on('change', _switchLabel);

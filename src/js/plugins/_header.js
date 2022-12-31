@@ -13,41 +13,41 @@ export default {
 		opt.id = $.guid++;
 		$this.prepend($overlay);
 		var _close = function () {
-			$this.addClass('header-close');
+			$this.classList.add('header-close');
 		};
 		var _open = function () {
-			$this.removeClass('header-close');
+			$this.classList.remove('header-close');
 		};
 		var _show = function () {
-			$body.addClass('body-expand-header');
+			$body.classList.add('body-expand-header');
 		};
 		var _hide = function () {
-			$body.removeClass('body-expand-header');
-			$list.find('li').removeClass('hover').css('height', '');
+			$body.classList.remove('body-expand-header');
+			$list.find('li').classList.remove('hover').css('height', '');
 		};
 		$overlay.on('click', _hide);
 		//nav
 		$dropdown.each(function () {
 			var $arrow = $(
-				'<a href="javascript:;" class="header-expand"><i class="icon-caret-left"></i></a>'
+				'<a href="javascript:;" class="header-expand"><i class="icon-caret-left"></i></a>',
 			);
 			$arrow.on('click', function () {
 				var $li = $(this).closest('li');
 				var $prev = $li.siblings('.hover');
-				$prev.removeClass('hover');
+				$prev.classList.remove('hover');
 				$prev.css('height', '');
-				if ($li.hasClass('hover')) {
-					$li.removeClass('hover');
+				if ($li.classList.contains('hover')) {
+					$li.classList.remove('hover');
 					$li.css('height', '');
 				} else {
-					$li.addClass('hover');
+					$li.classList.add('hover');
 					$li.css('height', $li.prop('scrollHeight'));
 				}
 			});
 			$(this).append($arrow);
 		});
 		$swtichLink.on('click', function () {
-			if ($body.hasClass('body-expand-header')) {
+			if ($body.classList.contains('body-expand-header')) {
 				_hide();
 			} else {
 				_show();
