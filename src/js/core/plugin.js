@@ -118,25 +118,27 @@ class Plugin extends Base {
 
 	async init($el, options, exportObj) {
 		//init
-		this.initBefore($el, options, exportObj);
+		var opt = Object.assign({}, this.setting.defaultOpt, options);
+
+		this.initBefore($el, opt, exportObj);
 		if (this.setting.init) {
-			this.setting.init.apply(this, [$el, options, exportObj]);
+			this.setting.init.apply(this, [$el, opt, exportObj]);
 		}
-		this.initAfter($el, options, exportObj);
+		this.initAfter($el, opt, exportObj);
 
 		//load page data
-		this.loadBefore($el, options, exportObj);
+		this.loadBefore($el, opt, exportObj);
 		if (this.setting.load) {
-			await this.setting.load.apply(this, [$el, options, exportObj]);
+			await this.setting.load.apply(this, [$el, opt, exportObj]);
 		}
-		this.loadAfter($el, options, exportObj);
+		this.loadAfter($el, opt, exportObj);
 
 		//render page
-		this.renderBefore($el, options, exportObj);
+		this.renderBefore($el, opt, exportObj);
 		if (this.setting.render) {
-			this.setting.render.apply(this, [$el, options, exportObj]);
+			this.setting.render.apply(this, [$el, opt, exportObj]);
 		}
-		this.renderAfter($el, options, exportObj);
+		this.renderAfter($el, opt, exportObj);
 	}
 }
 export default Plugin;

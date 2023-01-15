@@ -8,7 +8,7 @@ import collapse from './_collapse.js';
 // import header from './_header.js';
 // import inputformat from './_inputformat.js';
 // import links from './_links.js';
-// import lazyload from './_lazyload.js';
+import lazyload from './_lazyload.js';
 // import locker from './_locker.js';
 // import mapdynamic from './_map.dynamic.js';
 // import mapstatic from './_map.static.js';
@@ -17,7 +17,8 @@ import collapse from './_collapse.js';
 // import ranger from './_ranger.js';
 // import request from './_request.js';
 // import scrollTo from './_scrollTo.js';
-// import tabs from './_tabs.js';
+import tab from './_tab.js';
+import shifter from './_shifter.js';
 // import textbox from './_textbox.js';
 // import tooltip from './_tooltip.js';
 // import transition from './_transition.js';
@@ -29,6 +30,7 @@ import collapse from './_collapse.js';
 
 export default {
 	collapse,
+	shifter,
 	// datatable,
 	// datetimepicker,
 	// dialog,
@@ -38,7 +40,7 @@ export default {
 	// header,
 	// inputformat,
 	// links,
-	// lazyload,
+	lazyload,
 	// locker,
 	// mapdynamic,
 	// mapstatic,
@@ -47,7 +49,7 @@ export default {
 	// ranger,
 	// request,
 	// scrollTo,
-	// tabs,
+	tab,
 	// textbox,
 	// tooltip,
 	// transition,

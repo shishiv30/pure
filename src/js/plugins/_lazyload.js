@@ -1,69 +1,84 @@
-import { emit } from '../core/event.js';
-const defaultSrc =
-	'data:image/gif;base64,R0lGODlhAQABAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw==';
-const name = 'lazyload';
+import {selectAll } from '../core/query.js';
+var defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+function clean(img) {
+    img.removeAttribute('data-src');
+    img.removeEventListener('load', imgLoad);
+    img.removeEventListener('error', imgError);
+}
+function imgLoad(e) {
+    var img = e.target;
+    if (!img) {
+        return;
+    }
+    img.classList.add('img-load-success');
+    clean(img);
+}
+function imgError(e) {
+    var img = e.target;
+    if (!img) {
+        return;
+    }
+    img.classList.add('img-load-error');
+    img.src = defaultSrc;
+    clean(img);
+}
 function loadImg(img) {
-	var $img = $(img);
-	var imgSrc = $img.attr('data-src');
-	if (!imgSrc) {
-		return false;
-	}
-	$img.removeAttr('data-src');
-	$.loadImg($img, imgSrc);
-	return true;
+    var imgSrc = img.getAttribute('data-src');
+    if (imgSrc) {
+        img.addEventListener('load', imgLoad);
+        img.addEventListener('error', imgError);
+        img.src = imgSrc;
+    }
 }
 
-function load(el) {
-	var loadbefore = $(el).data(name).getOptions()['loadbefore'];
-	loadbefore && emit(loadbefore);
-	if (el.nodeName === 'IMG') {
-		return loadImg(el);
-	}
+function observerHandle(entries) {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+            return;
+        }
+        loadImg(entry.target);
+        window.observer.unobserve(entry.target);
+    });
 }
-
 function createObserver(el) {
-	if (!window.observer) {
-		const options = {
-			rootMargin: '50% 50% 50% 50%',
-			threshold: 0,
-		};
-		window.observer = new IntersectionObserver(handler, options);
-	}
-	window.observer.observe(el);
+    if (!window.observer) {
+        const options = {
+            rootMargin: '0px 0px 0px 0px',
+            threshold: 0,
+        };
+        window.observer = new IntersectionObserver(observerHandle, options);
+    }
+    window.observer.observe(el);
 }
 
-function handler(entries) {
-	entries.forEach((entry) => {
-		if (!entry.isIntersecting) {
-			return;
-		}
-		if (load(entry.target)) {
-			window.observer.unobserve(entry.target);
-		}
-	});
+function ignoreLazyLoad(el) {
+    return !window.IntersectionObserver;
 }
 
+function lazyloadImg($el) {
+    let root = $el;
+    if(!root){
+        root = document;
+    }
+    selectAll('[data-src]', root).forEach((el) => {
+        if (ignoreLazyLoad(el)) {
+            loadImg(el);
+        } else {
+            createObserver(el);
+        }
+    });
+}
 export default {
-	name: name,
-	defaultOpt: {
-		loadbefore: null,
-	},
-	init: function ($this) {
-		$this.each(function () {
-			createObserver(this);
-		});
-	},
-	setOptionsBefore: null,
-	setOptionsAfter: null,
-	initBefore: function ($this) {
-		var src = $this.attr('src');
+    name: 'lazyload',
+    defaultOpt: {},
+    init: function ($el) {
+        lazyloadImg($el);
+    },
+    initBefore: function($el){
+        var src = $el.getAttribute('src');
 		if (src !== defaultSrc) {
-			$this.attr('src', defaultSrc);
-			$this.attr('data-src', src);
+			$el.getAttribute('src', defaultSrc);
+			$el.getAttribute('data-src', src);
 		}
-	},
-	initAfter: null,
-	destroyBefore: function ($this) {
-		window.observer && window.observer.unobserve($this[0]);
-	},
+    },
 };
