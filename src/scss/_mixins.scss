@@ -19,45 +19,44 @@
 		--#{$name}-border-weight: 1px;
 		color: var(--#{$name}-color);
 		background-color: var(--#{$name}-color-bg);
-		box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-			var(--#{$name}-color-border);
+		box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-border);
+
 		&.active {
 			color: var(--#{$name}-color-active);
 			background-color: var(--#{$name}-color-active-bg);
-			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-				var(--#{$name}-color-active-border);
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-active-border);
 		}
 	}
 }
 
 @mixin comp-color-hover($name) {
 	.#{$name} {
+
+		&,
 		&:link,
 		&:visited {
 			color: var(--#{$name}-color);
 			background-color: var(--#{$name}-color-bg);
-			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-				var(--#{$name}-color-border);
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-border);
 		}
+
 		&:active,
 		&:hover {
 			color: var(--#{$name}-color-hover);
 			background-color: var(--#{$name}-color-bg-hover);
-			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-				var(--#{$name}-color-border-hover);
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-border-hover);
 		}
 
 		&.active {
 			color: var(--#{$name}-color-active);
 			background-color: var(--#{$name}-color-active-bg);
-			box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-				var(--#{$name}-color-active-border);
+			box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-active-border);
+
 			&:active,
 			&:hover {
 				color: var(--#{$name}-color-active-hover);
 				background-color: var(--#{$name}-color-active-bg-hover);
-				box-shadow: inset 0 0 0 var(--#{$name}-border-weight)
-					var(--#{$name}-color-active-border-hover);
+				box-shadow: inset 0 0 0 var(--#{$name}-border-weight) var(--#{$name}-color-active-border-hover);
 			}
 		}
 	}
@@ -65,6 +64,7 @@
 
 @mixin comp-size($name) {
 	.#{$name} {
+
 		&,
 		&.normal {
 			--#{$name}-gap: var(--g1);
@@ -80,18 +80,20 @@
 			--#{$name}-font-size: var(--font-size-6);
 			--#{$name}-size: var(--comp-size-1);
 		}
+
 		&.small {
-			--#{$name}-gap: var(--g0);
-			--#{$name}-font-size: var(--font-size-6);
+			--#{$name}-gap: var(--gxs);
+			--#{$name}-font-size: var(--font-size-5);
 			--#{$name}-size: var(--comp-size-2);
 		}
 
 		&.large {
-			--#{$name}-gap: var(--g2);
+			--#{$name}-gap: var(--g1);
 			--#{$name}-font-size: var(--font-size-4);
 			--#{$name}-size: var(--comp-size-4);
 			--#{$name}-border-weight: 2px;
 		}
+
 		font-weight: var(--#{$name}-font-weight);
 		font-size: var(--#{$name}-font-size);
 		height: var(--#{$name}-size);
@@ -118,6 +120,7 @@
 		--color-active-bg-hover: #{$color-default};
 		--color-active-border-hover: #{$color-bg-default};
 	}
+
 	.gray {
 		--color: #{$color-default-l1};
 		--color-bg: #{$color-bg-l1};
@@ -132,6 +135,7 @@
 		--color-active-bg-hover: #{$color-default-l1};
 		--color-active-border-hover: #{$color-default-l1};
 	}
+
 	.major {
 		--color: #{$color-major};
 		--color-bg: #{$color-major-l1};
@@ -146,6 +150,7 @@
 		--color-active-bg-hover: #{$color-major};
 		--color-active-border-hover: #{$color-major};
 	}
+
 	.minor {
 		--color: #{$color-minor};
 		--color-bg: #{$color-minor-l1};
@@ -160,6 +165,7 @@
 		--color-active-bg-hover: #{$color-minor};
 		--color-active-border-hover: #{$color-minor};
 	}
+
 	.danger {
 		--color: #{$color-danger};
 		--color-bg: #{$color-danger-l1};
@@ -174,6 +180,7 @@
 		--color-active-bg-hover: #{$color-danger};
 		--color-active-border-hover: #{$color-danger};
 	}
+
 	.safe {
 		--color: #{$color-safe};
 		--color-bg: #{$color-safe-l1};
@@ -188,6 +195,7 @@
 		--color-active-bg-hover: #{$color-safe};
 		--color-active-border-hover: #{$color-safe};
 	}
+
 	.tip {
 		--color: #{$color-tip};
 		--color-bg: #{$color-tip-l1};
@@ -211,11 +219,13 @@
 }
 
 @mixin clearFloat {
+
 	&:after,
 	&:before {
 		content: '';
 		display: table;
 	}
+
 	&:after {
 		clear: both;
 		overflow: hidden;
@@ -263,10 +273,12 @@
 	display: -webkit-box;
 	-webkit-line-clamp: $lineCount;
 	-webkit-box-orient: vertical;
-	@if $breakAll == true {
+
+	@if $breakAll ==true {
 		position: relative;
 		word-break: break-all;
-		> * {
+
+		>* {
 			display: inline-block;
 		}
 	}
@@ -324,6 +336,7 @@
 	-ms-overflow-style: none;
 	overflow: -moz-scrollbars-none;
 	scrollbar-width: none;
+
 	&::-webkit-scrollbar {
 		width: 0;
 		height: 0;
@@ -334,7 +347,8 @@
 @mixin snap($snap: start) {
 	-ms-scroll-snap-type: x mandatory;
 	scroll-snap-type: x mandatory;
-	> * {
+
+	>* {
 		scroll-snap-align: $snap;
 	}
 }
@@ -359,11 +373,9 @@ $card-height: 200px;
 $card-skeleton: linear-gradient($back-color $card-height, transparent 0);
 $avatar-size: 1.5rem;
 $avatar-position: right $card-padding top $card-padding;
-$avatar-skeleton: radial-gradient(
-	circle 0.75rem,
-	$font-color 99%,
-	transparent 0
-);
+$avatar-skeleton: radial-gradient(circle 0.75rem,
+		$font-color 99%,
+		transparent 0);
 $title-height: 1.5rem;
 $title-width: 45%;
 $title-position: $card-padding 125px;
@@ -371,10 +383,8 @@ $title-sub-width: 30%;
 $title-sub-position: $card-padding $card-padding;
 $title-skeleton: linear-gradient($font-color $title-height, transparent 0);
 $desc-line-height: 12px;
-$desc-line-skeleton: linear-gradient(
-	$font-color $desc-line-height,
-	transparent 0
-);
+$desc-line-skeleton: linear-gradient($font-color $desc-line-height,
+		transparent 0);
 $desc-line-1-width: 65%;
 $desc-line-1-position: $card-padding 157px;
 $desc-line-2-width: 80%;
@@ -400,12 +410,10 @@ $blur-size: $blur-width $card-height;
 		width: 100%;
 		height: 100%;
 		box-shadow: 0 10px 45px rgba(0, 0, 0, 0.1);
-		background-image: linear-gradient(
-				90deg,
+		background-image: linear-gradient(90deg,
 				rgba($back-color, 0) 0,
 				rgba($back-color, 0.8) 50%,
-				rgba($back-color, 0) 100%
-			),
+				rgba($back-color, 0) 100%),
 			$avatar-skeleton, $title-skeleton, $title-skeleton,
 			$desc-line-skeleton, $desc-line-skeleton, $footer-skeleton,
 			$card-skeleton;
@@ -427,16 +435,19 @@ $blur-size: $blur-width $card-height;
 	left: 50%;
 	transform: translateY(-50%) translateX(-50%);
 }
+
 @mixin center-x() {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
 }
+
 @mixin center-y() {
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 }
+
 @mixin img-center() {
 	position: absolute;
 	top: 50%;
@@ -445,9 +456,11 @@ $blur-size: $blur-width $card-height;
 	max-width: 100%;
 	max-height: 100%;
 }
+
 @mixin box-shadow() {
 	box-shadow: 0px 0px 2px 4px $color-l1;
 }
+
 @mixin box-line() {
 	box-shadow: 0px 0px 5px 1px rgba(100, 100, 100, 0.35);
 }
@@ -461,11 +474,13 @@ $blur-size: $blur-width $card-height;
 }
 
 @mixin clearfix {
+
 	&:after,
 	&:before {
 		content: '';
 		display: table;
 	}
+
 	&:after {
 		clear: both;
 		overflow: hidden;
@@ -476,15 +491,19 @@ $blur-size: $blur-width $card-height;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+
 	@media screen and (max-width: $screen-xs-max) {
 		width: 100%;
 	}
+
 	@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
 		width: 100%;
 	}
+
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
 		max-width: $screen-md-min;
 	}
+
 	@media (min-width: $screen-lg-min) {
 		max-width: $screen-lg-min;
 	}
@@ -492,15 +511,18 @@ $blur-size: $blur-width $card-height;
 	&.fixed-max-xs {
 		max-width: $screen-xs-max;
 	}
+
 	&.fixed-max-sm {
 		max-width: $screen-sm-max;
 	}
+
 	&.fixed-max-md {
 		max-width: $screen-md-max;
 	}
 }
 
 @mixin gap-size() {
+
 	&,
 	&.normal {
 		--section-gap-x: var(--g3);
@@ -508,18 +530,21 @@ $blur-size: $blur-width $card-height;
 		--panel-gap-x: var(--g2);
 		--panel-gap-y: var(--g3);
 	}
+
 	&.tiny {
 		--section-gap-x: 0;
 		--section-gap-y: 0;
 		--panel-gap-x: 0;
 		--panel-gap-y: 0;
 	}
+
 	&.small {
 		--section-gap-x: var(--g2);
 		--section-gap-y: var(--g4);
 		--panel-gap-x: var(--g2);
 		--panel-gap-y: var(--g1);
 	}
+
 	&.large {
 		--section-gap-x: var(--g4);
 		--section-gap-y: var(--g6);
@@ -531,21 +556,27 @@ $blur-size: $blur-width $card-height;
 @mixin f1 {
 	font-size: $font-size-1;
 }
+
 @mixin f2 {
 	font-size: $font-size-2;
 }
+
 @mixin f3 {
 	font-size: $font-size-3;
 }
+
 @mixin f4 {
 	font-size: $font-size-4;
 }
+
 @mixin f5 {
 	font-size: $font-size-5;
 }
+
 @mixin f6 {
 	font-size: $font-size-6;
 }
+
 @mixin f7 {
 	font-size: $font-size-7;
 }

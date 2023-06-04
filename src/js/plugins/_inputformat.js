@@ -6,9 +6,9 @@ export default {
 	},
 	initBefore: null,
 	init: function ($this, opt, exportObj) {
-		var timer = null;
-		var _get = function () {
-			var value = $this.val();
+		let timer = null;
+		let _get = function () {
+			let value = $this.val();
 			switch (opt.type) {
 				case 'phone':
 					return value.replace(/[^0-9]/g, '');
@@ -18,19 +18,16 @@ export default {
 					return value;
 			}
 		};
-		var _set = function () {
-			var value = _get();
-			var formatString = '';
+		let _set = function () {
+			let value = _get();
+			let formatString = '';
 			switch (opt.type) {
 				case 'phone':
 					if (value.length >= 4) {
 						formatString += value.slice(0, 3) + '-';
 						if (value.length >= 7) {
 							formatString += value.slice(3, 6) + '-';
-							formatString += value.slice(
-								6,
-								Math.min(value.length, 11),
-							);
+							formatString += value.slice(6, Math.min(value.length, 11));
 						} else {
 							formatString += value.slice(3, value.length);
 						}
@@ -39,14 +36,11 @@ export default {
 					}
 					break;
 				case 'price':
-					var arrPrice = value.toString().split('.');
+					let arrPrice = value.toString().split('.');
 					formatString = arrPrice[0];
-					var pricePattern = /(\d+)(\d{3})/;
+					let pricePattern = /(\d+)(\d{3})/;
 					while (pricePattern.test(formatString))
-						formatString = formatString.replace(
-							pricePattern,
-							'$1,$2',
-						);
+						formatString = formatString.replace(pricePattern, '$1,$2');
 					if (arrPrice.length >= 2) {
 						formatString += '.' + arrPrice[1];
 						value = arrPrice[0] + '.' + arrPrice[1];
@@ -63,13 +57,13 @@ export default {
 
 		_set();
 		$this.on('input', function () {
-			var $this = $(this);
+			let $this = $(this);
 			if (timer) {
 				clearTimeout(timer);
 			}
 			timer = setTimeout(function () {
 				if ($this.prop('rawValue') !== _get()) {
-					var value = _set();
+					let value = _set();
 					$this.trigger('formatinput', [value]);
 				}
 			}, 10);
@@ -84,8 +78,8 @@ export default {
 // $.cui.plugin(inputformatConfig);
 // $(document).on('dom.load.inputformat', function () {
 //     $('[data-inputformat]').each(function (index, item) {
-//         var $this = $(item);
-//         var data = $this.data();
+//         let $this = $(item);
+//         let data = $this.data();
 //         $this.removeAttr('data-inputformat');
 //         $this.inputformat(data);
 //         $this.removeAttr('data-inputformat-load', '');

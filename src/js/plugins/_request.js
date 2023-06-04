@@ -11,9 +11,9 @@ export default {
 		lock: 1,
 	},
 	init: function ($this, opt, exportObj) {
-		var $target = $(opt.target);
-		var send = function () {
-			var params = {
+		let $target = $(opt.target);
+		let send = function () {
+			let params = {
 				type: opt.type,
 				dataType: opt.datatype,
 				lock: opt.lock,

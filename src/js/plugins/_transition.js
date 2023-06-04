@@ -11,14 +11,14 @@ export default {
 		dateformat: 'MMMM Do YYYY',
 	},
 	init: function ($this, opt, exportObj) {
-		var start = null;
-		var end = null;
-		var step = null;
-		var duration = null;
-		var times = null;
-		var format = null;
-		var isIncrease = null;
-		var _freshNumber = (exportObj.freshNumber = function () {
+		let start = null;
+		let end = null;
+		let step = null;
+		let duration = null;
+		let times = null;
+		let format = null;
+		let isIncrease = null;
+		let _freshNumber = (exportObj.freshNumber = function () {
 			start = opt.from * 1;
 			end = opt.to * 1;
 			duration = Math.floor(1000 / opt.frame);
@@ -26,7 +26,7 @@ export default {
 			step = (end - start) / times;
 			isIncrease = step > 0;
 		});
-		var _freshDate = (exportObj.freshDate = function () {
+		let _freshDate = (exportObj.freshDate = function () {
 			start = +new Date(opt.from);
 			end = +new Date(opt.to);
 			duration = 1000 / opt.frame;
@@ -34,7 +34,7 @@ export default {
 			step = (end - start) / times;
 			isIncrease = step > 0;
 		});
-		var _fresh = (exportObj.fresh = function () {
+		let _fresh = (exportObj.fresh = function () {
 			opt.freshbefore && emit(opt.freshbefore, $this, opt, exportObj);
 			switch (opt.type) {
 				case 'number':
@@ -46,15 +46,13 @@ export default {
 				case 'date':
 					_freshDate();
 					format = function (rawNumber) {
-						var rawDate = new Date(rawNumber);
+						let rawDate = new Date(rawNumber);
 						return rawDate.format(opt.dateformat);
 					};
 					break;
 			}
-			var interval = setInterval(function () {
-				var rawNumber = isIncrease
-					? Math.min(start, end)
-					: Math.max(start, end);
+			let interval = setInterval(function () {
+				let rawNumber = isIncrease ? Math.min(start, end) : Math.max(start, end);
 				$this.text(format(rawNumber));
 				if (isIncrease ? rawNumber >= end : rawNumber <= end) {
 					clearInterval(interval);

@@ -21,31 +21,31 @@ export default {
 		sensitive: 0.1,
 	},
 	init: function ($this, opt, exportObj) {
-		var $wrapper = $this.children('div');
+		let $wrapper = $this.children('div');
 		opt.id = $.guid++;
-		var prePos = 0;
-		var currPos = 0;
-		var info = null;
-		var isAnimating = false;
-		var animateTime = 0.2;
-		var _updateInfo = (exportObj.updateInfo = function () {
-			var $slides = $wrapper.children();
-			var outerHeight = $this.outerHeight();
-			var outerWidth = $this.outerWidth();
-			var max = opt.horizontal
+		let prePos = 0;
+		let currPos = 0;
+		let info = null;
+		let isAnimating = false;
+		let animateTime = 0.2;
+		let _updateInfo = (exportObj.updateInfo = function () {
+			let $slides = $wrapper.children();
+			let outerHeight = $this.outerHeight();
+			let outerWidth = $this.outerWidth();
+			let max = opt.horizontal
 				? $wrapper.outerWidth() - outerWidth
 				: $wrapper.outerHeight() - outerHeight;
 			max = Math.max(0, max);
-			var limitation = (opt.horizontal ? outerWidth : outerHeight) * opt.limitation;
-			var newIndex = null;
-			var position = null;
-			var offset = 0;
+			let limitation = (opt.horizontal ? outerWidth : outerHeight) * opt.limitation;
+			let newIndex = null;
+			let position = null;
+			let offset = 0;
 			if (opt.horizontal) {
 				position = Math.round($wrapper.position().left);
 			} else {
 				position = Math.round($wrapper.position().top);
 			}
-			var sliderRange = [];
+			let sliderRange = [];
 			$slides.each(function (index, item) {
 				if (opt.horizontal) {
 					offset += $(item).outerWidth();
@@ -70,15 +70,15 @@ export default {
 				length: $slides.length,
 			};
 		});
-		var dfd;
-		var _scroll = (exportObj.scroll = function (distance, animation) {
+		let dfd;
+		let _scroll = (exportObj.scroll = function (distance, animation) {
 			dfd = $.Deferred();
 			if (isAnimating) {
 				dfd.reject();
 				return dfd;
 			}
-			var offset = Math.round(distance);
-			var animateFrame = opt.horizontal
+			let offset = Math.round(distance);
+			let animateFrame = opt.horizontal
 				? {
 						transform: 'translateX(' + offset + 'px)',
 				  }
@@ -100,10 +100,10 @@ export default {
 			}
 			return dfd;
 		});
-		var _go = (exportObj.go = function (index) {
-			var newPos = index === 0 ? 0 : info.sliderRange[index - 1];
-			var direction;
-			var distance = currPos + newPos;
+		let _go = (exportObj.go = function (index) {
+			let newPos = index === 0 ? 0 : info.sliderRange[index - 1];
+			let direction;
+			let distance = currPos + newPos;
 			if (opt.horizontal) {
 				direction = distance > 0 ? 'left' : 'right';
 			} else {
@@ -111,18 +111,18 @@ export default {
 			}
 			_moved(direction, newPos * -1, 0);
 		});
-		var _next = (exportObj.next = function () {
+		let _next = (exportObj.next = function () {
 			if (info.index < info.length - 1) {
 				_go(info.index + 1);
 			}
 		});
-		var _prev = (exportObj.prev = function () {
+		let _prev = (exportObj.prev = function () {
 			if (info.index > 0) {
 				_go(info.index - 1);
 			}
 		});
-		var _onMoving = function (moved) {
-			var eventName = '';
+		let _onMoving = function (moved) {
+			let eventName = '';
 			if (currPos > 0) {
 				if (moved) {
 					eventName = opt.horizontal ? opt.onpushleft : opt.onpushtop;
@@ -142,21 +142,21 @@ export default {
 			}
 			return false;
 		};
-		var _scrollWithInertia = function (distance, time) {
-			var speed = distance / (time / 1000);
-			var inertia = speed * animateTime;
+		let _scrollWithInertia = function (distance, time) {
+			let speed = distance / (time / 1000);
+			let inertia = speed * animateTime;
 			if (Math.abs(inertia) > 50) {
 				currPos -= inertia;
 			}
 		};
-		var _limitation = function (direction) {
+		let _limitation = function (direction) {
 			if ('left' === direction || 'up' === direction) {
 				currPos = Math.min(currPos, info.maxLimit);
 			} else {
 				currPos = Math.max(currPos, info.minLimit);
 			}
 		};
-		var _moving = function (direction, distance, isRelativeValue) {
+		let _moving = function (direction, distance, isRelativeValue) {
 			$wrapper.classList.add('dragging');
 			if (isRelativeValue) {
 				currPos = currPos - distance;
@@ -170,19 +170,19 @@ export default {
 				}, 200),
 			);
 		};
-		var _moved = function (direction, distance, animateTime) {
+		let _moved = function (direction, distance, animateTime) {
 			$wrapper.classList.remove('dragging');
-			var itemSize;
-			var end;
-			var start;
-			var isNext;
+			let itemSize;
+			let end;
+			let start;
+			let isNext;
 
 			if (opt.horizontal) {
 				isNext = direction !== 'left';
 			} else {
 				isNext = direction !== 'up';
 			}
-			for (var i = 0; i < info.sliderRange.length; i++) {
+			for (let i = 0; i < info.sliderRange.length; i++) {
 				end = info.sliderRange[i];
 				if (end + currPos >= 0) {
 					start = info.sliderRange[i - 1] || 0;
@@ -195,9 +195,9 @@ export default {
 				if (opt.snapable) {
 					// _scrollWithInertia(distance, animateTime);
 					//if too move too slow revert and move less than one third, else snap to next slider
-					var isSlow = Math.abs(distance) / animateTime < opt.sensitive;
-					var isSlight = Math.abs(distance) < itemSize / 3;
-					var isRevert = isSlow && isSlight;
+					let isSlow = Math.abs(distance) / animateTime < opt.sensitive;
+					let isSlight = Math.abs(distance) < itemSize / 3;
+					let isRevert = isSlow && isSlight;
 					if (isRevert) {
 						currPos = prePos;
 					} else {
@@ -228,7 +228,7 @@ export default {
 					$(document).trigger('dom.scroll');
 				});
 		};
-		var disable = (exportObj.disable = function () {
+		let disable = (exportObj.disable = function () {
 			$this.classList.remove('view-scroll');
 			$this.classList.add('original-scroll');
 			$this.off('mousewheel');
@@ -237,12 +237,12 @@ export default {
 			$this.off('dragged');
 		});
 
-		var enable = (exportObj.enable = function () {
+		let enable = (exportObj.enable = function () {
 			$this.classList.add('view-scroll');
 			$this.classList.remove('original-scroll');
 
 			$this.on('mousewheel', function (event) {
-				var delta;
+				let delta;
 				if (opt.horizontal && event.deltaX) {
 					delta = event.deltaX * -1;
 				} else if (!opt.horizontal && event.deltaY) {
@@ -255,8 +255,8 @@ export default {
 				$.throttle(function () {
 					if (!isAnimating) {
 						if (!opt.snapable) {
-							var newPos = currPos + delta * 120;
-							var direction;
+							let newPos = currPos + delta * 120;
+							let direction;
 							if (opt.horizontal) {
 								direction = newPos > 0 ? 'left' : 'right';
 							} else {
@@ -276,13 +276,13 @@ export default {
 				_updateInfo();
 			});
 			$this.on('dragging', function (e, dir, dist) {
-				var distance = opt.horizontal ? dist[0] : dist[1];
-				var direction = opt.horizontal ? dir[0] : dir[1];
+				let distance = opt.horizontal ? dist[0] : dist[1];
+				let direction = opt.horizontal ? dir[0] : dir[1];
 				_moving(direction, distance, false);
 			});
 			$this.on('dragged', function (e, dir, dist, time) {
-				var distance = opt.horizontal ? dist[0] : dist[1];
-				var direction = opt.horizontal ? dir[0] : dir[1];
+				let distance = opt.horizontal ? dist[0] : dist[1];
+				let direction = opt.horizontal ? dir[0] : dir[1];
 				_moved(direction, distance, time);
 			});
 			$(document).on('dom.resize.view' + opt.id, _updateInfo);

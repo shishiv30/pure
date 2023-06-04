@@ -16,10 +16,10 @@ export default {
 		reloadafter: null,
 	},
 	init: function ($this, opt, exportObj) {
-		var $container = opt.container ? $(opt.container) : $(window);
-		var initalItems = function (items) {
+		let $container = opt.container ? $(opt.container) : $(window);
+		let initalItems = function (items) {
 			if (typeof items === 'string') {
-				var data = window[items];
+				let data = window[items];
 				switch (typeof data) {
 					case 'function':
 						return data();
@@ -35,13 +35,13 @@ export default {
 			}
 			return;
 		};
-		var getItemHtml = function (template, data) {
+		let getItemHtml = function (template, data) {
 			if (data && typeof data === 'string') {
 				return data;
 			}
 			if (template) {
 				if (typeof template === 'string') {
-					var tmp = window[template];
+					let tmp = window[template];
 					switch (typeof tmp) {
 						case 'function':
 							return tmp(data);
@@ -56,7 +56,7 @@ export default {
 			}
 			return;
 		};
-		var _getpositionInfo = function () {
+		let _getpositionInfo = function () {
 			return {
 				scrollTop: $container.scrollTop(),
 				scrollBottom:
@@ -65,10 +65,10 @@ export default {
 				offsetBottom: $this.offset().top + $this.height(),
 			};
 		};
-		var positionInfo = _getpositionInfo();
-		var _getColumnByBreakPoint = function (newBreakPoint) {
+		let positionInfo = _getpositionInfo();
+		let _getColumnByBreakPoint = function (newBreakPoint) {
 			opt.breakpoint = newBreakPoint || opt.breakpoint;
-			var containerWidth = $this.width();
+			let containerWidth = $this.width();
 			if (opt.breakpoint && opt.breakpoint.length) {
 				return opt.breakpoint.reduce(function (pre, next) {
 					if (containerWidth > next) {
@@ -80,7 +80,7 @@ export default {
 			}
 			return 1;
 		};
-		var _getSmallestColumn = function (array) {
+		let _getSmallestColumn = function (array) {
 			return array.reduce(function (pre, next) {
 				if (pre) {
 					return pre.data('ratio') <= next.data('ratio') ? pre : next;
@@ -89,11 +89,11 @@ export default {
 				}
 			}, null);
 		};
-		var _createColumns = function (count) {
-			var columns = [];
-			var columnswidth = 100 / count + '%';
+		let _createColumns = function (count) {
+			let columns = [];
+			let columnswidth = 100 / count + '%';
 			while (count > 0) {
-				var $ul = $('<ul></ul>').css({
+				let $ul = $('<ul></ul>').css({
 					width: columnswidth,
 				});
 				$ul.data('ratio', 0);
@@ -102,9 +102,9 @@ export default {
 			}
 			return columns;
 		};
-		var _createItemInColumns = function (item) {
-			var html = getItemHtml(opt.template, item);
-			var $tmp = $('<li>' + html + '</li>');
+		let _createItemInColumns = function (item) {
+			let html = getItemHtml(opt.template, item);
+			let $tmp = $('<li>' + html + '</li>');
 			if (opt.onclick) {
 				$tmp.on('click', function () {
 					emit(opt.onclick, $tmp, item);
@@ -112,20 +112,20 @@ export default {
 			}
 			return $tmp;
 		};
-		var _loadImage = function () {
+		let _loadImage = function () {
 			$this.find('li').each(function (index, item) {
-				var $item = $(item);
+				let $item = $(item);
 				if ($item.is('flow-loaded')) {
 					return;
 				}
-				var offsetTop = $item.offset().top;
-				var offsetBottom = offsetTop + $item.outerHeight();
+				let offsetTop = $item.offset().top;
+				let offsetBottom = offsetTop + $item.outerHeight();
 				if (
 					offsetTop < positionInfo.scrollBottom &&
 					offsetBottom > positionInfo.scrollTop
 				) {
-					var $img = $item.find('img');
-					var src = $img.data('src');
+					let $img = $item.find('img');
+					let src = $img.data('src');
 					if (src) {
 						$item.classList.add('flow-loading');
 						$img.on('load', function () {
@@ -143,13 +143,13 @@ export default {
 				}
 			});
 		};
-		var _moveByScroll = function (isScrollDown) {
-			var verticalBottom = $this.classList.contains('verticalBottom');
-			var heightList = $this.find('> ul').map(function (index, item) {
+		let _moveByScroll = function (isScrollDown) {
+			let verticalBottom = $this.classList.contains('verticalBottom');
+			let heightList = $this.find('> ul').map(function (index, item) {
 				return $(item).outerHeight();
 			});
-			var needMove = false;
-			var minHeight = $this.height() - Math.min.apply(this, heightList);
+			let needMove = false;
+			let minHeight = $this.height() - Math.min.apply(this, heightList);
 			if (isScrollDown) {
 				minHeight = !verticalBottom ? minHeight : 0;
 				if (
@@ -170,28 +170,28 @@ export default {
 			if (needMove) {
 				if (isScrollDown) {
 					$this.classList.remove('scrollUP');
-					var containerHeight = $this.height();
+					let containerHeight = $this.height();
 					$this.children('ul').each(function (index, item) {
-						var $item = $(item);
-						var offsetY = containerHeight - $item.height();
+						let $item = $(item);
+						let offsetY = containerHeight - $item.height();
 						$item.css('transform', 'translateY(' + offsetY + 'px)');
 					});
 					$this.classList.add('verticalBottom');
 				} else {
 					$this.classList.add('scrollUP');
 					$this.children('ul').each(function (index, item) {
-						var $item = $(item);
+						let $item = $(item);
 						$item.css('transform', 'translateY(' + 0 + ')');
 					});
 					$this.classList.remove('verticalBottom');
 				}
 			}
 		};
-		var _render = function (data) {
-			var ulList = _createColumns(opt.colCount);
+		let _render = function (data) {
+			let ulList = _createColumns(opt.colCount);
 			$.each(data, function (index, item) {
-				var $li = _createItemInColumns(item);
-				var $ul = _getSmallestColumn(ulList);
+				let $li = _createItemInColumns(item);
+				let $ul = _getSmallestColumn(ulList);
 				if (item.height && item.width) {
 					item.ratio = item.height / item.width;
 				}
@@ -207,7 +207,7 @@ export default {
 					paddingTop: item.ratio * 100 + '%',
 				});
 				$ul.append($li);
-				var newRatio = $ul.data('ratio') + (item.ratio || 1);
+				let newRatio = $ul.data('ratio') + (item.ratio || 1);
 				$ul.data('ratio', newRatio);
 			});
 			$this.classList.add('flow');
@@ -217,13 +217,13 @@ export default {
 			});
 			_loadImage();
 		};
-		var _reload = (exportObj.reload = function (force, data) {
+		let _reload = (exportObj.reload = function (force, data) {
 			if (force) {
 				opt.colCount = -1;
 			}
-			var item = initalItems(data || opt.items);
+			let item = initalItems(data || opt.items);
 			if (item && item.length) {
-				var newColCount = _getColumnByBreakPoint();
+				let newColCount = _getColumnByBreakPoint();
 				if (opt.colCount !== newColCount) {
 					opt.colCount = newColCount;
 					_render(item);
@@ -234,8 +234,8 @@ export default {
 		$container.on(
 			'scroll',
 			$.throttle(function () {
-				var currentPositionInfo = _getpositionInfo();
-				var isDown = positionInfo.scrollTop < currentPositionInfo.scrollTop;
+				let currentPositionInfo = _getpositionInfo();
+				let isDown = positionInfo.scrollTop < currentPositionInfo.scrollTop;
 				positionInfo = currentPositionInfo;
 				_moveByScroll(isDown);
 				_loadImage();

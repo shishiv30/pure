@@ -5,7 +5,7 @@ export default {
 	},
 	initBefore: null,
 	init: function ($this, opt, exportObj) {
-		var setting = {
+		let setting = {
 			container: $this.offsetParent(),
 			todayBtn: true,
 			autoclose: true,
@@ -50,8 +50,8 @@ export default {
 };
 // $.cui.plugin(pickerContext);
 // $(document).on('focus', '[data-picker]', function () {
-//     var $this = $(this);
-//     var opt = $this.data();
+//     let $this = $(this);
+//     let opt = $this.data();
 //     $this.removeAttr('data-picker');
 //     $this.picker(opt);
 //     $this.attr('data-picker-load', '');

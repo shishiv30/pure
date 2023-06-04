@@ -1,22 +1,22 @@
-var spyobserver = null;
+let spyobserver = null;
 
 function activeLink($this, key) {
-	var $target = $this.find(`[href="#${key}"]`);
+	let $target = $this.find(`[href="#${key}"]`);
 	if ($target[0]) {
 		if (!$target.classList.contains('active')) {
 			$this.find('.active').classList.remove('active');
 			$target.classList.add('active');
-			var $list;
+			let $list;
 			if ($this.is('[data-role*="scrollbar"]')) {
 				$list = $this;
 			} else {
 				$list = $this.find('[data-role*="scrollbar"]');
 			}
 			if ($list && $list.length) {
-				var scrollLeft = $list.scrollLeft();
-				var scrollWidth = $list.outerWidth();
-				var targetLeft = $target.position().left;
-				var targetWidth = $target.outerWidth();
+				let scrollLeft = $list.scrollLeft();
+				let scrollWidth = $list.outerWidth();
+				let targetLeft = $target.position().left;
+				let targetWidth = $target.outerWidth();
 				if (targetLeft < 0) {
 					$list.scrollLeft(scrollLeft + targetLeft - 50);
 				} else if (targetLeft + targetWidth > scrollWidth) {
@@ -34,7 +34,7 @@ export default {
 	init: function ($this, opt, exportObj) {
 		if (window.IntersectionObserver) {
 			if (!spyobserver) {
-				var $scroller = $.scrollParentY($this);
+				let $scroller = $.scrollParentY($this);
 				const options = {
 					root: $scroller && $scroller.length ? $scroller[0] : null,
 					rootMargin: opt.buffer,
@@ -47,7 +47,7 @@ export default {
 					});
 				}, options);
 				$this.find('[href^="#"]').each(function () {
-					var item = $($(this).attr('href'));
+					let item = $($(this).attr('href'));
 					if (item && item.length) {
 						spyobserver.observe(item[0]);
 					}

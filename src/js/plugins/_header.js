@@ -5,35 +5,35 @@ export default {
 		autoclose: true,
 	},
 	init: function ($this, opt, exportObj) {
-		var $body = $('body');
-		var $list = $this.find('.header-menu-list');
-		var $dropdown = $list.find('.list');
-		var $overlay = $('<div class="header-overlay"></div>');
-		var $swtichLink = $this.find('.header-switch-link');
+		let $body = $('body');
+		let $list = $this.find('.header-menu-list');
+		let $dropdown = $list.find('.list');
+		let $overlay = $('<div class="header-overlay"></div>');
+		let $swtichLink = $this.find('.header-switch-link');
 		opt.id = $.guid++;
 		$this.prepend($overlay);
-		var _close = function () {
+		let _close = function () {
 			$this.classList.add('header-close');
 		};
-		var _open = function () {
+		let _open = function () {
 			$this.classList.remove('header-close');
 		};
-		var _show = function () {
+		let _show = function () {
 			$body.classList.add('body-expand-header');
 		};
-		var _hide = function () {
+		let _hide = function () {
 			$body.classList.remove('body-expand-header');
 			$list.find('li').classList.remove('hover').css('height', '');
 		};
 		$overlay.on('click', _hide);
 		//nav
 		$dropdown.each(function () {
-			var $arrow = $(
-				'<a href="javascript:;" class="header-expand"><i class="icon-caret-left"></i></a>',
+			let $arrow = $(
+				'<button type="button:;" class="header-expand"><i class="icon-caret-left"></i></button>',
 			);
 			$arrow.on('click', function () {
-				var $li = $(this).closest('li');
-				var $prev = $li.siblings('.hover');
+				let $li = $(this).closest('li');
+				let $prev = $li.siblings('.hover');
 				$prev.classList.remove('hover');
 				$prev.css('height', '');
 				if ($li.classList.contains('hover')) {
@@ -59,7 +59,7 @@ export default {
 		exportObj.open = _open;
 		$(document).on('dom.resize.header' + opt.id, _hide);
 		$(document).on('dom.scroll.header' + opt.id, function () {
-			var status = $.cui_state;
+			let status = $.cui_state;
 			if (status.isScrollDown && status.scrollTop > 500) {
 				_close();
 			} else {

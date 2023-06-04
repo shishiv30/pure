@@ -7,23 +7,23 @@ export default {
 		target: '',
 	},
 	init: function ($this, opt, exportObj) {
-		var $target = $(opt.target);
+		let $target = $(opt.target);
 		$this.css('position', 'relative');
 		$target.classList.add('pin');
-		var offsetTop = 0;
-		var offsetBottom = 0;
-		var reposition = function () {
+		let offsetTop = 0;
+		let offsetBottom = 0;
+		let reposition = function () {
 			offsetTop = $this.offset().top - opt.top;
 			offsetBottom = offsetTop + $this.height() - $target.height() - opt.bottom;
 		};
-		var _pin = function () {
+		let _pin = function () {
 			$target.css({
 				position: 'fixed',
 				top: opt.top,
 				bottom: 'auto',
 			});
 		};
-		var _unpin = function (isTop) {
+		let _unpin = function (isTop) {
 			if (isTop) {
 				$target.css({
 					position: 'absolute',
@@ -38,7 +38,7 @@ export default {
 				});
 			}
 		};
-		var _setpin = function (scrollTop, isReposition) {
+		let _setpin = function (scrollTop, isReposition) {
 			if (isReposition) {
 				reposition();
 			}
@@ -58,7 +58,7 @@ export default {
 		window.addEventListener(
 			'scroll',
 			function () {
-				var scrollTop = $(window).scrollTop();
+				let scrollTop = $(window).scrollTop();
 				_setpin(scrollTop, false);
 			},
 			true,

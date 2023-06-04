@@ -1,12 +1,15 @@
 @include comp-color(tab);
 @include comp-size(tab);
+
 .tab-panel {
 	position: relative;
 	z-index: 1;
 	border-bottom-right-radius: var(--comp-border-radius);
 	border-bottom-left-radius: var(--comp-border-radius);
 }
+
 .tab {
+	margin-bottom: -1px;
 	border-top-right-radius: var(--comp-border-radius);
 	border-top-left-radius: var(--comp-border-radius);
 	border-bottom-right-radius: 0;

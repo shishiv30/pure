@@ -3,8 +3,8 @@ export default {
 	name: 'textbox',
 	defaultOpt: {},
 	init: function ($this, opt, exportObj) {
-		var $input = $this.find('input');
-		var _switchLabel = function () {
+		let $input = $this.find('input');
+		let _switchLabel = function () {
 			if ($input.val()) {
 				$this.classList.add('focus');
 			} else {

@@ -1,35 +1,35 @@
 import { emit } from '../core/event.js';
-var customValidate = {
+let customValidate = {
 	max: function ($element) {
-		var value = $element.val();
-		var max = $element.attr('data-max');
-		var a = $.isNumeric(value) ? value : Date.parse(value);
-		var b = $.isNumeric(max) ? max : Date.parse(max);
+		let value = $element.val();
+		let max = $element.attr('data-max');
+		let a = $.isNumeric(value) ? value : Date.parse(value);
+		let b = $.isNumeric(max) ? max : Date.parse(max);
 		return a - b <= 0;
 	},
 	less: function ($element) {
-		var value = $element.val();
-		var less = $element.attr('data-less');
-		var a = $.isNumeric(value) ? value : Date.parse(value);
-		var b = $.isNumeric(less) ? less : Date.parse(less);
+		let value = $element.val();
+		let less = $element.attr('data-less');
+		let a = $.isNumeric(value) ? value : Date.parse(value);
+		let b = $.isNumeric(less) ? less : Date.parse(less);
 		return a - b < 0;
 	},
 	min: function ($element) {
-		var value = $element.val();
-		var min = $element.attr('data-min');
-		var a = $.isNumeric(value) ? value : Date.parse(value);
-		var b = $.isNumeric(min) ? min : Date.parse(min);
+		let value = $element.val();
+		let min = $element.attr('data-min');
+		let a = $.isNumeric(value) ? value : Date.parse(value);
+		let b = $.isNumeric(min) ? min : Date.parse(min);
 		return a - b >= 0;
 	},
 	greater: function ($element) {
-		var value = $element.val();
-		var greater = $element.attr('data-greater');
-		var a = $.isNumeric(value) ? value : Date.parse(value);
-		var b = $.isNumeric(greater) ? greater : Date.parse(greater);
+		let value = $element.val();
+		let greater = $element.attr('data-greater');
+		let a = $.isNumeric(value) ? value : Date.parse(value);
+		let b = $.isNumeric(greater) ? greater : Date.parse(greater);
 		return a - b > 0;
 	},
 };
-var _showValidate = function ($element, message) {
+let _showValidate = function ($element, message) {
 	$element.closest('.input').classList.remove('has-success');
 	$element.closest('.input').classList.add('has-error');
 	if (message) {
@@ -46,7 +46,7 @@ var _showValidate = function ($element, message) {
 			.show();
 	}
 };
-var _passValidate = function ($element, isRequried) {
+let _passValidate = function ($element, isRequried) {
 	if ($element.closest('.input').data('tooltip')) {
 		$element.closest('.input').data('tooltip').hide();
 	}
@@ -62,11 +62,11 @@ var _passValidate = function ($element, isRequried) {
 		$element.closest('.input').classList.remove('has-success');
 	}
 };
-var _validate = function ($element, type, errorText, addition) {
-	var value = $.trim($element.val());
-	var isRequired = type.indexOf('required') >= 0;
-	var message = '';
-	for (var i = 0; i < type.length; i++) {
+let _validate = function ($element, type, errorText, addition) {
+	let value = $.trim($element.val());
+	let isRequired = type.indexOf('required') >= 0;
+	let message = '';
+	for (let i = 0; i < type.length; i++) {
 		switch (type[i]) {
 			case 'required':
 				if (!value && value === '') {

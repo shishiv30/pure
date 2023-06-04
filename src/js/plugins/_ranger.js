@@ -16,8 +16,8 @@ export default {
 		input: [],
 	},
 	init: function ($this, opt, exportObj) {
-		var $input = $this.find('input');
-		var $target = opt.target ? $(opt.target) : null;
+		let $input = $this.find('input');
+		let $target = opt.target ? $(opt.target) : null;
 		if (!opt.connect) {
 			opt.connect = [true];
 			$input.each(function (index) {
@@ -30,7 +30,7 @@ export default {
 				opt.start.push($(this).val());
 			});
 		}
-		var $ele = $('<div></div>');
+		let $ele = $('<div></div>');
 		($target || $this).append($ele);
 		noUiSlider.create($ele[0], {
 			start: opt.start,
@@ -56,7 +56,7 @@ export default {
 		};
 		exportObj.set = function (values) {
 			this.range.set(values);
-			var result = this.range.get();
+			let result = this.range.get();
 			if ($.isNumeric(result)) {
 				result = [result];
 			}
@@ -66,20 +66,18 @@ export default {
 			return result;
 		};
 		$input.on('change', function () {
-			var values = [];
+			let values = [];
 			$input.each(function () {
 				values.push($(this).val());
 			});
 			exportObj.set(values);
 		});
 		exportObj.range.on('update', function (e, t) {
-			opt.changebefore &&
-				emit(opt.changebefore, $this, opt, exportObj, e, t);
+			opt.changebefore && emit(opt.changebefore, $this, opt, exportObj, e, t);
 			$input.each(function (index) {
 				$(this).val(e[index]).trigger('input');
 			});
-			opt.changeafter &&
-				emit(opt.changeafter, $this, opt, exportObj, e, t);
+			opt.changeafter && emit(opt.changeafter, $this, opt, exportObj, e, t);
 		});
 	},
 	setOptionsBefore: null,

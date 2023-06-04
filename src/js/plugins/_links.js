@@ -2,11 +2,11 @@
 // import { emit } from '../core/event.js';
 // (function ($) {
 //     $.fn.facebooklink = function() {
-//         var $this = $(this);
-//         var namespace = {
+//         let $this = $(this);
+//         let namespace = {
 //             go: function() {
-//                 var keyword = $this.data('keyword');
-//                 var url = encodeURIComponent(location.href);
+//                 let keyword = $this.data('keyword');
+//                 let url = encodeURIComponent(location.href);
 //                 if (keyword)
 //                     url = url + '&t=' + encodeURIComponent(keyword);
 //                 window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, 'facebook-share-dialog', 'sharer', 'toolbar=0,status=0,width=626,height=436');
@@ -17,8 +17,8 @@
 //         return namespace;
 //     };
 //     $.fn.googlepluslink = function() {
-//         var $this = $(this);
-//         var namespace = {
+//         let $this = $(this);
+//         let namespace = {
 //             go: function() {
 //                 window.open('https://plus.google.com/share?url=' + encodeURIComponent(location.href), 'googlesharer', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');
 //             }
@@ -27,8 +27,8 @@
 //         return namespace;
 //     };
 //     $.fn.twitterlink = function() {
-//         var $this = $(this);
-//         var namespace = {
+//         let $this = $(this);
+//         let namespace = {
 //             go: function() {
 //                 window.open('http://twitter.com/share?text=Check out this house I found on @Conjee&url=' + encodeURIComponent(location.href));
 //             }
@@ -38,9 +38,9 @@
 //         return namespace;
 //     };
 //     $.fn.phonecall = function() {
-//         var $this = $(this);
-//         var number = $this.data('phonecall');
-//         var namespace = {
+//         let $this = $(this);
+//         let number = $this.data('phonecall');
+//         let namespace = {
 //             go: function() {
 //                 window.location.href = 'tel:1' + number;
 //             }
@@ -50,12 +50,12 @@
 //         return namespace;
 //     };
 //     $.fn.mailto = function() {
-//         var $this = $(this);
-//         var mail = $this.data('mailto');
-//         var params = $this.data('params');
-//         var namespace = {
+//         let $this = $(this);
+//         let mail = $this.data('mailto');
+//         let params = $this.data('params');
+//         let namespace = {
 //             go: function() {
-//                 var link = 'mailto:' + mail;
+//                 let link = 'mailto:' + mail;
 //                 if (params) {
 //                     link = link + '?' + params;
 //                 }
@@ -67,10 +67,10 @@
 //         return namespace;
 //     };
 //     $.fn.msgto = function() {
-//         var $this = $(this);
-//         var text = $this.data('msgto');
-//         var smsChar = (browser && browser.versions && browser.versions.ios) ? '&' : '?';
-//         var namespace = {
+//         let $this = $(this);
+//         let text = $this.data('msgto');
+//         let smsChar = (browser && browser.versions && browser.versions.ios) ? '&' : '?';
+//         let namespace = {
 //             go: function() {
 //                 window.location.href = 'sms:' + smsChar + 'body=' + text;
 //             }
@@ -80,9 +80,9 @@
 //         return namespace;
 //     };
 //     $(document).on('click', '[data-link]', function() {
-//         var $this = $(this);
-//         var type = $this.attr('data-link');
-//         var target = $this.attr('data-target');
+//         let $this = $(this);
+//         let type = $this.attr('data-link');
+//         let target = $this.attr('data-target');
 //         switch (type) {
 //             case 'facebook':
 //                 $this.facebooklink().go();
@@ -103,7 +103,7 @@
 //                 $this.msgto().go();
 //                 break;
 //             case 'focuson':
-//                 var timer = setTimeout(function() {
+//                 let timer = setTimeout(function() {
 //                     $(target).focus();
 //                 }, 100);
 //                 $this.on('click', function() {

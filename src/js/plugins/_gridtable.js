@@ -6,21 +6,21 @@ export default {
 	},
 	initBefore: null,
 	init: function ($this, opt, exportObj) {
-		var $key = $this.find(opt.key);
-		var $list = $this.find('tbody tr');
-		var inital = function () {
-			var classname = 'table-' + +new Date();
-			var colIndex = 0;
-			var fontsize = $key.css('fontSize').replace(/[a-z]/g, '');
-			var keymaxwidth = 0;
-			var columns = $key.map(function (index, item) {
+		let $key = $this.find(opt.key);
+		let $list = $this.find('tbody tr');
+		let inital = function () {
+			let classname = 'table-' + +new Date();
+			let colIndex = 0;
+			let fontsize = $key.css('fontSize').replace(/[a-z]/g, '');
+			let keymaxwidth = 0;
+			let columns = $key.map(function (index, item) {
 				return {
 					text: $(item).text() || '',
 					colspan: $(item).attr('colspan') * 1 || 1,
 				};
 			});
-			for (var i = 0; i < columns.length; i++) {
-				var column = columns[i];
+			for (let i = 0; i < columns.length; i++) {
+				let column = columns[i];
 				colIndex = colIndex + 1;
 				$list.each(function () {
 					$(this).find('td').eq(i).attr('data-th', column.text);
@@ -28,7 +28,7 @@ export default {
 				if (column.colspan > 1) {
 					colIndex = colIndex + column.colspan - 1;
 				}
-				var keywidth = $.getTextWidth(column.text, fontsize);
+				let keywidth = $.getTextWidth(column.text, fontsize);
 				if (keywidth > keymaxwidth) {
 					keymaxwidth = keywidth;
 				}
@@ -59,7 +59,7 @@ export default {
 // $.cui.plugin(gridtableConfig);
 // $(document).on('dom.load', function () {
 //     $('[data-gridtable]').each(function (index, item) {
-//         var data = $(item).data();
+//         let data = $(item).data();
 //         $(item).removeAttr('data-gridtable');
 //         $(item).gridtable(data);
 //         $(item).attr('data-gridtable-load', '');

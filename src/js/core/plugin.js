@@ -2,6 +2,7 @@ import loadMap from './load.map.js';
 import { emit, trigger } from './event.js';
 import { logError, logInfo } from './log.js';
 import Base from './base.js';
+let id = 0;
 class Plugin extends Base {
 	constructor(setting) {
 		super(setting.name, 'plugin');
@@ -118,7 +119,10 @@ class Plugin extends Base {
 
 	async init($el, options, exportObj) {
 		//init
-		var opt = Object.assign({}, this.setting.defaultOpt, options);
+		var opt = Object.assign({}, this.setting.defaultOpt, {
+			...options,
+			...{ nodeId: 'node_' + id++ },
+		});
 
 		this.initBefore($el, opt, exportObj);
 		if (this.setting.init) {

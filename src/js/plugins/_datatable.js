@@ -12,12 +12,12 @@ export default {
 	},
 	initBefore: null,
 	init: function ($this, opt, exportObj) {
-		var $thead = $('<thead></thead>');
-		var $colgroup = $('<colgroup></colgroup>');
-		var $tbody = $('<tbody></tbody>');
-		var $tfoot = $('<tfoot></tfoot>');
-		var $table;
-		var _getRawValue = function (value, column) {
+		let $thead = $('<thead></thead>');
+		let $colgroup = $('<colgroup></colgroup>');
+		let $tbody = $('<tbody></tbody>');
+		let $tfoot = $('<tfoot></tfoot>');
+		let $table;
+		let _getRawValue = function (value, column) {
 			switch (column.type) {
 				case 'date':
 					return +new Date(value) || 0;
@@ -30,7 +30,7 @@ export default {
 					return value;
 			}
 		};
-		var _getDisplayText = function (value, column) {
+		let _getDisplayText = function (value, column) {
 			switch (column.type) {
 				case 'number':
 					if ($.isNumeric(value)) {
@@ -41,14 +41,14 @@ export default {
 				case 'string':
 					return $.htmlencode(value);
 				case 'date':
-					var time = new Date(value);
+					let time = new Date(value);
 					return time.toLocaleDateString('en-US');
 				default:
 					return value;
 			}
 		};
 
-		var _sort = function (column, isDesc) {
+		let _sort = function (column, isDesc) {
 			if (opt.data && opt.data.length) {
 				if (isDesc) {
 					opt.data = opt.data.sort(function (a, b) {
@@ -71,24 +71,26 @@ export default {
 				_initalTfoot();
 			}
 		};
-		var _initalThead = function () {
+		let _initalThead = function () {
 			$thead.empty();
 			$colgroup.empty();
 			if (opt.columns && opt.columns.length) {
-				var $tr = $('<tr></tr>');
-				for (var j = 0; j < opt.columns.length; j++) {
-					var column = opt.columns[j];
-					var display = column.display !== undefined ? column.display : column.key;
+				let $tr = $('<tr></tr>');
+				for (let j = 0; j < opt.columns.length; j++) {
+					let column = opt.columns[j];
+					let display = column.display !== undefined ? column.display : column.key;
 
-					var $td = $('<th></th>');
+					let $td = $('<th></th>');
 					if (column.sortable) {
-						var $link = $(
-							'<a href="javascript:;" class="datatable-sort">' + display + '</a>',
+						let $link = $(
+							'<button type="button:;" class="datatable-sort">' +
+								display +
+								'</button>',
 						);
 						$link.data('column', column);
 						$link.on('click', function () {
-							var $this = $(this);
-							var isDesc = $this.classList.contains('desc');
+							let $this = $(this);
+							let isDesc = $this.classList.contains('desc');
 							_sort($this.data('column'), isDesc);
 							$thead.find('.active').classList.remove('active');
 							$this.toggleClass('desc').classList.add('active');
@@ -108,15 +110,15 @@ export default {
 			}
 			return [$colgroup, $thead];
 		};
-		var _initalTbody = function () {
+		let _initalTbody = function () {
 			$tbody.empty();
 			if (opt.data && opt.data.length) {
-				for (var i = 0; i < opt.data.length; i++) {
-					var rowData = opt.data[i];
-					var $tr = $('<tr></tr>');
-					for (var j = 0; j < opt.columns.length; j++) {
-						var column = opt.columns[j];
-						var value = rowData[column.key];
+				for (let i = 0; i < opt.data.length; i++) {
+					let rowData = opt.data[i];
+					let $tr = $('<tr></tr>');
+					for (let j = 0; j < opt.columns.length; j++) {
+						let column = opt.columns[j];
+						let value = rowData[column.key];
 						if (!column.template) {
 							value = _getDisplayText(value, column);
 						} else {
@@ -128,7 +130,7 @@ export default {
 				}
 			} else {
 				if (opt.nodatatemplate) {
-					var tmpRow = $(
+					let tmpRow = $(
 						'<tr class="no-result"><td colspan="' +
 							opt.columns.length +
 							'">' +
@@ -140,16 +142,16 @@ export default {
 			}
 			return $tbody;
 		};
-		var _initalTfoot = function () {
+		let _initalTfoot = function () {
 			$tfoot.empty();
 			if (opt.maxcount > 0 && opt.data.length > opt.maxcount) {
-				var $tr = $('<tr></tr>');
-				var $link = $(
+				let $tr = $('<tr></tr>');
+				let $link = $(
 					'<td colspan="' +
 						opt.columns.length +
-						'"><a href="javascript:;" class="link" >' +
+						'"><button type="button" class="link" >' +
 						opt.hidetext +
-						'</a></td>',
+						'</button></td>',
 				);
 				$tbody
 					.find('tr')
@@ -169,7 +171,7 @@ export default {
 			}
 			return $tfoot;
 		};
-		var _initTable = (exportObj._initTable = function () {
+		let _initTable = (exportObj._initTable = function () {
 			//todo send context to the follow method, otherwise the opt will not update
 			if (opt.data && opt.data.length) {
 				$table = $('<table class="datatable"></table>');

@@ -3,9 +3,9 @@ export default {
 	name: 'dropdownbutton',
 	defaultOpt: {},
 	init: function ($this, opt, exportObj) {
-		var $link = $this.children('a').eq(0);
-		var $icon = $this.children('a').eq(1);
-		var $list = $this.find('.dropdown-button-list');
+		let $link = $this.children('a').eq(0);
+		let $icon = $this.children('a').eq(1);
+		let $list = $this.find('.dropdown-button-list');
 		$this.on('click', function (e) {
 			e.stopPropagation();
 		});
@@ -43,8 +43,8 @@ export default {
 // $.cui.plugin(dropdownbuttonConfig);
 // $(document).on('dom.load.dropdownbutton', function () {
 //     $('[data-dropdownbutton]').each(function (index, item) {
-//         var $this = $(item);
-//         var data = $this.data();
+//         let $this = $(item);
+//         let data = $this.data();
 //         $this.removeAttr('data-dropdownbutton');
 //         $this.dropdownbutton(data);
 //         $this.attr('data-dropdownbutton-load', '');

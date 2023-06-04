@@ -30,8 +30,8 @@ export default {
 // $.cui.plugin(lockerConfig);
 // $(document).on('dom.load.locker', function () {
 //     $('[data-locker]').each(function (index, item) {
-//         var $this = $(item);
-//         var data = $this.data();
+//         let $this = $(item);
+//         let data = $this.data();
 //         $this.removeAttr('data-locker');
 //         $this.locker(data);
 //         $this.attr('data-locker-load', '');

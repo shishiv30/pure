@@ -1,7 +1,7 @@
 import { emit } from '../core/event.js';
 function loadImg(img) {
-	var $img = $(img);
-	var imgSrc = $img.attr('data-src');
+	let $img = $(img);
+	let imgSrc = $img.attr('data-src');
 	if (imgSrc) {
 		$.loadImg($img, imgSrc);
 	}
@@ -9,9 +9,9 @@ function loadImg(img) {
 }
 
 function _updateWidth($this, $scroller, opt) {
-	var width = $this.width();
-	var count = 1;
-	for (var i = opt.length; i > 0; i--) {
+	let width = $this.width();
+	let count = 1;
+	for (let i = opt.length; i > 0; i--) {
 		if (width > i * opt.size) {
 			count = i + 1;
 			break;
@@ -28,9 +28,9 @@ function _checkArraow($this, $scroller) {
 	if ($.isTouch) {
 		return;
 	}
-	var scrollLeft = $scroller.scrollLeft();
-	var innerWidth = $scroller.innerWidth();
-	var scrollWidth = $scroller.prop('scrollWidth');
+	let scrollLeft = $scroller.scrollLeft();
+	let innerWidth = $scroller.innerWidth();
+	let scrollWidth = $scroller.prop('scrollWidth');
 	if (scrollLeft + innerWidth >= scrollWidth - 100) {
 		$this.classList.remove('hasNext');
 	} else {
@@ -43,17 +43,17 @@ function _checkArraow($this, $scroller) {
 	}
 }
 function _getOffset($el, next) {
-	var offset = 0;
+	let offset = 0;
 	$el.each(function (index, item) {
-		var $this = $(item);
-		var left = $this.offset().left;
+		let $this = $(item);
+		let left = $this.offset().left;
 		if (next) {
 			if (left >= 0) {
 				offset = $this.outerWidth(true);
 				return false;
 			}
 		} else {
-			var width = $this.outerWidth(true);
+			let width = $this.outerWidth(true);
 			if (left + width >= 0) {
 				offset = width;
 				return false;
@@ -71,7 +71,7 @@ export default {
 		ratio: 0.6,
 	},
 	init: function ($this, opt, exportObj) {
-		var $scroller = $this.find('[data-role*="scrollbar"]');
+		let $scroller = $this.find('[data-role*="scrollbar"]');
 		exportObj.$scroller = $scroller;
 		opt._id = $.guid++;
 		if (opt.size !== 'auto') {
@@ -80,18 +80,18 @@ export default {
 			_checkArraow($this, $scroller);
 		}
 		exportObj.next = function () {
-			var width = opt.width;
-			var count = opt.count;
+			let width = opt.width;
+			let count = opt.count;
 			if (!$this.classList.contains('hasNext')) {
 				return;
 			}
-			var offset;
+			let offset;
 			if (count) {
 				offset = count - 1 ? (width * (count - 1)) / count : width;
 			} else {
 				offset = _getOffset($scroller.children(), true);
 			}
-			var left = $scroller.scrollLeft();
+			let left = $scroller.scrollLeft();
 			$scroller.stop().animate(
 				{
 					scrollLeft: left + offset,
@@ -100,18 +100,18 @@ export default {
 			);
 		};
 		exportObj.prev = function () {
-			var width = opt.width;
-			var count = opt.count;
+			let width = opt.width;
+			let count = opt.count;
 			if (!$this.classList.contains('hasPrev')) {
 				return;
 			}
-			var offset;
+			let offset;
 			if (count) {
 				offset = count - 1 ? (width * (count - 1)) / count : width;
 			} else {
 				offset = this.getOffset($scroller.children(), false);
 			}
-			var left = $scroller.scrollLeft();
+			let left = $scroller.scrollLeft();
 			$scroller.stop().animate(
 				{
 					scrollLeft: left - offset,
@@ -124,13 +124,13 @@ export default {
 	setOptionsAfter: null,
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
-		var $scroller = exportObj.$scroller;
+		let $scroller = exportObj.$scroller;
 		if (!$.isTouch) {
-			var $prevLink = $(
-				'<a href="javascript:;" class="arrow prev"><i class="icon-angle-left"></i></a>',
+			let $prevLink = $(
+				'<button type="button" class="arrow prev"><i class="icon-angle-left"></i></button>',
 			);
-			var $nextLink = $(
-				'<a href="javascript:;" class="arrow next"><i class="icon-angle-right"></i></a>',
+			let $nextLink = $(
+				'<button type="button" class="arrow next"><i class="icon-angle-right"></i></button>',
 			);
 
 			$prevLink.on('click', exportObj.prev);

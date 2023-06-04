@@ -26,8 +26,8 @@ export default {
 // $.cui.plugin(scrolltoConfig);
 // $(document).on('dom.load.scrollto', function () {
 //     $('[data-scrollto]').each(function (index, item) {
-//         var $this = $(item);
-//         var data = $this.data();
+//         let $this = $(item);
+//         let data = $this.data();
 //         $this.scrollto(data);
 //         $this.removeAttr('data-scrollto');
 //         $this.attr('data-scrollto-load', '');
@@ -35,15 +35,15 @@ export default {
 // });
 
 // $(document).on('dom.scroll.scrollSpy', function () {
-//     var status = $.cui_state;
+//     let status = $.cui_state;
 //     $('[data-scrollspy]').each(function () {
-//         var $item = $(this);
-//         var offset = $($item.attr('data-offsettop'));
-//         var target = $($item.data('target'));
-//         var top = offset ? (status.scrollTop + offset.height()) : status.scrollTop;
+//         let $item = $(this);
+//         let offset = $($item.attr('data-offsettop'));
+//         let target = $($item.data('target'));
+//         let top = offset ? (status.scrollTop + offset.height()) : status.scrollTop;
 //         top += 50;
-//         var targetTop = target.offset().top;
-//         var targetBottom = target.offset().top + target.height();
+//         let targetTop = target.offset().top;
+//         let targetBottom = target.offset().top + target.height();
 //         if (targetTop <= top && targetBottom > top) {
 //             $(document).trigger($item.data('onscroll'), [$(this)]);
 //             return false;

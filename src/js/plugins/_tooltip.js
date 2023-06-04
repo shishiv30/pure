@@ -1,8 +1,8 @@
 import { emit } from '../core/event.js';
-var animationDuration = 200;
+let animationDuration = 200;
 
 function generateTip($parent, opt) {
-	var $container = $(opt.template);
+	let $container = $(opt.template);
 	$container.classList.add(opt.theme);
 	$container.classList.add(opt.placement);
 	$container.find('.tooltip-inner').html(opt.content);
@@ -17,14 +17,14 @@ function updateTip($this, opt, exportObj) {
 	if (!exportObj.$parent) {
 		exportObj.$parent = opt.parent ? $(opt.parent) : $this;
 	}
-	var $parent = exportObj.$parent;
+	let $parent = exportObj.$parent;
 	if (!exportObj.$container) {
 		exportObj.$container = generateTip($parent, opt);
 	}
 	if ($parent.css('position') === 'static') {
 		$parent.css('position', 'relative');
 	}
-	var $container = exportObj.$container;
+	let $container = exportObj.$container;
 	$container.find('.tooltip-inner').html(opt.content);
 }
 
@@ -49,20 +49,20 @@ export default {
 	init: function ($this, opt, exportObj) {
 		exportObj.show = function () {
 			updateTip($this, opt, exportObj);
-			var $container = exportObj.$container;
+			let $container = exportObj.$container;
 
 			if (opt._timer) {
 				clearTimeout(opt._timer);
 			}
 			opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
-			var cWidth = $container.outerWidth();
-			var cHeight = $container.outerHeight();
-			var tWidth = $this.outerWidth();
-			var tHeight = $this.outerHeight();
-			var offset = $this.offset();
-			var wWidth = $(window).width();
-			var x = 0;
-			var css = {};
+			let cWidth = $container.outerWidth();
+			let cHeight = $container.outerHeight();
+			let tWidth = $this.outerWidth();
+			let tHeight = $this.outerHeight();
+			let offset = $this.offset();
+			let wWidth = $(window).width();
+			let x = 0;
+			let css = {};
 			$container.show();
 			setTimeout(function () {
 				$container.classList.add('in');

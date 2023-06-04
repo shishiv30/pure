@@ -2,6 +2,8 @@ a {
 	text-decoration: none;
 	cursor: pointer;
 	outline: none;
+
+	&,
 	&:link,
 	&:visited,
 	&:active,
@@ -10,16 +12,22 @@ a {
 		outline: none;
 		color: inherit;
 	}
+
+	&[disable] {
+		color: $color-disabled;
+	}
+}
+
+a,
+button {
 	&.link {
 		opacity: 0.95;
 		color: $color-link-default;
+
 		@include hover() {
 			font-weight: $font-weight-bold;
 			opacity: 1;
 			color: $color-link-default-hover;
 		}
-	}
-	&[disable] {
-		color: $color-disabled;
 	}
 }

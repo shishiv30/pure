@@ -1,7 +1,7 @@
 import collapse from './_collapse.js';
 // import datatable from './_datatable.js';
 // import datetimepicker from './_datetimepicker.js';
-// import dialog from './_dialog.js';
+import dialog from './_dialog.js';
 // import dropdownbutton from './_dropdownbutton.js';
 // import form from './_form.js';
 // import gridtable from './_gridtable.js';
@@ -9,7 +9,7 @@ import collapse from './_collapse.js';
 // import inputformat from './_inputformat.js';
 // import links from './_links.js';
 import lazyload from './_lazyload.js';
-// import locker from './_locker.js';
+// impo``rt locker from './_locker.js';
 // import mapdynamic from './_map.dynamic.js';
 // import mapstatic from './_map.static.js';
 // import onscroll from './_onscroll.js';
@@ -33,7 +33,7 @@ export default {
 	shifter,
 	// datatable,
 	// datetimepicker,
-	// dialog,
+	dialog,
 	// dropdownbutton,
 	// form,
 	// gridtable,

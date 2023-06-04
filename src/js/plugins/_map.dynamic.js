@@ -1,5 +1,5 @@
 import { emit } from '../core/event.js';
-var markManager = function (options) {
+let markManager = function (options) {
 	this.markers = [];
 	this.map = options.map;
 	this.defaultOpt = Object.assign(
@@ -16,7 +16,7 @@ markManager.prototype.getAllMarkers = function () {
 	return this.markers;
 };
 markManager.prototype.getMarkerWithIndexById = function (id) {
-	for (var i = 0; i < this.markers.length; i++) {
+	for (let i = 0; i < this.markers.length; i++) {
 		if (this.markers[i].id == id) {
 			return {
 				element: this.markers[i],
@@ -33,8 +33,8 @@ markManager.prototype.getMarkerById = function (id) {
 	return this.getMarkerWithIndexById(id).element;
 };
 markManager.prototype.addMarker = function (option) {
-	var opt = Object.assign({}, this.defaultOpt, option);
-	var marker = null;
+	let opt = Object.assign({}, this.defaultOpt, option);
+	let marker = null;
 	if (!opt.lat || !opt.lng) {
 		return null;
 	}
@@ -60,7 +60,7 @@ markManager.prototype.addMarker = function (option) {
 	return null;
 };
 markManager.prototype.addMarkers = function (options) {
-	var self = this;
+	let self = this;
 	if (options && options.length) {
 		return options.map(function (option) {
 			return self.addMarker(option);
@@ -69,7 +69,7 @@ markManager.prototype.addMarkers = function (options) {
 	return [];
 };
 markManager.prototype.removeMarker = function (id) {
-	var item = this.getMarkerWithIndexById(id);
+	let item = this.getMarkerWithIndexById(id);
 	if (item.element) {
 		if (this.destory) {
 			id = this.destory.apply(this, [item.element]);
@@ -86,10 +86,10 @@ markManager.prototype.removeMarkers = function (ids) {
 	}
 	return [];
 };
-var initalCustomMarker = function () {
+let initalCustomMarker = function () {
 	if (!window.CustomMarker) {
 		window.CustomMarker = function (options) {
-			var defaultOpt = {
+			let defaultOpt = {
 				latlng: null,
 				map: null,
 				html: null,
@@ -100,7 +100,7 @@ var initalCustomMarker = function () {
 				popTheme: 'marker',
 				zIndex: null,
 			};
-			var opt = Object.assign({}, defaultOpt, options);
+			let opt = Object.assign({}, defaultOpt, options);
 			this.latlng = opt.latlng;
 			this.html = opt.html;
 			this.map = opt.map;
@@ -115,12 +115,12 @@ var initalCustomMarker = function () {
 		};
 		window.CustomMarker.prototype = new window.google.maps.OverlayView();
 		window.CustomMarker.prototype.poppanel = function (div) {
-			var self = this;
+			let self = this;
 			if (self.showPop) {
-				var $pin = $(div);
-				var html = $.renderHtml(self.popTmp, self.popData);
-				var $content = $('<div class="pop-content"><div>' + html + '</div></div>');
-				var tippopover = $pin.find('.pin').cui_tooltip({
+				let $pin = $(div);
+				let html = $.renderHtml(self.popTmp, self.popData);
+				let $content = $('<div class="pop-content"><div>' + html + '</div></div>');
+				let tippopover = $pin.find('.pin').cui_tooltip({
 					content: $content,
 					placement: 'top',
 					trigger: 'click',
@@ -148,11 +148,11 @@ var initalCustomMarker = function () {
 			}
 		};
 		window.CustomMarker.prototype.draw = function () {
-			var self = this;
-			var div = this.div;
+			let self = this;
+			let div = this.div;
 			if (!div) {
 				div = this.div = $(this.html)[0];
-				var panes = this.getPanes();
+				let panes = this.getPanes();
 				panes.overlayMouseTarget.appendChild(div);
 				if (this.showPop || this.onclick) {
 					if (this.zIndex) {
@@ -183,7 +183,7 @@ var initalCustomMarker = function () {
 					}
 				}
 			}
-			var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+			let point = this.getProjection().fromLatLngToDivPixel(this.latlng);
 			if (point) {
 				div.style.left = point.x + 'px';
 				div.style.top = point.y + 'px';
@@ -206,8 +206,8 @@ var initalCustomMarker = function () {
 		};
 	}
 };
-var getMapTypeId = function (type) {
-	var mapTypeId;
+let getMapTypeId = function (type) {
+	let mapTypeId;
 	switch (type * 1) {
 		case 0:
 			mapTypeId = window.google.maps.MapTypeId.ROADMAP;
@@ -263,7 +263,7 @@ export default {
 		distancecontrolpos: 'BOTTOM_LEFT',
 	},
 	init: function ($this, opt, exportObj) {
-		var mapOptions = {
+		let mapOptions = {
 			disableDefaultUI: opt.disabledefaultui,
 			gestureHandling: 'greedy',
 			center: new window.google.maps.LatLng(opt.lat, opt.lng),
@@ -295,9 +295,9 @@ export default {
 				draggable: false,
 			});
 		}
-		var map = new window.google.maps.Map($this.get(0), mapOptions);
+		let map = new window.google.maps.Map($this.get(0), mapOptions);
 		exportObj.gmap = map;
-		var markers = new markManager({
+		let markers = new markManager({
 			defaultOpt: {
 				draggable: false,
 				icon: 'icon-cui',
@@ -314,12 +314,12 @@ export default {
 			},
 			map: exportObj.gmap,
 			create: function (markerOpt) {
-				var latlng = new window.google.maps.LatLng({
+				let latlng = new window.google.maps.LatLng({
 					lat: markerOpt.lat,
 					lng: markerOpt.lng,
 				});
 				initalCustomMarker();
-				var marker = new window.CustomMarker({
+				let marker = new window.CustomMarker({
 					latlng: latlng,
 					map: markerOpt.map,
 					html:
@@ -346,13 +346,13 @@ export default {
 			},
 		});
 		exportObj.setCenter = function (lat, lng) {
-			var center = new window.google.maps.LatLng(lat, lng);
+			let center = new window.google.maps.LatLng(lat, lng);
 			return map.setCenter(center);
 		};
-		var panorama = null;
+		let panorama = null;
 		exportObj.showStreetView = function () {
-			var streetViewLocation = new window.google.maps.LatLng(opt.lat, opt.lng);
-			var sv = new window.google.maps.StreetViewService();
+			let streetViewLocation = new window.google.maps.LatLng(opt.lat, opt.lng);
+			let sv = new window.google.maps.StreetViewService();
 			sv.getPanoramaByLocation(streetViewLocation, 50, function (data, status) {
 				if (status == 'OK') {
 					panorama = map.getStreetView();
@@ -373,7 +373,7 @@ export default {
 			return markers.addMarker(option);
 		};
 		exportObj.findItem = function (id) {
-			for (var i = 0; i < markers.length; i++) {
+			for (let i = 0; i < markers.length; i++) {
 				if (markers[i].id == id) {
 					return {
 						element: markers[i],
@@ -390,8 +390,8 @@ export default {
 			return markers.getMarkerById(id);
 		};
 		exportObj.setAllMap = function (map) {
-			var markerList = markers.getAllMarkers();
-			for (var i = 0; i < markerList.length; i++) {
+			let markerList = markers.getAllMarkers();
+			for (let i = 0; i < markerList.length; i++) {
 				markerList[i].setMap(map);
 			}
 		};
@@ -419,7 +419,7 @@ export default {
 			}
 		};
 		exportObj.fitBounds = function (latlngs) {
-			var list = [];
+			let list = [];
 			if (latlngs && latlngs.length) {
 				list = list.concat(
 					latlngs.map(function (e) {
@@ -430,7 +430,7 @@ export default {
 					}),
 				);
 			} else {
-				var markerList = markers.getAllMarkers();
+				let markerList = markers.getAllMarkers();
 				list = markerList.map(function (e) {
 					return {
 						lat: e.lat || e.latlng.lat(),
@@ -439,8 +439,8 @@ export default {
 				});
 			}
 			if (list && list.length) {
-				var bounds = new window.google.maps.LatLngBounds();
-				for (var i = 0; i < list.length; i++) {
+				let bounds = new window.google.maps.LatLngBounds();
+				for (let i = 0; i < list.length; i++) {
 					if (list[i].lat && list[i].lng) {
 						bounds.extend(new window.google.maps.LatLng(list[i].lat, list[i].lng));
 					}
@@ -453,7 +453,7 @@ export default {
 	setOptionsAfter: null,
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
-		var map = exportObj.gmap;
+		let map = exportObj.gmap;
 		window.google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
 			//click event
 			opt.onclick && emit(opt.onclick, $this, opt, exportObj);
@@ -499,8 +499,8 @@ export default {
 // $(document).on('dom.load.gmap', function () {
 //     $('[data-gmap]')
 //         .each(function (index, item) {
-//             var $this = $(item);
-//             var data = $this.data();
+//             let $this = $(item);
+//             let data = $this.data();
 //             $this.removeAttr('data-gmap');
 //             $this.onscroll({
 //                 callback: function () {

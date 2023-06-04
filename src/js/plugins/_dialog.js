@@ -1,4 +1,5 @@
-import { emit } from '../core/event.js';
+import { trigger, emit, on, off } from '../core/event.js';
+import { select, selectAll } from '../core/query.js';
 export default {
 	name: 'dialog',
 	defaultOpt: {
@@ -14,44 +15,38 @@ export default {
 		hidebefore: null,
 		hideafter: null,
 	},
-	initBefore: null,
-	init: function ($this, opt, exportObj) {
-		var $dialog;
-		var $dialogPanel;
-		var $dialogBody;
-		var $dialogOverLay;
-
-		var _show = (exportObj.show = function () {
-			if (!$dialog) {
+	init: function ($el, opt, exportObj) {
+		let _show = (exportObj.show = function () {
+			if (!opt.root) {
 				_render();
 			}
-			$(document).trigger('dialog.hidden.except', [opt.id]);
-			opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
-			$('html').classList.add('dialog-model');
-			$dialog.show();
+			emit('dialog.hidden.except', [opt.nodeId]);
+			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);
+			select('body').classList.add('dialog-model');
+			opt.root.style.display = 'block';
 			setTimeout(function () {
-				$dialog.classList.add('dialog-active');
-				opt.showafter && emit(opt.showafter, $this, opt, exportObj);
+				opt.root.classList.add('dialog-active');
+				opt.showafter && trigger(opt.showafter, $el, opt, exportObj);
 			}, 50);
-			$(document).on('dialog.hidden.except' + opt.id, function (e, id) {
-				if (id != opt.id) {
+			on('dialog.hidden.except' + opt.nodeId, function (e, id) {
+				if (id != opt.nodeId) {
 					exportObj.hide();
 				}
 			});
 		});
-		var _hide = (exportObj.hide = function () {
-			if ($dialog) {
-				opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
-				$dialog.classList.remove('dialog-active');
+		let _hide = (exportObj.hide = function () {
+			if (opt.root) {
+				opt.hidebefore && trigger(opt.hidebefore, $el, opt, exportObj);
+				opt.root.classList.remove('dialog-active');
 				setTimeout(function () {
-					$dialog.hide();
-					$('html').classList.remove('dialog-model');
-					opt.hideafter && emit(opt.hidebefore, $this, opt, exportObj);
+					opt.root.style.display = 'none';
+					select('body').classList.remove('dialog-model');
+					opt.hideafter && trigger(opt.hidebefore, $el, opt, exportObj);
 					if (!opt.cache) {
-						$dialog.remove();
-						$dialog = null;
-						$(document).off('dialog.hidden.except' + opt.id, function (e, id) {
-							if (id != opt.id) {
+						opt.root.remove();
+						opt.root = null;
+						off('dialog.hidden.except' + opt.nodeId, function (e, id) {
+							if (id != opt.nodeId) {
 								exportObj.hide();
 							}
 						});
@@ -59,49 +54,40 @@ export default {
 				}, 500);
 			}
 		});
-		var _render = (exportObj.render = function () {
-			$dialog = $(`<div class="dialog dialog-${opt.theme}" tabIndex="-1"></div>`);
-			$dialogPanel = $('<div class="dialog-panel"></div>');
-			$dialogBody = $(
-				'<div class="dialog-body"><a class="dialog-title-close" dialog-close href="javascript:;;">X</a></div>',
-			);
-			$dialogOverLay = $('<div class="dialog-overlay"></div>');
-			$dialogPanel.append($dialogBody);
-			$dialogBody.html(
-				'<a class="dialog-title-close" dialog-close href="javascript:;;">X</a>',
-			);
-			$dialogBody.append(opt.html);
-			$dialog.append($dialogPanel);
-			$dialog.prepend($dialogOverLay);
-			$dialogBody.find('[dialog-close]').on('click', function () {
-				_hide();
+		let _render = (exportObj.render = function () {
+			let template = `<div id="${opt.nodeId}" class="dialog dialog-${opt.theme}" tabIndex="-1"><div class="dialog-overlay"></div><div class="dialog-panel"><div class="dialog-body"><button class="dialog-title-close" data-dialog="close" type="button"><i class="icon-close"></i></button>${opt.html}</div></div>`;
+			emit('dom.load');
+			opt.renderbefore && trigger(opt.renderbefore, $el, opt, exportObj);
+			//todo use append to insert template as html
+			select('body').insertAdjacentHTML('beforeend', template);
+			opt.root = select('#' + opt.nodeId);
+			opt.root.style.display = 'none';
+
+			selectAll('[data-dialog="close"]', opt.root).forEach((item) => {
+				item.addEventListener('click', function () {
+					_hide();
+				});
 			});
+
 			if (opt.autoclose) {
-				$dialogOverLay.on('click', function () {
+				select('.dialog-overlay', opt.root).addEventListener('click', function () {
 					_hide();
 				});
 			}
-			$dialog.hide();
-			$(document).trigger('dom.load');
-			opt.renderbefore && emit(opt.renderbefore, $this, opt, exportObj);
-			$('html').append($dialog);
-			opt.renderafter && emit(opt.renderafter, $this, opt, exportObj);
+			opt.renderafter && trigger(opt.renderafter, $el, opt, exportObj);
 		});
-		$this.on('click', function () {
-			var $this = $(this);
-			var data = $this.data();
-			var $target = $(data.target);
-			if (!opt.id) {
-				opt.id = 'dialog' + data.target;
-			}
-			opt.html = $target.html();
-			data.trigger = $this;
+		$el.addEventListener('click', function (e) {
+			let data = e.currentTarget.dataset;
+			let $target = select(data.target);
+			opt.html = $target.innerHTML;
+			data.trigger = e.target;
 			_show();
 			return false;
 		});
 	},
 	setOptionsBefore: null,
 	setOptionsAfter: null,
-	destroyBefore: null,
-	initAfter: null,
+	initBefore: null,
+	initAfter: function ($el, opt, exportObj) {},
+	destroyBefore: function ($el) {},
 };

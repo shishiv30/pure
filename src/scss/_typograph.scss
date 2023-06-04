@@ -42,7 +42,7 @@
 .h7 {
 	position: relative;
 	@include singleline();
-	line-height: var(line-height-2);
+	line-height: var(--line-height-2);
 }
 
 .sub {
