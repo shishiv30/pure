@@ -1,4 +1,6 @@
 import { emit } from '../core/event.js';
+import isNumber from 'lodash/isNumber';
+
 export default {
 	$element: null,
 	name: 'datatable',
@@ -33,7 +35,7 @@ export default {
 		let _getDisplayText = function (value, column) {
 			switch (column.type) {
 				case 'number':
-					if ($.isNumeric(value)) {
+					if (isNumber(value)) {
 						return column.format ? value.toFixed(column.format * 1) : value;
 					} else {
 						return '';
@@ -84,8 +86,8 @@ export default {
 					if (column.sortable) {
 						let $link = $(
 							'<button type="button:;" class="datatable-sort">' +
-								display +
-								'</button>',
+							display +
+							'</button>',
 						);
 						$link.data('column', column);
 						$link.on('click', function () {
@@ -132,10 +134,10 @@ export default {
 				if (opt.nodatatemplate) {
 					let tmpRow = $(
 						'<tr class="no-result"><td colspan="' +
-							opt.columns.length +
-							'">' +
-							opt.nodatatemplate +
-							'</td></tr>',
+						opt.columns.length +
+						'">' +
+						opt.nodatatemplate +
+						'</td></tr>',
 					);
 					$tbody.append(tmpRow);
 				}
@@ -148,10 +150,10 @@ export default {
 				let $tr = $('<tr></tr>');
 				let $link = $(
 					'<td colspan="' +
-						opt.columns.length +
-						'"><button type="button" class="link" >' +
-						opt.hidetext +
-						'</button></td>',
+					opt.columns.length +
+					'"><button type="button" class="link" >' +
+					opt.hidetext +
+					'</button></td>',
 				);
 				$tbody
 					.find('tr')

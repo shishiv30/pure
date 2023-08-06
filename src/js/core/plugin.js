@@ -23,26 +23,67 @@ class Plugin extends Base {
 	}
 	static namespace = 'cui';
 	static records = {};
+	static instance = {};
 
 	static getPlugin(name) {
 		return Plugin.records[Plugin.namespace + '_' + name];
 	}
-	static dependenceHandler(key) {
+
+	static setPlugin(name, plugin) {
+		if (!name || !plugin) {
+			logError('plugin name or plugin is required');
+			return;
+		}
+		Plugin.records[Plugin.namespace + '_' + name] = plugin;
+	}
+	static async dependenceHandler(key) {
 		if (key == 'googlemap') {
-			return loadMap(window.googleMapKey);
+			return await loadMap(window.googleMapKey);
 		}
 	}
 
+	static setInstance($el, exportObj) {
+		let _name = Plugin.namespace;
+		let _pids = $el.dataset[_name];
+		if (!exportObj._pid) {
+			logError(_name + ' miss _pid');
+			return;
+		}
+		if (_pids) {
+			_pids += ',' + exportObj._pid;
+		} else {
+			_pids = exportObj._pid;
+		}
+		$el.dataset[_name] = _pids;
+		Plugin.instance[exportObj._pid] = exportObj;
+	}
+
+	static getInstance($el, name) {
+		let _name = Plugin.namespace;
+		let _pids = $el.dataset[_name];
+		if (!_pids) {
+			return null;
+		}
+		let items = _pids.split(',');
+		let _pid = items.find((item) => {
+			return item.indexOf(name) > -1;
+		});
+		return Plugin.instance[_pid];
+	}
+
+	static reclyInstance(_pid) {
+		delete Plugin.instance[_pid];
+	}
+	//todo what if element be removed instance cannot be recly
 	static register(setting) {
-		let name = Plugin.namespace + '_' + setting.name;
 		let that = this;
-		let plugin = function ($el, options) {
+		let plugin = async function ($el, options) {
 			if (!$el) {
 				logError('html node is required');
 			}
-			//if el is inited return instance of plugin
-			let exportObj = $el.dataset[setting.name];
-			if (exportObj && typeof exportObj !== 'string') {
+			//if el is initialed return instance of plugin
+			let exportObj = Plugin.getInstance($el, setting.name);
+			if (exportObj) {
 				if (options) {
 					exportObj.setOptions && exportObj.setOptions(options);
 				}
@@ -50,21 +91,16 @@ class Plugin extends Base {
 			} else {
 				exportObj = {};
 			}
-			//else init plugin
-			var excutePlugin = function () {
-				that.init($el, options, exportObj);
-				$el.dataset[setting.name] = exportObj;
-				return exportObj;
-			};
+
+			let dependences = null;
 			if (setting.dependence) {
-				Plugin.dependenceHandler(setting.dependence).then(function () {
-					return excutePlugin();
-				});
-			} else {
-				return excutePlugin();
+				dependences = await Plugin.dependenceHandler(setting.dependence);
 			}
+			await that.init($el, options, exportObj, dependences);
+			Plugin.setInstance($el, exportObj);
+			return exportObj;
 		};
-		Plugin.records[name] = plugin;
+		Plugin.setPlugin(setting.name, plugin);
 		// return plugin;
 	}
 
@@ -117,13 +153,13 @@ class Plugin extends Base {
 		}
 	}
 
-	async init($el, options, exportObj) {
+	async init($el, options, exportObj = {}) {
 		//init
 		var opt = Object.assign({}, this.setting.defaultOpt, {
 			...options,
-			...{ nodeId: 'node_' + id++ },
+			... { _pid: `${this.setting.name}_${id++}` },
 		});
-
+		exportObj._pid = opt._pid;
 		this.initBefore($el, opt, exportObj);
 		if (this.setting.init) {
 			this.setting.init.apply(this, [$el, opt, exportObj]);

@@ -1,22 +1,10 @@
+//get function is inter from loaddash
+import isInteger from 'lodash/isInteger';
+
 const isMobile = function (userAgent) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 };
 
-const isNumber = function (value) {
-	return typeof value === 'number' && isFinite(value);
-};
-const isString = function (value) {
-	return typeof value === 'string' || value instanceof String;
-};
-const isBoolean = function (value) {
-	return typeof value === 'boolean';
-};
-const isFunction = function (value) {
-	return typeof value === 'function';
-};
-const isObject = function (value) {
-	return value && typeof value === 'object' && value.constructor === Object;
-};
 const isPhoneNumber = function (value) {
 	return /^\d{10}$/.test(value);
 };
@@ -29,15 +17,12 @@ const isUrl = function (value) {
 const isDate = function (value) {
 	return value instanceof Date && !isNaN(value);
 };
-export {
-	isMobile,
-	isNumber,
-	isString,
-	isBoolean,
-	isFunction,
-	isObject,
-	isPhoneNumber,
-	isEmail,
-	isUrl,
-	isDate,
+const isZipcode = function (value) {
+	return /^\d{5}$/.test(value);
 };
+
+const isPrice = function (value) {
+	return isInteger(value) && value > 0;
+};
+
+export { isMobile, isPhoneNumber, isEmail, isUrl, isDate, isZipcode, isPrice };

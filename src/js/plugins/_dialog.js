@@ -20,7 +20,7 @@ export default {
 			if (!opt.root) {
 				_render();
 			}
-			emit('dialog.hidden.except', [opt.nodeId]);
+			emit('dialog.hidden.except', [opt._pid]);
 			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);
 			select('body').classList.add('dialog-model');
 			opt.root.style.display = 'block';
@@ -28,8 +28,8 @@ export default {
 				opt.root.classList.add('dialog-active');
 				opt.showafter && trigger(opt.showafter, $el, opt, exportObj);
 			}, 50);
-			on('dialog.hidden.except' + opt.nodeId, function (e, id) {
-				if (id != opt.nodeId) {
+			on('dialog.hidden.except' + opt._pid, function (e, id) {
+				if (id != opt._pid) {
 					exportObj.hide();
 				}
 			});
@@ -45,8 +45,8 @@ export default {
 					if (!opt.cache) {
 						opt.root.remove();
 						opt.root = null;
-						off('dialog.hidden.except' + opt.nodeId, function (e, id) {
-							if (id != opt.nodeId) {
+						off('dialog.hidden.except' + opt._pid, function (e, id) {
+							if (id != opt._pid) {
 								exportObj.hide();
 							}
 						});
@@ -55,12 +55,12 @@ export default {
 			}
 		});
 		let _render = (exportObj.render = function () {
-			let template = `<div id="${opt.nodeId}" class="dialog dialog-${opt.theme}" tabIndex="-1"><div class="dialog-overlay"></div><div class="dialog-panel"><div class="dialog-body"><button class="dialog-title-close" data-dialog="close" type="button"><i class="icon-close"></i></button>${opt.html}</div></div>`;
+			let template = `<div id="${opt._pid}" class="dialog dialog-${opt.theme}" tabIndex="-1"><div class="dialog-overlay"></div><div class="dialog-panel"><div class="dialog-body"><button class="dialog-title-close" data-dialog="close" type="button"><i class="icon-close"></i></button>${opt.html}</div></div>`;
 			emit('dom.load');
 			opt.renderbefore && trigger(opt.renderbefore, $el, opt, exportObj);
 			//todo use append to insert template as html
 			select('body').insertAdjacentHTML('beforeend', template);
-			opt.root = select('#' + opt.nodeId);
+			opt.root = select('#' + opt._pid);
 			opt.root.style.display = 'none';
 
 			selectAll('[data-dialog="close"]', opt.root).forEach((item) => {
@@ -88,6 +88,6 @@ export default {
 	setOptionsBefore: null,
 	setOptionsAfter: null,
 	initBefore: null,
-	initAfter: function ($el, opt, exportObj) {},
-	destroyBefore: function ($el) {},
+	initAfter: function ($el, opt, exportObj) { },
+	destroyBefore: function ($el) { },
 };

@@ -1,8 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { env } = require('process');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = () => {
+	console.log(env);
 	return {
 		entry: { cui: './src/index.js' },
 		module: {
@@ -62,6 +65,7 @@ module.exports = () => {
 				filename: 'index.html',
 				template: './src/index.html',
 			}),
+			// new BundleAnalyzerPlugin(),
 		],
 	};
 };

@@ -1,4 +1,6 @@
 import { emit } from '../core/event.js';
+import isNumber from 'lodash/isNumber';
+
 let markManager = function (options) {
 	this.markers = [];
 	this.map = options.map;
@@ -414,7 +416,7 @@ export default {
 			return map.getBounds();
 		};
 		exportObj.setZoom = function (level) {
-			if ($.isNumeric(level)) {
+			if (isNumber(level)) {
 				map.setZoom(level);
 			}
 		};

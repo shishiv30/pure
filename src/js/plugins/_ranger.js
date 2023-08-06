@@ -1,4 +1,6 @@
 import { emit } from '../core/event.js';
+import isNumber from 'lodash/isNumber';
+
 export default {
 	name: 'ranger',
 	defaultOpt: {
@@ -57,7 +59,7 @@ export default {
 		exportObj.set = function (values) {
 			this.range.set(values);
 			let result = this.range.get();
-			if ($.isNumeric(result)) {
+			if (isNumber(result)) {
 				result = [result];
 			}
 			$input.each(function (index) {

@@ -4,7 +4,7 @@ import { isMobile } from './validate.js';
 import { select, selectAll } from './query.js';
 import { emit, on } from './event.js';
 import throttle from 'lodash/throttle';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 class Page extends Plugin {
 	constructor(ctx) {
@@ -54,7 +54,7 @@ class Page extends Plugin {
 		};
 	}
 	static getScrollTop() {
-		return window.pageYOffset || document.documentElement.scrollTop;
+		return window.scrollY || document.documentElement.scrollTop;
 	}
 	static isLandscape() {
 		return Page.width > Page.height;
@@ -68,6 +68,11 @@ class Page extends Plugin {
 	static inputing() {
 		let tagName = document.activeElement ? document.activeElement.tagName : '';
 		return ['TEXTAREA', 'INPUT', 'SELECT'].indexOf(tagName) > -1;
+	}
+	static recycler() {
+		//trigger this function when you want to recycle the page
+		// for()
+		this.reclyInstance();
 	}
 	static init;
 	static width;
@@ -168,7 +173,7 @@ class Page extends Plugin {
 					types.forEach((type) => {
 						let plugin = Plugin.getPlugin(type);
 						if (plugin) {
-							item.dataset[type] = plugin(item, data);
+							plugin(item, data);
 						}
 					});
 				});

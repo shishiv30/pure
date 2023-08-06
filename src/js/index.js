@@ -12,5 +12,5 @@ export default function (frame) {
 	}
 	let page = new Page(root.ctx);
 	let $ = page.init();
-	Object.assign(root, { $ });
+	Object.assign(root, { $, Plugin: Plugin });
 }

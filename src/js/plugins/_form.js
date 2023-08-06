@@ -1,15 +1,21 @@
 //validate for form submit
 import { emit } from '../core/event.js';
+import Plugin from '../core/plugin.js';
 export default {
 	name: 'form',
 	defaultOpt: null,
 	initBefore: null,
-	init: function ($this, opt, exportObj) {
+	init: function ($el, opt, exportObj) {
 		exportObj.isValid = function () {
 			let foucsElement = null;
 			let isPassed = true;
-			$this.find('[data-role*="validate"]').each(function (index, item) {
-				let isValide = $(item).data('validate').isValid();
+			$el.find('[data-role*="validate"]').each(function (index, item) {
+				let validateObj = Plugin.getInstance(item, 'validate');
+				if (!validateObj) {
+					return true;
+				}
+				//todo check isvalide
+				let isValide = validateObj.isValid();
 				if (!isValide) {
 					isPassed = false;
 					if (!foucsElement) {
@@ -25,55 +31,55 @@ export default {
 		};
 		exportObj.getValue = function () {
 			let obj = {};
-			$this.find(':input[type="tel"]').each(function (index, item) {
+			$el.find(':input[type="tel"]').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find(':input[type="email"]').each(function (index, item) {
+			$el.find(':input[type="email"]').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find(':input[type="text"]').each(function (index, item) {
+			$el.find(':input[type="text"]').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find(':input[type="number"]').each(function (index, item) {
+			$el.find(':input[type="number"]').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find(':password').each(function (index, item) {
+			$el.find(':password').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find(':hidden').each(function (index, item) {
+			$el.find(':hidden').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find('textarea').each(function (index, item) {
+			$el.find('textarea').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find('select').each(function (index, item) {
+			$el.find('select').each(function (index, item) {
 				let name = $(item).attr('name');
 				if (name) {
 					obj[name] = $(item).val();
 				}
 			});
-			$this.find('.checkbox').each(function (index, item) {
+			$el.find('.checkbox').each(function (index, item) {
 				let name;
 				let checkbox;
 				let checkboxList;
@@ -97,7 +103,7 @@ export default {
 					}
 				}
 			});
-			$this.find('.radio').each(function (index, item) {
+			$el.find('.radio').each(function (index, item) {
 				let radioItem = $(item).find(':radio:checked');
 				let name = radioItem.attr('name');
 				if (name) {
@@ -116,10 +122,10 @@ export default {
 // $.cui.plugin(formConfig);
 // $(document).on('dom.load', function () {
 //     $('[data-form]').each(function (index, item) {
-//         let $this = $(item);
-//         let data = $this.data();
-//         $this.removeAttr('data-form');
-//         $this.form(data);
-//         $this.attr('data-form-load', '');
+//         let $el = $(item);
+//         let data = $el.data();
+//         $el.removeAttr('data-form');
+//         $el.form(data);
+//         $el.attr('data-form-load', '');
 //     });
 // });
