@@ -1,49 +1,59 @@
+@include comp-size('input');
+
 .input {
 	position: relative;
 	display: block;
+	width: 100%;
 
-	> select {
+	>select {
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
 		background: transparent;
 		cursor: pointer;
 		background: $color-bg;
+
 		&[disabled] {
 			color: $color-l1;
 		}
 	}
+
 	option[disabled] {
 		color: $color-l1;
 	}
-	> input::placeholder {
+
+	>input::placeholder {
 		color: inherit;
 	}
-	> input,
-	> select {
+
+	>input,
+	>select {
 		width: 100%;
 		border: 1px solid $color-l1;
-		@include form-default-1();
-		padding-left: $g1;
-		padding-right: $g1;
+		font-size: var(--input-font-size);
+		font-weight: var(--input-font-weight);
+		font-size: var(--input-font-size);
+		height: var(--input-size);
+		padding: var(--input-gap) var(--g2);
+		min-width: var(--input-size);
+		line-height: var(--input-line-height);
 	}
 
-	> label,
-	> i,
-	> span,
-	> a,
-	> button,
-	> .btn {
+	>i,
+	>span,
+	>a,
+	>button,
+	>.btn {
 		position: absolute;
 		top: 0;
 		z-index: 1;
 		text-align: center;
-		width: $comp-size-3;
-		@include form-default-1();
-		line-height: 1.618;
+		width: var(--input-size);
+		height: var(--input-size);
+		line-height: var(--input-size);
 	}
 
-	> .btn {
+	>.btn {
 		--color: inhert;
 		--color-bg: inhert;
 		--color-border: inhert;
@@ -51,95 +61,35 @@
 	}
 
 	&.left {
-		> input,
-		> select {
-			padding-left: $comp-size-3;
+
+		>input,
+		>select {
+			padding-left: var(--input-size);
 		}
-		> label,
-		> span,
-		> i,
-		> a,
-		> button,
-		> .btn {
+
+		>span,
+		>i,
+		>a,
+		>button,
+		>.btn {
 			left: 0;
 			right: auto;
 		}
 	}
 
 	&.right {
-		> input,
-		> select {
-			padding-right: $comp-size-3;
-			~ label,
-			~ span,
-			~ i,
-			~ a,
-			~ button,
-			~ .btn {
+
+		>input,
+		>select {
+			padding-right: var(--input-size);
+
+			~span,
+			~i,
+			~a,
+			~button,
+			~.btn {
 				right: 0;
 				left: auto;
-			}
-		}
-	}
-
-	&.small {
-		> input,
-		> select {
-			@include form-small();
-		}
-
-		> label,
-		> i,
-		> span,
-		> a,
-		> button,
-		> .btn {
-			@include form-small();
-			width: $comp-size-2;
-		}
-
-		&.right {
-			> input,
-			> select {
-				padding-right: $comp-size-2;
-			}
-		}
-
-		&.left {
-			> input,
-			> select {
-				padding-left: $comp-size-2;
-			}
-		}
-	}
-
-	&.large {
-		> input,
-		> select {
-			@include form-large-1();
-		}
-
-		> label,
-		> i,
-		> span,
-		> a,
-		> button,
-		> .btn {
-			@include form-large-1();
-			width: $comp-size-4;
-		}
-
-		&.right {
-			> input,
-			> select {
-				padding-right: $comp-size-4;
-			}
-		}
-
-		&.left {
-			> input,
-			> select {
-				padding-left: $comp-size-4;
 			}
 		}
 	}
@@ -163,6 +113,7 @@
 			transform: translateY(50%);
 			padding: 0;
 			top: 0;
+
 			.tooltip-inner {
 				border: none !important;
 				background: transparent !important;
@@ -171,14 +122,17 @@
 				text-align: right !important;
 				margin: 0 0.5rem !important;
 			}
+
 			.tooltip-arrow {
 				display: none !important;
 			}
+
 			&.in {
 				transform: translateY(0);
 			}
 		}
 	}
+
 	&.has-error {
 		.tooltip-inner {
 			color: $color-danger-l1;

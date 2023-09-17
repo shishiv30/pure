@@ -5,8 +5,8 @@ export default {
 	init: function ($this, opt, exportObj) {
 		let $link = $this.children('a').eq(0);
 		let $icon = $this.children('a').eq(1);
-		let $list = $this.find('.dropdown-button-list');
-		$this.on('click', function (e) {
+		let $list = $this.querySelectorAll('.dropdown-button-list');
+		$this.addEventListener('click', function (e) {
 			e.stopPropagation();
 		});
 		exportObj.select = function ($item) {
@@ -26,11 +26,11 @@ export default {
 				$(document).one('click.dropdownbutton', exportObj.close);
 			}
 		};
-		$icon.on('click', exportObj.open);
-		$list.find('a').on('click', function () {
+		$icon.addEventListener('click', exportObj.open);
+		$list.querySelectorAll('a').addEventListener('click', function () {
 			exportObj.select($(this));
 		});
-		$link.on('click', function () {
+		$link.addEventListener('click', function () {
 			exportObj.select($(this));
 		});
 	},
@@ -41,9 +41,9 @@ export default {
 	destroyBefore: null,
 };
 // $.cui.plugin(dropdownbuttonConfig);
-// $(document).on('dom.load.dropdownbutton', function () {
-//     $('[data-dropdownbutton]').each(function (index, item) {
-//         let $this = $(item);
+// $(document).addEventListener('dom.load.dropdownbutton', function () {
+//     $('[data-dropdownbutton]').forEach(function (item, index) {
+//         let $this = $item;
 //         let data = $this.data();
 //         $this.removeAttr('data-dropdownbutton');
 //         $this.dropdownbutton(data);

@@ -15,8 +15,8 @@ const loadMap = async function (googleMapKey) {
 				};
 				var mapUrl =
 					'https://maps.googleapis.com/maps/api/js?' + googleMapKey;
-				$.each(config, function (key, value) {
-					mapUrl += '&' + key + '=' + value;
+				Object.keys(config).forEach((key) => {
+					mapUrl += '&' + key + '=' + Object[key];
 				});
 				load({
 					files: [mapUrl],

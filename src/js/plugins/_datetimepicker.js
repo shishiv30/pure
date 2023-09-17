@@ -49,7 +49,7 @@ export default {
 	initAfter: null,
 };
 // $.cui.plugin(pickerContext);
-// $(document).on('focus', '[data-picker]', function () {
+// $(document).addEventListener('focus', '[data-picker]', function () {
 //     let $this = $(this);
 //     let opt = $this.data();
 //     $this.removeAttr('data-picker');

@@ -44,8 +44,8 @@ function _checkArraow($this, $scroller) {
 }
 function _getOffset($el, next) {
 	let offset = 0;
-	$el.each(function (index, item) {
-		let $this = $(item);
+	$el.each(function (item, index) {
+		let $this = $item;
 		let left = $this.offset().left;
 		if (next) {
 			if (left >= 0) {
@@ -71,7 +71,7 @@ export default {
 		ratio: 0.6,
 	},
 	init: function ($this, opt, exportObj) {
-		let $scroller = $this.find('[data-role*="scrollbar"]');
+		let $scroller = $this.querySelectorAll('[data-role*="scrollbar"]');
 		exportObj.$scroller = $scroller;
 		opt._id = $.guid++;
 		if (opt.size !== 'auto') {
@@ -133,13 +133,13 @@ export default {
 				'<button type="button" class="arrow next"><i class="icon-angle-right"></i></button>',
 			);
 
-			$prevLink.on('click', exportObj.prev);
-			$nextLink.on('click', exportObj.next);
+			$prevLink.addEventListener('click', exportObj.prev);
+			$nextLink.addEventListener('click', exportObj.next);
 			$this.append($prevLink);
 			$this.append($nextLink);
 		}
 
-		$(document).on('dom.resize.carousel' + opt._id, function () {
+		$(document).addEventListener('dom.resize.carousel' + opt._id, function () {
 			if (opt.size !== 'auto') {
 				_updateWidth($this, $scroller, opt);
 			} else {

@@ -46,11 +46,11 @@ export default {
 				position = Math.round($wrapper.position().top);
 			}
 			var sliderRange = [];
-			$slides.each(function (index, item) {
+			$slides.forEach(function (item, index) {
 				if (opt.horizontal) {
-					offset += $(item).outerWidth();
+					offset += $item.outerWidth();
 				} else {
-					offset += $(item).outerHeight();
+					offset += $item.outerHeight();
 				}
 
 				if (newIndex === null && offset + position > 0) {
@@ -80,11 +80,11 @@ export default {
 			var offset = Math.round(distance);
 			var animateFrame = opt.horizontal
 				? {
-						transform: 'translateX(' + offset + 'px)',
-				  }
+					transform: 'translateX(' + offset + 'px)',
+				}
 				: {
-						transform: 'translateY(' + offset + 'px)',
-				  };
+					transform: 'translateY(' + offset + 'px)',
+				};
 			if (animation) {
 				isAnimating = true;
 				$wrapper.classList.add('animating');
@@ -241,7 +241,7 @@ export default {
 			$this.classList.add('view-scroll');
 			$this.classList.remove('original-scroll');
 
-			$this.on('mousewheel', function (event) {
+			$this.addEventListener('mousewheel', function (event) {
 				var delta;
 				if (opt.horizontal && event.deltaX) {
 					delta = event.deltaX * -1;
@@ -272,20 +272,20 @@ export default {
 				}, 50)();
 				return false;
 			});
-			$this.on('drag', function () {
+			$this.addEventListener('drag', function () {
 				_updateInfo();
 			});
-			$this.on('dragging', function (e, dir, dist) {
+			$this.addEventListener('dragging', function (e, dir, dist) {
 				var distance = opt.horizontal ? dist[0] : dist[1];
 				var direction = opt.horizontal ? dir[0] : dir[1];
 				_moving(direction, distance, false);
 			});
-			$this.on('dragged', function (e, dir, dist, time) {
+			$this.addEventListener('dragged', function (e, dir, dist, time) {
 				var distance = opt.horizontal ? dist[0] : dist[1];
 				var direction = opt.horizontal ? dir[0] : dir[1];
 				_moved(direction, distance, time);
 			});
-			$(document).on('dom.resize.view' + opt.id, _updateInfo);
+			$(document).addEventListener('dom.resize.view' + opt.id, _updateInfo);
 			_updateInfo();
 		});
 		if ($.isTouch) {

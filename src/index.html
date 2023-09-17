@@ -74,9 +74,9 @@
 			<h2 class="f3">Tab</h2>
 			<div>
 				<div data-role="tab">
-					<button type="button" class="tab active" data-target="tab1">Tab1</button>
-					<button type="button" class="tab" data-target="tab2">Tab2</button>
-					<button type="button" class="tab" data-target="tab3">Tab3</button>
+					<button type="button" class="tab default active" data-target="tab1">Tab1</button>
+					<button type="button" class="tab default" data-target="tab2">Tab2</button>
+					<button type="button" class="tab default" data-target="tab3">Tab3</button>
 				</div>
 				<div class="panel inline default tab-panel">
 					<div data-id="tab1">Tab1</div>
@@ -150,6 +150,61 @@
 					<li><a href="javascript:;">Cat</a></li>
 				</ul>
 			</script>
+		</div>
+	</section>
+	<section class="section large inline">
+		<div class="fixed fixed-max-xs grid grid-xs-1 grid-sm-2">
+			<h2 class="f3 wrap">Textbox</h2>
+			<div>
+				<div class="selectbox">
+					<label for="select22">normal textbox select</label>
+					<select id="select22" name="fequence" data-validate="required">
+						<option value="" selected disabled>select a Option</option>
+						<option value="Weekly">Option 1</option>
+						<option value="Daily">Option 1</option>
+						<option value="Monthly">Option 1</option>
+					</select>
+					<i class="icon-angle-down"></i>
+				</div>
+			</div>
+			<div>
+				<div data-role="textbox">
+					<div class="input right">
+						<label for="txtReq2">normal textbox input</label>
+						<input type="email" id="txtReq2" name="name" value="" data-validate="required,email" />
+						<a href="javascript:;" aria-label="submit" class="icon-check"></a>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="selectbox large">
+					<label for="select11">large textbox select</label>
+					<select id="select11" name="fequence" data-validate="required">
+						<option value="" selected disabled>select a Option</option>
+						<option value="Weekly">Option 1</option>
+						<option value="Daily">Option 1</option>
+						<option value="Monthly">Option 1</option>
+					</select>
+					<i class="icon-angle-down"></i>
+				</div>
+			</div>
+			<div>
+				<div data-role="textbox">
+					<div class="input large right">
+						<label for="txtReq1">large textbox input</label>
+						<input type="email" id="txtReq1" name="name" value="" data-validate="required,email" />
+						<a href="javascript:;" aria-label="submit" class="icon-check"></a>
+					</div>
+				</div>
+			</div>
+			<div class="wrap">
+				<div data-role="textbox">
+					<div class="textarea">
+						<label for="textReq4">textbox textarea</label>
+						<textarea name="span" id="textReq4" data-role="validate" data-type="required"></textarea>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 </body>

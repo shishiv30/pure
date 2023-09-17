@@ -117,7 +117,7 @@ export default {
 	initBefore: null,
 	init: function ($el, opt, exportObj) {
 		opt.type = opt.type ? opt.type.split(',') : [];
-		$el.on('change.validate', function () {
+		$el.addEventListener('change.validate', function () {
 			_validate($el, opt.type, opt.errortext, opt.addition);
 		});
 		exportObj.isValid = function () {
@@ -128,7 +128,7 @@ export default {
 		options.validate = options.validate ? options.validate.split(',') : [];
 	},
 	setOptionsAfter: function ($el, opt, exportObj) {
-		$el.off('change.validate').on('change.validate', function () {
+		$el.off('change.validate').addEventListener('change.validate', function () {
 			_validate($el, opt.type, opt.errortext, opt.addition);
 		});
 	},

@@ -17,12 +17,12 @@ import lazyload from './_lazyload.js';
 // import scrollTo from './_scrollTo.js';
 import tab from './_tab.js';
 import shifter from './_shifter.js';
-// import textbox from './_textbox.js';
+import textbox from './_textbox.js';
 // import tooltip from './_tooltip.js';
 // import transition from './_transition.js';
 // import validate from './_validate.js';
 // import view from './_view.js';
-// import carousel from './_carousel.js';
+// import carousel from './_carouselF.js';
 // import scrollspy from './_scrollspy.js';
 // import flow from './_flow.js';
 
@@ -46,7 +46,7 @@ export default {
 	// request,
 	// scrollTo,
 	tab,
-	// textbox,
+	textbox,
 	// tooltip,
 	// transition,
 	// validate,

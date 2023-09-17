@@ -7,23 +7,23 @@ export default {
 	initBefore: null,
 	init: function ($this, opt, exportObj) {
 		let $key = $this.find(opt.key);
-		let $list = $this.find('tbody tr');
+		let $list = $this.querySelectorAll('tbody tr');
 		let inital = function () {
 			let classname = 'table-' + +new Date();
 			let colIndex = 0;
 			let fontsize = $key.css('fontSize').replace(/[a-z]/g, '');
 			let keymaxwidth = 0;
-			let columns = $key.map(function (index, item) {
+			let columns = $key.map(function (item, index) {
 				return {
-					text: $(item).text() || '',
-					colspan: $(item).attr('colspan') * 1 || 1,
+					text: $item.text() || '',
+					colspan: $item.attr('colspan') * 1 || 1,
 				};
 			});
 			for (let i = 0; i < columns.length; i++) {
 				let column = columns[i];
 				colIndex = colIndex + 1;
 				$list.each(function () {
-					$(this).find('td').eq(i).attr('data-th', column.text);
+					$(this).querySelectorAll('td').eq(i).attr('data-th', column.text);
 				});
 				if (column.colspan > 1) {
 					colIndex = colIndex + column.colspan - 1;
@@ -36,8 +36,8 @@ export default {
 			$list.classList.add('close');
 			return classname;
 		};
-		$list.each(function (index, item) {
-			$(item).on('click', function () {
+		$list.each(function (item, index) {
+			$item.addEventListener('click', function () {
 				if (!$(this).classList.contains('open')) {
 					$list
 						.filter('.open')
@@ -57,11 +57,11 @@ export default {
 	initAfter: null,
 };
 // $.cui.plugin(gridtableConfig);
-// $(document).on('dom.load', function () {
-//     $('[data-gridtable]').each(function (index, item) {
-//         let data = $(item).data();
-//         $(item).removeAttr('data-gridtable');
-//         $(item).gridtable(data);
-//         $(item).attr('data-gridtable-load', '');
+// $(document).addEventListener('dom.load', function () {
+//     $('[data-gridtable]').forEach(function (item, index) {
+//         let data = $item.data();
+//         $item.removeAttr('data-gridtable');
+//         $item.gridtable(data);
+//         $item.attr('data-gridtable-load', '');
 //     });
 // });

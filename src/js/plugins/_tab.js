@@ -1,4 +1,3 @@
-import { selectAll } from '../core/query.js';
 export default {
     name: 'tab',
     defaultOpt: {
@@ -9,19 +8,19 @@ export default {
             if ($target.classList && $target.classList.contains('active')) {
                 return;
             }
-            selectAll('[data-target].active', $el).forEach((item) => {
+            $el.querySelectorAll('[data-target].active').forEach((item) => {
                 item.classList.remove('active');
-                selectAll(`[data-id="${item.getAttribute('data-target')}"]`).forEach((panel) => {
+                document.querySelectorAll(`[data-id="${item.dataset.target}"]`).forEach((panel) => {
                     panel.classList.add('hide');
                 });
             });
             $target.classList.add('active');
-            selectAll(`[data-id="${$target.getAttribute('data-target')}"]`).forEach((panel) => {
+            document.querySelectorAll(`[data-id="${$target.dataset.target}"]`).forEach((panel) => {
                 panel.classList.remove('hide');
             });
         };
-        selectAll('[data-target]', $el).forEach((item, i) => {
-            selectAll(`[data-id="${item.getAttribute('data-target')}"]`).forEach((panel) => {
+        $el.querySelectorAll('[data-target]').forEach((item, i) => {
+            $el.querySelectorAll(`[data-id="${item.dataset.target}"]`).forEach((panel) => {
                 if (i !== opt.index) {
                     panel.classList.add('hide');
                 } else {

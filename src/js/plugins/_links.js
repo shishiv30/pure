@@ -79,7 +79,7 @@
 //         $this.data('msgto', namespace);
 //         return namespace;
 //     };
-//     $(document).on('click', '[data-link]', function() {
+//     $(document).addEventListener('click', '[data-link]', function() {
 //         let $this = $(this);
 //         let type = $this.attr('data-link');
 //         let target = $this.attr('data-target');
@@ -106,7 +106,7 @@
 //                 let timer = setTimeout(function() {
 //                     $(target).focus();
 //                 }, 100);
-//                 $this.on('click', function() {
+//                 $this.addEventListener('click', function() {
 //                     if (timer) {
 //                         clearTimeout(timer);
 //                     }

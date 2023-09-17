@@ -1,5 +1,4 @@
 import { trigger, emit, on, off } from '../core/event.js';
-import { select, selectAll } from '../core/query.js';
 export default {
 	name: 'dialog',
 	defaultOpt: {
@@ -22,7 +21,7 @@ export default {
 			}
 			emit('dialog.hidden.except', [opt._pid]);
 			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);
-			select('body').classList.add('dialog-model');
+			document.querySelector('body').classList.add('dialog-model');
 			opt.root.style.display = 'block';
 			setTimeout(function () {
 				opt.root.classList.add('dialog-active');
@@ -40,7 +39,7 @@ export default {
 				opt.root.classList.remove('dialog-active');
 				setTimeout(function () {
 					opt.root.style.display = 'none';
-					select('body').classList.remove('dialog-model');
+					document.querySelector('body').classList.remove('dialog-model');
 					opt.hideafter && trigger(opt.hidebefore, $el, opt, exportObj);
 					if (!opt.cache) {
 						opt.root.remove();
@@ -59,18 +58,18 @@ export default {
 			emit('dom.load');
 			opt.renderbefore && trigger(opt.renderbefore, $el, opt, exportObj);
 			//todo use append to insert template as html
-			select('body').insertAdjacentHTML('beforeend', template);
-			opt.root = select('#' + opt._pid);
+			document.querySelector('body').insertAdjacentHTML('beforeend', template);
+			opt.root = document.querySelector('#' + opt._pid);
 			opt.root.style.display = 'none';
 
-			selectAll('[data-dialog="close"]', opt.root).forEach((item) => {
+			opt.root.querySelectorAll('[data-dialog="close"]').forEach((item) => {
 				item.addEventListener('click', function () {
 					_hide();
 				});
 			});
 
 			if (opt.autoclose) {
-				select('.dialog-overlay', opt.root).addEventListener('click', function () {
+				opt.root.querySelector('.dialog-overlay').addEventListener('click', function () {
 					_hide();
 				});
 			}
@@ -78,7 +77,7 @@ export default {
 		});
 		$el.addEventListener('click', function (e) {
 			let data = e.currentTarget.dataset;
-			let $target = select(data.target);
+			let $target = document.querySelector(data.target);
 			opt.html = $target.innerHTML;
 			data.trigger = e.target;
 			_show();

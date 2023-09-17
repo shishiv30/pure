@@ -1,48 +1,57 @@
+@include comp-color('group-btn');
+@include comp-size('group-btn');
+
 .group-btn {
-	--group-btn-color: var(--color);
-	--group-btn-background-color: var(--color-bg);
-	--group-btn-border-color: var(--color-border);
-	--group-btn-color-active: var(--color-active);
-	--group-btn-background-color-active: var(--color-active-bg);
 	border-radius: 6px;
 	margin: 0;
 	overflow: hidden;
 	display: flex;
 	flex-wrap: nowrap;
 	border: 1px solid var(--group-btn-border-color);
+
 	input {
-		&:checked + span {
+		&:checked+span {
 			background-color: var(--group-btn-border-color);
 			color: $color-bg;
 		}
 	}
-	> label {
+
+	>label {
 		flex: 1;
 		overflow: hidden;
 		margin-right: 0;
 		border-color: var(--group-btn-border-color);
-		+ label {
+
+		+label {
 			border-left: 1px dashed var(--group-btn-border-color);
 		}
+
 		span {
 			display: block;
-			@include form-default-1();
 			color: var(--group-btn-color);
-			background-color: var(--group-btn-background-color);
+			background-color: var(--group-btn-bg-color);
 			text-align: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			cursor: pointer;
+			font-size: var(--group-btn-font-size);
+			font-weight: var(--group-btn-font-weight);
+			font-size: var(--group-btn-font-size);
+			height: var(--group-btn-size);
+			padding: var(--group-btn-gap) var(--g2);
+			line-height: var(--group-btn-line-height);
+
 			&:before {
 				display: none;
 			}
 		}
 	}
+
 	input {
-		&:checked + span {
+		&:checked+span {
 			color: var(--group-btn-color-active);
-			background-color: var(--group-btn-background-color-active);
+			background-color: var(--group-btn-bg-color-active);
 		}
 	}
 
@@ -51,13 +60,13 @@
 	}
 
 	&.large {
-		> label span {
+		>label span {
 			@include form-large-1();
 		}
 	}
 
 	&.small {
-		> label span {
+		>label span {
 			@include form-small();
 		}
 	}

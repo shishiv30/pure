@@ -122,7 +122,7 @@ let initalCustomMarker = function () {
 				let $pin = $(div);
 				let html = $.renderHtml(self.popTmp, self.popData);
 				let $content = $('<div class="pop-content"><div>' + html + '</div></div>');
-				let tippopover = $pin.find('.pin').cui_tooltip({
+				let tippopover = $pin.querySelectorAll('.pin').cui_tooltip({
 					content: $content,
 					placement: 'top',
 					trigger: 'click',
@@ -498,10 +498,10 @@ export default {
 	destroyBefore: null,
 };
 // $.cui.plugin(gmapConfig);
-// $(document).on('dom.load.gmap', function () {
+// $(document).addEventListener('dom.load.gmap', function () {
 //     $('[data-gmap]')
-//         .each(function (index, item) {
-//             let $this = $(item);
+//         .each(function (item, index) {
+//             let $this = $item;
 //             let data = $this.data();
 //             $this.removeAttr('data-gmap');
 //             $this.onscroll({

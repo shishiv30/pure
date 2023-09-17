@@ -1,7 +1,6 @@
 import Plugin from './plugin.js';
 import { logInfo, logError } from './log.js';
 import { isMobile } from './validate.js';
-import { select, selectAll } from './query.js';
 import { emit, on } from './event.js';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
@@ -84,11 +83,11 @@ class Page extends Plugin {
 	static onResize() {
 		Page.updatePageInfo();
 		if (Page.landscape) {
-			select('body').classList.add('landscape');
-			select('body').classList.remove('portrait');
+			document.querySelector('body').classList.add('landscape');
+			document.querySelector('body').classList.remove('portrait');
 		} else {
-			select('body').classList.add('portrait');
-			select('body').classList.remove('landscape');
+			document.querySelector('body').classList.add('portrait');
+			document.querySelector('body').classList.remove('landscape');
 		}
 		emit('dom.resize');
 	}
@@ -102,9 +101,9 @@ class Page extends Plugin {
 			Page.isScrollDown = false;
 		}
 		if (Page.isScrollDown) {
-			select('body').classList.add('scroll-down');
+			document.querySelector('body').classList.add('scroll-down');
 		} else {
-			select('body').classList.remove('scroll-down');
+			document.querySelector('body').classList.remove('scroll-down');
 		}
 		emit('dom.scroll');
 	}
@@ -159,7 +158,7 @@ class Page extends Plugin {
 			'dom.load',
 			throttle(() => {
 				// the interface wil be follow ARIA which is nice for more accessibility
-				selectAll('[data-role]').forEach((item) => {
+				document.querySelectorAll('[data-role]').forEach((item) => {
 					if (item.hasAttribute('loaded')) {
 						return;
 					}

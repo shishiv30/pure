@@ -1,28 +1,30 @@
 import { emit } from '../core/event.js';
+import { select, hasInput } from '../core/query.js';
+
 export default {
 	name: 'textbox',
 	defaultOpt: {},
-	init: function ($this, opt, exportObj) {
-		let $input = $this.find('input');
+	init: function ($el, opt, exportObj) {
+		let $input = $el.querySelector('input') || $el.querySelector('textarea');
+		if (!$input) {
+			return null;
+		}
 		let _switchLabel = function () {
-			if ($input.val()) {
-				$this.classList.add('focus');
+			if (hasInput($input)) {
+				$el.classList.add('focus');
 			} else {
-				$this.classList.remove('focus');
+				$el.classList.remove('focus');
 			}
 		};
-		if (!$input.length) {
-			$input = $this.find('textarea');
-		}
-		$input.on('focusin', function () {
-			$this.classList.add('focus');
+		$input.addEventListener('focusin', function () {
+			$el.classList.add('focus');
 		});
-		$input.on('focusout', function () {
-			if (!$input.val()) {
-				$this.classList.remove('focus');
+		$input.addEventListener('focusout', function () {
+			if (!$input.value) {
+				$el.classList.remove('focus');
 			}
 		});
-		$input.on('change', _switchLabel);
+		$input.addEventListener('change', _switchLabel);
 		_switchLabel();
 	},
 	setOptionsBefore: null,

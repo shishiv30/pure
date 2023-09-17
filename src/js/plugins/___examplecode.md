@@ -14,7 +14,7 @@ exportObj.method = function () {
     setOptionsAfter: null,
     initBefore: null,
     initAfter: function ($this, opt, exportObj) {
-        $this.on('click.example', exportObj.method);
+        $this.addEventListener('click.example', exportObj.method);
     },
     destroyBefore: function ($this) {
         $this.off('click.example');

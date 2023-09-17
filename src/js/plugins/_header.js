@@ -6,10 +6,11 @@ export default {
 	},
 	init: function ($this, opt, exportObj) {
 		let $body = $('body');
-		let $list = $this.find('.header-menu-list');
-		let $dropdown = $list.find('.list');
-		let $overlay = $('<div class="header-overlay"></div>');
-		let $swtichLink = $this.find('.header-switch-link');
+		let $list = $this.querySelectorAll('.header-menu-list');
+		let $dropdown = $list.querySelectorAll('.list');
+		let $overlay = document.createElement('div');
+		$overlay.setAttribute('class', 'header-overlay');
+		let $swtichLink = $this.querySelectorAll('.header-switch-link');
 		opt.id = $.guid++;
 		$this.prepend($overlay);
 		let _close = function () {
@@ -23,30 +24,34 @@ export default {
 		};
 		let _hide = function () {
 			$body.classList.remove('body-expand-header');
-			$list.find('li').classList.remove('hover').css('height', '');
+			$list.querySelectorAll('li').classList.remove('hover').css('height', '');
 		};
-		$overlay.on('click', _hide);
+		$overlay.addEventListener('click', _hide);
 		//nav
-		$dropdown.each(function () {
-			let $arrow = $(
-				'<button type="button:;" class="header-expand"><i class="icon-caret-left"></i></button>',
-			);
-			$arrow.on('click', function () {
-				let $li = $(this).closest('li');
-				let $prev = $li.siblings('.hover');
-				$prev.classList.remove('hover');
-				$prev.css('height', '');
+		$dropdown.each(function (list) {
+			//translate to pure js verison without jquery
+			let $arrow = document.createElement('button');
+			$arrow.setAttribute('type', 'button');
+			$arrow.setAttribute('class', 'header-expand');
+			$arrow.innerHTML = '<i class="icon-caret-left"></i>';
+			$arrow.addEventListener('click', function (e) {
+				let $li = this.closest('li');
 				if ($li.classList.contains('hover')) {
 					$li.classList.remove('hover');
-					$li.css('height', '');
+					$li.style.height = '';
 				} else {
+					let hoverItem = $list.querySelector('.list.hover');
+					if (hoverItem) {
+						hoverItem.classList.remove('hover');
+						hoverItem.style.height = '';
+					}
 					$li.classList.add('hover');
-					$li.css('height', $li.prop('scrollHeight'));
+					$li.style.height = $li.scrollHeight + 'px';
 				}
 			});
-			$(this).append($arrow);
+			list.append($arrow);
 		});
-		$swtichLink.on('click', function () {
+		$swtichLink.addEventListener('click', function () {
 			if ($body.classList.contains('body-expand-header')) {
 				_hide();
 			} else {
@@ -57,8 +62,8 @@ export default {
 		exportObj.hide = _hide;
 		exportObj.close = _close;
 		exportObj.open = _open;
-		$(document).on('dom.resize.header' + opt.id, _hide);
-		$(document).on('dom.scroll.header' + opt.id, function () {
+		$(document).addEventListener('dom.resize.header' + opt.id, _hide);
+		$(document).addEventListener('dom.scroll.header' + opt.id, function () {
 			let status = $.cui_state;
 			if (status.isScrollDown && status.scrollTop > 500) {
 				_close();

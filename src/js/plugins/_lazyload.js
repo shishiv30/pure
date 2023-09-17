@@ -1,4 +1,3 @@
-import { selectAll } from '../core/query.js';
 let defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 function clean(img) {
 	img.removeAttribute('data-src');
@@ -60,7 +59,7 @@ function lazyloadImg($el) {
 	if (!root) {
 		root = document;
 	}
-	selectAll('[data-src]', root).forEach((el) => {
+	root.querySelectorAll('[data-src]').forEach((el) => {
 		if (ignoreLazyLoad(el)) {
 			loadImg(el);
 		} else {

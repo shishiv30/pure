@@ -4,13 +4,13 @@ function activeLink($this, key) {
 	let $target = $this.find(`[href="#${key}"]`);
 	if ($target[0]) {
 		if (!$target.classList.contains('active')) {
-			$this.find('.active').classList.remove('active');
+			$this.querySelectorAll('.active').classList.remove('active');
 			$target.classList.add('active');
 			let $list;
 			if ($this.is('[data-role*="scrollbar"]')) {
 				$list = $this;
 			} else {
-				$list = $this.find('[data-role*="scrollbar"]');
+				$list = $this.querySelectorAll('[data-role*="scrollbar"]');
 			}
 			if ($list && $list.length) {
 				let scrollLeft = $list.scrollLeft();
@@ -46,7 +46,7 @@ export default {
 						}
 					});
 				}, options);
-				$this.find('[href^="#"]').each(function () {
+				$this.querySelectorAll('[href^="#"]').forEach(function () {
 					let item = $($(this).attr('href'));
 					if (item && item.length) {
 						spyobserver.observe(item[0]);

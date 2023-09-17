@@ -288,7 +288,7 @@ export default {
 				mapUrl += '&zoom=' + opt.zoom;
 			}
 			if (opt.markers && opt.markers.length) {
-				$.each(opt.markers, function (index, item) {
+				$.each(opt.markers, function (item, index) {
 					let iconStr = '';
 					if (opt.icon && opt.icon.length) {
 						let realUrl = getIconUrl(opt.icon[Math.min(index, opt.icon.length - 1)]);
@@ -301,9 +301,9 @@ export default {
 				if (opt.polylinedata) {
 					mapUrl += encodeURIComponent(
 						'&path=fillcolor:' +
-							opt.fillcolor +
-							'|color:0xFFFFFF00|enc:' +
-							opt.polylinedata,
+						opt.fillcolor +
+						'|color:0xFFFFFF00|enc:' +
+						opt.polylinedata,
 					);
 				} else {
 					mapUrl += '&path=fillcolor:' + opt.fillcolor;
@@ -366,7 +366,7 @@ export default {
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
 		if (opt.autoresize) {
-			$(document).on('dom.resize', function () {
+			$(document).addEventListener('dom.resize', function () {
 				exportObj.reload();
 			});
 		}
@@ -374,9 +374,9 @@ export default {
 	destroyBefore: null,
 };
 // $.cui.plugin(gsmapConfig);
-// $(document).on('dom.load.gsmap', function () {
-//     $('[data-gsmap]').each(function (index, item) {
-//         let $this = $(item);
+// $(document).addEventListener('dom.load.gsmap', function () {
+//     $('[data-gsmap]').forEach(function (item, index) {
+//         let $this = $item;
 //         let data = $this.data();
 //         $this.removeAttr('data-gsmap');
 //         $this.gsmap(data);

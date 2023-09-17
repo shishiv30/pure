@@ -8,7 +8,7 @@ export default {
 	init: function ($this, opt, exportObj) {
 		let timer = null;
 		let _get = function () {
-			let value = $this.val();
+			let value = $this.value;
 			switch (opt.type) {
 				case 'phone':
 					return value.replace(/[^0-9]/g, '');
@@ -56,7 +56,7 @@ export default {
 		};
 
 		_set();
-		$this.on('input', function () {
+		$this.addEventListener('input', function () {
 			let $this = $(this);
 			if (timer) {
 				clearTimeout(timer);
@@ -76,9 +76,9 @@ export default {
 	initAfter: null,
 };
 // $.cui.plugin(inputformatConfig);
-// $(document).on('dom.load.inputformat', function () {
-//     $('[data-inputformat]').each(function (index, item) {
-//         let $this = $(item);
+// $(document).addEventListener('dom.load.inputformat', function () {
+//     $('[data-inputformat]').forEach(function (item, index) {
+//         let $this = $item;
 //         let data = $this.data();
 //         $this.removeAttr('data-inputformat');
 //         $this.inputformat(data);

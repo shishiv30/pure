@@ -7,6 +7,7 @@
 		}
 	}
 }
+
 [data-role*='textbox'] {
 	position: relative;
 
@@ -27,7 +28,7 @@
 
 	.input,
 	.textarea {
-		> label {
+		>label {
 			padding: 0;
 			pointer-events: none;
 			margin: 0;
@@ -44,37 +45,37 @@
 	}
 
 	.input {
-		> label {
-			left: $g1;
+		>label {
+			left: $g2;
 			right: auto;
 			top: 50%;
-			width: calc(100% - #{$g1});
+			width: calc(100% - #{$g2});
 		}
 
-		> input {
+		>input {
 			padding-top: calc(#{$g0} + #{$font-size-5});
 			padding-bottom: $g0;
 		}
 
 		&.small {
 			&.input {
-				> input {
+				>input {
 					padding-top: $font-size-5;
 					padding-bottom: 0;
 				}
 
 				&.right {
-					> input {
+					>input {
 						padding-right: $comp-size-3;
 					}
 				}
 
 				&.left {
-					> label {
+					>label {
 						left: $comp-size-3;
 					}
 
-					> input {
+					>input {
 						padding-left: $comp-size-3;
 					}
 				}
@@ -83,29 +84,29 @@
 
 		&.left,
 		&.right {
-			> label {
+			>label {
 				width: calc(100% - #{$comp-size-4});
 			}
 		}
 
 		&.right.left {
-			> label {
+			>label {
 				width: calc(100% - #{$comp-size-4} * 2);
 			}
 		}
 
 		&.right {
-			> input {
+			>input {
 				padding-right: $comp-size-4;
 			}
 		}
 
 		&.left {
-			> label {
+			>label {
 				left: $comp-size-4;
 			}
 
-			> input {
+			>input {
 				padding-left: $comp-size-4;
 			}
 		}
@@ -116,7 +117,7 @@
 		border: 1px solid $color-l1;
 
 		label {
-			padding: 0 $g0;
+			padding: 0 $g2;
 			left: 0;
 			right: 0;
 			top: $g3;
@@ -125,7 +126,7 @@
 		textarea {
 			border: none;
 			margin: $g3 0 $g0;
-			padding: 0 $g1;
+			padding: 0 $g2;
 			min-height: 6.8rem;
 			overflow: hidden;
 			width: 100%;
@@ -133,6 +134,7 @@
 	}
 
 	&.focus {
+
 		input,
 		textarea {
 			color: inherit;
@@ -140,7 +142,7 @@
 
 		.input,
 		.textarea {
-			> label {
+			>label {
 				top: $gxs;
 				right: auto;
 				transform: translateY(0);
@@ -149,7 +151,7 @@
 			}
 
 			&.large {
-				> label {
+				>label {
 					top: $g0;
 				}
 			}

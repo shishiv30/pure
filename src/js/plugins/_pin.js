@@ -63,7 +63,7 @@ export default {
 			},
 			true,
 		);
-		$(document).on('dom.resize', function () {
+		$(document).addEventListener('dom.resize', function () {
 			_setpin($.cui.scrollTop, true);
 		});
 	},

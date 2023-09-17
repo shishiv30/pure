@@ -5,9 +5,9 @@ function generateTip($parent, opt) {
 	let $container = $(opt.template);
 	$container.classList.add(opt.theme);
 	$container.classList.add(opt.placement);
-	$container.find('.tooltip-inner').html(opt.content);
+	$container.querySelectorAll('.tooltip-inner').html(opt.content);
 	$parent.append($container);
-	$container.on('click', function (e) {
+	$container.addEventListener('click', function (e) {
 		e.stopPropagation();
 	});
 	return $container;
@@ -25,7 +25,7 @@ function updateTip($this, opt, exportObj) {
 		$parent.css('position', 'relative');
 	}
 	let $container = exportObj.$container;
-	$container.find('.tooltip-inner').html(opt.content);
+	$container.querySelectorAll('.tooltip-inner').html(opt.content);
 }
 
 export default {
@@ -131,24 +131,24 @@ export default {
 		};
 	},
 	setOptionsBefore: null,
-	setOptionsAfter: function ($this, opt, exportObj) {},
+	setOptionsAfter: function ($this, opt, exportObj) { },
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
 		switch (opt.trigger) {
 			case 'click':
-				$this.on('click.' + exportObj.name, function () {
+				$this.addEventListener('click.' + exportObj.name, function () {
 					exportObj.show();
 					$(document).one('click', exportObj.hide);
 					return false;
 				});
 				break;
 			case 'focus':
-				$this.on('focusin.' + exportObj.name, exportObj.show);
-				$this.on('focusout.' + exportObj.name, exportObj.hide);
+				$this.addEventListener('focusin.' + exportObj.name, exportObj.show);
+				$this.addEventListener('focusout.' + exportObj.name, exportObj.hide);
 				break;
 			case 'hover':
-				$this.on('mouseenter.' + exportObj.name, exportObj.show);
-				$this.on('mouseleave.' + exportObj.name, exportObj.hide);
+				$this.addEventListener('mouseenter.' + exportObj.name, exportObj.show);
+				$this.addEventListener('mouseleave.' + exportObj.name, exportObj.hide);
 				break;
 		}
 		opt.onload && emit(opt.onload, $this, opt, exportObj);

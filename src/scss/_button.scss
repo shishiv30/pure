@@ -1,10 +1,12 @@
 @include comp-size('btn');
 @include comp-color('btn');
+
 .btn {
 	display: inline-block;
 	text-align: center;
 	position: relative;
 	@include singleline();
+
 	&:before {
 		transition: transform $animation-time ease-in-out;
 		content: '';
@@ -20,11 +22,13 @@
 		background-color: var(--color-bg);
 		pointer-events: none;
 	}
+
 	@include hover() {
 		&:before {
 			transform: scale(1);
 		}
 	}
+
 	&[disabled] {
 		--color: #{$color-default-l1} !important;
 		--color-bg: #{$color-bg-default-l1} !important;
@@ -33,7 +37,55 @@
 		--color-active-bg: #{$color-bg-default-l1} !important;
 		--color-active-border: #{$color-default-l1} !important;
 	}
+
 	&.loading {
 		cursor: wait !important;
+	}
+
+	font-weight: var(--btn-font-weight);
+	font-size: var(--btn-font-size);
+	height: var(--btn-size);
+	padding: var(--btn-gap) var(--g2);
+	min-width: var(--btn-size);
+	border-radius: calc(var(--btn-size) / 2);
+	width: var(--btn-width);
+	line-height: var(--btn-line-height);
+
+	color: var(--btn-color);
+	background-color: var(--btn-color-bg);
+	box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
+
+	&.active {
+		color: var(--btn-color-active);
+		background-color: var(--btn-color-active-bg);
+		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border);
+	}
+
+	&,
+	&:link,
+	&:visited {
+		color: var(--btn-color);
+		background-color: var(--btn-color-bg);
+		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
+	}
+
+	&:active,
+	&:hover {
+		color: var(--btn-color-hover);
+		background-color: var(--btn-color-bg-hover);
+		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border-hover);
+	}
+
+	&.active {
+		color: var(--btn-color-active);
+		background-color: var(--btn-color-active-bg);
+		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border);
+
+		&:active,
+		&:hover {
+			color: var(--btn-color-active-hover);
+			background-color: var(--btn-color-active-bg-hover);
+			box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border-hover);
+		}
 	}
 }

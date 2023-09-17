@@ -1,61 +1,79 @@
+@include comp-size('checkbox');
+@include comp-size('radio');
+
+.checkbox {
+	font-weight: var(--checkbox-font-weight);
+	font-size: var(--checkbox-font-size);
+	height: var(--checkbox-size);
+	padding: var(--checkbox-gap) var(--g2);
+	min-width: var(--checkbox-size);
+	border-radius: calc(var(--checkbox-size) / 2);
+	width: var(--checkbox-width);
+	line-height: var(--checkbox-line-height);
+}
+
+.radio {
+	font-weight: var(--radio-font-weight);
+	font-size: var(--radio-font-size);
+	height: var(--radio-size);
+	padding: var(--radio-gap) var(--g2);
+	min-width: var(--radio-size);
+	border-radius: calc(var(--radio-size) / 2);
+	width: var(--radio-width);
+	line-height: var(--radio-line-height);
+}
+
 .checkbox,
 .radio {
 	display: inline-block;
 	white-space: nowrap;
 	min-width: fit-content;
+
 	label {
 		cursor: pointer;
 		margin-right: $g1;
 		user-select: none;
-		> input {
+
+		>input {
 			display: none;
 		}
-		> span {
-			@include form-default-1();
+
+		>span {
 			display: inline-flex;
 			align-items: center;
+
 			&:before {
 				@include icon();
 				margin-right: $g0;
 			}
 		}
-		input:disabled + span {
+
+		input:disabled+span {
 			color: $color-l1;
 		}
+
 		&:last-of-type {
 			margin-right: 0;
-		}
-	}
-	&.small {
-		label {
-			> span {
-				@include form-small();
-			}
-		}
-	}
-	&.large {
-		label {
-			> span {
-				@include form-large-1();
-			}
 		}
 	}
 }
 
 .checkbox {
-	input + span:before {
+	input+span:before {
 		content: $icon-square-o;
 	}
-	input:checked + span:before {
+
+	input:checked+span:before {
 		content: $icon-check-square;
 	}
 }
 
 .radio {
-	input + span:before {
+	input+span:before {
 		content: $icon-circle-thin;
 	}
-	input:checked + span:before {
+
+	input:checked+span:before {
 		content: $icon-check-circle;
 	}
 }

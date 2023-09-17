@@ -9,7 +9,7 @@ export default {
 		scrollafter: null,
 	},
 	init: function ($this, opt, exportObj) {
-		$this.on('click', function (e) {
+		$this.addEventListener('click', function (e) {
 			opt.scrollbefore && emit(opt.scrollbefore, $this, opt, exportObj);
 			$.scrollTo(opt.target || $this.attr('href'), opt.position);
 			opt.scrollafter && emit(opt.scrollafter, $this, opt, exportObj);
@@ -24,9 +24,9 @@ export default {
 	destroyBefore: null,
 };
 // $.cui.plugin(scrolltoConfig);
-// $(document).on('dom.load.scrollto', function () {
-//     $('[data-scrollto]').each(function (index, item) {
-//         let $this = $(item);
+// $(document).addEventListener('dom.load.scrollto', function () {
+//     $('[data-scrollto]').forEach(function (item, index) {
+//         let $this = $item;
 //         let data = $this.data();
 //         $this.scrollto(data);
 //         $this.removeAttr('data-scrollto');
@@ -34,9 +34,9 @@ export default {
 //     });
 // });
 
-// $(document).on('dom.scroll.scrollSpy', function () {
+// $(document).addEventListener('dom.scroll.scrollSpy', function () {
 //     let status = $.cui_state;
-//     $('[data-scrollspy]').each(function () {
+//     $('[data-scrollspy]').forEach(function () {
 //         let $item = $(this);
 //         let offset = $($item.attr('data-offsettop'));
 //         let target = $($item.data('target'));

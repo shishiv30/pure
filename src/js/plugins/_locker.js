@@ -28,9 +28,9 @@ export default {
 	destroyBefore: null,
 };
 // $.cui.plugin(lockerConfig);
-// $(document).on('dom.load.locker', function () {
-//     $('[data-locker]').each(function (index, item) {
-//         let $this = $(item);
+// $(document).addEventListener('dom.load.locker', function () {
+//     $('[data-locker]').forEach(function (item, index) {
+//         let $this = $item;
 //         let data = $this.data();
 //         $this.removeAttr('data-locker');
 //         $this.locker(data);

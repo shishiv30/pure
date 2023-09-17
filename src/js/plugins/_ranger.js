@@ -18,7 +18,7 @@ export default {
 		input: [],
 	},
 	init: function ($this, opt, exportObj) {
-		let $input = $this.find('input');
+		let $input = $this.querySelectorAll('input');
 		let $target = opt.target ? $(opt.target) : null;
 		if (!opt.connect) {
 			opt.connect = [true];
@@ -29,7 +29,7 @@ export default {
 		if (!opt.start) {
 			opt.start = [];
 			$input.each(function () {
-				opt.start.push($(this).val());
+				opt.start.push($(this).value);
 			});
 		}
 		let $ele = $('<div></div>');
@@ -67,14 +67,14 @@ export default {
 			});
 			return result;
 		};
-		$input.on('change', function () {
+		$input.addEventListener('change', function () {
 			let values = [];
 			$input.each(function () {
-				values.push($(this).val());
+				values.push($(this).value);
 			});
 			exportObj.set(values);
 		});
-		exportObj.range.on('update', function (e, t) {
+		exportObj.range.addEventListener('update', function (e, t) {
 			opt.changebefore && emit(opt.changebefore, $this, opt, exportObj, e, t);
 			$input.each(function (index) {
 				$(this).val(e[index]).trigger('input');

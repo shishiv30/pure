@@ -11,7 +11,7 @@ export default {
 		target: null,
 	},
 	init: function ($el, opt, exportObj) {
-		let $target = select(opt.target);
+		let $target = document.querySelector(opt.target);
 
 		exportObj.show = function () {
 			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);

@@ -106,15 +106,15 @@ export default {
 			let html = getItemHtml(opt.template, item);
 			let $tmp = $('<li>' + html + '</li>');
 			if (opt.onclick) {
-				$tmp.on('click', function () {
+				$tmp.addEventListener('click', function () {
 					emit(opt.onclick, $tmp, item);
 				});
 			}
 			return $tmp;
 		};
 		let _loadImage = function () {
-			$this.find('li').each(function (index, item) {
-				let $item = $(item);
+			$this.querySelectorAll('li').forEach(function (item, index) {
+				let $item = $item;
 				if ($item.is('flow-loaded')) {
 					return;
 				}
@@ -124,15 +124,15 @@ export default {
 					offsetTop < positionInfo.scrollBottom &&
 					offsetBottom > positionInfo.scrollTop
 				) {
-					let $img = $item.find('img');
+					let $img = $item.querySelectorAll('img');
 					let src = $img.data('src');
 					if (src) {
 						$item.classList.add('flow-loading');
-						$img.on('load', function () {
+						$img.addEventListener('load', function () {
 							$item.classList.remove('flow-loading');
 							$item.classList.add('flow-loaded');
 						});
-						$img.on('error', function () {
+						$img.addEventListener('error', function () {
 							$item.classList.remove('flow-loading');
 							$item.classList.add('flow-error');
 						});
@@ -145,8 +145,8 @@ export default {
 		};
 		let _moveByScroll = function (isScrollDown) {
 			let verticalBottom = $this.classList.contains('verticalBottom');
-			let heightList = $this.find('> ul').map(function (index, item) {
-				return $(item).outerHeight();
+			let heightList = $this.querySelectorAll('> ul').map(function (item, index) {
+				return $item.outerHeight();
 			});
 			let needMove = false;
 			let minHeight = $this.height() - Math.min.apply(this, heightList);
@@ -171,16 +171,16 @@ export default {
 				if (isScrollDown) {
 					$this.classList.remove('scrollUP');
 					let containerHeight = $this.height();
-					$this.children('ul').each(function (index, item) {
-						let $item = $(item);
+					$this.children('ul').forEach(function (item, index) {
+						let $item = $item;
 						let offsetY = containerHeight - $item.height();
 						$item.css('transform', 'translateY(' + offsetY + 'px)');
 					});
 					$this.classList.add('verticalBottom');
 				} else {
 					$this.classList.add('scrollUP');
-					$this.children('ul').each(function (index, item) {
-						let $item = $(item);
+					$this.children('ul').forEach(function (item, index) {
+						let $item = $item;
 						$item.css('transform', 'translateY(' + 0 + ')');
 					});
 					$this.classList.remove('verticalBottom');
@@ -189,7 +189,7 @@ export default {
 		};
 		let _render = function (data) {
 			let ulList = _createColumns(opt.colCount);
-			$.each(data, function (index, item) {
+			$.each(data, function (item, index) {
 				let $li = _createItemInColumns(item);
 				let $ul = _getSmallestColumn(ulList);
 				if (item.height && item.width) {

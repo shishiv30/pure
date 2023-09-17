@@ -69,7 +69,7 @@ export default {
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
 		if (!opt.once) {
-			$(document).on('dom.load.transition', function () {
+			$(document).addEventListener('dom.load.transition', function () {
 				if ($this.attr('data-to') != opt.to) {
 					opt.to = $this.attr('data-to');
 					exportObj.fresh();

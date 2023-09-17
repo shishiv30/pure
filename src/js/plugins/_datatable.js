@@ -69,7 +69,7 @@ export default {
 				}
 			}
 			_initalTbody();
-			if (!$tfoot.find('td').is(':hidden')) {
+			if (!$tfoot.querySelectorAll('td').is(':hidden')) {
 				_initalTfoot();
 			}
 		};
@@ -90,11 +90,11 @@ export default {
 							'</button>',
 						);
 						$link.data('column', column);
-						$link.on('click', function () {
+						$link.addEventListener('click', function () {
 							let $this = $(this);
 							let isDesc = $this.classList.contains('desc');
 							_sort($this.data('column'), isDesc);
-							$thead.find('.active').classList.remove('active');
+							$thead.querySelectorAll('.active').classList.remove('active');
 							$this.toggleClass('desc').classList.add('active');
 						});
 						$td.append($link);
@@ -156,13 +156,13 @@ export default {
 					'</button></td>',
 				);
 				$tbody
-					.find('tr')
+					.querySelectorAll('tr')
 					.eq(opt.maxcount - 1)
 					.nextAll()
 					.hide();
-				$link.on('click', function () {
+				$link.addEventListener('click', function () {
 					$tbody
-						.find('tr')
+						.querySelectorAll('tr')
 						.eq(opt.maxcount - 1)
 						.nextAll()
 						.show();

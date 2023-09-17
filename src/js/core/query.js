@@ -1,17 +1,8 @@
-//select All
-const selectAll = function (query, selector) {
-	if (selector) {
-		return selector.querySelectorAll(query);
-	} else {
-		return document.querySelectorAll(query);
+const hasInput = function ($input) {
+	let defaultValue = $input.defaultValue;
+	if ($input.value && $input.value != defaultValue) {
+		return true;
 	}
-};
-//select One
-const select = function (query, selector) {
-	if (selector) {
-		return selector.querySelector(query);
-	} else {
-		return document.querySelector(query);
-	}
-};
-export { selectAll, select };
+	return false;
+}
+export { hasInput };
