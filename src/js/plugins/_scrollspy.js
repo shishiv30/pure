@@ -42,12 +42,12 @@ export default {
 				spyobserver = new window.IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
-							activeLink($this, $(entry.target).attr('id'));
+							activeLink($this, $(entry.target).id);
 						}
 					});
 				}, options);
 				$this.querySelectorAll('[href^="#"]').forEach(function () {
-					let item = $($(this).attr('href'));
+					let item = $($(this).href);
 					if (item && item.length) {
 						spyobserver.observe(item[0]);
 					}

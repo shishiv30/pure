@@ -80,7 +80,7 @@ export default {
 //     $('[data-inputformat]').forEach(function (item, index) {
 //         let $this = $item;
 //         let data = $this.data();
-//         $this.removeAttr('data-inputformat');
+//         $this.remov.dataset.inputformat;
 //         $this.inputformat(data);
 //         $this.removeAttr('data-inputformat-load', '');
 //     });

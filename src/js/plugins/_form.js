@@ -1,9 +1,11 @@
 //validate for form submit
-import { emit } from '../core/event.js';
+import { emit, trigger } from '../core/event.js';
 import Plugin from '../core/plugin.js';
 export default {
 	name: 'form',
-	defaultOpt: null,
+	defaultOpt: {
+		onsubmit: null,
+	},
 	initBefore: null,
 	init: function ($el, opt, exportObj) {
 		exportObj.isValid = function () {
@@ -19,7 +21,7 @@ export default {
 				if (!isValide) {
 					isPassed = false;
 					if (!foucsElement) {
-						foucsElement = $item;
+						foucsElement = item;
 					}
 					return false;
 				}
@@ -31,87 +33,102 @@ export default {
 		};
 		exportObj.getValue = function () {
 			let obj = {};
-			$el.querySelectorAll(':input[type="tel"]').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="tel"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll(':input[type="email"]').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="email"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll(':input[type="text"]').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="text"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll(':input[type="number"]').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="number"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll(':password').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="password"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll(':hidden').forEach(function (item, index) {
-				let name = $item.attr('name');
+			$el.querySelectorAll('input[type="hidden"]').forEach(function (item, index) {
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
 			$el.querySelectorAll('textarea').forEach(function (item, index) {
-				let name = $item.attr('name');
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
 			$el.querySelectorAll('select').forEach(function (item, index) {
-				let name = $item.attr('name');
+				let name = item.name;
 				if (name) {
-					obj[name] = $item.value;
+					obj[name] = item.value;
 				}
 			});
 			$el.querySelectorAll('.checkbox').forEach(function (item, index) {
 				let name;
 				let checkbox;
 				let checkboxList;
-				if ($item.data('type') == 'single') {
-					checkbox = $item.querySelectorAll(':checkbox').eq(0);
+				if (item.dataset.type == 'single') {
+					checkbox = item.querySelectorAll(':checkbox');
 					if (checkbox.length) {
-						name = checkbox.attr('name');
+						name = checkbox.name;
 						if (checkbox.is(':checked')) {
-							obj[name] = checkbox.attr('value') ? checkbox.attr('value') : true;
+							obj[name] = checkbox.value ? checkbox.value : true;
 						} else {
-							obj[name] = checkbox.attr('value') ? '' : false;
+							obj[name] = checkbox.value ? '' : false;
 						}
 					}
 				} else {
-					checkboxList = $item.querySelectorAll(':checkbox:checked');
-					name = checkboxList.attr('name');
+					checkboxList = item.querySelectorAll(':checked');
+					name = checkboxList.name;
 					if (name) {
 						obj[name] = $.map(checkboxList, function (item) {
-							return $item.value;
+							return item.value;
 						});
 					}
 				}
 			});
 			$el.querySelectorAll('.radio').forEach(function (item, index) {
-				let radioItem = $item.querySelectorAll(':radio:checked');
-				let name = radioItem.attr('name');
+				let radioItem = item.querySelectorAll(':checked');
+				let name = radioItem.name;
 				if (name) {
 					obj[name] = $(radioItem).value;
 				}
 			});
 			return obj;
 		};
+		$el.addEventListener("submit", (event) => {
+			event.preventDefault();
+			let valide;
+			try {
+				valide = exportObj.isValid();
+			} catch (e) {
+				console.error(e);
+			}
+			if (!valide) {
+				return;
+			}
+			let payload = exportObj.getValue();
+			trigger(opt.onsubmit, payload);
+		});
+
 		return exportObj;
 	},
 	setOptionsBefore: null,
@@ -122,9 +139,9 @@ export default {
 // $.cui.plugin(formConfig);
 // $(document).addEventListener('dom.load', function () {
 //     $('[data-form]').forEach(function (item, index) {
-//         let $el = $item;
+//         let $el = item;
 //         let data = $el.data();
-//         $el.removeAttr('data-form');
+//         $el.remov.dataset.form;
 //         $el.form(data);
 //         $el.attr('data-form-load', '');
 //     });

@@ -81,8 +81,8 @@
 //     };
 //     $(document).addEventListener('click', '[data-link]', function() {
 //         let $this = $(this);
-//         let type = $this.attr('data-link');
-//         let target = $this.attr('data-target');
+//         let type = $this.dataset.link;
+//         let target = $this.dataset.target;
 //         switch (type) {
 //             case 'facebook':
 //                 $this.facebooklink().go();
@@ -119,11 +119,11 @@
 //                 $this.utmlink().go();
 //                 return false;
 //             default:
-//                 $.sendRequest($this.attr('href'), {
+//                 $.sendRequest($this.href, {
 //                     type: 'redirect'
 //                 });
 //                 break;
 //         }
-//         $this.removeAttr('data-link');
+//         $this.remov.dataset.link;
 //     });
 //

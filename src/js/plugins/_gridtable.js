@@ -16,7 +16,7 @@ export default {
 			let columns = $key.map(function (item, index) {
 				return {
 					text: $item.text() || '',
-					colspan: $item.attr('colspan') * 1 || 1,
+					colspan: $item.attributes.colspan * 1 || 1,
 				};
 			});
 			for (let i = 0; i < columns.length; i++) {
@@ -60,7 +60,7 @@ export default {
 // $(document).addEventListener('dom.load', function () {
 //     $('[data-gridtable]').forEach(function (item, index) {
 //         let data = $item.data();
-//         $item.removeAttr('data-gridtable');
+//         $item.remov.dataset.gridtable;
 //         $item.gridtable(data);
 //         $item.attr('data-gridtable-load', '');
 //     });

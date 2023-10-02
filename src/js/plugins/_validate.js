@@ -1,6 +1,7 @@
 import { emit } from '../core/event.js';
 import isNumber from 'lodash/isNumber';
-import validate from '../core/validate.js';
+import { isPhoneNumber, isEmail, isZipcode, isPrice } from '../core/validate.js';
+import { formatTrim } from '../core/format.js';
 let customValidate = {
 	max: function ($element) {
 		let value = $element.value;
@@ -43,8 +44,8 @@ let _passValidate = function ($element, isRequried) {
 		delete $element.closest('.input').dataset.tooltip;
 	}
 	$element.closest('.input').classList.remove('has-error');
-	if ($element.is('[id]')) {
-		$('[for=' + $element.attr('id') + ']').classList.remove('error-text');
+	if ($element.id) {
+		document.querySelector('[for=' + $element.id + ']').classList.remove('error-text');
 	}
 	if (isRequried) {
 		$element.closest('.input').classList.add('has-success');
@@ -55,7 +56,7 @@ let _passValidate = function ($element, isRequried) {
 	}
 };
 let _validate = function ($element, type, errorText, addition) {
-	let value = $.trim($element.value);
+	let value = formatTrim($element.value);
 	let isRequired = type.indexOf('required') >= 0;
 	let message = '';
 	for (let i = 0; i < type.length; i++) {
@@ -68,28 +69,28 @@ let _validate = function ($element, type, errorText, addition) {
 				}
 				break;
 			case 'email':
-				if (value && !validate.isEmail(value)) {
+				if (value && !isEmail(value)) {
 					message = errorText || 'Invalid Email.';
 					_showValidate($element, message);
 					return false;
 				}
 				break;
 			case 'phone':
-				if (value && !validate.isPhone(value)) {
+				if (value && !isPhoneNumber(value)) {
 					message = errorText || 'Invalid Phone Number';
 					_showValidate($element, message);
 					return false;
 				}
 				break;
 			case 'zipcode':
-				if (value && !validate.isZipcode(value)) {
+				if (value && !isZipcode(value)) {
 					message = errorText || 'Invalid Zipcode';
 					_showValidate($element, message);
 					return false;
 				}
 				break;
 			case 'price':
-				if (value && !validate.isPrice(value)) {
+				if (value && !isPrice(value)) {
 					message = errorText || 'Invalid Price';
 					_showValidate($element, message);
 					return false;
@@ -117,7 +118,7 @@ export default {
 	initBefore: null,
 	init: function ($el, opt, exportObj) {
 		opt.type = opt.type ? opt.type.split(',') : [];
-		$el.addEventListener('change.validate', function () {
+		$el.addEventListener('change', function () {
 			_validate($el, opt.type, opt.errortext, opt.addition);
 		});
 		exportObj.isValid = function () {
@@ -128,12 +129,12 @@ export default {
 		options.validate = options.validate ? options.validate.split(',') : [];
 	},
 	setOptionsAfter: function ($el, opt, exportObj) {
-		$el.off('change.validate').addEventListener('change.validate', function () {
+		$el.off('change').addEventListener('change', function () {
 			_validate($el, opt.type, opt.errortext, opt.addition);
 		});
 	},
 	destroyBefore: function ($el, opt, exportObj) {
-		$el.off('change.validate');
+		$el.off('change');
 	},
 	initAfter: null,
 };

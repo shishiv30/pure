@@ -168,7 +168,7 @@ class Page extends Plugin {
 						return;
 					}
 					item.setAttribute('loaded', true);
-					types = types.trim(' ').split(/\s+/g);
+					types = types.trim().split(/\s+/g);
 					types.forEach((type) => {
 						let plugin = Plugin.getPlugin(type);
 						if (plugin) {

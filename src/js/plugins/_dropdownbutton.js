@@ -45,7 +45,7 @@ export default {
 //     $('[data-dropdownbutton]').forEach(function (item, index) {
 //         let $this = $item;
 //         let data = $this.data();
-//         $this.removeAttr('data-dropdownbutton');
+//         $this.remov.dataset.dropdownbutton;
 //         $this.dropdownbutton(data);
 //         $this.attr('data-dropdownbutton-load', '');
 //     });

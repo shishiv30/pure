@@ -11,7 +11,7 @@ export default {
 	init: function ($this, opt, exportObj) {
 		$this.addEventListener('click', function (e) {
 			opt.scrollbefore && emit(opt.scrollbefore, $this, opt, exportObj);
-			$.scrollTo(opt.target || $this.attr('href'), opt.position);
+			$.scrollTo(opt.target || $this.href, opt.position);
 			opt.scrollafter && emit(opt.scrollafter, $this, opt, exportObj);
 			return e.preventDefault();
 		});
@@ -29,7 +29,7 @@ export default {
 //         let $this = $item;
 //         let data = $this.data();
 //         $this.scrollto(data);
-//         $this.removeAttr('data-scrollto');
+//         $this.remov.dataset.scrollto;
 //         $this.attr('data-scrollto-load', '');
 //     });
 // });
@@ -38,7 +38,7 @@ export default {
 //     let status = $.cui_state;
 //     $('[data-scrollspy]').forEach(function () {
 //         let $item = $(this);
-//         let offset = $($item.attr('data-offsettop'));
+//         let offset = $($item.dataset.offsettop);
 //         let target = $($item.data('target'));
 //         let top = offset ? (status.scrollTop + offset.height()) : status.scrollTop;
 //         top += 50;

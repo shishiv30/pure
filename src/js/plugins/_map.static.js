@@ -1,11 +1,11 @@
 import { emit } from '../core/event.js';
 function loadImg(img) {
 	let $img = $(img);
-	let imgSrc = $img.attr('data-map');
+	let imgSrc = $img.dataset.map;
 	if (imgSrc) {
 		$.loadImg($img, imgSrc);
 	}
-	$img.removeAttr('data-map');
+	$img.remov.dataset.map;
 }
 function setImg(img, src) {
 	let $img = $(img);
@@ -378,7 +378,7 @@ export default {
 //     $('[data-gsmap]').forEach(function (item, index) {
 //         let $this = $item;
 //         let data = $this.data();
-//         $this.removeAttr('data-gsmap');
+//         $this.remov.dataset.gsmap;
 //         $this.gsmap(data);
 //         $this.attr('data-gsmap-load', '');
 //     });

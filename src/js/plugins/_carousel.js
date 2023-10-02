@@ -1,11 +1,11 @@
 import { emit } from '../core/event.js';
 function loadImg(img) {
 	let $img = $(img);
-	let imgSrc = $img.attr('data-src');
+	let imgSrc = $img.dataset.src;
 	if (imgSrc) {
 		$.loadImg($img, imgSrc);
 	}
-	$img.removeAttr('data-src');
+	$img.remov.dataset.src;
 }
 
 function _updateWidth($this, $scroller, opt) {

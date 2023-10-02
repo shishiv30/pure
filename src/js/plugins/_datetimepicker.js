@@ -52,7 +52,7 @@ export default {
 // $(document).addEventListener('focus', '[data-picker]', function () {
 //     let $this = $(this);
 //     let opt = $this.data();
-//     $this.removeAttr('data-picker');
+//     $this.remov.dataset.picker;
 //     $this.picker(opt);
 //     $this.attr('data-picker-load', '');
 // });

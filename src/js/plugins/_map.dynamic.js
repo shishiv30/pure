@@ -503,7 +503,7 @@ export default {
 //         .each(function (item, index) {
 //             let $this = $item;
 //             let data = $this.data();
-//             $this.removeAttr('data-gmap');
+//             $this.remov.dataset.gmap;
 //             $this.onscroll({
 //                 callback: function () {
 //                     $this.gmap(data);

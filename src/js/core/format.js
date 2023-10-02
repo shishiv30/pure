@@ -35,7 +35,12 @@ const formatPrice = function (value) {
 		return (value / 1000000).toFixed(1) + 'M';
 	}
 };
+const formatTrim = function (value) {
+	if (!value) return value;
+	return value.replace(/^\s+|\s+$/g, '');
+}
 export {
+	formatTrim,
 	formatPhone,
 	formatCurrency,
 	formatNumber,

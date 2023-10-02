@@ -32,7 +32,7 @@ export default {
 //     $('[data-locker]').forEach(function (item, index) {
 //         let $this = $item;
 //         let data = $this.data();
-//         $this.removeAttr('data-locker');
+//         $this.remov.dataset.locker;
 //         $this.locker(data);
 //         $this.attr('data-locker-load', '');
 //     });

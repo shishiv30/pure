@@ -20,7 +20,7 @@ import shifter from './_shifter.js';
 import textbox from './_textbox.js';
 // import tooltip from './_tooltip.js';
 // import transition from './_transition.js';
-// import validate from './_validate.js';
+import validate from './_validate.js';
 // import view from './_view.js';
 // import carousel from './_carouselF.js';
 // import scrollspy from './_scrollspy.js';
@@ -49,7 +49,7 @@ export default {
 	textbox,
 	// tooltip,
 	// transition,
-	// validate,
+	validate,
 	// view,
 	// carousel,
 	// scrollspy,
