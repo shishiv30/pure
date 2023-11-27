@@ -26,6 +26,7 @@ export default {
                 } else {
                     item.classList.add('active');
                 }
+                
             });
             item.addEventListener('click', (e) => {
                 exportObj.toggle(e.target);

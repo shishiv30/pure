@@ -21,6 +21,7 @@ import textbox from './_textbox.js';
 // import tooltip from './_tooltip.js';
 // import transition from './_transition.js';
 import validate from './_validate.js';
+import player from './_player.js';
 // import view from './_view.js';
 // import carousel from './_carouselF.js';
 // import scrollspy from './_scrollspy.js';
@@ -50,6 +51,7 @@ export default {
 	// tooltip,
 	// transition,
 	validate,
+	player,
 	// view,
 	// carousel,
 	// scrollspy,

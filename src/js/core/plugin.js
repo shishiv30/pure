@@ -105,13 +105,13 @@ class Plugin extends Base {
 	}
 
 	initBefore($el, options, exportObj) {
-		logInfo('init');
+		logInfo('init' + (options && options.role ? ' ' + options.role : ''));
 		if (this.setting.initBefore) {
 			trigger(this.setting.initBefore, $el, options, exportObj);
 		}
 	}
 	initAfter($el, options, exportObj) {
-		logInfo('inited');
+		logInfo('inited' + (options && options.role ? ' ' + options.role : ''));
 		if (this.setting.initAfter) {
 			trigger(this.setting.initAfter, $el, options, exportObj);
 		}
