@@ -41,7 +41,6 @@ module.exports = () => {
 					test: /\.html$/i,
 					loader: 'html-loader',
 					options: {
-						interpolate: true,
 						sources: {
 							list: [
 								'...',
