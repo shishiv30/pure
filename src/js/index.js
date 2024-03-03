@@ -1,6 +1,6 @@
-import Page from './core/page';
-import plugins from './plugins';
-import Plugin from './core/plugin';
+import Page from './core/page.js';
+import plugins from './plugins/index.js';
+import Plugin from './core/plugin.js';
 
 export default function (frame) {
 	const root = frame || window;

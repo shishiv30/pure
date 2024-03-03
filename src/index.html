@@ -10,8 +10,42 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 
 <body id="body">
+	<section class="section large inline bg ">
+		<div class="fixed fixed-max-xs panel large inline corner-1 grid grid-xs-1">
+			<h1 class="f3">Creating a UI framework has several important reasons:</h1>
+			<div>Maintaining overall consistency in the system's interface: A UI framework can define a set of unified
+				design specifications and styles, ensuring consistency in the appearance and behavior of the entire
+				system's
+				user interface. This helps enhance user experience, as users can easily find similar elements and
+				interaction patterns across different pages or modules.</div>
+			<div>Facilitating the construction of a complete set of SEO-compliant semantic HTML structures: UI
+				frameworks
+				typically follow best practices for HTML structure and the use of semantic tags, which contributes to
+				improving the website's search engine optimization (SEO) performance. Search engines find it easier to
+				understand and index wsemantic HTML structures, thus UI frameworks can assist websites in achieving
+				better
+				rankings.</div>
+			<div>Providing users with consistent and intuitive interaction habits: By defining consistent user
+				interaction
+				habits through the UI framework, users can more easily learn and remember how to interact with the
+				system.
+				This consistency can reduce user confusion and frustration, thereby increasing user satisfaction and
+				efficiency in using the system.</div>
+			<div>Controlling variables to facilitate uniform customization of personalized themes and extension content:
+				A
+				UI framework can offer a customizable set of themes and styles, enabling users to easily customize the
+				appearance and style of the interface to fit different brands or user needs. By controlling variables,
+				such
+				as using pre-defined style classes or components, developers can more easily extend and customize the UI
+				framework while maintaining system stability and consistency. This flexibility enables the UI framework
+				to
+				adapt to different designs and requirements, supporting the system's scalability and customization.
+			</div>
+		</div>
+	</section>
 	<section class="section large inline bg active">
 		<div class="fixed fixed-max-xs panel large inline corner-1 grid grid-xs-1">
 			<h2 class="f3">Button</h2>
@@ -358,9 +392,25 @@
 	</section>
 </body>
 <script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker
+				.register('./sw.js')
+				.then((registration) => {
+					console.log('SW registered: ', registration);
+				})
+				.catch((registrationError) => {
+					console.log('SW registration failed: ', registrationError);
+				});
+		});
+	}
+</script>
+<script>
 	window.submit = function (e) {
 		console.log(e);
 	}
+
+
 </script>
 
 </html>

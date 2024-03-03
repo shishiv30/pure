@@ -1,5 +1,5 @@
 import collapse from './_collapse.js';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 
 // import datatable from './_datatable.js';
 import dialog from './_dialog.js';

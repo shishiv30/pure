@@ -1,5 +1,5 @@
 import { select } from '../core/query.js';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce.js';
 export default {
     name: 'shifter',
     init: function ($el, opt, exportObj) {

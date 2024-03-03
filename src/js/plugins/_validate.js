@@ -1,5 +1,5 @@
 import { emit } from '../core/event.js';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 import { isPhoneNumber, isEmail, isZipcode, isPrice } from '../core/validate.js';
 import { formatTrim } from '../core/format.js';
 let customValidate = {

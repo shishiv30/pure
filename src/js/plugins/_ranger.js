@@ -1,5 +1,5 @@
 import { emit } from '../core/event.js';
-import isNumber from 'lodash/isNumber';
+import isNumber from 'lodash/isNumber.js';
 
 export default {
 	name: 'ranger',

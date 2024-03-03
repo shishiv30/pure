@@ -2,8 +2,8 @@ import Plugin from './plugin.js';
 import { logInfo, logError } from './log.js';
 import { isMobile } from './validate.js';
 import { emit, on } from './event.js';
-import throttle from 'lodash/throttle';
-import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle.js';
+import debounce from 'lodash/debounce.js';
 
 class Page extends Plugin {
 	constructor(ctx) {

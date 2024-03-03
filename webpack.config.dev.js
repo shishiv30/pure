@@ -1,12 +1,11 @@
-const baseConfig = require('./webpack.config.base.js');
-const { merge } = require('webpack-merge');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+import baseConfig from './webpack.config.base.js';
+import { merge } from 'webpack-merge';
 
-module.exports = (env) => {
+export default (env) => {
 	var config = baseConfig(env);
 	return merge(config, {
 		mode: 'development',
 		devtool: 'source-map',
-		// plugins: [new BundleAnalyzerPlugin()],
+		stats: { warnings: false },
 	});
 };

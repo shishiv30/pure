@@ -1,13 +1,31 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { env } = require('process');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//change to import fro above code
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { env } from 'process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import pageSettings from './webpack.config.base.page.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-module.exports = () => {
+
+const entry = {};
+const plugins = [
+	new MiniCssExtractPlugin({
+		filename: '[name].min.css',
+		chunkFilename: '[id].css',
+	}),
+];
+pageSettings.pages.forEach((page) => {
+	entry[page.name] = {
+		import: page.entry,
+	};
+	plugins.push(new HtmlWebpackPlugin(page));
+});
+export default () => {
 	console.log(env);
 	return {
-		entry: { cui: './src/index.js' },
+		entry: entry,
 		module: {
 			rules: [
 				{
@@ -55,17 +73,6 @@ module.exports = () => {
 				},
 			],
 		},
-		plugins: [
-			new MiniCssExtractPlugin({
-				filename: '[name].min.css',
-				chunkFilename: '[id].css',
-			}),
-			new HtmlWebpackPlugin({
-				name: 'doc',
-				filename: 'index.html',
-				template: './src/index.html',
-			}),
-			// new BundleAnalyzerPlugin(),
-		],
+		plugins: plugins,
 	};
 };

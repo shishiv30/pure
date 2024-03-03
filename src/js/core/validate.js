@@ -1,5 +1,5 @@
 //get function is inter from loaddash
-import isInteger from 'lodash/isInteger';
+import isInteger from 'lodash/isInteger.js';
 
 const isMobile = function (userAgent) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
