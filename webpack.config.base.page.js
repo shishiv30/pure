@@ -3,18 +3,20 @@ const favicon = './src/assets/img/logo.png';
 const pageConfig = {
 	pages: [
 		{
+			name: 'sap',
+		},
+		{
 			name: 'index',
-			filename: 'index.html',
-		}
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {
 	if (page.name) {
 		if (!page.entry) {
-			page.entry = `./src/${page.name}.js`;
+			page.entry = `./src/pages/${page.name}/index.js`;
 		}
 		if (!page.template) {
-			page.template = `./src/${page.name}.html`;
+			page.template = `./src/pages/${page.name}/index.html`;
 		}
 		if (!page.chunks) {
 			page.chunks = [page.name];
