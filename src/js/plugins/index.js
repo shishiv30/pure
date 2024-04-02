@@ -1,11 +1,10 @@
 import collapse from './_collapse.js';
-import isNumber from 'lodash/isNumber.js';
 
 // import datatable from './_datatable.js';
 import dialog from './_dialog.js';
 import form from './_form.js';
 // import gridtable from './_gridtable.js';
-// import header from './_header.js';
+import header from './_header.js';
 // import inputformat from './_inputformat.js';
 // import links from './_links.js';
 import lazyload from './_lazyload.js';
@@ -35,7 +34,7 @@ export default {
 	// dropdownbutton,
 	form,
 	// gridtable,
-	// header,
+	header,
 	// inputformat,
 	// links,
 	lazyload,

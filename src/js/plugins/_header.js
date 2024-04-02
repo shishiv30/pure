@@ -1,3 +1,5 @@
+import { emit, off, on } from '../core/event.js';
+
 export default {
 	name: 'header',
 	defaultOpt: {
@@ -29,7 +31,6 @@ export default {
 		$overlay.addEventListener('click', _hide);
 		//nav
 		$dropdown.each(function (list) {
-			//translate to pure js verison without jquery
 			let $arrow = document.createElement('button');
 			$arrow.setAttribute('type', 'button');
 			$arrow.setAttribute('class', 'header-expand');
@@ -51,7 +52,7 @@ export default {
 			});
 			list.append($arrow);
 		});
-		$swtichLink.addEventListener('click', function () {
+		$swtichLink.addEventListener('click', () => {
 			if ($body.classList.contains('body-expand-header')) {
 				_hide();
 			} else {
@@ -62,8 +63,8 @@ export default {
 		exportObj.hide = _hide;
 		exportObj.close = _close;
 		exportObj.open = _open;
-		$(document).addEventListener('dom.resize.header' + opt.id, _hide);
-		$(document).addEventListener('dom.scroll.header' + opt.id, function () {
+		on('dom.resize.header' + opt.id, _hide);
+		on('dom.scroll.header' + opt.id, () => {
 			let status = $.cui_state;
 			if (status.isScrollDown && status.scrollTop > 500) {
 				_close();
@@ -77,7 +78,7 @@ export default {
 	initBefore: null,
 	initAfter: null,
 	destroyBefore: function ($this, opt) {
-		$(document).off('dom.resize.header' + opt.id);
-		$(document).off('dom.scroll.header' + opt.id);
+		off('dom.resize.header' + opt.id);
+		off('dom.scroll.header' + opt.id);
 	},
 };

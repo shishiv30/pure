@@ -69,7 +69,7 @@ export default {
 	initBefore: null,
 	initAfter: function ($this, opt, exportObj) {
 		if (!opt.once) {
-			$(document).addEventListener('dom.load.transition', function () {
+			on('dom.load.transition', function () {
 				if ($this.dataset.to != opt.to) {
 					opt.to = $this.dataset.to;
 					exportObj.fresh();

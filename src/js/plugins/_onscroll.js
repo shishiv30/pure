@@ -1,4 +1,4 @@
-import { emit } from '../core/event.js';
+import { emit, off, on } from '../core/event.js';
 export default {
 	name: 'onscroll',
 	defaultOpt: {
@@ -22,12 +22,12 @@ export default {
 					emit(opt.callback, $this, opt, exportObj);
 					if (opt.once) {
 						opt.callback = null;
-						$(document).off(eventName);
+						off(eventName);
 					}
 				}
 			}
 		};
-		$(document).on(eventName, function () {
+		on(eventName, function () {
 			_checkScreen();
 		});
 		_checkScreen(true);

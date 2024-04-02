@@ -138,7 +138,7 @@ export default {
 			case 'click':
 				$this.addEventListener('click.' + exportObj.name, function () {
 					exportObj.show();
-					$(document).one('click', exportObj.hide);
+					one('click', exportObj.hide);
 					return false;
 				});
 				break;

@@ -130,7 +130,7 @@ let initalCustomMarker = function () {
 					once: true,
 					type: self.popTheme,
 					onload: function () {
-						// $(document).trigger('dom.load');
+						// emit('dom.load');
 					},
 				});
 				setTimeout(function () {
@@ -342,7 +342,7 @@ export default {
 			},
 			destory: function (marker) {
 				$(marker).classList.add('removeing');
-				$(document).one('mouseup', function () {
+				one('mouseup', function () {
 					marker.setMap(null);
 				});
 			},
@@ -361,7 +361,7 @@ export default {
 					panorama.setPosition(streetViewLocation);
 					panorama.setVisible(true);
 				} else {
-					$(document).trigger('gmap.streetview.error');
+					emit('gmap.streetview.error');
 				}
 			});
 		};

@@ -45,7 +45,7 @@ export default {
 //         let targetTop = target.offset().top;
 //         let targetBottom = target.offset().top + target.height();
 //         if (targetTop <= top && targetBottom > top) {
-//             $(document).trigger($item.data('onscroll'), [$(this)]);
+//             emit($item.data('onscroll'), [$(this)]);
 //             return false;
 //         }
 //     });

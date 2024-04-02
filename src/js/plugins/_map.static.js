@@ -221,7 +221,7 @@ let hasStreetView = function (opt) {
 		if (streetViewCheckList[key] !== 'loading') {
 			return opt.callback(streetViewCheckList[key]);
 		}
-		$(document).one('hasStreetView.' + key, function (e, hasStreetView) {
+		one('hasStreetView.' + key, function (e, hasStreetView) {
 			opt.callback(hasStreetView);
 		});
 	} else {
@@ -237,7 +237,7 @@ let hasStreetView = function (opt) {
 		$.get(data.url, function (res) {
 			streetViewCheckList[key] = res && res.status === 'OK';
 			opt.callback(streetViewCheckList[key]);
-			$(document).trigger('hasStreetView.' + key, [streetViewCheckList[key]]);
+			emit('hasStreetView.' + key, [streetViewCheckList[key]]);
 		});
 	}
 };
@@ -334,7 +334,7 @@ export default {
 				if (opt.removedTarget) {
 					let $removedTarget = $(opt.removedTarget);
 					$removedTarget.remove();
-					$(document).trigger('dom.resize');
+					emit('dom.resize');
 				}
 				if (opt.switchmaptype) {
 					opt.type = opt.switchmaptype;

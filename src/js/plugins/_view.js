@@ -1,4 +1,4 @@
-import { emit } from '../core/event.js';
+import { emit, off, on } from '../core/event.js';
 export default {
 	name: 'view',
 	defaultOpt: {
@@ -225,7 +225,7 @@ export default {
 				})
 				.always(function () {
 					_updateInfo();
-					$(document).trigger('dom.scroll');
+					emit('dom.scroll');
 				});
 		};
 		let disable = (exportObj.disable = function () {
@@ -285,7 +285,7 @@ export default {
 				let direction = opt.horizontal ? dir[0] : dir[1];
 				_moved(direction, distance, time);
 			});
-			$(document).addEventListener('dom.resize.view' + opt.id, _updateInfo);
+			on('dom.resize.view' + opt.id, _updateInfo);
 			_updateInfo();
 		});
 		if ($.isTouch) {
@@ -300,6 +300,6 @@ export default {
 	initBefore: null,
 	initAfter: null,
 	destroyBefore: function ($this, opt) {
-		$(document).off('dom.resize.view' + opt.id);
+		off('dom.resize.view' + opt.id);
 	},
 };

@@ -14,7 +14,7 @@ export default {
 				$link.appendTo($list);
 				$item.prependTo($this);
 				$link = $item;
-				$(document).trigger('click.dropdownbutton');
+				emit('click.dropdownbutton');
 			}
 		};
 		exportObj.close = function () {
@@ -23,7 +23,7 @@ export default {
 		exportObj.open = function () {
 			if ($list.is(':hidden')) {
 				$list.show();
-				$(document).one('click.dropdownbutton', exportObj.close);
+				one('click.dropdownbutton', exportObj.close);
 			}
 		};
 		$icon.addEventListener('click', exportObj.open);

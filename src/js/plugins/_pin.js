@@ -1,4 +1,4 @@
-import { emit } from '../core/event.js';
+import { emit, on } from '../core/event.js';
 export default {
 	name: 'pin',
 	defaultOpt: {
@@ -63,7 +63,7 @@ export default {
 			},
 			true,
 		);
-		$(document).addEventListener('dom.resize', function () {
+		on('dom.resize', function () {
 			_setpin($.cui.scrollTop, true);
 		});
 	},

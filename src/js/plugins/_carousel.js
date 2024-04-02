@@ -1,4 +1,5 @@
-import { emit } from '../core/event.js';
+import { emit, off, on } from '../core/event.js';
+
 function loadImg(img) {
 	let $img = $(img);
 	let imgSrc = $img.dataset.src;
@@ -139,7 +140,7 @@ export default {
 			$this.append($nextLink);
 		}
 
-		$(document).addEventListener('dom.resize.carousel' + opt._id, function () {
+		on('dom.resize.carousel' + opt._id, function () {
 			if (opt.size !== 'auto') {
 				_updateWidth($this, $scroller, opt);
 			} else {
@@ -154,6 +155,6 @@ export default {
 		);
 	},
 	destroyBefore: function ($this, opt) {
-		$(document).off('dom.resize.carousel' + opt._id);
+		off('dom.resize.carousel' + opt._id);
 	},
 };

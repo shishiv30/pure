@@ -51,8 +51,9 @@
 		width: var(--input-size);
 		height: var(--input-size);
 		line-height: var(--input-size);
+		padding-top: 0;
+		padding-bottom: 0;
 	}
-
 	>.btn {
 		--color: inhert;
 		--color-bg: inhert;

@@ -34,10 +34,6 @@ html {
 	font-size: 16px;
 	line-height: var(--line-height-2);
 	@include hidden-scrollbar();
-
-	@media screen and (max-width: $screen-xs-min) {
-		font-size: 12px;
-	}
 }
 
 html {
