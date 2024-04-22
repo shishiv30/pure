@@ -7,8 +7,7 @@ export default {
 		autoclose: true,
 	},
 	init: function ($this, opt, exportObj) {
-		let $body = $('body');
-		let $list = $this.querySelectorAll('.header-menu-list');
+		let $list = $this.querySelector('.header-menu-list');
 		let $dropdown = $list.querySelectorAll('.list');
 		let $overlay = document.createElement('div');
 		$overlay.setAttribute('class', 'header-overlay');
@@ -22,21 +21,25 @@ export default {
 			$this.classList.remove('header-close');
 		};
 		let _show = function () {
-			$body.classList.add('body-expand-header');
+			document.body.classList.add('body-expand-header');
 		};
 		let _hide = function () {
-			$body.classList.remove('body-expand-header');
-			$list.querySelectorAll('li').classList.remove('hover').css('height', '');
+			document.body.classList.remove('body-expand-header');
+			$list.querySelectorAll('li').forEach((e) => {
+				e.classList.remove('hover');
+				e.style.height = '';
+			});
 		};
 		$overlay.addEventListener('click', _hide);
 		//nav
-		$dropdown.each(function (list) {
+		$dropdown.forEach(function (list) {
 			let $arrow = document.createElement('button');
 			$arrow.setAttribute('type', 'button');
 			$arrow.setAttribute('class', 'header-expand');
 			$arrow.innerHTML = '<i class="icon-caret-left"></i>';
 			$arrow.addEventListener('click', function (e) {
-				let $li = this.closest('li');
+				//get partent
+				let $li = list;
 				if ($li.classList.contains('hover')) {
 					$li.classList.remove('hover');
 					$li.style.height = '';
@@ -52,12 +55,14 @@ export default {
 			});
 			list.append($arrow);
 		});
-		$swtichLink.addEventListener('click', () => {
-			if ($body.classList.contains('body-expand-header')) {
-				_hide();
-			} else {
-				_show();
-			}
+		$swtichLink.forEach((e) => {
+			e.addEventListener('click', () => {
+				if (document.body.classList.contains('body-expand-header')) {
+					_hide();
+				} else {
+					_show();
+				}
+			});
 		});
 		exportObj.show = _show;
 		exportObj.hide = _hide;

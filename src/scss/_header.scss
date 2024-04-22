@@ -89,6 +89,9 @@
 	z-index: $ui-header-list-index;
 	background-color: inherit;
 }
+.header-switch-link{
+	padding: 0 var(--g2);
+}
 
 .header-menu-list {
 	position: relative;
@@ -101,7 +104,7 @@
 		@include singleline();
 		opacity: 0.95;
 		line-height: var(--line-height-3);
-
+		transition: background-color 0.2s;
 		@include hover() {
 			opacity: 1;
 			background-color: rgba(255, 255, 255, 0.05);
@@ -142,9 +145,9 @@
 		}
 
 		>ul {
-			color: var(--color);
-			background-color: var(--color-bg);
-			box-shadow: 0 0 0 1px var(--header-color-border);
+			background-color: var(--header-color-active-bg);
+			color: var(--header-color-active);
+			box-shadow: 0 0 0 1px var(--header-color-active-border);
 			min-width: 100%;
 			position: relative;
 
@@ -243,7 +246,9 @@ body:not(.body-expand-header) {
 					}
 
 					.header-expand {
-						border-left: 1px solid rgba(255, 255, 255, 0.2);
+						background-color: var(--header-color-active-bg);
+						color: var(--header-color-active);
+						border-left: 1px solid var(--head--color-activ-border);
 						width: $comp-size-3;
 						height: $comp-size-3;
 						line-height: $comp-size-3;

@@ -55,9 +55,10 @@
 		padding-bottom: 0;
 	}
 	>.btn {
-		--color: inhert;
-		--color-bg: inhert;
-		--color-border: inhert;
+		background-color: inherit;
+		color: inherit;
+		border-color: transparent;
+		box-shadow: none;
 		border-radius: 0;
 	}
 
