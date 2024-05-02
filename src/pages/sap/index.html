@@ -8,8 +8,8 @@
     <link rel="icon" href="../../assets/img/favicon.ico" type="image/x-icon">
 </head>
 
-<body>
-    <header class="header major active" data-role="header">
+<body id="body">
+    <header class="header active" data-role="header">
         <div class="header-bar">
             <a href="javascript:;" class="menu-img" aria-label="CUI Logo">
                 <img loading="lazy" alt="Sap Pototype" src="../../assets/img/logo-bg.svg">
@@ -21,7 +21,7 @@
                 </a>
             </div>
         </div>
-        <div class="header-nav">
+        <div class="header-nav" >
             <ul class="header-menu-list">
                 <li>
                     <a href="/index">Home</a>
@@ -52,25 +52,27 @@
         </div>
 
     </header>
-    <nav>
-        <ul>
-            <li>
-                <a href="/sap/overview">state</a>
-            </li>
-            <li>
-                <a href="/sap/implementation">county</a>
-            </li>
-            <li>
-                <a href="/sap/consulting">city</a>
-            </li>
-            <li>
-                <a href="/sap/support">neighborhood</a>
-            </li>
-            <li>
-                <a href="/sap/training">zipcode</a>
-            </li>
-        </ul>
-    </nav>
+    <div>
+        <nav class="nav gray">
+            <ul>
+                <li>
+                    <a href="/sap/overview">state</a>
+                </li>
+                <li>
+                    <a href="/sap/implementation">county</a>
+                </li>
+                <li>
+                    <a href="/sap/consulting">city</a>
+                </li>
+                <li>
+                    <a href="/sap/support">neighborhood</a>
+                </li>
+                <li>
+                    <a href="/sap/training" class="active">zipcode</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <aside></aside>
     <section></section>
     <footer></footer>

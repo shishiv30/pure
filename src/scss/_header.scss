@@ -98,12 +98,12 @@
 
 	a {
 		height: $comp-size-3;
-		padding: $g1;
+		padding: $g2;
 		display: block;
 		text-align: center;
 		@include singleline();
 		opacity: 0.95;
-		line-height: var(--line-height-3);
+		line-height: var(--line-height-1);
 		transition: background-color 0.2s;
 		@include hover() {
 			opacity: 1;
