@@ -9,13 +9,17 @@
 		z-index: $ui-stick-index;
 	}
 	> ul {
-		display: flex;
-		justify-content: left;
 		margin: 0 auto;
+		@include singleline();
+		li{
+			display: inline;
+		}
 		li + li{
 			&:before {
 				opacity: 0.6;
 				content: '>';
+				vertical-align: middle;
+				font-size: var(--font-size-7);
 			}
 		}
 	}
