@@ -5,7 +5,7 @@
 	--tag-gap-y: var(--g0);
 	padding: var(--tag-gap-y) var(--tag-gap-x);
 	font-size: var(--font-size-7);
-	border-radius: $g1;
+	border-radius: var(--g1);
 	@include singleline();
 
 	color: var(--tag-color);

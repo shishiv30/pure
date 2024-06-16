@@ -28,7 +28,7 @@
 		@include multiline(5);
 	}
 	.help {
-		border-bottom: dashed 1px $color-l1;
+		border-bottom: dashed 1px var(--color-l1);
 		cursor: help;
 	}
 	[disabled],
@@ -100,7 +100,7 @@
 		}
 	}
 	.img-small {
-		height: $font-size-5;
+		height: var(--font-size-5);
 		padding: 2px;
 		object-fit: cover;
 		width: auto;

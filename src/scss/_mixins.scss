@@ -57,108 +57,108 @@
 
 @mixin color() {
 	.default {
-		--color: #{$color-default};
-		--color-bg: #{$color-bg-default};
-		--color-border: #{$color-default-l1};
-		--color-active: #{$color-bg-default};
-		--color-active-bg: #{$color-default};
-		--color-active-border: #{$color-bg-default};
-		--color-hover: #{$color-default};
-		--color-bg-hover: #{$color-bg-default};
-		--color-border-hover: #{$color-default-l1};
-		--color-active-hover: #{$color-bg-default};
-		--color-active-bg-hover: #{$color-default};
-		--color-active-border-hover: #{$color-bg-default};
+		--color: var(--color-default);
+		--color-bg: var(--color-bg-default);
+		--color-border: var(--color-default-l1);
+		--color-active: var(--color-bg-default);
+		--color-active-bg: var(--color-default);
+		--color-active-border: var(--color-bg-default);
+		--color-hover: var(--color-default);
+		--color-bg-hover: var(--color-bg-default);
+		--color-border-hover: var(--color-default-l1);
+		--color-active-hover: var(--color-bg-default);
+		--color-active-bg-hover: var(--color-default);
+		--color-active-border-hover: var(--color-bg-default);
 	}
 
 	.gray {
-		--color: #{$color-default-l1};
-		--color-bg: #{$color-bg-l1};
-		--color-border: #{$color-default-l1};
-		--color-active: #{$color-bg-l1};
-		--color-active-bg: #{$color-default-l1};
-		--color-active-border: #{$color-default-l1};
-		--color-hover: #{$color-default-l1};
-		--color-bg-hover: #{$color-bg-l1};
-		--color-border-hover: #{$color-default-l1};
-		--color-active-hover: #{$color-bg-l1};
-		--color-active-bg-hover: #{$color-default-l1};
-		--color-active-border-hover: #{$color-default-l1};
+		--color: var(--color-default-l1);
+		--color-bg: var(--color-bg-l1);
+		--color-border: var(--color-default-l1);
+		--color-active: var(--color-bg-l1);
+		--color-active-bg: var(--color-default-l1);
+		--color-active-border: var(--color-default-l1);
+		--color-hover: var(--color-default-l1);
+		--color-bg-hover: var(--color-bg-l1);
+		--color-border-hover: var(--color-default-l1);
+		--color-active-hover: var(--color-bg-l1);
+		--color-active-bg-hover: var(--color-default-l1);
+		--color-active-border-hover: var(--color-default-l1);
 	}
 
 	.major {
-		--color: #{$color-major};
-		--color-bg: #{$color-major-l1};
-		--color-border: #{$color-major};
-		--color-active: #{$color-major-l1};
-		--color-active-bg: #{$color-major};
-		--color-active-border: #{$color-major};
-		--color-hover: #{$color-major};
-		--color-bg-hover: #{$color-major-l1};
-		--color-border-hover: #{$color-major};
-		--color-active-hover: #{$color-major-l1};
-		--color-active-bg-hover: #{$color-major};
-		--color-active-border-hover: #{$color-major};
+		--color: var(--color-major);
+		--color-bg: var(--color-major-l1);
+		--color-border: var(--color-major);
+		--color-active: var(--color-major-l1);
+		--color-active-bg: var(--color-major);
+		--color-active-border: var(--color-major);
+		--color-hover: var(--color-major);
+		--color-bg-hover: var(--color-major-l1);
+		--color-border-hover: var(--color-major);
+		--color-active-hover: var(--color-major-l1);
+		--color-active-bg-hover: var(--color-major);
+		--color-active-border-hover: var(--color-major);
 	}
 
 	.minor {
-		--color: #{$color-minor};
-		--color-bg: #{$color-minor-l1};
-		--color-active: #{$color-minor-l1};
-		--color-border: #{$color-minor};
-		--color-active-bg: #{$color-minor};
-		--color-active-border: #{$color-minor};
-		--color-hover: #{$color-minor};
-		--color-bg-hover: #{$color-minor-l1};
-		--color-border-hover: #{$color-minor};
-		--color-active-hover: #{$color-minor-l1};
-		--color-active-bg-hover: #{$color-minor};
-		--color-active-border-hover: #{$color-minor};
+		--color: var(--color-minor);
+		--color-bg: var(--color-minor-l1);
+		--color-active: var(--color-minor-l1);
+		--color-border: var(--color-minor);
+		--color-active-bg: var(--color-minor);
+		--color-active-border: var(--color-minor);
+		--color-hover: var(--color-minor);
+		--color-bg-hover: var(--color-minor-l1);
+		--color-border-hover: var(--color-minor);
+		--color-active-hover: var(--color-minor-l1);
+		--color-active-bg-hover: var(--color-minor);
+		--color-active-border-hover: var(--color-minor);
 	}
 
 	.danger {
-		--color: #{$color-danger};
-		--color-bg: #{$color-danger-l1};
-		--color-active: #{$color-danger-l1};
-		--color-border: #{$color-danger};
-		--color-active-bg: #{$color-danger};
-		--color-active-border: #{$color-danger};
-		--color-hover: #{$color-danger};
-		--color-bg-hover: #{$color-danger-l1};
-		--color-border-hover: #{$color-danger};
-		--color-active-hover: #{$color-danger-l1};
-		--color-active-bg-hover: #{$color-danger};
-		--color-active-border-hover: #{$color-danger};
+		--color: var(--color-danger);
+		--color-bg: var(--color-danger-l1);
+		--color-active: var(--color-danger-l1);
+		--color-border: var(--color-danger);
+		--color-active-bg: var(--color-danger);
+		--color-active-border: var(--color-danger);
+		--color-hover: var(--color-danger);
+		--color-bg-hover: var(--color-danger-l1);
+		--color-border-hover: var(--color-danger);
+		--color-active-hover: var(--color-danger-l1);
+		--color-active-bg-hover: var(--color-danger);
+		--color-active-border-hover: var(--color-danger);
 	}
 
 	.safe {
-		--color: #{$color-safe};
-		--color-bg: #{$color-safe-l1};
-		--color-active: #{$color-safe-l1};
-		--color-border: #{$color-safe};
-		--color-active-bg: #{$color-safe};
-		--color-active-border: #{$color-safe};
-		--color-hover: #{$color-safe};
-		--color-bg-hover: #{$color-safe-l1};
-		--color-border-hover: #{$color-safe};
-		--color-active-hover: #{$color-safe-l1};
-		--color-active-bg-hover: #{$color-safe};
-		--color-active-border-hover: #{$color-safe};
+		--color: var(--color-safe);
+		--color-bg: var(--color-safe-l1);
+		--color-active: var(--color-safe-l1);
+		--color-border: var(--color-safe);
+		--color-active-bg: var(--color-safe);
+		--color-active-border: var(--color-safe);
+		--color-hover: var(--color-safe);
+		--color-bg-hover: var(--color-safe-l1);
+		--color-border-hover: var(--color-safe);
+		--color-active-hover: var(--color-safe-l1);
+		--color-active-bg-hover: var(--color-safe);
+		--color-active-border-hover: var(--color-safe);
 	}
 
 	.tip {
-		--color: #{$color-tip};
-		--color-bg: #{$color-tip-l1};
-		--color-active: #{$color-tip-l1};
-		--color-border: #{$color-tip};
-		--color-active-bg: #{$color-tip};
-		--color-active-border: #{$color-tip};
-		--color-hover: #{$color-tip};
-		--color-bg-hover: #{$color-tip-l1};
-		--color-border-hover: #{$color-tip};
-		--color-active-hover: #{$color-tip-l1};
-		--color-active-bg-hover: #{$color-tip};
-		--color-active-border-hover: #{$color-tip};
+		--color: var(--color-tip);
+		--color-bg: var(--color-tip-l1);
+		--color-active: var(--color-tip-l1);
+		--color-border: var(--color-tip);
+		--color-active-bg: var(--color-tip);
+		--color-active-border: var(--color-tip);
+		--color-hover: var(--color-tip);
+		--color-bg-hover: var(--color-tip-l1);
+		--color-border-hover: var(--color-tip);
+		--color-active-hover: var(--color-tip-l1);
+		--color-active-bg-hover: var(--color-tip);
+		--color-active-border-hover: var(--color-tip);
 	}
 }
 
@@ -316,8 +316,8 @@
 	}
 }
 
-$font-color: #{$color-l1};
-$back-color: #{$color-bg-l1};
+$font-color: var(--color-l1);
+$back-color: var(--color-bg-l1);
 $card-padding: 0.5rem;
 $card-height: 200px;
 $card-skeleton: linear-gradient($back-color $card-height, transparent 0);

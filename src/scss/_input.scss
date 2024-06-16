@@ -11,15 +11,15 @@
 		appearance: none;
 		background: transparent;
 		cursor: pointer;
-		background: $color-bg;
+		background: var(--color-bg);
 
 		&[disabled] {
-			color: $color-l1;
+			color: var(--color-l1);
 		}
 	}
 
 	option[disabled] {
-		color: $color-l1;
+		color: var(--color-l1);
 	}
 
 	>input::placeholder {
@@ -29,7 +29,7 @@
 	>input,
 	>select {
 		width: 100%;
-		border: 1px solid $color-l1;
+		border: 1px solid var(--color-l1);
 		font-size: var(--input-font-size);
 		font-weight: var(--input-font-weight);
 		font-size: var(--input-font-size);
@@ -97,11 +97,11 @@
 	}
 
 	&.has-success {
-		color: $color;
+		color: var(--color);
 	}
 
 	&.has-error {
-		color: $color-danger;
+		color: var(--color-danger);
 	}
 
 	&.has-error,
@@ -137,7 +137,7 @@
 
 	&.has-error {
 		.tooltip-inner {
-			color: $color-danger-l1;
+			color: var(--color-danger-l1);
 		}
 	}
 }

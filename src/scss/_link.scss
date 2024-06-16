@@ -14,7 +14,7 @@ a {
 	}
 
 	&[disable] {
-		color: $color-disabled;
+		color: var(--color-disabled);
 	}
 }
 
@@ -22,12 +22,12 @@ a,
 button {
 	&.link {
 		opacity: 0.95;
-		color: $color-link-default;
+		color: var(--color-link-default);
 
 		@include hover() {
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 			opacity: 1;
-			color: $color-link-default-hover;
+			color: var(--color-link-default-hover);
 		}
 	}
 }

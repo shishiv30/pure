@@ -31,7 +31,7 @@
 
 	label {
 		cursor: pointer;
-		margin-right: $g1;
+		margin-right: var(--g1);
 		user-select: none;
 
 		>input {
@@ -44,12 +44,12 @@
 
 			&:before {
 				@include icon();
-				margin-right: $g0;
+				margin-right: var(--g0);
 			}
 		}
 
 		input:disabled+span {
-			color: $color-l1;
+			color: var(--color-l1);
 		}
 
 		&:last-of-type {
@@ -60,20 +60,20 @@
 
 .checkbox {
 	input+span:before {
-		content: $icon-square-o;
+		content: var(--icon-square-o);
 	}
 
 	input:checked+span:before {
-		content: $icon-check-square;
+		content: var(--icon-check-square);
 	}
 }
 
 .radio {
 	input+span:before {
-		content: $icon-circle-thin;
+		content: var(--icon-circle-thin);
 	}
 
 	input:checked+span:before {
-		content: $icon-check-circle;
+		content: var(--icon-check-circle);
 	}
 }

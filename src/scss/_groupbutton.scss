@@ -12,7 +12,7 @@
 	input {
 		&:checked+span {
 			background-color: var(--group-btn-border-color);
-			color: $color-bg;
+			color: var(--color-bg);
 		}
 	}
 

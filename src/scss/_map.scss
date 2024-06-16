@@ -3,15 +3,15 @@
 	&.removed {
 		display: none;
 	}
-	color: $color-bg;
+	color: var(--color-bg);
 	.pin {
 		cursor: pointer;
 		position: relative;
 		border: 1px solid white;
-		background: $color-l1;
+		background: var(--color-l1);
 		border-radius: 50%;
 		display: block;
-		font-size: $font-size-5;
+		font-size: var(--font-size-5);
 		width: 24px;
 		height: 24px;
 		line-height: 24px;
@@ -24,7 +24,7 @@
 	&.on .pin,
 	.pin:hover {
 		box-shadow: 0 0 0 5px rgba($color-minor, 0.35);
-		background-color: $color-minor;
+		background-color: var(--color-minor);
 		z-index: $ui-pin-hover-index;
 	}
 }

@@ -2,14 +2,14 @@
 	position: absolute;
 	z-index: $ui-tooltip-index;
 	display: block;
-	font-size: $font-size-6;
+	font-size: var(--font-size-6);
 	opacity: 0;
 	min-width: 150px;
 	max-width: 280px;
 	transition: opacity 0.2s ease-in-out;
-	--tooltip-color: #{$color-bg};
-	--tooltip-color-bg: #{$color};
-	--tooltip-color-border: #{$color};
+	--tooltip-color: var(--color-bg);
+	--tooltip-color-bg: var(--color);
+	--tooltip-color-border: var(--color);
 	--tooltip-arrow-size: 5px;
 	--tooltip-arrow-gap: calc(var(--tooltip-arrow-size) * 2);
 	.tooltip-inner {
@@ -102,7 +102,7 @@
 			@include border-bottom-radius(2px);
 			&:before {
 				@include icon();
-				content: $icon-info;
+				content: var(--icon-info);
 				display: inline-block;
 				padding: 0 3px;
 			}
@@ -113,14 +113,14 @@
 	}
 	&.minor {
 		.tooltip-inner {
-			color: $color-minor-l1;
-			background-color: $color-minor;
+			color: var(--color-minor-l1);
+			background-color: var(--color-minor);
 			text-align: left;
-			border: 1px solid $color-minor-l1;
+			border: 1px solid var(--color-minor-l1);
 			@include border-bottom-radius(2px);
 			&:before {
 				@include icon();
-				content: $icon-minor;
+				content: var(--icon-minor);
 				display: inline-block;
 				padding: 0 3px;
 			}
@@ -131,14 +131,14 @@
 	}
 	&.error {
 		.tooltip-inner {
-			color: $color-danger;
-			background-color: $color-danger-l1;
+			color: var(--color-danger);
+			background-color: var(--color-danger-l1);
 			text-align: left;
-			border: 1px solid $color-danger;
+			border: 1px solid var(--color-danger);
 			@include border-bottom-radius(2px);
 			&:before {
 				@include icon();
-				content: $icon-minor;
+				content: var(--icon-minor);
 				display: inline-block;
 				padding: 0 3px;
 			}
@@ -149,7 +149,7 @@
 	}
 	&.defalut {
 		.tooltip-inner {
-			padding: $g0 $g1;
+			padding: var(--g0) var(--g1);
 			text-align: center;
 			text-decoration: none;
 		}

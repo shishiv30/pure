@@ -8,7 +8,7 @@
 	@include singleline();
 
 	&:before {
-		transition: transform $animation-time ease-in-out;
+		transition: transform var(--animation-time) ease-in-out;
 		content: '';
 		position: absolute;
 		top: 0;
@@ -30,12 +30,12 @@
 	}
 
 	&[disabled] {
-		--color: #{$color-default-l1} !important;
-		--color-bg: #{$color-bg-default-l1} !important;
-		--color-border: #{$color-default-l1} !important;
-		--color-active: #{$color-default-l1} !important;
-		--color-active-bg: #{$color-bg-default-l1} !important;
-		--color-active-border: #{$color-default-l1} !important;
+		--color: var(--color-default-l1) !important;
+		--color-bg: var(--color-bg-default-l1) !important;
+		--color-border: var(--color-default-l1) !important;
+		--color-active: var(--color-default-l1) !important;
+		--color-active-bg: var(--color-bg-default-l1) !important;
+		--color-active-border: var(--color-default-l1) !important;
 	}
 
 	&.loading {

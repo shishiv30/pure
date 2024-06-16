@@ -1,33 +1,33 @@
 .circle {
 	@include f5();
-	height: $comp-size-3;
-	width: $comp-size-3;
+	height: var(--comp-size-3);
+	width: var(--comp-size-3);
 	color: var(--color);
 	background-color: var(--color-bg);
-	box-shadow: inset 0 0 1px $color-border;
+	box-shadow: inset 0 0 1px var(--color-border);
 	border-radius: 50%;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
 	&.active {
-		color: $color-active;
-		background-color: $color-active-bg;
-		box-shadow: inset 0 0 1px $color-active-border;
+		color: var(--color-active);
+		background-color: var(--color-active-bg);
+		box-shadow: inset 0 0 1px var(--color-active-border);
 	}
 	&.small {
 		@include f7();
-		height: $comp-size-1;
-		width: $comp-size-1;
+		height: var(--comp-size-1);
+		width: var(--comp-size-1);
 	}
 	&.small {
 		@include f6();
-		height: $comp-size-2;
-		width: $comp-size-2;
+		height: var(--comp-size-2);
+		width: var(--comp-size-2);
 	}
 	&.large {
 		@include f4();
-		height: $comp-size-4;
-		width: $comp-size-4;
+		height: var(--comp-size-4);
+		width: var(--comp-size-4);
 	}
 }

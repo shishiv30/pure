@@ -2,9 +2,9 @@
 [data-role*='carousel'] {
 	--carousel-height: auto;
 	position: relative;
-	--arrow-size: #{$comp-size-2};
+	--arrow-size: var(--comp-size-2);
 	&.small {
-		--arrow-size: #{$comp-size-1};
+		--arrow-size: var(--comp-size-1);
 	}
 	&.hasNext {
 		.arrow.next {
@@ -30,8 +30,8 @@
 		padding: 0;
 		background: rgba(255, 255, 255);
 		opacity: 0.9;
-		border: 1px solid $color-bg-l1;
-		color: $color-major;
+		border: 1px solid var(--color-bg-l1);
+		color: var(--color-major);
 		cursor: pointer;
 		border-radius: 50%;
 		&.prev {

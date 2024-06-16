@@ -20,23 +20,23 @@
 		}
 	}
 	a {
-		padding: $comp-gap-y $comp-gap-x;
+		padding: var(--comp-gap-y) var(--comp-gap-x);
 		border-bottom: 2px solid transparent;
-		font-size: $font-size-5;
+		font-size: var(--font-size-5);
 		color: var(--nav-color);
 		background-color: var(--nav-color-bg);
 		opacity: 0.8;
 		display: inline-block;
-		height: $comp-height;
-		line-height: $comp-line-height;
+		height: var(--comp-height);
+		line-height: var(--comp-line-height);
 		@include hover() {
 			opacity: 1;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 		}
 		
 		&.active {
 			opacity: 1;
-			font-weight: $font-weight-bold;
+			font-weight: var(--font-weight-bold);
 			color: var(--nav-color);
 			background-color: var(--nav-color-bg);
 		}

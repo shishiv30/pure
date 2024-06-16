@@ -1,16 +1,16 @@
 .form {
 	label {
-		margin-bottom: $g1;
+		margin-bottom: var(--g1);
 	}
 }
 
 .form-filter {
 	@include box-line();
-	background-color: $color-minor-l1;
-	padding: $g2 $g3;
+	background-color: var(--color-minor-l1);
+	padding: var(--g2) var(--g3);
 	display: flex;
 	flex-wrap: nowrap;
-	gap: $g2;
+	gap: var(--g2);
 	@include hidden-scrollbar();
 	&.horizontal {
 		> * {

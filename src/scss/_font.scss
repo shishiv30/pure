@@ -10,16 +10,16 @@
 }
 /* latin */
 @font-face {
-	font-family: $font-family;
+	font-family: var(--font-family);
 	font-style: normal;
-	font-weight: $font-weight-light;
+	font-weight: var(--font-weight-light);
 	src: url('../assets/fonts/Roboto-light.woff2') format('woff2');
 	font-display: swap;
 }
 @font-face {
-	font-family: $font-family;
+	font-family: var(--font-family);
 	font-style: normal;
-	font-weight: $font-weight-regular;
+	font-weight: var(--font-weight-regular);
 	src: url('../assets/fonts/Roboto-Regular.woff2') format('woff2');
 	font-display: swap;
 }

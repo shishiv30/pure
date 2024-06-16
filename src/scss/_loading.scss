@@ -7,7 +7,7 @@
 }
 .img-load-error {
 	opacity: 1 !important;
-	background-color: $color-bg-l1;
+	background-color: var(--color-bg-l1);
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;

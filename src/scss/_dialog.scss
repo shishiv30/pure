@@ -10,10 +10,10 @@
 	transition: opacity 0.5s ease-in-out;
 
 	.dialog-title-close {
-		font-size: $font-size-3;
+		font-size: var(--font-size-3);
 		display: block;
-		height: $comp-size-3;
-		width: $comp-size-3;
+		height: var(--comp-size-3);
+		width: var(--comp-size-3);
 		text-align: center;
 		right: 0;
 		top: 0;
@@ -35,10 +35,10 @@
 		position: absolute;
 		width: 100vw;
 		height: auto;
-		max-width: $screen-xs-max;
+		max-width: var(--screen-xs-max);
 		border-radius: 5px;
 		z-index: $ui-dialog-index;
-		background-color: $color-bg;
+		background-color: var(--color-bg);
 		top: 50%;
 		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
@@ -48,8 +48,8 @@
 	.dialog-body {
 		position: relative;
 		z-index: 2;
-		color: $color;
-		padding: $g2;
+		color: var(--color);
+		padding: var(--g2);
 		overflow-x: hidden;
 		overflow-y: auto;
 		max-height: 100vh;
@@ -70,7 +70,7 @@
 			align-items: center;
 			width: 100%;
 			background: transparent;
-			color: $color-bg;
+			color: var(--color-bg);
 		}
 	}
 
@@ -94,17 +94,17 @@
 				margin: 0;
 				padding: 0;
 				text-align: left;
-				font-size: $font-size-4;
+				font-size: var(--font-size-4);
 
 				a {
 					>i {
 						float: left;
-						font-size: $font-size-3;
+						font-size: var(--font-size-3);
 					}
 
 					display: block;
 					padding: 12px 20px;
-					border-top: 1px solid $color-l1;
+					border-top: 1px solid var(--color-l1);
 				}
 			}
 		}

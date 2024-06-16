@@ -91,9 +91,9 @@
 		transition: transform 0.5s ease-in-out;
 		transform: translateY(-50%) translateX(-50%);
 		animation: rotate 1s infinite steps(8);
-		color: $color-bg;
+		color: var(--color-bg);
 		@include icon();
-		content: $icon-refresh;
+		content: var(--icon-refresh);
 	}
 	&:after {
 		position: absolute;
@@ -103,6 +103,6 @@
 		left: 0;
 		content: '';
 		opacity: 0.6;
-		background: $color;
+		background: var(--color);
 	}
 }

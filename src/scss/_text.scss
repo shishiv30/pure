@@ -23,35 +23,35 @@
 }
 
 .text-white {
-	color: $color-bg;
+	color: var(--color-bg);
 }
 
 .text-darkgray {
-	color: $color;
+	color: var(--color);
 }
 
 .text-gray {
-	color: $color-l1;
+	color: var(--color-l1);
 }
 
 .text-lightgray {
-	color: $color-l1;
+	color: var(--color-l1);
 }
 
 .text-safe {
-	color: $color-safe;
+	color: var(--color-safe);
 }
 
 .text-minor {
-	color: $color-minor;
+	color: var(--color-minor);
 }
 
 .text-danger {
-	color: $color-danger;
+	color: var(--color-danger);
 }
 
 .text-major {
-	color: $color-major;
+	color: var(--color-major);
 }
 
 .text-uppercase {
