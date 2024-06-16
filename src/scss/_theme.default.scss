@@ -46,7 +46,9 @@ html {
 	--g5: 3.427rem;
 	//g4 + g5
 	--g6: 5.545rem;
+}
 
+body {
 	--color-r0: hsl(4, 100%, 30%);
 	--color-r1: hsl(34, 100%, 30%);
 	--color-r2: hsl(54, 100%, 30%);
@@ -57,23 +59,6 @@ html {
 	--color-r7: hsl(224, 100%, 30%);
 	--color-r8: hsl(274, 100%, 30%);
 	--color-r9: hsl(344, 100%, 30%);
-
-	--color-0: hsl(0, 0%, 0%);
-	--color-1: hsl(0, 0%, 7%);
-	--color-2: hsl(0, 0%, 13%);
-	--color-3: hsl(0, 0%, 20%);
-	--color-4: hsl(0, 0%, 27%);
-	--color-5: hsl(0, 0%, 33%);
-	--color-6: hsl(0, 0%, 40%);
-	--color-7: hsl(0, 0%, 47%);
-	--color-8: hsl(0, 0%, 53%);
-	--color-9: hsl(0, 0%, 60%);
-	--color-a: hsl(0, 0%, 67%);
-	--color-b: hsl(0, 0%, 73%);
-	--color-c: hsl(0, 0%, 80%);
-	--color-d: hsl(0, 0%, 87%);
-	--color-e: hsl(0, 0%, 93%);
-	--color-f: hsl(0, 0%, 100%);
 
 	--color-major: hsl(200, 100%, 20%);
 	--color-major-l1: hsl(200, 100%, 95%);
@@ -90,30 +75,28 @@ html {
 	--color-tip: var(--color-r2);
 	--color-tip-l1: hsl(54, 100%, 95%);
 
-	--color-default: hsl(0, 0%, 11%);
-	--color-default-l1: hsl(0, 0%, 45%);
-	--color-bg-default: hsl(0, 0%, 100%);
-	--color-bg-default-l1: hsl(0, 0%, 94%);
+	//write dynamic --color-0 to --color-9 base on hsl from 0% to 100%
+	@for $i from 0 through 9 {
+		--color-#{$i}: hsl(0, 0%, #{100% - 10% * $i});
+	}
 
-	&.dark {
+	--color-default: var(--color-9);
+	--color-default-l1: var(--color-7);
+	--color-bg-default: var(--color-0);
+	--color-bg-default-l1: var(--color-1);
+	&.dark{
 		@media (prefers-color-scheme: dark) {
-			--color: hsl(0, 0%, 100%);
-			--color-l1: hsl(0, 0%, 94%);
-			--color-default: hsl(0, 0%, 100%);
-			--color-default-l1: hsl(0, 0%, 94%);
-
-			--color-bg: hsl(0, 0%, 11%);
-			--color-bg-l1: hsl(0, 0%, 35%);
-			--color-bg-default: hsl(0, 0%, 11%);
-			--color-bg-default-l1: hsl(0, 0%, 35%);
-
+			@for $i from 0 through 9 {
+				--color-#{$i}: hsl(0, 0%, #{10% * $i});
+			}
+		
 			--color-major-l1: hsl(200, 100%, 20%);
 			--color-major: hsl(200, 100%, 95%);
 			--color-link-hover: hsl(200, 100%, 80%);
-
+	
 			--color-minor-l1: hsl(200, 100%, 50%);
 			--color-minor: hsl(200, 100%, 95%);
-
+	
 			--color-r0: hsl(4, 100%, 95%);
 			--color-r1: hsl(34, 100%, 95%);
 			--color-r2: hsl(54, 100%, 95%);
@@ -124,15 +107,12 @@ html {
 			--color-r7: hsl(224, 100%, 95%);
 			--color-r8: hsl(274, 100%, 95%);
 			--color-r9: hsl(344, 100%, 95%);
-
+	
 			--color-safe-l1: hsl(144, 100%, 10%);
 			--color-danger-l1: hsl(4, 100%, 10%);
 			--color-tip-l1: hsl(54, 100%, 10%);
 		}
 	}
-}
-
-body {
 	--color: var(--color-default);
 	--color-border: var(--color-bg-default);
 	--color-bg: var(--color-bg-default);

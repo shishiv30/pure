@@ -86,6 +86,7 @@
     --player-animation-duration: 6s;
     height: var(--player-height);
     width: var(--player-width);
+    max-width: 100%;
     position: relative;
     overflow: hidden;
 
