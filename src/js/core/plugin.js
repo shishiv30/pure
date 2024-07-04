@@ -1,9 +1,9 @@
 import loadMap from './load.map.js';
 import { emit, trigger } from './event.js';
 import { logError, logInfo } from './log.js';
-import Base from './base.js';
+import { Base } from './base.js';
 let id = 0;
-class Plugin extends Base {
+export class Plugin extends Base {
 	constructor(setting) {
 		super(setting.name, 'plugin');
 		let defaultSetting = {
@@ -76,8 +76,7 @@ class Plugin extends Base {
 	}
 	//todo what if element be removed instance cannot be recly
 	static register(setting) {
-		let that = this;
-		let plugin = async function ($el, options) {
+		let plugin = async ($el, options) => {
 			if (!$el) {
 				logError('html node is required');
 			}
@@ -96,7 +95,7 @@ class Plugin extends Base {
 			if (setting.dependence) {
 				dependences = await Plugin.dependenceHandler(setting.dependence);
 			}
-			await that.init($el, options, exportObj, dependences);
+			await this.init($el, options, exportObj, dependences);
 			Plugin.setInstance($el, exportObj);
 			return exportObj;
 		};
@@ -157,7 +156,7 @@ class Plugin extends Base {
 		//init
 		var opt = Object.assign({}, this.setting.defaultOpt, {
 			...options,
-			... { _pid: `${this.setting.name}_${id++}` },
+			...{ _pid: `${this.setting.name}_${id++}` },
 		});
 		exportObj._pid = opt._pid;
 		this.initBefore($el, opt, exportObj);
@@ -179,6 +178,6 @@ class Plugin extends Base {
 			this.setting.render.apply(this, [$el, opt, exportObj]);
 		}
 		this.renderAfter($el, opt, exportObj);
+		return exportObj;
 	}
 }
-export default Plugin;

@@ -13,8 +13,8 @@ export default {
 		orientation: 'horizontal',
 		start: null,
 		range: null,
-		changebefore: null,
-		changeafter: null,
+		beforeChange: null,
+		afterChange: null,
 		input: [],
 	},
 	init: function ($this, opt, exportObj) {
@@ -75,11 +75,11 @@ export default {
 			exportObj.set(values);
 		});
 		exportObj.range.addEventListener('update', function (e, t) {
-			opt.changebefore && emit(opt.changebefore, $this, opt, exportObj, e, t);
+			opt.beforeChange && emit(opt.beforeChange, $this, opt, exportObj, e, t);
 			$input.each(function (index) {
 				$(this).val(e[index]).trigger('input');
 			});
-			opt.changeafter && emit(opt.changeafter, $this, opt, exportObj, e, t);
+			opt.afterChange && emit(opt.afterChange, $this, opt, exportObj, e, t);
 		});
 	},
 	setOptionsBefore: null,

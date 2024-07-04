@@ -1,4 +1,6 @@
 import { emit, off, on } from '../core/event.js';
+import guid from '../core/guid.js';
+
 export default {
 	name: 'view',
 	defaultOpt: {
@@ -22,7 +24,7 @@ export default {
 	},
 	init: function ($this, opt, exportObj) {
 		let $wrapper = $this.children('div');
-		opt.id = $.guid++;
+		opt.id = guid;
 		let prePos = 0;
 		let currPos = 0;
 		let info = null;

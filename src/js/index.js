@@ -1,8 +1,12 @@
-import Page from './core/page.js';
+import { Page } from './core/page.js';
 import plugins from './plugins/index.js';
-import Plugin from './core/plugin.js';
+import { Plugin } from './core/plugin.js';
 
-export default function (frame) {
+//after page initied, we can use window.exportObj to see the export methods
+//and use Plugin.getInstance($elment,'pluginName') to get the plugin instance
+//page context is in window.exportObj.ctx
+//page data is in window.exportObj.ctx.data
+export function main(frame, settings = null) {
 	const root = frame || window;
 	for (var key in plugins) {
 		new Plugin(plugins[key]);
@@ -10,7 +14,8 @@ export default function (frame) {
 	if (!root.ctx) {
 		root.ctx = {};
 	}
-	let page = new Page(root.ctx);
-	let $ = page.init();
-	Object.assign(root, { $, Plugin: Plugin });
+	let page = new Page(root.ctx, settings);
+	page.init().then((exportObj) => {
+		Object.assign(root, { exportObj, Plugin: Plugin });
+	});
 }

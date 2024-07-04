@@ -1,5 +1,5 @@
 import { emit } from '../core/event.js';
-import { select, hasInput } from '../core/query.js';
+import { hasInput } from '../core/query.js';
 
 export default {
 	name: 'textbox',

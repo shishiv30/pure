@@ -7,12 +7,12 @@ export default {
 		theme: 'default',
 		target: null,
 		trigger: null,
-		renderbefore: null,
-		renderafter: null,
-		showbefore: null,
-		showafter: null,
-		hidebefore: null,
-		hideafter: null,
+		beforeRender: null,
+		afterRender: null,
+		beforeShow: null,
+		afterShow: null,
+		beforeHide: null,
+		afterHide: null,
 	},
 	init: function ($el, opt, exportObj) {
 		let _show = (exportObj.show = function () {
@@ -20,12 +20,12 @@ export default {
 				_render();
 			}
 			emit('dialog.hidden.except', [opt._pid]);
-			opt.showbefore && trigger(opt.showbefore, $el, opt, exportObj);
+			opt.beforeShow && trigger(opt.beforeShow, $el, opt, exportObj);
 			document.querySelector('body').classList.add('dialog-model');
 			opt.root.style.display = 'block';
 			setTimeout(function () {
 				opt.root.classList.add('dialog-active');
-				opt.showafter && trigger(opt.showafter, $el, opt, exportObj);
+				opt.afterShow && trigger(opt.afterShow, $el, opt, exportObj);
 			}, 50);
 			on('dialog.hidden.except' + opt._pid, function (e, id) {
 				if (id != opt._pid) {
@@ -35,12 +35,12 @@ export default {
 		});
 		let _hide = (exportObj.hide = function () {
 			if (opt.root) {
-				opt.hidebefore && trigger(opt.hidebefore, $el, opt, exportObj);
+				opt.beforeHide && trigger(opt.beforeHide, $el, opt, exportObj);
 				opt.root.classList.remove('dialog-active');
 				setTimeout(function () {
 					opt.root.style.display = 'none';
 					document.querySelector('body').classList.remove('dialog-model');
-					opt.hideafter && trigger(opt.hidebefore, $el, opt, exportObj);
+					opt.afterHide && trigger(opt.beforeHide, $el, opt, exportObj);
 					if (!opt.cache) {
 						opt.root.remove();
 						opt.root = null;
@@ -56,7 +56,7 @@ export default {
 		let _render = (exportObj.render = function () {
 			let template = `<div id="${opt._pid}" class="dialog dialog-${opt.theme}" tabIndex="-1"><div class="dialog-overlay"></div><div class="dialog-panel"><div class="dialog-body"><button class="dialog-title-close" data-dialog="close" type="button"><i class="icon-close"></i></button>${opt.html}</div></div>`;
 			emit('dom.load');
-			opt.renderbefore && trigger(opt.renderbefore, $el, opt, exportObj);
+			opt.beforeRender && trigger(opt.beforeRender, $el, opt, exportObj);
 			//todo use append to insert template as html
 			document.querySelector('body').insertAdjacentHTML('beforeend', template);
 			opt.root = document.querySelector('#' + opt._pid);
@@ -73,7 +73,7 @@ export default {
 					_hide();
 				});
 			}
-			opt.renderafter && trigger(opt.renderafter, $el, opt, exportObj);
+			opt.afterRender && trigger(opt.afterRender, $el, opt, exportObj);
 		});
 		$el.addEventListener('click', function (e) {
 			let data = e.currentTarget.dataset;

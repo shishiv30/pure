@@ -1,4 +1,6 @@
 import { emit, off, on } from '../core/event.js';
+import guid from '../../core/guid.js';
+
 export default {
 	name: 'onscroll',
 	defaultOpt: {
@@ -8,7 +10,7 @@ export default {
 		once: true,
 	},
 	init: function ($this, opt, exportObj) {
-		let eventName = 'dom.scroll.' + $.guid++;
+		let eventName = 'dom.scroll.' + guid;
 		let _checkScreen = function (force) {
 			let state = $.cui_state;
 			if (opt.callback) {

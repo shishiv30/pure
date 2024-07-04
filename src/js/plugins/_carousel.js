@@ -1,4 +1,5 @@
 import { emit, off, on } from '../core/event.js';
+import guid from '../../core/guid.js';
 
 function loadImg(img) {
 	let $img = $(img);
@@ -74,7 +75,7 @@ export default {
 	init: function ($this, opt, exportObj) {
 		let $scroller = $this.querySelectorAll('[data-role*="scrollbar"]');
 		exportObj.$scroller = $scroller;
-		opt._id = $.guid++;
+		opt._id = guid;
 		if (opt.size !== 'auto') {
 			_updateWidth($this, $scroller, opt);
 		} else {

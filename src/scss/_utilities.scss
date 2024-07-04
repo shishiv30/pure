@@ -88,9 +88,12 @@
 		display: none;
 	}
 	.img-bg {
+		--img-bg-ratio: 61.8%;
 		position: relative;
+		width: 100%;
+		padding-top: var(--img-bg-ratio);
 		> img {
-			background: absolute;
+			position: absolute;
 			left: 0;
 			top: 0;
 			width: 100%;

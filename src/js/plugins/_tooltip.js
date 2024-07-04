@@ -37,10 +37,10 @@ export default {
 		html: true,
 		once: false,
 		onload: null,
-		showbefore: null,
-		showafter: null,
-		hidebefore: null,
-		hideafter: null,
+		beforeShow: null,
+		afterShow: null,
+		beforeHide: null,
+		afterHide: null,
 		_timer: null,
 		parent: null,
 		template:
@@ -54,7 +54,7 @@ export default {
 			if (opt._timer) {
 				clearTimeout(opt._timer);
 			}
-			opt.showbefore && emit(opt.showbefore, $this, opt, exportObj);
+			opt.beforeShow && emit(opt.beforeShow, $this, opt, exportObj);
 			let cWidth = $container.outerWidth();
 			let cHeight = $container.outerHeight();
 			let tWidth = $this.outerWidth();
@@ -110,19 +110,19 @@ export default {
 					$container.classList.add(opt.placement);
 					break;
 			}
-			if (opt.showafter) {
-				opt.showafter && emit(opt.showafter, $this, opt, exportObj);
+			if (opt.afterShow) {
+				opt.afterShow && emit(opt.afterShow, $this, opt, exportObj);
 			}
 		};
 		exportObj.hide = function () {
 			if (!exportObj.$container) return;
 			updateTip($this, opt, exportObj);
 			exportObj.$parent.css('position', '');
-			opt.hidebefore && emit(opt.hidebefore, $this, opt, exportObj);
+			opt.beforeHide && emit(opt.beforeHide, $this, opt, exportObj);
 			exportObj.$container.classList.remove('in');
 			opt._timer = setTimeout(function () {
 				exportObj.$container.hide();
-				opt.hideafter && emit(opt.hideafter, $this, opt, exportObj);
+				opt.afterHide && emit(opt.afterHide, $this, opt, exportObj);
 				if (opt.once) {
 					exportObj.$container.remove();
 					exportObj.$container = null;

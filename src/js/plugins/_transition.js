@@ -35,7 +35,7 @@ export default {
 			isIncrease = step > 0;
 		});
 		let _fresh = (exportObj.fresh = function () {
-			opt.freshbefore && emit(opt.freshbefore, $this, opt, exportObj);
+			opt.beforeFresh && emit(opt.beforeFresh, $this, opt, exportObj);
 			switch (opt.type) {
 				case 'number':
 					_freshNumber();
@@ -60,7 +60,7 @@ export default {
 					start = rawNumber + step;
 				}
 			}, duration);
-			opt.freshafter && emit(opt.freshafter, $this, opt, exportObj);
+			opt.afterFresh && emit(opt.afterFresh, $this, opt, exportObj);
 		});
 		_fresh();
 	},

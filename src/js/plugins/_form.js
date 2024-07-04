@@ -1,6 +1,6 @@
 //validate for form submit
 import { emit, trigger } from '../core/event.js';
-import Plugin from '../core/plugin.js';
+import { Plugin } from '../core/plugin.js';
 export default {
 	name: 'form',
 	defaultOpt: {

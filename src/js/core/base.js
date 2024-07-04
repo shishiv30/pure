@@ -1,5 +1,5 @@
 import { logError } from './log.js';
-class Base {
+export class Base {
 	constructor(name, type) {
 		if (!name) {
 			logError(`"name" of ${type} is required`);
@@ -9,4 +9,3 @@ class Base {
 		this.type = type || 'base';
 	}
 }
-export default Base;

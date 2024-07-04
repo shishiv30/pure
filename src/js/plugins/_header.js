@@ -1,4 +1,5 @@
 import { emit, off, on } from '../core/event.js';
+import guid from '../core/guid.js';
 
 export default {
 	name: 'header',
@@ -12,7 +13,7 @@ export default {
 		let $overlay = document.createElement('div');
 		$overlay.setAttribute('class', 'header-overlay');
 		let $swtichLink = $this.querySelectorAll('.header-switch-link');
-		opt.id = $.guid++;
+		opt.id = guid;
 		$this.prepend($overlay);
 		let _close = function () {
 			$this.classList.add('header-close');

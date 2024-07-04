@@ -1,54 +1,66 @@
-import Plugin from './plugin.js';
+import { Plugin } from './plugin.js';
 import { logInfo, logError } from './log.js';
 import { isMobile } from './validate.js';
 import { emit, on } from './event.js';
 import throttle from 'lodash/throttle.js';
 import debounce from 'lodash/debounce.js';
 
-class Page extends Plugin {
-	constructor(ctx) {
+export class Page extends Plugin {
+	constructor(ctx, pageSetting = null) {
 		if (!ctx) {
 			logError('ctx is required');
 		}
-		let setting = Page.getSettingByCtx(ctx);
-		super(setting, 'page');
-		this.ctx = ctx;
+		let setting = Page.getSettingByCtx(ctx, pageSetting);
+		super(setting, setting.name || 'page');
 	}
 
-	static getSettingByCtx(ctx) {
+	static getSettingByCtx(ctx, setting = null) {
 		return {
-			name: ctx.name || 'page',
-			init: function () {
+			name: setting && setting.name ? setting.name : 'page',
+			init: function ($el, opt, exportObj) {
+				if(!$el){
+					$el = document.querySelector('body');
+				}
 				logInfo('initing');
 				Object.assign(ctx, Page.initCtxByWindow(ctx));
 				Object.assign(ctx, Page.initCtxByUa(ctx));
 				Object.assign(ctx, Page.initCtxByUrl(ctx));
 				Object.assign(ctx, Page.initCtxByCookie(ctx));
 				Object.assign(ctx, Page.initCtxByStorage(ctx));
-				return ctx;
+				exportObj.ctx = ctx;
+				if(setting && setting.init){
+					setting.init($el, opt, exportObj);
+				}
+				return exportObj;
 			},
-			load: function () {
+			load: async function ($el, opt, exportObj) {
 				logInfo('loading');
-				return new Promise((resolve) => {
-					if (ctx.data) {
-						return resolve(ctx.data);
-					}
+				let data = exportObj && exportObj.ctx && exportObj.data ? exportObj.ctx.data : {};
+				
+				if(setting && setting.load){
 					try {
-						setTimeout(() => {
-							let data = {};
-							Object.assign(ctx, data);
-							return resolve(data);
-						}, 1000);
+						let res = await setting.load($el, opt, exportObj);
+						if (res && res.data) {
+							exportObj.ctx = Object.assign(exportObj.ctx.data, res.data);
+						}
 					} catch (e) {
 						logError(e);
-						return resolve({});
 					}
-				});
+				}
+				
+				if (data) {
+					exportObj.ctx.data = data;
+				}
+				return exportObj
 			},
-			render: function () {
+			render: function ($el, opt, exportObj) {
 				// Page.renderComponent();
 				Page.eventListener();
+				if(setting && setting.render){
+					setting.render($el, opt, exportObj);
+				}
 				emit('dom.load');
+				return exportObj;
 			},
 		};
 	}
@@ -194,4 +206,3 @@ class Page extends Plugin {
 		);
 	}
 }
-export default Page;

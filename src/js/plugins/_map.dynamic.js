@@ -1,5 +1,6 @@
 import { emit } from '../core/event.js';
 import isNumber from 'lodash/isNumber.js';
+import guid from '../core/guid.js';
 
 let markManager = function (options) {
 	this.markers = [];
@@ -41,7 +42,7 @@ markManager.prototype.addMarker = function (option) {
 		return null;
 	}
 	if (!option.id) {
-		option.id = $.guid++;
+		option.id = guid;
 	} else {
 		marker = this.getMarkerById(opt.id);
 	}

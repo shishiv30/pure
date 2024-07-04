@@ -39,6 +39,12 @@ const formatTrim = function (value) {
 	if (!value) return value;
 	return value.replace(/^\s+|\s+$/g, '');
 }
+
+const formatCaplized = function (name) {
+	if (!name) return name;
+	return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
 export {
 	formatTrim,
 	formatPhone,
@@ -50,4 +56,5 @@ export {
 	formatTime,
 	formatSqft,
 	formatPrice,
+	formatCaplized
 };

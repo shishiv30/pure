@@ -4,15 +4,15 @@ export default {
 	defaultOpt: {
 		target: null,
 		offsettop: null,
-		scrollbefore: null,
+		beforeScroll: null,
 		container: null,
-		scrollafter: null,
+		afterScroll: null,
 	},
 	init: function ($this, opt, exportObj) {
 		$this.addEventListener('click', function (e) {
-			opt.scrollbefore && emit(opt.scrollbefore, $this, opt, exportObj);
+			opt.beforeScroll && emit(opt.beforeScroll, $this, opt, exportObj);
 			$.scrollTo(opt.target || $this.href, opt.position);
-			opt.scrollafter && emit(opt.scrollafter, $this, opt, exportObj);
+			opt.afterScroll && emit(opt.afterScroll, $this, opt, exportObj);
 			return e.preventDefault();
 		});
 	},
