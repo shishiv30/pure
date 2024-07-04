@@ -49,22 +49,20 @@ export function defBool (name, $el, opt, exportObj) {
 
 
 export function defEnum (key, names, $el, opt, exportObj) {
-    let methodNames = names.map((name) => {
-		return formatCaplized(name);
-	});
-    methodNames.forEach((methodName, index) => {
-        exportObj[`switchTo${methodName}`] = () => {
-            if(methodName != exportObj[key]){
-                opt[`beforeSwitchTo${methodName}`] && trigger(opt[`beforeSwitchTo${methodName}`], $el, opt, exportObj);
-                methodNames.forEach((name, index) => {
-                    if(name !== methodName){
-                        $el.classList.remove(`${key}-${name}`);
+    names.forEach((name, index) => {
+        let methodNames = formatCaplized(name);
+        exportObj[`switchTo${methodNames}`] = () => {
+            if(name != exportObj[key]){
+                opt[`beforeSwitchTo${methodNames}`] && trigger(opt[`beforeSwitchTo${methodNames}`], $el, opt, exportObj);
+                names.forEach((item, index) => {
+                    if(item !== name){
+                        $el.classList.remove(`${key}-${item}`);
                     } else {
-                        $el.classList.add(`${key}-${name}`);
+                        $el.classList.add(`${key}-${item}`);
+                        exportObj[key] = item;
                     }
                 });
-                exportObj[key] = methodName;
-                opt[`afterSwitchTo${methodName}`] && trigger(opt[`afterSwitchTo${methodName}`], $el, opt, exportObj);
+                opt[`afterSwitchTo${methodNames}`] && trigger(opt[`afterSwitchTo${methodNames}`], $el, opt, exportObj);
             }
         }
     });

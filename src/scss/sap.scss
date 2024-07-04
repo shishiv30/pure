@@ -116,29 +116,36 @@
         clip-path: inset(100% 0 0 0);
     }
 }
+
 $item-width: 300px;
-html{
+
+html {
     --item-width: #{$item-width};
     --item-height: calc(var(--item-width) * 0.618);
 }
 
-.page{
+.page {
     width: 100%;
-    height: calc(100dvh - var(--comp-size-3) * 2) ;
+    height: calc(100dvh - var(--comp-size-3) * 2);
+
     @supports not (height: 100dvh) {
-            height: 100vh;
+        height: 100vh;
     }
+
     display: grid;
     gap: var(--g0);
+
     @media screen and (orientation:portrait) {
         grid-template-rows: minmax(50%, 100%) var(--item-height);
         grid-template-columns: 100%;
     }
-    @media (orientation:landscape) and (max-width: $screen-md-max){
+
+    @media (orientation:landscape) and (max-width: $screen-md-max) {
         grid-template-columns: minmax(50%, 100%) var(--item-width);
         grid-template-rows: 100%;
     }
-    @media (orientation:landscape) and (min-width: $screen-lg-min){
+
+    @media (orientation:landscape) and (min-width: $screen-lg-min) {
         grid-template-columns: minmax(50%, 100%) calc(var(--item-width) * 2);
     }
 }
@@ -150,11 +157,12 @@ html{
     @include scroll-smooth();
     @include snap();
     @include hidden-scrollbar();
+
     @media screen and (orientation:portrait) {
         display: flex;
         overflow-x: auto;
         // backdrop-filter: blur(20px);
-       
+
         >* {
             flex-shrink: 0;
         }
@@ -164,16 +172,17 @@ html{
         display: grid;
         overflow-y: auto;
         // backdrop-filter: blur(20px);
-       
+
         >* {
             flex-shrink: 0;
         }
     }
-  
-    @media (orientation:landscape) and (max-width: $screen-md-max){
+
+    @media (orientation:landscape) and (max-width: $screen-md-max) {
         grid-template-columns: 1fr;
     }
-    @media (orientation:landscape) and (min-width: $screen-lg-min){
+
+    @media (orientation:landscape) and (min-width: $screen-lg-min) {
         grid-template-columns: minmax(0%, 50%) minmax(0%, 50%);
     }
 
@@ -213,7 +222,7 @@ html{
 
 
 
-.main{
+.main {
     position: relative;
 }
 
@@ -222,12 +231,10 @@ html{
     height: 100%;
     cursor: pointer;
     --img-bg-ratio: 0 !important;
-    @media screen and (orientation:portrait) {
-      
-    }
 
-    @media screen and (orientation:landscape) {
-    }
+    @media screen and (orientation:portrait) {}
+
+    @media screen and (orientation:landscape) {}
 
     img {
         animation: 1s box-wipe-enter;
@@ -237,6 +244,15 @@ html{
 
 
     &:hover {
+        img {
+            animation: 1s box-wipe-leave;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+.view-nav {
+    .img-bg {
         img {
             animation: 1s box-wipe-leave;
             animation-fill-mode: forwards;
