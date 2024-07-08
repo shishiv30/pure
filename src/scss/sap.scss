@@ -119,10 +119,61 @@
 
 $item-width: 300px;
 
-html {
+
+.page-sap {
     --item-width: #{$item-width};
-    --item-height: calc(var(--item-width) * 0.618);
+    --item-height: calc(var(--item-width) * 0.6);
+    --main-size: var(--item-width);
+    --header-height: var(--comp-size-3);
+    --nav-height: var(--comp-size-3);
+    display: grid;
+    height: 100%;
+    width: 100%;
+    transition: grid-template 300ms 150ms;
+    @include hidden-scrollbar();
+    overflow: hidden;
+    .header {
+        grid-area: header;
+    }
+
+    .nav {
+        grid-area: nav;
+    }
+
+    .view {
+        grid-area: vision;
+    }
+
+    .result {
+        grid-area: main;
+    }
+    @media screen and (orientation:portrait) {
+        --main-size: var(--item-height);
+        grid-template-rows: var(--header-height) var(--nav-height) 1fr var(--main-size);
+        grid-template-columns: 1fr;
+        grid-template-areas:
+        "header"
+        "nav"
+        "vision"
+        "main";
+    }
+    @media  screen and (orientation:landscape){
+        --main-size: var(--item-width);
+        grid-template-rows: var(--header-height) var(--nav-height) 1fr;
+        grid-template-columns: 1fr var(--main-size);
+        grid-template-areas:
+        "header header"
+        "nav nav"
+        "vision main";
+    }
+    @media (orientation:landscape) and (max-width: $screen-md-max) {
+
+    }
+    @media (orientation:landscape) and (min-width: $screen-lg-min) {
+        --main-size: calc(var(--item-width) * 2 + var(--g2));
+    }
 }
+
 
 .page {
     width: 100%;
@@ -150,19 +201,63 @@ html {
     }
 }
 
+.view{
+    position: relative;
+    .view-content{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        padding: var(--g2);
+        height: 100%;
+        overflow: auto;
+        @include hidden-scrollbar();
+    
+    }
+   
+}
+.filter {
+    display: flex;
+    gap: var(--g1);
+    align-items: center;
 
-.result {
-    gap: var(--g0);
-    z-index: 2;
+    >* {
+        flex-shrink: 0;
+    }
+
+    overflow-x: auto;
     @include scroll-smooth();
     @include snap();
     @include hidden-scrollbar();
+}
+.img-bg {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    --img-bg-ratio: 0 !important;
 
+    @media screen and (orientation:portrait) {}
+
+    @media screen and (orientation:landscape) {}
+
+    img {
+        animation: 1s box-wipe-enter;
+        animation-fill-mode: backwards;
+        // clip-path: circle(5% at center);
+    }
+
+}
+
+.result {
+    position: relative;
+    gap: var(--g0);
+    z-index: 2;
+    @include hidden-scrollbar();
     @media screen and (orientation:portrait) {
         display: flex;
         overflow-x: auto;
         // backdrop-filter: blur(20px);
-
+        @include scroll-smooth();
+        @include snap();
         >* {
             flex-shrink: 0;
         }
@@ -200,50 +295,9 @@ html {
     }
 }
 
-.filter {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: var(--g2);
-    display: flex;
-    gap: var(--g1);
-    align-items: center;
-
-    >* {
-        flex-shrink: 0;
-    }
-
-    overflow-x: auto;
-    @include scroll-smooth();
-    @include snap();
-    @include hidden-scrollbar();
-
-}
-
-
-
-.main {
-    position: relative;
-}
-
-.img-bg {
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    --img-bg-ratio: 0 !important;
-
-    @media screen and (orientation:portrait) {}
-
-    @media screen and (orientation:landscape) {}
-
-    img {
-        animation: 1s box-wipe-enter;
-        animation-fill-mode: backwards;
-        // clip-path: circle(5% at center);
-    }
-
-
-    &:hover {
+.view-nav {
+    .img-bg {
+        pointer-events: none;
         img {
             animation: 1s box-wipe-leave;
             animation-fill-mode: forwards;
@@ -251,11 +305,33 @@ html {
     }
 }
 
-.view-nav {
-    .img-bg {
-        img {
-            animation: 1s box-wipe-leave;
-            animation-fill-mode: forwards;
+.view-grid {
+    &.page-sap{
+        @media screen and (orientation:portrait) {
+            // --main-size: var(--item-height);
+            // grid-template-rows: var(--header-height) var(--nav-height) 1fr var(--main-size);
+            // grid-template-columns: 1fr;
+            grid-template-areas:
+            "header"
+            "nav"
+            "main"
+            "main";
+        }
+        @media  screen and (orientation:landscape){
+            grid-template-areas:
+            "header header"
+            "nav nav"
+            "main main";
+        }
+    }
+
+    .result {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--item-width), 1fr));
+        grid-auto-rows: var(--item-height);
+
+        .item {
+            width: 100%;
         }
     }
 }

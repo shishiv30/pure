@@ -1,6 +1,9 @@
 @include comp-color(nav);
 @include comp-size(nav);
 .nav {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
 	color: var(--nav-color);
 	background-color: var(--nav-color-bg);
 	&.sticky {
@@ -9,8 +12,9 @@
 		z-index: $ui-stick-index;
 	}
 	> ul {
-		margin: 0 auto;
 		@include singleline();
+		max-width: fit-content;
+		overflow: hidden;
 		li{
 			display: inline;
 		}
@@ -44,5 +48,11 @@
 			color: var(--nav-color);
 			background-color: var(--nav-color-bg);
 		}
+	}
+	.nav-button{
+		margin-left: auto;
+		margin-right: var(--g0);
+		flex-shrink: 0;
+		line-height: var(--comp-size-3);
 	}
 }

@@ -14,7 +14,7 @@ const defBoolStatus = function (status, $el, opt, exportObj) {
 const enumStatus = [
 	{
 		key: 'view',
-		names: ['list', 'map', 'photo', 'nav'],
+		names: ['grid', 'map', 'photo', 'nav'],
 	},
 ];
 const defEnumStatus = function (status, $el, opt, exportObj) {
@@ -37,6 +37,26 @@ let sap = {
 				}
 				resolve(exportObj);
 			}, 1000);
+		});
+	},
+	render: function ($el, opt, exportObj) {
+		function switchNavButton($this){
+			document.querySelectorAll('.nav-button > .active').forEach((item) => {
+				item.classList.remove('active');
+			});
+			$this.classList.add('active');
+		}
+		document.getElementById('switchToDetail').addEventListener('click', (e) => {
+			switchNavButton(e.target);
+			exportObj.switchToNav();
+		});
+		document.getElementById('switchToGrid').addEventListener('click', (e) => {
+			switchNavButton(e.target);
+			exportObj.switchToGrid();
+		});
+		document.getElementById('switchToDefualt').addEventListener('click', (e) => {
+			switchNavButton(e.target);
+			exportObj.switchToPhoto();
 		});
 	},
 };
