@@ -3,6 +3,9 @@ const favicon = './src/assets/img/logo.png';
 const pageConfig = {
 	pages: [
 		{
+			name: 'animation',
+		},
+		{
 			name: 'sap',
 		},
 		{
