@@ -1,4 +1,4 @@
-export class router {
+export class Router {
 	constructor(rules) {
 		this.rules = rules;
 		this.currentRouter = null;

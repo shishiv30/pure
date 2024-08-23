@@ -18,4 +18,5 @@ export function main(frame, settings = null) {
 	page.init().then((exportObj) => {
 		Object.assign(root, { exportObj, Plugin: Plugin });
 	});
+	return page;
 }

@@ -70,8 +70,7 @@ export default {
 		exportObj.close = _close;
 		exportObj.open = _open;
 		on('dom.resize.header' + opt.id, _hide);
-		on('dom.scroll.header' + opt.id, () => {
-			let status = $.cui_state;
+		on('dom.scroll.header' + opt.id, (status) => {
 			if (status.isScrollDown && status.scrollTop > 500) {
 				_close();
 			} else {

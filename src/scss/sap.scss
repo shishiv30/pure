@@ -135,7 +135,10 @@ $item-width: 300px;
     .header {
         grid-area: header;
     }
-
+    .footer{
+        display: none;
+        grid-area: footer;
+    }
     .nav {
         grid-area: nav;
     }
@@ -317,6 +320,8 @@ $item-width: 300px;
 
 .view-grid {
     &.page-sap{
+        height: auto;
+        overflow-y: auto;
         @media screen and (orientation:portrait) {
             // --main-size: var(--item-height);
             // grid-template-rows: var(--header-height) var(--nav-height) 1fr var(--main-size);
@@ -325,13 +330,18 @@ $item-width: 300px;
             "header"
             "nav"
             "main"
-            "main";
+            "main"
+            "footer";
         }
         @media  screen and (orientation:landscape){
             grid-template-areas:
             "header header"
             "nav nav"
-            "main main";
+            "main main"
+            "footer footer";
+        }
+        .footer{
+            display: block;
         }
     }
 

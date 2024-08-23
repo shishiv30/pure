@@ -117,7 +117,7 @@ export class Page extends Plugin {
 		} else {
 			document.querySelector('body').classList.remove('scroll-down');
 		}
-		emit('dom.scroll');
+		emit('dom.scroll', { scrollTop: Page.scrollTop, isScrollDown: Page.isScrollDown });
 	}
 
 	static updatePageInfo() {

@@ -1,15 +1,13 @@
 import {formatCaplized} from './format.js';
 import { trigger } from '../core/event.js';
 
-//any name provided will be convert to camel case
-//the export obj will be injected with the following methods
-//addName, removeName, toggleName, isName
-//addName will add the class name to the element
-//removeName will remove the class name from the element
-//toggleName will toggle the class name from the element
-//isName will return true if the class name is present in the element
-//if opt include beforeAddName, afterAddName, beforeRemoveName, afterRemoveName
-//it will be triggered before and after the add and remove method
+/**
+ * base on provided key, the made an element could switch between true and false status.
+ * @param {*} name the key name will be used to store the current status
+ * @param {*} $el the element will support the className ${name}
+ * @param {*} opt  the options will include beforeAddName, afterAddName, beforeRemoveName, afterRemoveName
+ * @param {*} exportObj  the object will be injected with the following methods addName, removeName, toggleName, isName
+ */
 export function defBool (name, $el, opt, exportObj) {
     //name first letter to upper case
    let methodName = formatCaplized(name);
@@ -40,14 +38,16 @@ export function defBool (name, $el, opt, exportObj) {
 }
 
 
-//any name provided will be convert to camel case
-//the export obj will be injected with the following methods
-//switchToNameA, switchToNameB, switchToNameC ...
-//switchToNameA will remove all other names and add class ${key}-${nameA} to the element
-//if opt include beforeSwitchToNameA, afterSwitchToNameA
-//it will be triggered before and after the switch method
 
 
+/**
+ * base on provided key and possible values, the made an element could switch diff status.
+ * @param {*} key the key name will be used to store the current status
+ * @param {*} names the value could be switched to like ['nameA', 'nameB', 'nameC']
+ * @param {*} $el the element will support the className ${key}-${nameA}, ${key}-${nameB}, ${key}-${nameC}
+ * @param {*} opt  the options will include beforeSwitchToNameA, afterSwitchToNameA
+ * @param {*} exportObj  the object will be injected with the following methods switchToNameA, switchToNameB, switchToNameC ...
+ */
 export function defEnum (key, names, $el, opt, exportObj) {
     names.forEach((name, index) => {
         let methodNames = formatCaplized(name);
