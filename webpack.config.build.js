@@ -2,6 +2,7 @@ import baseConfig from './webpack.config.base.js';
 import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import serverConfig from './server/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,9 +12,8 @@ import WorkboxPlugin from 'workbox-webpack-plugin';
 
 export default (env) => {
 	console.log('deploy:', env.deploy);
-	const publicPath = env.deploy ? 'https://shishiv30.github.io/pure/' : 'http://localhost:8080/';
-	var config = baseConfig(env);
-	return merge(config, {
+	const publicPath = env.deploy ? 'https://shishiv30.github.io/pure/' : `${serverConfig.cdnUrl}/`;
+	return merge(baseConfig(env), {
 		mode: 'production',
 		output: {
 			path: path.resolve(__dirname, 'dist'),
@@ -34,7 +34,7 @@ export default (env) => {
 				start_url: publicPath + 'index.html',
 				icons: [
 					{
-						src: path.resolve('./src/assets/img/logo.png'),
+						src: path.resolve('./client/assets/img/logo.png'),
 						sizes: [48, 96, 192, 256, 384, 512],
 						purpose: 'any maskable',
 					},
