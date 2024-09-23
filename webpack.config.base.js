@@ -8,7 +8,6 @@ import pageSettings from './webpack.config.base.page.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const entry = {};
 const plugins = [
 	new MiniCssExtractPlugin({
@@ -44,11 +43,7 @@ export default () => {
 				},
 				{
 					test: /\.scss$/i,
-					use: [
-						MiniCssExtractPlugin.loader,
-						'css-loader',
-						'sass-loader',
-					],
+					use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 				},
 				{
 					test: /\.js$/i,
@@ -67,6 +62,11 @@ export default () => {
 									attribute: 'data-src',
 									type: 'src',
 								},
+								{
+									tag: 'a-videosphere',
+									attribute: 'src',
+									type: 'src',
+								}
 							],
 						},
 					},
