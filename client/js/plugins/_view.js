@@ -15,7 +15,7 @@ export default {
 		onpushleft: 'onpushleft',
 		onpushright: 'onpushright',
 		onchange: 'onchange',
-		oninital: 'oninital',
+		oninitial: 'oninitial',
 		scrollable: true,
 		snapable: true,
 		jumpback: true,
@@ -82,11 +82,11 @@ export default {
 			let offset = Math.round(distance);
 			let animateFrame = opt.horizontal
 				? {
-					transform: 'translateX(' + offset + 'px)',
-				}
+						transform: 'translateX(' + offset + 'px)',
+				  }
 				: {
-					transform: 'translateY(' + offset + 'px)',
-				};
+						transform: 'translateY(' + offset + 'px)',
+				  };
 			if (animation) {
 				isAnimating = true;
 				$wrapper.classList.add('animating');
@@ -295,7 +295,7 @@ export default {
 		} else {
 			enable();
 		}
-		opt.oninital && emit(opt.oninital, $this, opt, exportObj, [info]);
+		opt.oninitial && emit(opt.oninitial, $this, opt, exportObj, [info]);
 	},
 	setOptionsBefore: null,
 	setOptionsAfter: null,

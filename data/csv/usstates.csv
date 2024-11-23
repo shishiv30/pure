@@ -1,0 +1,51 @@
+state_id,state_name,lat,lng,term,path,population
+AL,Alabama,32.806671,-86.79113,al alabama,alabama,4903185
+AK,Alaska,61.370716,-152.404419,ak alaska,alaska,731545
+AZ,Arizona,33.729759,-111.431221,az arizona,arizona,7278717
+AR,Arkansas,34.969704,-92.373123,ar arkansas,arkansas,3017804
+CA,California,36.116203,-119.681564,ca california,california,39512223
+CO,Colorado,39.059811,-105.311104,co colorado,colorado,5758736
+CT,Connecticut,41.597782,-72.755371,ct connecticut,connecticut,3565287
+DE,Delaware,39.318523,-75.507141,de delaware,delaware,973764
+FL,Florida,27.766279,-81.686783,fl florida,florida,21477737
+GA,Georgia,33.040619,-83.643074,ga georgia,georgia,10617423
+HI,Hawaii,21.094318,-157.498337,hi hawaii,hawaii,1415872
+ID,Idaho,44.240459,-114.478828,id idaho,idaho,1787065
+IL,Illinois,40.349457,-88.986137,il illinois,illinois,12671821
+IN,Indiana,39.849426,-86.258278,in indiana,indiana,6732219
+IA,Iowa,42.011539,-93.210526,ia iowa,iowa,3155070
+KS,Kansas,38.5266,-96.726486,ks kansas,kansas,2913314
+KY,Kentucky,37.66814,-84.670067,ky kentucky,kentucky,4467673
+LA,Louisiana,31.169546,-91.867805,la louisiana,louisiana,4648794
+ME,Maine,44.693947,-69.381927,me maine,maine,1344212
+MD,Maryland,39.063946,-76.802101,md maryland,maryland,6045680
+MA,Massachusetts,42.230171,-71.530106,ma massachusetts,massachusetts,6949503
+MI,Michigan,43.326618,-84.536095,mi michigan,michigan,9986857
+MN,Minnesota,45.694454,-93.900192,mn minnesota,minnesota,5639632
+MS,Mississippi,32.741646,-89.678696,ms mississippi,mississippi,2976149
+MO,Missouri,38.456085,-92.288368,mo missouri,missouri,6137428
+MT,Montana,46.921925,-110.454353,mt montana,montana,1068778
+NE,Nebraska,41.12537,-98.268082,ne nebraska,nebraska,1934408
+NV,Nevada,38.313515,-117.055374,nv nevada,nevada,3080156
+NH,New Hampshire,43.452492,-71.563896,nh new hampshire,new-hampshire,1359711
+NJ,New Jersey,40.298904,-74.521011,nj new jersey,new-jersey,8882190
+NM,New Mexico,34.840515,-106.248482,nm new mexico,new-mexico,2096829
+NY,New York,42.165726,-74.948051,ny new york,new-york,19453561
+NC,North Carolina,35.630066,-79.806419,nc north carolina,north-carolina,10488084
+ND,North Dakota,47.528912,-99.784012,nd north dakota,north-dakota,762062
+OH,Ohio,40.388783,-82.764915,oh ohio,ohio,11689100
+OK,Oklahoma,35.565342,-96.928917,ok oklahoma,oklahoma,3956971
+OR,Oregon,44.572021,-122.070938,or oregon,oregon,4217737
+PA,Pennsylvania,40.590752,-77.209755,pa pennsylvania,pennsylvania,12801989
+RI,Rhode Island,41.680893,-71.51178,ri rhode island,rhode-island,1059361
+SC,South Carolina,33.856892,-80.945007,sc south carolina,south-carolina,5148714
+SD,South Dakota,44.299782,-99.438828,sd south dakota,south-dakota,884659
+TN,Tennessee,35.747845,-86.692345,tn tennessee,tennessee,6833174
+TX,Texas,31.054487,-97.563461,tx texas,texas,28995881
+UT,Utah,40.150032,-111.862434,ut utah,utah,3205958
+VT,Vermont,44.045876,-72.710686,vt vermont,vermont,623989
+VA,Virginia,37.769337,-78.169968,va virginia,virginia,8535519
+WA,Washington,47.400902,-121.490494,wa washington,washington,7614893
+WV,West Virginia,38.491226,-80.954456,wv west virginia,west-virginia,1792147
+WI,Wisconsin,44.268543,-89.616508,wi wisconsin,wisconsin,5822434
+WY,Wyoming,42.755966,-107.30249,wy wyoming,wyoming,578759

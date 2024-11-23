@@ -13,7 +13,7 @@ let markManager = function (options) {
 		options.defaultOpt,
 	);
 	this.create = options.create;
-	this.destory = options.destory;
+	this.destroy = options.destroy;
 };
 markManager.prototype.getAllMarkers = function () {
 	return this.markers;
@@ -74,8 +74,8 @@ markManager.prototype.addMarkers = function (options) {
 markManager.prototype.removeMarker = function (id) {
 	let item = this.getMarkerWithIndexById(id);
 	if (item.element) {
-		if (this.destory) {
-			id = this.destory.apply(this, [item.element]);
+		if (this.destroy) {
+			id = this.destroy.apply(this, [item.element]);
 			this.markers.splice(item.index);
 		}
 	}
@@ -89,7 +89,7 @@ markManager.prototype.removeMarkers = function (ids) {
 	}
 	return [];
 };
-let initalCustomMarker = function () {
+let initialCustomMarker = function () {
 	if (!window.CustomMarker) {
 		window.CustomMarker = function (options) {
 			let defaultOpt = {
@@ -321,7 +321,7 @@ export default {
 					lat: markerOpt.lat,
 					lng: markerOpt.lng,
 				});
-				initalCustomMarker();
+				initialCustomMarker();
 				let marker = new window.CustomMarker({
 					latlng: latlng,
 					map: markerOpt.map,
@@ -341,7 +341,7 @@ export default {
 				}
 				return marker;
 			},
-			destory: function (marker) {
+			destroy: function (marker) {
 				$(marker).classList.add('removeing');
 				one('mouseup', function () {
 					marker.setMap(null);

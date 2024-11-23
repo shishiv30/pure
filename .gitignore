@@ -4,3 +4,4 @@ node_modules
 records.json
 report.html
 /dist
+/client/assets/video

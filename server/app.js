@@ -1,18 +1,22 @@
 import express from 'express';
 import compression from 'compression';
-import route from './router/index.js';
+import pageRouter from './router/page.js';
+import apiRouter from './router/api.js';
 import session from './middleware/session.js';
+import geo from './middleware/geo.js';
 import config from './config.js';
-const app = express();
 
+const app = express();
 app.use(compression());
 
 session(app);
-app.use((req,res,next)=>{
+geo(app);
+app.use((req, res, next) => {
 	res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 	next();
 });
-app.use('/backend', route);
+app.use('/', pageRouter);
+app.use('/api', apiRouter);
 
 app.use(express.static('dist'));
 

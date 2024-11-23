@@ -17,7 +17,7 @@ export default {
 	},
 	init: function ($this, opt, exportObj) {
 		let $container = opt.container ? $(opt.container) : $(window);
-		let initalItems = function (items) {
+		let initialItems = function (items) {
 			if (typeof items === 'string') {
 				let data = window[items];
 				switch (typeof data) {
@@ -221,7 +221,7 @@ export default {
 			if (force) {
 				opt.colCount = -1;
 			}
-			let item = initalItems(data || opt.items);
+			let item = initialItems(data || opt.items);
 			if (item && item.length) {
 				let newColCount = _getColumnByBreakPoint();
 				if (opt.colCount !== newColCount) {

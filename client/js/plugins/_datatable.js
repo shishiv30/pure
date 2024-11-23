@@ -68,12 +68,12 @@ export default {
 					});
 				}
 			}
-			_initalTbody();
+			_initialTbody();
 			if (!$tfoot.querySelectorAll('td').is(':hidden')) {
-				_initalTfoot();
+				_initialTfoot();
 			}
 		};
-		let _initalThead = function () {
+		let _initialThead = function () {
 			$thead.empty();
 			$colgroup.empty();
 			if (opt.columns && opt.columns.length) {
@@ -86,8 +86,8 @@ export default {
 					if (column.sortable) {
 						let $link = $(
 							'<button type="button:;" class="datatable-sort">' +
-							display +
-							'</button>',
+								display +
+								'</button>',
 						);
 						$link.data('column', column);
 						$link.addEventListener('click', function () {
@@ -112,7 +112,7 @@ export default {
 			}
 			return [$colgroup, $thead];
 		};
-		let _initalTbody = function () {
+		let _initialTbody = function () {
 			$tbody.empty();
 			if (opt.data && opt.data.length) {
 				for (let i = 0; i < opt.data.length; i++) {
@@ -134,26 +134,26 @@ export default {
 				if (opt.nodatatemplate) {
 					let tmpRow = $(
 						'<tr class="no-result"><td colspan="' +
-						opt.columns.length +
-						'">' +
-						opt.nodatatemplate +
-						'</td></tr>',
+							opt.columns.length +
+							'">' +
+							opt.nodatatemplate +
+							'</td></tr>',
 					);
 					$tbody.append(tmpRow);
 				}
 			}
 			return $tbody;
 		};
-		let _initalTfoot = function () {
+		let _initialTfoot = function () {
 			$tfoot.empty();
 			if (opt.maxcount > 0 && opt.data.length > opt.maxcount) {
 				let $tr = $('<tr></tr>');
 				let $link = $(
 					'<td colspan="' +
-					opt.columns.length +
-					'"><button type="button" class="link" >' +
-					opt.hidetext +
-					'</button></td>',
+						opt.columns.length +
+						'"><button type="button" class="link" >' +
+						opt.hidetext +
+						'</button></td>',
 				);
 				$tbody
 					.querySelectorAll('tr')
@@ -177,10 +177,10 @@ export default {
 			//todo send context to the follow method, otherwise the opt will not update
 			if (opt.data && opt.data.length) {
 				$table = $('<table class="datatable"></table>');
-				$table.append(_initalThead());
-				$table.append(_initalTbody());
+				$table.append(_initialThead());
+				$table.append(_initialTbody());
 				$this.empty().append($table);
-				$table.append(_initalTfoot());
+				$table.append(_initialTfoot());
 			}
 		});
 		_initTable();

@@ -8,7 +8,7 @@ export default {
 	init: function ($this, opt, exportObj) {
 		let $key = $this.find(opt.key);
 		let $list = $this.querySelectorAll('tbody tr');
-		let inital = function () {
+		let initial = function () {
 			let classname = 'table-' + +new Date();
 			let colIndex = 0;
 			let fontsize = $key.css('fontSize').replace(/[a-z]/g, '');
@@ -49,7 +49,7 @@ export default {
 			});
 		});
 
-		$this.classList.add(inital());
+		$this.classList.add(initial());
 	},
 	setOptionsBefore: null,
 	setOptionsAfter: null,
