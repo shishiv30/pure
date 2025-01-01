@@ -38,12 +38,17 @@ const formatPrice = function (value) {
 const formatTrim = function (value) {
 	if (!value) return value;
 	return value.replace(/^\s+|\s+$/g, '');
-}
+};
 
-const formatCaplized = function (name) {
+const formatClassToStatus = function (name) {
 	if (!name) return name;
-	return name.charAt(0).toUpperCase() + name.slice(1);
-}
+	return name.split('-').reduce((acc, cur) => {
+		if (!cur) {
+			return acc;
+		}
+		return acc + cur.charAt(0).toUpperCase() + cur.slice(1);
+	}, '');
+};
 
 export {
 	formatTrim,
@@ -56,5 +61,5 @@ export {
 	formatTime,
 	formatSqft,
 	formatPrice,
-	formatCaplized
+	formatClassToStatus,
 };

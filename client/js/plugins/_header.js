@@ -1,5 +1,7 @@
 import { emit, off, on } from '../core/event.js';
 import guid from '../core/guid.js';
+import { defBool, defEnum } from '../../js/core/def.js';
+const boolStatus = ['header-close'];
 
 export default {
 	name: 'header',
@@ -7,20 +9,19 @@ export default {
 		container: 'html',
 		autoclose: true,
 	},
-	init: function ($this, opt, exportObj) {
-		let $list = $this.querySelector('.header-menu-list');
+	init: function ($el, opt, exportObj) {
+		boolStatus.forEach((name) => {
+			defBool(name, $el, opt, exportObj);
+		});
+		let $list = $el.querySelector('.header-menu-list');
 		let $dropdown = $list.querySelectorAll('.list');
 		let $overlay = document.createElement('div');
 		$overlay.setAttribute('class', 'header-overlay');
-		let $swtichLink = $this.querySelectorAll('.header-switch-link');
+		let $swtichLink = $el.querySelectorAll('.header-switch-link');
 		opt.id = guid;
-		$this.prepend($overlay);
-		let _close = function () {
-			$this.classList.add('header-close');
-		};
-		let _open = function () {
-			$this.classList.remove('header-close');
-		};
+		$el.prepend($overlay);
+		let _close = exportObj.addHeaderClose;
+		let _open = exportObj.removeHeaderClose;
 		let _show = function () {
 			document.body.classList.add('body-expand-header');
 		};
@@ -82,7 +83,7 @@ export default {
 	setOptionsAfter: null,
 	initBefore: null,
 	initAfter: null,
-	destroyBefore: function ($this, opt) {
+	destroyBefore: function ($el, opt) {
 		off('dom.resize.header' + opt.id);
 		off('dom.scroll.header' + opt.id);
 	},

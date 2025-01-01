@@ -3,11 +3,7 @@ import { Plugin } from '../../js/core/plugin.js';
 import { main } from '../../js/index.js';
 import { Router } from '../../js/core/router.js';
 // eslint-disable-next-line no-unused-vars
-import scss from '../../scss/sap.scss';
 const boolStatus = ['lock', 'collapse'];
-const defBoolStatus = function (status, $el, opt, exportObj) {
-
-};
 
 const enumStatus = [
 	{
@@ -25,13 +21,22 @@ let sap = {
 		enumStatus.forEach((e) => {
 			defEnum(e.key, e.names, $el, opt, exportObj);
 		});
-	    let tmp = new Router([
+		let tmp = new Router([
 			{
-				reg: /^\/(sap|sap.html)$/i, 
+				reg: /^\/(sap|sap.html)$/i,
 				loading: () => {
 					return new Promise((resolve) => {
 						exportObj.switchToGrid();
-						resolve(null) ;
+						resolve(null);
+					});
+				},
+			},
+			{
+				reg: /^\/sap\/grid\/(\w+)$/i,
+				loading: () => {
+					return new Promise((resolve) => {
+						exportObj.switchToGrid();
+						resolve(null);
 					});
 				},
 			},
@@ -52,7 +57,7 @@ let sap = {
 						resolve(null);
 					});
 				},
-			}
+			},
 		]);
 	},
 	load: function ($el, opt, exportObj) {
@@ -65,9 +70,7 @@ let sap = {
 			}, 1000);
 		});
 	},
-	render: function ($el, opt, exportObj) {
-
-	},
+	render: function ($el, opt, exportObj) {},
 };
 
 export default (function (win) {

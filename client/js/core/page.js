@@ -18,7 +18,7 @@ export class Page extends Plugin {
 		return {
 			name: setting && setting.name ? setting.name : 'page',
 			init: function ($el, opt, exportObj) {
-				if(!$el){
+				if (!$el) {
 					$el = document.querySelector('body');
 				}
 				logInfo('initing');
@@ -28,7 +28,7 @@ export class Page extends Plugin {
 				Object.assign(ctx, Page.initCtxByCookie(ctx));
 				Object.assign(ctx, Page.initCtxByStorage(ctx));
 				exportObj.ctx = ctx;
-				if(setting && setting.init){
+				if (setting && setting.init) {
 					setting.init($el, opt, exportObj);
 				}
 				return exportObj;
@@ -36,8 +36,8 @@ export class Page extends Plugin {
 			load: async function ($el, opt, exportObj) {
 				logInfo('loading');
 				let data = exportObj && exportObj.ctx && exportObj.data ? exportObj.ctx.data : {};
-				
-				if(setting && setting.load){
+
+				if (setting && setting.load) {
 					try {
 						let res = await setting.load($el, opt, exportObj);
 						if (res && res.data) {
@@ -47,16 +47,16 @@ export class Page extends Plugin {
 						logError(e);
 					}
 				}
-				
+
 				if (data) {
 					exportObj.ctx.data = data;
 				}
-				return exportObj
+				return exportObj;
 			},
 			render: function ($el, opt, exportObj) {
 				// Page.renderComponent();
 				Page.eventListener();
-				if(setting && setting.render){
+				if (setting && setting.render) {
 					setting.render($el, opt, exportObj);
 				}
 				emit('dom.load');
@@ -82,8 +82,7 @@ export class Page extends Plugin {
 	}
 	static recycler() {
 		//trigger this function when you want to recycle the page
-		// for()
-		this.reclyInstance();
+		//todo
 	}
 	static init;
 	static width;
@@ -175,7 +174,7 @@ export class Page extends Plugin {
 						return;
 					}
 					let data = item.dataset;
-					let types = item.getAttribute('data-role');
+					let types = data.role;
 					if (!types) {
 						return;
 					}

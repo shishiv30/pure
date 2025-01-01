@@ -1,4 +1,4 @@
-import {formatCaplized} from './format.js';
+import { formatClassToStatus } from './format.js';
 import { trigger } from '../core/event.js';
 
 /**
@@ -8,37 +8,37 @@ import { trigger } from '../core/event.js';
  * @param {*} opt  the options will include beforeAddName, afterAddName, beforeRemoveName, afterRemoveName
  * @param {*} exportObj  the object will be injected with the following methods addName, removeName, toggleName, isName
  */
-export function defBool (name, $el, opt, exportObj) {
-    //name first letter to upper case
-   let methodName = formatCaplized(name);
-    exportObj[`add${methodName}`] = ()=>{
-        opt[`beforeAdd${methodName}`] && trigger(opt[`beforeAdd${methodName}`], $el, opt, exportObj);
-        $el.classList.add(name);
-        exportObj.name = true;
-        opt[`afterAdd${methodName}`] && trigger(opt[`afterAdd${methodName}`], $el, opt, exportObj);
-    }
-    exportObj[`remove${methodName}`] = ()=>{
-        opt[`beforeRemove${methodName}`] && trigger(opt[`beforeRemove${methodName}`], $el, opt, exportObj);
-        $el.classList.remove(name);
-        exportObj.name = false;
-        opt[`afterRemove${methodName}`] && trigger(opt[`afterRemove${methodName}`], $el, opt, exportObj);
-    }
+export function defBool(name, $el, opt, exportObj) {
+	//name first letter to upper case
+	let statusName = formatClassToStatus(name);
+	let eventName = statusName.charAt(0).toUpperCase() + statusName.slice(1);
+	exportObj[`add${eventName}`] = () => {
+		opt[`beforeAdd${eventName}`] && trigger(opt[`beforeAdd${eventName}`], $el, opt, exportObj);
+		$el.classList.add(name);
+		exportObj[statusName] = true;
+		opt[`afterAdd${eventName}`] && trigger(opt[`afterAdd${eventName}`], $el, opt, exportObj);
+	};
+	exportObj[`remove${eventName}`] = () => {
+		opt[`beforeRemove${eventName}`] &&
+			trigger(opt[`beforeRemove${eventName}`], $el, opt, exportObj);
+		$el.classList.remove(name);
+		exportObj[statusName] = false;
+		opt[`afterRemove${eventName}`] &&
+			trigger(opt[`afterRemove${eventName}`], $el, opt, exportObj);
+	};
 
-    exportObj[`toggle${methodName}`] = ()=>{
-        if($el.classList.contains(name)){
-            exportObj[`remove${methodName}`]();
-        }else{
-            exportObj[`add${methodName}`]();
-        }
-    }
+	exportObj[`toggle${eventName}`] = () => {
+		if ($el.classList.contains(name)) {
+			exportObj[`remove${eventName}`]();
+		} else {
+			exportObj[`add${eventName}`]();
+		}
+	};
 
-    exportObj[`is${methodName}`] = ()=>{
-        return $el.classList.contains(name);
-    }
+	exportObj[`is${eventName}`] = () => {
+		return $el.classList.contains(name);
+	};
 }
-
-
-
 
 /**
  * base on provided key and possible values, the made an element could switch diff status.
@@ -48,25 +48,30 @@ export function defBool (name, $el, opt, exportObj) {
  * @param {*} opt  the options will include beforeSwitchToNameA, afterSwitchToNameA
  * @param {*} exportObj  the object will be injected with the following methods switchToNameA, switchToNameB, switchToNameC ...
  */
-export function defEnum (key, names, $el, opt, exportObj) {
-    names.forEach((name, index) => {
-        let methodNames = formatCaplized(name);
-        exportObj[`switchTo${methodNames}`] = () => {
-            if(name != exportObj[key]){
-                opt[`beforeSwitchTo${methodNames}`] && trigger(opt[`beforeSwitchTo${methodNames}`], $el, opt, exportObj);
-                names.forEach((item, index) => {
-                    if(item !== name){
-                        $el.classList.remove(`${key}-${item}`);
-                    } else {
-                        $el.classList.add(`${key}-${item}`);
-                        exportObj[key] = item;
-                    }
-                });
-                opt[`afterSwitchTo${methodNames}`] && trigger(opt[`afterSwitchTo${methodNames}`], $el, opt, exportObj);
-            }
-        }
-    });
-    exportObj[`current${formatCaplized(key)}`] = () => {
-        return exportObj[key];
-    };
+export function defEnum(key, names, $el, opt, exportObj) {
+	let statusName = formatClassToStatus(key);
+	names.forEach((name, index) => {
+		let statusValue = formatClassToStatus(name);
+		let eventName = statusValue.charAt(0).toUpperCase() + statusValue.slice(1);
+
+		exportObj[`switchTo${eventName}`] = () => {
+			if (name != exportObj[statusName]) {
+				opt[`beforeSwitchTo${eventName}`] &&
+					trigger(opt[`beforeSwitchTo${eventName}`], $el, opt, exportObj);
+				names.forEach((item, index) => {
+					if (item !== name) {
+						$el.classList.remove(`${key}-${item}`);
+					} else {
+						$el.classList.add(`${key}-${item}`);
+						exportObj[statusName] = item;
+					}
+				});
+				opt[`afterSwitchTo${eventName}`] &&
+					trigger(opt[`afterSwitchTo${eventName}`], $el, opt, exportObj);
+			}
+		};
+	});
+	exportObj[`current${formatClassToStatus(key)}`] = () => {
+		return exportObj[statusName];
+	};
 }

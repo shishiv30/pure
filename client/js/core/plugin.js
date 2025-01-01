@@ -55,7 +55,7 @@ export class Plugin extends Base {
 			_pids = exportObj._pid;
 		}
 		$el.dataset[_name] = _pids;
-		Plugin.instance[exportObj._pid] = exportObj;
+		$el.dataset[`${_name}_${exportObj._pid}`] = exportObj;
 	}
 
 	static getInstance($el, name) {
@@ -68,12 +68,12 @@ export class Plugin extends Base {
 		let _pid = items.find((item) => {
 			return item.indexOf(name) > -1;
 		});
-		return Plugin.instance[_pid];
+		if (!_pid) {
+			return null;
+		}
+		return $el.dataset[`${_name}_${_pid}`];
 	}
 
-	static reclyInstance(_pid) {
-		delete Plugin.instance[_pid];
-	}
 	//todo what if element be removed instance cannot be recly
 	static register(setting) {
 		let plugin = async ($el, options) => {
