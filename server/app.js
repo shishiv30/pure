@@ -5,11 +5,16 @@ import apiRouter from './routes/api.js';
 import session from './middleware/session.js';
 import geo from './middleware/geo.js';
 import config from './config.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig.js';
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
+app.set('views', path.join(__dirname, './ejs'));
+app.set('view engine', 'ejs');
 /* swagger */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

@@ -1,6 +1,7 @@
 import useragent from 'express-useragent';
 import config from '../configs/index.js';
 import BaseFactory from '../factories/basefactory.js';
+import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 const queryGroupKey = ['utm', 'hack'];
 
 export default class BaseController {
@@ -70,24 +71,38 @@ export default class BaseController {
 		}
 		return { error: message || error?.message, data: data || null, code: code || 500 };
 	}
-
-	initialSeoData(data) {
-		if (this.config.seo) {
-			return this.config.seo(this.req, data);
+	initialMeta(model) {
+		//get lang from this.req.headers['accept-language'] with format like en-US
+		let lang = this.req.acceptsLanguages();
+		return {
+			uaData: this.req.uaData,
+			lang: (lang && lang[0]) || '',
+			path: this.req.path,
+		};
+	}
+	initialBreadcrumb(model) {
+		if (model && model.data && model.data.geo) {
+			return getBreadcrumbByGeo(model.data.geo);
+		} else {
+			return null;
 		}
-		return null;
 	}
 
-	loadModel(name, data) {
-		if (name === 'geo') {
-			this.model = new GeoModel(this.req, this.res, data);
+	initialSeo(model) {
+		if (this.config.seo) {
+			return this.config.seo(this.req, model);
 		}
+		return {
+			title: '',
+			desc: '',
+			keywords: '',
+		};
 	}
 
 	async post() {
 		if (this.config.post) {
 			let payload = this.req.body;
-			if (this.config.postData) {
+			if (this.config.beforePost) {
 				payload = this.config.beforePost(this.req, payload);
 			}
 			try {
@@ -102,7 +117,7 @@ export default class BaseController {
 	async update() {
 		if (this.config.update) {
 			let payload = this.req.body;
-			if (this.config.updateData) {
+			if (this.config.beforeUpdate) {
 				payload = this.config.beforeUpdate(this.req, payload);
 			}
 			try {
@@ -131,7 +146,7 @@ export default class BaseController {
 
 	async get() {
 		let payload = this.req.query;
-		if (this.config.getData) {
+		if (this.config.beforeGet) {
 			payload = this.config.beforeGet(this.req, payload);
 		}
 		try {
@@ -142,20 +157,23 @@ export default class BaseController {
 		}
 	}
 
-	async toData(data) {
-		let code = data.code || 200;
+	async toData(result) {
+		let code = result.code || 200;
 		this.res.status(code).json({
 			code: code,
-			data: data.data,
-			error: data.error,
+			data: result.data,
+			error: result.error,
 			cost: new Date() - this.date,
 		});
 	}
-	async toPage(data) {
-		if (!this.config.template) {
+	async toPage(model) {
+		if (!this.config.name) {
 			throw new Error('View Template is required');
 		}
-		data.seo = this.initialSeoData(data);
-		this.res.render(this.config.template, data);
+		model.meta = this.initialMeta(model);
+		model.seo = this.initialSeo(model);
+		model.breadcrumb = this.initialBreadcrumb(model);
+		//relative path of ejs template
+		this.res.render(`${this.config.name}.ejs`, model);
 	}
 }

@@ -73,8 +73,8 @@ import BaseController from '../controllers/baseController.js';
 router.get('/geo', async (req, res) => {
 	//get current router is get or post or put or delete
 	let controller = new BaseController(req, res, 'geo');
-	let data = await controller.get();
-	controller.toData(data);
+	let result = await controller.get();
+	controller.toData(result);
 });
 
 export default router;
