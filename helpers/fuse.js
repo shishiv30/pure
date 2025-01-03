@@ -65,24 +65,24 @@ export function initialFuseNeighborhood(neighborhood) {
 }
 
 export function initialFuseGeo({ state, city, county, zip, address, neighborhood }) {
-	if (!globalThis[geoType.state]) {
+	if (!globalThis[geoType.state] && state) {
 		initialFuseState(state);
 	}
-	if (!globalThis[geoType.city]) {
+	if (!globalThis[geoType.city] && city) {
 		initialFuseCity(city);
 	}
-	if (!globalThis[geoType.zip]) {
+	if (!globalThis[geoType.zip] && zip) {
 		initialFuseZip(zip);
 	}
-	if (!globalThis[geoType.county]) {
+	if (!globalThis[geoType.county] && county) {
 		initialFuseCounty(county);
 	}
-	if (!globalThis[geoType.neighborhood]) {
+	if (!globalThis[geoType.neighborhood] && neighborhood) {
 		initialFuseNeighborhood(neighborhood);
 	}
-	if (!globalThis[geoType.address]) {
-		initialFuseAddress(address);
-	}
+	// if (!globalThis[geoType.address] && address) {
+	// 	initialFuseAddress(address);
+	// }
 }
 
 export function searchGeo(query, type) {

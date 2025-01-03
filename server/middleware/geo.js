@@ -9,7 +9,7 @@ export default async function (app) {
 					city: data.city,
 					county: data.county,
 					zip: data.zip,
-					address: data.address,
+					// address: data.address,
 					neighborhood: data.neighborhood,
 				});
 				console.log('init fuse geo');

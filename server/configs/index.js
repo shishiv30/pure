@@ -35,6 +35,9 @@ export default [
 				if (!size) {
 					size = 10;
 				}
+				if (!globalThis[type.toLocaleLowerCase()]) {
+					throw new Error(`Invalid type: ${type}`);
+				}
 				let results = globalThis[type.toLocaleLowerCase()]
 					.search(text)
 					.slice(0, size)

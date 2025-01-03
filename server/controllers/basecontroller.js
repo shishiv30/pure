@@ -60,6 +60,24 @@ export default class BaseController {
 		});
 	}
 
+	exceptionDataHandler(error, payload) {
+		let message, data, code;
+		if (this.config.onError) {
+			let result = this.config.onError(error, payload);
+			message = result?.message;
+			data = result?.data;
+			code = result?.code;
+		}
+		return { error: message || error?.message, data: data || null, code: code || 500 };
+	}
+
+	initialSeoData(data) {
+		if (this.config.seo) {
+			return this.config.seo(this.req, data);
+		}
+		return null;
+	}
+
 	loadModel(name, data) {
 		if (name === 'geo') {
 			this.model = new GeoModel(this.req, this.res, data);
@@ -68,77 +86,76 @@ export default class BaseController {
 
 	async post() {
 		if (this.config.post) {
-			let data = this.req.body;
+			let payload = this.req.body;
 			if (this.config.postData) {
-				data = this.config.postData(this.req);
+				payload = this.config.beforePost(this.req, payload);
 			}
 			try {
-				this.res.data = await this.config.post(data);
+				let data = await this.config.post(payload);
+				return { code: 200, data: data };
 			} catch (error) {
-				this.res.data = this.exceptionDataHandler(error);
+				return this.exceptionDataHandler(error, payload);
 			}
 		}
 	}
 
 	async update() {
 		if (this.config.update) {
-			let data = this.req.body;
+			let payload = this.req.body;
 			if (this.config.updateData) {
-				data = this.config.updateData(this.req);
+				payload = this.config.beforeUpdate(this.req, payload);
 			}
 			try {
-				this.res.data = await this.config.update(data);
+				let data = await this.config.update(payload);
+				return { code: 200, data: data };
 			} catch (error) {
-				this.res.data = this.exceptionDataHandler(error);
+				return this.exceptionDataHandler(error, payload);
 			}
 		}
 	}
 
 	async delete() {
 		if (this.config.delete) {
-			let data = this.req.body;
-			if (this.config.deleteData) {
-				data = this.config.deleteData(this.req);
+			let payload = this.req.body;
+			if (this.config.beforeDelete) {
+				payload = this.config.beforeDelete(this.req, payload);
 			}
-			this.res.data = await this.config.delete(data);
 			try {
-				this.res.data = await this.config.delete(data);
+				let data = await this.config.delete(payload);
+				return { code: 200, data: data };
 			} catch (error) {
-				this.res.data = this.exceptionDataHandler(error);
+				return this.exceptionDataHandler(error, payload);
 			}
 		}
 	}
 
 	async get() {
-		let data = this.req.query;
+		let payload = this.req.query;
 		if (this.config.getData) {
-			data = this.config.getData(this.req);
+			payload = this.config.beforeGet(this.req, payload);
 		}
 		try {
-			this.res.data = await this.config.get(data);
+			let data = await this.config.get(payload);
+			return { code: 200, data: data };
 		} catch (error) {
-			this.res.data = this.exceptionDataHandler(error);
+			return this.exceptionDataHandler(error, payload);
 		}
-		return this.res.data;
 	}
 
-	async loading() {
-		let factory = new BaseFactory(this.req, this.res, this.name);
-		this.data = await factory.loading();
-	}
-	async sendApi(data) {
+	async toData(data) {
 		let code = data.code || 200;
 		this.res.status(code).json({
 			code: code,
-			data: data,
+			data: data.data,
+			error: data.error,
 			cost: new Date() - this.date,
 		});
 	}
-	// async toPage(req, res) {
-
-	// 	this.model.filter = this._toServerFilter(req);
-	// 	let data = await this.get(this.model.filter);
-	// 	//use model.ejs URl + model.pageData to render view
-	// 	res.render(view, data);
-	// }
+	async toPage(data) {
+		if (!this.config.template) {
+			throw new Error('View Template is required');
+		}
+		data.seo = this.initialSeoData(data);
+		this.res.render(this.config.template, data);
+	}
 }

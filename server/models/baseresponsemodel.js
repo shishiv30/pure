@@ -103,14 +103,8 @@ export default class BaseResponseModel extends BaseModel {
 		}
 	}
 
-	toPage() {
-		this.get();
+	async toPage() {
 		this.res.data = this.initialSeoData(this.res.data);
-		this.res.render(this.config.view, this.res.data);
-	}
-
-	toData() {
-		this.get();
-		this.res.json(this.res.data);
+		this.res.render(this.config.template, this.res.data);
 	}
 }

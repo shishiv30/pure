@@ -13,7 +13,7 @@ import BaseController from '../controllers/baseController.js';
  *         name: type
  *         schema:
  *           type: string
- *           enum: [state, city, county, zip, address, neighborhood]
+ *           enum: [state, city, county, zip, neighborhood]
  *         description: Type of geo information
  *       - in: query
  *         name: text
@@ -74,7 +74,7 @@ router.get('/geo', async (req, res) => {
 	//get current router is get or post or put or delete
 	let controller = new BaseController(req, res, 'geo');
 	let data = await controller.get();
-	controller.sendApi(data);
+	controller.toData(data);
 });
 
 export default router;
