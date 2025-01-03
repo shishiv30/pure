@@ -1,43 +1,5 @@
 @import './sap/_sap.theme.scss';
-@import './_var.scss';
-@import './_var.icon.scss';
-@import './_mixins.scss';
-@import './_font.scss';
-@import './_reset.scss';
-@import './_responsive.scss';
-@import './_text.scss';
-@import './_typograph.scss';
-@import './_icon.scss';
-@import './_color.scss';
-@import './_gap.scss';
-@import './_utilities.scss';
-@import './_grid.scss';
-@import './_flex.scss';
-//todo check from here
-@import './_link.scss';
-@import './_button.scss';
-@import './_section.scss';
-@import './_panel.scss';
-@import './_tag.scss';
-@import './_nav.scss';
-// @import './_carousel.scss';
-// @import './_skeleton.scss';
-// @import './_link.scss';
-@import './_form.scss';
-@import './_input.scss';
-@import './_textbox.scss';
-@import './_textarea.scss';
-@import './_selectbox.scss';
-// @import './_checkboxradio.scss';
-// @import './_groupbutton.scss';
-// @import './_tooltip.scss';
-// @import './_datetimepicker.scss';
-@import './_collapse.scss';
-@import './_tabs.scss';
-// @import './_map.scss';
-@import './_header.scss';
-@import './_dialog.scss';
-@import './_player.scss';
+@import './base.scss';
 
 
 @keyframes box-wipe-enter {
@@ -117,30 +79,30 @@
     }
 }
 
-$item-width: 300px;
-
-
 .page-sap {
-    --item-width: #{$item-width};
+    --item-width: #{$screen-xs-min};
     --item-height: calc(var(--item-width) * 0.6);
     --main-size: var(--item-width);
     --header-height: var(--comp-size-3);
-    --nav-height: var(--comp-size-3);
+    --breadcrumb-height: var(--comp-size-3);
     display: grid;
     height: 100%;
     width: 100%;
     transition: grid-template 300ms 150ms;
     @include hidden-scrollbar();
     overflow: hidden;
+
     .header {
         grid-area: header;
     }
-    .footer{
+
+    .footer {
         display: none;
         grid-area: footer;
     }
-    .nav {
-        grid-area: nav;
+
+    .breadcrumb {
+        grid-area: breadcrumb;
     }
 
     .view {
@@ -150,28 +112,30 @@ $item-width: 300px;
     .result {
         grid-area: main;
     }
+
     @media screen and (orientation:portrait) {
         --main-size: var(--item-height);
-        grid-template-rows: var(--header-height) var(--nav-height) 1fr var(--main-size);
+        grid-template-rows: var(--header-height) var(--breadcrumb-height) 1fr var(--main-size);
         grid-template-columns: 1fr;
         grid-template-areas:
-        "header"
-        "nav"
-        "vision"
-        "main";
+            "header"
+            "breadcrumb"
+            "vision"
+            "main";
     }
-    @media  screen and (orientation:landscape){
+
+    @media screen and (orientation:landscape) {
         --main-size: var(--item-width);
-        grid-template-rows: var(--header-height) var(--nav-height) 1fr;
+        grid-template-rows: var(--header-height) var(--breadcrumb-height) 1fr;
         grid-template-columns: 1fr var(--main-size);
         grid-template-areas:
-        "header header"
-        "nav nav"
-        "vision main";
+            "header header"
+            "breadcrumb breadcrumb"
+            "vision main";
     }
-    @media (orientation:landscape) and (max-width: $screen-md-max) {
 
-    }
+    @media (orientation:landscape) and (max-width: $screen-md-max) {}
+
     @media (orientation:landscape) and (min-width: $screen-lg-min) {
         --main-size: calc(var(--item-width) * 2 + var(--g2));
     }
@@ -204,29 +168,26 @@ $item-width: 300px;
     }
 }
 
-.view{
+.view {
     position: relative;
-    @media screen and (orientation:portrait) {
-        padding-bottom: var(--g0);
-    }
-    @media screen and (orientation:landscape) {
-        padding-right: var(--g0);
-    }
-    .view-content{
+
+    .view-content {
         position: absolute;
         top: 0;
+        left: 0;
         width: 100%;
-        padding: var(--g2);
         height: 100%;
         overflow: auto;
         @include hidden-scrollbar();
-        > * {
+
+        >* {
             margin: var(--g2);
         }
-    
+
     }
-   
+
 }
+
 .filter {
     display: flex;
     gap: var(--g1);
@@ -241,6 +202,7 @@ $item-width: 300px;
     @include snap();
     @include hidden-scrollbar();
 }
+
 .img-bg {
     display: block;
     width: 100%;
@@ -262,15 +224,121 @@ $item-width: 300px;
 
 .result {
     position: relative;
-    gap: var(--g0);
     z-index: 2;
     @include hidden-scrollbar();
+    gap: var(--g0);
+
+    .item {
+        min-width: var(--item-width);
+        height: var(--item-height);
+        padding: var(--gxs);
+    }
+
+    article {
+        border-radius: var(--g2);
+        box-shadow: 0 0 0 1px var(--color-bg-l1);
+        overflow: hidden;
+        display: flex;
+        flex-flow: wrap;
+        align-items: flex-start;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        gap: var(--g0);
+
+        >figure {
+            width: 100%;
+            height: 60%;
+            order: 1;
+            position: relative;
+            overflow: hidden;
+
+            >figcaption {
+                position: absolute;
+                font-size: var(--font-size-7);
+                bottom: 0;
+                right: 0;
+                z-index: 2;
+                color: var(--color-bg);
+                padding: var(--g0);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 2px;
+            }
+
+            >img {
+
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        >h2 {
+            padding: 0 var(--g0);
+            line-height: 1rem;
+
+            address {
+                font-size: var(--font-size-5);
+                font-weight: var(--font-weight-bold);
+                @include singleline();
+            }
+
+            time {
+                font-size: var(--font-size-7);
+            }
+
+            order: 2;
+        }
+
+        dl {
+            order: 3;
+            padding: 0 var(--g0);
+            line-height: 1.5;
+            @include multiline(2);
+            font-weight: var(--font-weight-medium);
+
+            >dt {
+                display: block;
+            }
+
+            >dd {
+                display: contents;
+
+                abbr {
+                    padding-right: var(--g0);
+                }
+
+            }
+
+            abbr {
+                font-size: var(--font-size-7);
+            }
+
+            address {
+                font-size: var(--font-size-5);
+                white-space: nowrap;
+            }
+
+            b {
+                font-size: var(--font-size-6);
+                font-weight: var(--font-weight-bold);
+            }
+
+            span {
+                font-size: var(--font-size-6);
+                font-weight: var(--font-weight-bold);
+            }
+
+        }
+    }
+
     @media screen and (orientation:portrait) {
         display: flex;
         overflow-x: auto;
         // backdrop-filter: blur(20px);
         @include scroll-smooth();
         @include snap();
+
         >* {
             flex-shrink: 0;
         }
@@ -293,19 +361,6 @@ $item-width: 300px;
     @media (orientation:landscape) and (min-width: $screen-lg-min) {
         grid-template-columns: minmax(0%, 50%) minmax(0%, 50%);
     }
-
-    .item {
-        width: var(--item-width);
-        height: var(--item-height);
-        font-size: var(--font-size-3);
-        background: var(--color);
-        color: var(--color-bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 2px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-    }
 }
 
 .view-detail {
@@ -319,28 +374,31 @@ $item-width: 300px;
 }
 
 .view-grid {
-    &.page-sap{
+    &.page-sap {
         height: auto;
         overflow-y: auto;
+
         @media screen and (orientation:portrait) {
             // --main-size: var(--item-height);
-            // grid-template-rows: var(--header-height) var(--nav-height) 1fr var(--main-size);
+            // grid-template-rows: var(--header-height) var(--breadcrumb-height) 1fr var(--main-size);
             // grid-template-columns: 1fr;
             grid-template-areas:
-            "header"
-            "nav"
-            "main"
-            "main"
-            "footer";
+                "header"
+                "breadcrumb"
+                "main"
+                "main"
+                "footer";
         }
-        @media  screen and (orientation:landscape){
+
+        @media screen and (orientation:landscape) {
             grid-template-areas:
-            "header header"
-            "nav nav"
-            "main main"
-            "footer footer";
+                "header header"
+                "breadcrumb breadcrumb"
+                "main main"
+                "footer footer";
         }
-        .footer{
+
+        .footer {
             display: block;
         }
     }

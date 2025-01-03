@@ -9,7 +9,7 @@
 </head>
 
 <body id="body" class="page-sap">
-    <header class="header active" data-role="header">
+    <header class="header sticky active" data-role="header">
         <div class="header-bar">
             <a href="javascript:;" class="menu-img" aria-label="CUI Logo">
                 <img loading="lazy" alt="Sap Pototype" src="../../assets/img/logo-bg.svg">
@@ -21,7 +21,7 @@
                 </a>
             </div>
         </div>
-        <div class="header-menu" >
+        <nav class="header-menu">
             <ul class="header-menu-list">
                 <li>
                     <a href="/index">Home</a>
@@ -48,10 +48,11 @@
                 </li>
             </ul>
             <a href="javascript:;" aria-label="Open Menu" class="menu-icon header-switch-link"><i
-                    class="icon-bars f3"></i></a>
-        </div>
+                    class="icon-bars f3"></i>
+            </a>
+        </nav>
     </header>
-    <nav class="nav gray">
+    <nav class="breadcrumb gray" aria-label="breadcrumb">
         <ul>
             <li>
                 <a href="/sap/grid/state">state</a>
@@ -65,73 +66,806 @@
             <li class="hidden-xs">
                 <a href="/sap/grid/neighborhood">neighborhood</a>
             </li>
-            <li >
+            <li>
                 <a href="/sap/grid/zipcode" class="active">zipcode</a>
             </li>
         </ul>
-        <div class="nav-button">
+        <div class="breadcrumb-button">
             <a href="/sap.html" class="btn small">Back </a>
         </div>
     </nav>
-    <div class="view">
+    <main class="view">
         <div class="view-content">
-            <h2 class="h3">The title of the content</h2>
+            <h1 class="h3">The title of the content</h1>
             <div>Desc content</div>
-            <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active" type="button">home</button> <button class="tag major active" type="button">welcome</button>  <button class="tag major active" type="button">bird</button>  <button class="tag major active" type="button">feed</button><button class="tag major active" type="button">landing</button> <button class="tag major active" type="button">digital</button>  <button class="tag major active" type="button">AI paint</button>  <button class="tag major active" type="button">nest</button></div>
+            <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
+                    type="button">home</button> <button class="tag major active" type="button">welcome</button> <button
+                    class="tag major active" type="button">bird</button> <button class="tag major active"
+                    type="button">feed</button><button class="tag major active" type="button">landing</button> <button
+                    class="tag major active" type="button">digital</button> <button class="tag major active"
+                    type="button">AI paint</button> <button class="tag major active" type="button">nest</button></div>
         </div>
         <a href="/sap/index" class="img-bg">
             <img src="../../assets/images/welcome.webp" alt="SAP" loading="lazy">
         </a>
-    </div>
+    </main>
     <ul class="result">
         <li class="item">
             <article>
                 <dl>
                     <dt>
-                        <a href="/sap/detail/001" data-id="i001" >
-                            <img src="https://picsum.photos/200/200" alt="Item " loading="lazy"></a>
+                        <a href="/sap/detail/001" data-id="i001">
+                            <address>1234 Elm St, San Francisco, 94101 CA</address>
+                        </a>
                     </dt>
                     <dd>
-                        <h4>Item 001</h4>
-                        <p>Desc</p>
+                        <b>$500,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,000</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
                     </dd>
                 </dl>
+                <figure>
+                    <img src="https://picsum.photos/232/232" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
             </article>
-            <a href="/sap/detail/001" data-id="i001" data-title=""><address> </address></a>
         </li>
-        <li class="item"><a href="/sap/detail/002">Items 002</a></li>
-        <li class="item"><a href="/sap/detail/003">Items 003</a></li>
-        <li class="item"><a href="/sap/detail/004">Items 004</a></li>
-        <li class="item"><a href="/sap/detail/005">Items 005</a></li>
-        <li class="item"><a href="/sap/detail/006">Items 006</a></li>
-        <li class="item"><a href="/sap/detail/007">Items 007</a></li>
-        <li class="item"><a href="/sap/detail/008">Items 008</a></li>
-        <li class="item"><a href="/sap/detail/009">Items 009</a></li>
-        <li class="item"><a href="/sap/detail/010">Items 010</a></li>
-        <li class="item"><a href="/sap/detail/011">Items 011</a></li>
-        <li class="item"><a href="/sap/detail/012">Items 012</a></li>
-        <li class="item"><a href="/sap/detail/013">Items 013</a></li>
-        <li class="item"><a href="/sap/detail/014">Items 014</a></li>
-        <li class="item"><a href="/sap/detail/015">Items 015</a></li>
-        <li class="item"><a href="/sap/detail/016">Items 016</a></li>
-        <li class="item"><a href="/sap/detail/017">Items 017</a></li>
-        <li class="item"><a href="/sap/detail/018">Items 018</a></li>
-        <li class="item"><a href="/sap/detail/019">Items 019</a></li>
-        <li class="item"><a href="/sap/detail/020">Items 020</a></li>
-        <li class="item"><a href="/sap/detail/021">Items 021</a></li>
-        <li class="item"><a href="/sap/detail/022">Items 022</a></li>
-        <li class="item"><a href="/sap/detail/023">Items 023</a></li>
-        <li class="item"><a href="/sap/detail/024">Items 024</a></li>
-        <li class="item"><a href="/sap/detail/025">Items 025</a></li>
-        <li class="item"><a href="/sap/detail/026">Items 026</a></li>
-        <li class="item"><a href="/sap/detail/027">Items 027</a></li>
-        <li class="item"><a href="/sap/detail/028">Items 028</a></li>
-        <li class="item"><a href="/sap/detail/029">Items 029</a></li>
-        <li class="item"><a href="/sap/detail/030">Items 030</a></li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/002" data-id="i002">
+                            <address>5678 Oak St, Los Angeles, 90001 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$600,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,800</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/209/209" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/003" data-id="i003">
+                            <address>9101 Pine St, San Diego, 92101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$550,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,600</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/203/203" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/004" data-id="i004">
+                            <address>1122 Maple St, Sacramento, 95814 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$700,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,200</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/199/199" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/005" data-id="i005">
+                            <address>3344 Cedar St, Fresno, 93721 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$650,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,900</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/188/188" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/006" data-id="i006">
+                            <address>5566 Birch St, Oakland, 94607 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$720,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,100</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/222/222" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/007" data-id="i007">
+                            <address>7788 Redwood St, Long Beach, 90802 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$680,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,700</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/196/196" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/001" data-id="i001">
+                            <address>1234 Elm St, San Francisco, 94101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$500,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,000</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/232/232" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/002" data-id="i002">
+                            <address>5678 Oak St, Los Angeles, 90001 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$600,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,800</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/209/209" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/003" data-id="i003">
+                            <address>9101 Pine St, San Diego, 92101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$550,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,600</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/203/203" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/004" data-id="i004">
+                            <address>1122 Maple St, Sacramento, 95814 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$700,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,200</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/199/199" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/005" data-id="i005">
+                            <address>3344 Cedar St, Fresno, 93721 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$650,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,900</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/188/188" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/006" data-id="i006">
+                            <address>5566 Birch St, Oakland, 94607 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$720,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,100</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/222/222" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/007" data-id="i007">
+                            <address>7788 Redwood St, Long Beach, 90802 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$680,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,700</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/196/196" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/001" data-id="i001">
+                            <address>1234 Elm St, San Francisco, 94101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$500,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,000</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/232/232" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/002" data-id="i002">
+                            <address>5678 Oak St, Los Angeles, 90001 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$600,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,800</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/209/209" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/003" data-id="i003">
+                            <address>9101 Pine St, San Diego, 92101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$550,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,600</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/203/203" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/004" data-id="i004">
+                            <address>1122 Maple St, Sacramento, 95814 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$700,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,200</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/199/199" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/005" data-id="i005">
+                            <address>3344 Cedar St, Fresno, 93721 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$650,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,900</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/188/188" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/006" data-id="i006">
+                            <address>5566 Birch St, Oakland, 94607 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$720,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,100</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/222/222" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/007" data-id="i007">
+                            <address>7788 Redwood St, Long Beach, 90802 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$680,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,700</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/196/196" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/001" data-id="i001">
+                            <address>1234 Elm St, San Francisco, 94101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$500,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,000</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/232/232" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/002" data-id="i002">
+                            <address>5678 Oak St, Los Angeles, 90001 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$600,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,800</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/209/209" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/003" data-id="i003">
+                            <address>9101 Pine St, San Diego, 92101 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$550,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,600</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/203/203" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/004" data-id="i004">
+                            <address>1122 Maple St, Sacramento, 95814 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$700,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,200</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/199/199" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/005" data-id="i005">
+                            <address>3344 Cedar St, Fresno, 93721 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$650,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,900</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/188/188" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/006" data-id="i006">
+                            <address>5566 Birch St, Oakland, 94607 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$720,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>3,100</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>5</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/222/222" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
+        <li class="item">
+            <article>
+                <dl>
+                    <dt>
+                        <a href="/sap/detail/007" data-id="i007">
+                            <address>7788 Redwood St, Long Beach, 90802 CA</address>
+                        </a>
+                    </dt>
+                    <dd>
+                        <b>$680,000</b> <abbr title="Estimated Price">Est</abbr>
+                    </dd>
+                    <dd>
+                        <span>2,700</span> <abbr title="Lots Size">Sqft</abbr>
+                    </dd>
+                    <dd>
+                        <span>4</span> <abbr title="Number of Bedrooms">BR</abbr>
+                    </dd>
+                    <dd>
+                        <span>3</span> <abbr title="Number of Bathrooms">BA</abbr>
+                    </dd>
+                </dl>
+                <figure>
+                    <img src="https://picsum.photos/196/196" alt="Item's thumbnail" loading="lazy">
+                    <figcaption>Provided by Picsum Photos</figcaption>
+                </figure>
+            </article>
+        </li>
     </ul>
     <aside></aside>
     <footer class="footer">
-	    <section class="section large inline bg">
+        <section class="section large inline bg">
             <div class="grid grid-xs-1">
                 <h2 class="f3">Welcome to pure SAP</h2>
                 <nav>
@@ -152,7 +886,9 @@
                 </nav>
             </div>
         </section>
-        <section class="section small inline bg active"><div>copy right </div></section>
+        <section class="section small inline bg active">
+            <div>copy right </div>
+        </section>
     </footer>
 </body>
 

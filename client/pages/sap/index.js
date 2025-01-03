@@ -2,6 +2,8 @@ import { defBool, defEnum } from '../../js/core/def.js';
 import { Plugin } from '../../js/core/plugin.js';
 import { main } from '../../js/index.js';
 import { Router } from '../../js/core/router.js';
+import scss from '../../scss/sap.scss';
+
 // eslint-disable-next-line no-unused-vars
 const boolStatus = ['lock', 'collapse'];
 

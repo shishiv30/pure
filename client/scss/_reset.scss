@@ -17,9 +17,14 @@ dd,
 html,
 body,
 select,
-form {
+form,
+figure {
 	margin: 0;
 	padding: 0;
+}
+
+address {
+	font-style: unset;
 }
 
 ol,
@@ -112,7 +117,7 @@ h6 {
 
 abbr[title],
 acronym[title] {
-	border-bottom: 1px dotted;
+	text-decoration: none;
 	cursor: help;
 }
 

@@ -46,6 +46,10 @@ html {
 	--g5: 3.427rem;
 	//g4 + g5
 	--g6: 5.545rem;
+
+	--font-weight-regular: 300;
+	--font-weight-medium: 400;
+	--font-weight-bold: 700;
 }
 
 body {
@@ -84,19 +88,20 @@ body {
 	--color-default-l1: var(--color-7);
 	--color-bg-default: var(--color-0);
 	--color-bg-default-l1: var(--color-1);
-	&.dark{
+
+	&.dark {
 		@media (prefers-color-scheme: dark) {
 			@for $i from 0 through 9 {
 				--color-#{$i}: hsl(0, 0%, #{10% * $i});
 			}
-		
+
 			--color-major-l1: hsl(200, 100%, 20%);
 			--color-major: hsl(200, 100%, 95%);
 			--color-link-hover: hsl(200, 100%, 80%);
-	
+
 			--color-minor-l1: hsl(200, 100%, 50%);
 			--color-minor: hsl(200, 100%, 95%);
-	
+
 			--color-r0: hsl(4, 100%, 95%);
 			--color-r1: hsl(34, 100%, 95%);
 			--color-r2: hsl(54, 100%, 95%);
@@ -107,12 +112,13 @@ body {
 			--color-r7: hsl(224, 100%, 95%);
 			--color-r8: hsl(274, 100%, 95%);
 			--color-r9: hsl(344, 100%, 95%);
-	
+
 			--color-safe-l1: hsl(144, 100%, 10%);
 			--color-danger-l1: hsl(4, 100%, 10%);
 			--color-tip-l1: hsl(54, 100%, 10%);
 		}
 	}
+
 	--color: var(--color-default);
 	--color-border: var(--color-bg-default);
 	--color-bg: var(--color-bg-default);
