@@ -1,4 +1,29 @@
 <%- include('html_above') %>
   <%- include('comp_header') %>
   <%- include('comp_breadcrumb') %>
+  <main class="view">
+      <div class="view-content">
+          <h1 class="h3">The title of the content</h1>
+          <div>Desc content</div>
+          <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
+                  type="button">home</button> <button class="tag major active" type="button">welcome</button> <button
+                  class="tag major active" type="button">bird</button> <button class="tag major active"
+                  type="button">feed</button><button class="tag major active" type="button">landing</button> <button
+                  class="tag major active" type="button">digital</button> <button class="tag major active"
+                  type="button">AI paint</button> <button class="tag major active" type="button">nest</button></div>
+      </div>
+      <a href="/sap/index" class="img-bg">
+          <img src="<%=meta.origin%>/img.welcome.webp" alt="SAP" loading="lazy">
+      </a>
+  </main>
+  <%if(data.articles && data.articles.length){%>
+  <ul class="result">
+    <%for(var i=0; i<data.articles.length; i++){%>
+      <li class="item">
+        <% const article = data.articles[i]; %>
+        <%- include('comp_article', {article: article}) %>
+      </li>
+    <%}%>
+  </ul>
+  <%}%>
 <%- include('html_below') %>

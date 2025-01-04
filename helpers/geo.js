@@ -7,36 +7,37 @@ export const geoType = {
 	neighborhood: 'neighborhood',
 };
 
-export function getBreadcrumbByGeo(geo) {
+export function getBreadcrumbByGeo(geo, _path) {
 	let data = [];
+	let path = _path || '';
 	if (geo.state) {
 		data.push({
 			text: geo.state,
-			href: getStatePath(geo.state),
+			href: `${path}/${getStatePath(geo.state)}`,
 		});
 	}
 	if (geo.county) {
 		data.push({
 			text: geo.county,
-			href: getCountyPath(geo.county, geo.state),
+			href: `${path}/${getCountyPath(geo.county, geo.state)}`,
 		});
 	}
 	if (geo.city) {
 		data.push({
 			text: geo.city,
-			href: getCityPath(geo.city, geo.state),
+			href: `${path}/${getCityPath(geo.city, geo.state)}`,
 		});
 	}
 	if (geo.neighborhood) {
 		data.push({
 			text: geo.neighborhood,
-			href: getNeighborhoodPath(geo.neighborhood, geo.city, geo.state),
+			href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
 		});
 	}
 	if (geo.zip) {
 		data.push({
 			text: geo.zip,
-			href: getZipPath(geo.zip, geo.state),
+			href: `${path}/${getZipPath(geo.zip, geo.state)}`,
 		});
 	}
 	return {

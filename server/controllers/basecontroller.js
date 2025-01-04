@@ -74,15 +74,33 @@ export default class BaseController {
 	initialMeta(model) {
 		//get lang from this.req.headers['accept-language'] with format like en-US
 		let lang = this.req.acceptsLanguages();
+		let origin = this.req.headers.origin || `${this.req.protocol}://${this.req.get('host')}`;
+		let preload = [
+			{
+				as: 'image',
+				href: `/img.logo-bg.svg`,
+			},
+		];
+		if (this.config.preload) {
+			let pagePreload = this.config.preload(this.req, model);
+			if (pagePreload) {
+				preload = preload.concat(pagePreload);
+			}
+		}
 		return {
 			uaData: this.req.uaData,
 			lang: (lang && lang[0]) || '',
 			path: this.req.path,
+			origin: origin,
+			preload: preload,
+			css: `/${this.config.name}.min.css`,
+			js: `/${this.config.name}.min.js`,
+			pageType: `page-${this.config.name}`,
 		};
 	}
 	initialBreadcrumb(model) {
 		if (model && model.data && model.data.geo) {
-			return getBreadcrumbByGeo(model.data.geo);
+			return getBreadcrumbByGeo(model.data.geo, `/${this.config.name}`);
 		} else {
 			return null;
 		}

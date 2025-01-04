@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 	res.send('Hello World');
 });
 
-router.get('/sap/?*', async (req, res) => {
+router.get('/sap/*', async (req, res) => {
 	req.query.path = req?.params[0] || '';
 	let controller = new BaseController(req, res, 'sap');
 	let model = await controller.get();

@@ -34,15 +34,6 @@ let sap = {
 				},
 			},
 			{
-				reg: /^\/sap\/grid\/(\w+)$/i,
-				loading: () => {
-					return new Promise((resolve) => {
-						exportObj.switchToGrid();
-						resolve(null);
-					});
-				},
-			},
-			{
 				reg: /^\/sap\/detail\/(\w+)/i,
 				loading: () => {
 					return new Promise((resolve) => {
@@ -52,10 +43,10 @@ let sap = {
 				},
 			},
 			{
-				reg: /^\/sap\/index/i,
+				reg: /^\/sap\/*/i,
 				loading: () => {
 					return new Promise((resolve) => {
-						exportObj.switchToIndex();
+						exportObj.switchToGrid();
 						resolve(null);
 					});
 				},

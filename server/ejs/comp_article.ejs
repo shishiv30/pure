@@ -1,0 +1,23 @@
+<%if(article){%>
+<article>
+  <dl>
+      <dt>
+          <a href="<%=article.href%>" data-id="<%= article.id%>">
+              <address><%=article.title%></address>
+          </a>
+      </dt>
+      <%if(article.attrs && article.attrs.length){%>
+        <%for(var i=0; i<article.attrs.length; i++){%>
+          <% const attr = article.attrs[i]; %>
+          <dd>
+              <span><%=attr.value%></span> <abbr title="<%=attr.name%>"><%=attr.abbr%></abbr>
+          </dd>
+        <%}%>
+      <%}%>
+  </dl>
+  <figure>
+      <img src="<%=article.img%>" alt="<%=article.imgAlt%>" loading="lazy">
+      <figcaption><%=article.imgTag%></figcaption>
+  </figure>
+</article>
+<%}%>
