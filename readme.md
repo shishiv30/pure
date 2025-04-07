@@ -24,3 +24,10 @@ npm run server
 ```
 then open api-docs/ see all the supported apis
 then open sap/ca/san-jose as search sap page
+
+
+### for deploy new version
+```bash
+npm run server
+npm run deploy
+```
