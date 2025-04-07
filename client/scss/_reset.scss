@@ -134,3 +134,7 @@ button {
 	max-width: 100%;
 	overflow: hidden;
 }
+
+[disable] {
+	pointer-events: none;
+}

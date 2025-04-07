@@ -21,8 +21,13 @@ a {
 a,
 button {
 	&.link {
-		opacity: 0.95;
-		color: var(--color-link-default);
+
+		&,
+		&:link,
+		&:visited {
+			opacity: 0.95;
+			color: var(--color-link-default);
+		}
 
 		@include hover() {
 			font-weight: var(--font-weight-medium);
