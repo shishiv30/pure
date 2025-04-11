@@ -81,7 +81,20 @@
 
 .page-sap {
     --item-width: #{$screen-xs-min};
-    --item-height: calc(var(--item-width) * 0.7);
+
+    @media screen and (min-width: $screen-sm-min) {
+        --item-width: 250px;
+    }
+
+    @media screen and (min-width: $screen-md-min) {
+        --item-width: 300px;
+    }
+
+
+    @media screen and (min-width: $screen-lg-min) {
+        --item-width: 340px;
+    }
+
     --main-size: var(--item-width);
     --header-height: var(--comp-size-3);
     --breadcrumb-height: var(--comp-size-3);
@@ -208,7 +221,6 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
-    --img-bg-ratio: 0 !important;
 
     @media screen and (orientation:portrait) {}
 
@@ -226,28 +238,33 @@
     position: relative;
     z-index: 2;
     @include hidden-scrollbar();
-    padding: var(--g0);
-    gap: var(--g0);
+    --item-gap: min(var(--g4), 2.5%);
+    //set padding min 8px max 5vw
+    padding: var(--item-gap);
+
+    gap: var(--item-gap);
 
     .item {
-        min-width: var(--item-width);
+        cursor: pointer;
         height: var(--item-height);
     }
 
     article {
-        border-radius: 4px;
+        --article-gap: min(var(--g2), 1.5%);
+        border-radius: 8px;
         box-shadow: 0 0 0 1px var(--color-bg-l1);
         display: flex;
         flex-direction: column;
         height: 100%;
         width: 100%;
         overflow: hidden;
-        gap: var(--g0);
+        gap: var(--g2);
+        padding-bottom: var(--g2);
 
         >figure {
             width: 100%;
-            height: 75%;
-            flex-shrink: 1;
+            padding-top: 65%;
+            height: 0;
             order: 1;
             position: relative;
             overflow: hidden;
@@ -261,19 +278,22 @@
                 color: var(--color-bg);
                 padding: var(--g0);
                 background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 4px;
+                border-radius: 0 0 0 4px;
             }
 
             >img {
                 height: 100%;
                 width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
                 object-fit: cover;
             }
         }
 
         >a {
             order: 3;
-            padding: 0 var(--g0);
+            padding: 0 var(--article-gap);
 
             address {
                 font-size: var(--font-size-6);
@@ -284,17 +304,21 @@
 
 
         >ul {
-            height: auto;
+
             flex-shrink: 0;
             order: 2;
-            padding: 0 var(--g0);
-            @include multiline(2);
+            padding: 0 var(--article-gap);
             font-weight: var(--font-weight-medium);
             display: flex;
-            gap: var(--g2);
+            gap: var(--g3);
             align-items: baseline;
+            flex-wrap: wrap;
+            height: 1.2rem;
+            overflow: hidden;
 
             >li {
+                white-space: nowrap;
+
                 b {
                     font-size: var(--font-size-4);
                     font-weight: var(--font-weight-bold);
@@ -387,7 +411,6 @@
     .result {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(var(--item-width), 1fr));
-        grid-auto-rows: var(--item-height);
 
         .item {
             width: 100%;

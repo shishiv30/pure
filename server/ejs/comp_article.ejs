@@ -9,7 +9,7 @@
         <%for(var i=0; i<article.attrs.length; i++){%>
           <% const attr = article.attrs[i]; %>
           <li>
-              <span><%=attr.value%></span> <abbr title="<%=attr.name%>"><%=attr.abbr%></abbr>
+              <span><%=attr.value%></span> <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
           </li>
         <%}%>
       <%}%>

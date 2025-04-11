@@ -7,6 +7,14 @@ export const geoType = {
 	neighborhood: 'neighborhood',
 };
 
+export function getGeoCityByCityState(city, state) {
+	let cityPath = getCityPath(city, state);
+	if (cityPath) {
+		return getGeoByPath(cityPath);
+	}
+	return null;
+}
+
 export function getBreadcrumbByGeo(geo, _path) {
 	let data = [];
 	let path = _path || '';
@@ -125,6 +133,31 @@ export function getNeighborhoodPath(neighborhood, city, state) {
 	let cityCode = city.toLowerCase().replace(/\s+/g, '-');
 	let neighborhoodCode = neighborhood.toLowerCase().replace(/\s+/g, '-');
 	return `${stateCode}/${cityCode}/${neighborhoodCode}_neighborhood`;
+}
+
+export function getGeoDisplayText(geo) {
+	if (!geo) {
+		return '';
+	}
+
+	if (geo.address) {
+		return `${geo.address} ${geo.city}, ${geo.state} ${geo.zip}`;
+	} else if (geo.neighborhood) {
+		if (geo.city.include(geo.neighborhood)) {
+			return `${geo.neighborhood}, ${geo.state}`;
+		}
+		return `${geo.neighborhood} ${geo.city}, ${geo.state}`;
+	} else if (geo.city) {
+		return `${geo.city}, ${geo.state}`;
+	} else if (geo.county) {
+		return `${geo.county}, ${geo.state}`;
+	} else if (geo.zip) {
+		return `${geo.zip} ${geo.state}`;
+	} else if (geo.state) {
+		return `${geo.state}`;
+	}
+
+	return '';
 }
 export function getGeoByData() {}
 

@@ -1,4 +1,9 @@
   </body>
+  <%if(data){%>
+    <script>
+      window.__DATA__ = <%- JSON.stringify(data) %>;
+    </script>
+    <%}%>
   <%if(meta.js){%>
     <script src="<%=meta.js%>"></script>
   <%}%>

@@ -58,6 +58,7 @@
 		"express-session": "^1.18.0",
 		"express-useragent": "^1.0.15",
 		"fuse.js": "^7.0.0",
+		"geoip-lite": "^1.4.10",
 		"lodash": "^4.17.21",
 		"nodemon": "^3.1.4",
 		"swagger-jsdoc": "^6.2.8",

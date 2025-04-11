@@ -37,12 +37,14 @@
 		&.tiny {
 			--#{$name}-gap: 0;
 			--#{$name}-font-size: var(--font-size-6);
+			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-size: var(--comp-size-1);
 		}
 
 		&.small {
 			--#{$name}-gap: var(--gxs);
 			--#{$name}-font-size: var(--font-size-5);
+			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-size: var(--comp-size-2);
 		}
 
@@ -50,6 +52,7 @@
 			--#{$name}-gap: var(--g1);
 			--#{$name}-font-size: var(--font-size-4);
 			--#{$name}-size: var(--comp-size-4);
+			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-border-weight: 2px;
 		}
 	}

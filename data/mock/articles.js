@@ -9,10 +9,10 @@ export default [
 		tags: [{ key: 'major', value: 'New' }],
 		attrs: [
 			{ key: 'Est', value: '$600,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,800', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$214', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,800', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$214', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -25,10 +25,10 @@ export default [
 		tags: [{ key: 'major', value: 'Updated' }],
 		attrs: [
 			{ key: 'Est', value: '$1,200,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,500', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$342', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,500', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$342', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -41,10 +41,10 @@ export default [
 		tags: [{ key: 'danger', value: 'For Sale' }],
 		attrs: [
 			{ key: 'Est', value: '$450,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '1,800', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$250', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '1,800', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$250', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -57,10 +57,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Luxury' }],
 		attrs: [
 			{ key: 'Est', value: '$2,300,000', desc: 'Estimate Price' },
-			{ key: '5', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '4.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '5,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$460', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '5', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '4.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '5,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$460', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -73,10 +73,10 @@ export default [
 		tags: [{ key: 'minor', value: 'Reduced' }],
 		attrs: [
 			{ key: 'Est', value: '$800,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$364', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$364', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -89,10 +89,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Hot' }],
 		attrs: [
 			{ key: 'Est', value: '$950,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,100', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$306', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,100', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$306', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -105,10 +105,10 @@ export default [
 		tags: [{ key: 'minor', value: 'New Listing' }],
 		attrs: [
 			{ key: 'Est', value: '$720,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,500', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$288', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,500', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$288', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -121,10 +121,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Renovated' }],
 		attrs: [
 			{ key: 'Est', value: '$670,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$335', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$335', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -137,10 +137,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Pending' }],
 		attrs: [
 			{ key: 'Est', value: '$540,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,400', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$225', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,400', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$225', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -153,10 +153,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Sold' }],
 		attrs: [
 			{ key: 'Est', value: '$480,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '1,900', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$252', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '1,900', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$252', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -169,10 +169,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Price Drop' }],
 		attrs: [
 			{ key: 'Est', value: '$1,050,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$328', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$328', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -185,10 +185,10 @@ export default [
 		tags: [{ key: 'tip', value: 'Move-In Ready' }],
 		attrs: [
 			{ key: 'Est', value: '$650,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,400', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$271', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,400', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$271', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -201,10 +201,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Best Value' }],
 		attrs: [
 			{ key: 'Est', value: '$550,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$275', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$275', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -217,10 +217,10 @@ export default [
 		tags: [{ key: 'minor', value: 'Modern' }],
 		attrs: [
 			{ key: 'Est', value: '$900,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$300', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$300', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -233,10 +233,10 @@ export default [
 		tags: [{ key: 'minor', value: 'Charming' }],
 		attrs: [
 			{ key: 'Est', value: '$750,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$341', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$341', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -249,10 +249,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Under Construction' }],
 		attrs: [
 			{ key: 'Est', value: '$500,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,800', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$179', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,800', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$179', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -265,10 +265,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Cozy' }],
 		attrs: [
 			{ key: 'Est', value: '$320,000', desc: 'Estimate Price' },
-			{ key: '2', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '1', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '1,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$267', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '2', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '1', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '1,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$267', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -281,10 +281,10 @@ export default [
 		tags: [{ key: 'major', value: 'Spacious' }],
 		attrs: [
 			{ key: 'Est', value: '$890,000', desc: 'Estimate Price' },
-			{ key: '5', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '4', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '4,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$223', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '5', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '4', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '4,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$223', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -297,10 +297,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Family Home' }],
 		attrs: [
 			{ key: 'Est', value: '$460,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,100', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$219', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,100', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$219', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -313,10 +313,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Green Living' }],
 		attrs: [
 			{ key: 'Est', value: '$520,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,300', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$226', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,300', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$226', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -329,10 +329,10 @@ export default [
 		tags: [{ key: 'danger', value: 'Exclusive' }],
 		attrs: [
 			{ key: 'Est', value: '$1,500,000', desc: 'Estimate Price' },
-			{ key: '5', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '4', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '4,500', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$333', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '5', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '4', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '4,500', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$333', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -345,10 +345,10 @@ export default [
 		tags: [{ key: 'minor', value: 'New Construction' }],
 		attrs: [
 			{ key: 'Est', value: '$1,100,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,800', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$289', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,800', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$289', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -361,10 +361,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Investment' }],
 		attrs: [
 			{ key: 'Est', value: '$750,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,500', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$300', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,500', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$300', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -377,10 +377,10 @@ export default [
 		tags: [{ key: 'major', value: 'Charming' }],
 		attrs: [
 			{ key: 'Est', value: '$680,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$309', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$309', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -393,10 +393,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Luxury' }],
 		attrs: [
 			{ key: 'Est', value: '$2,500,000', desc: 'Estimate Price' },
-			{ key: '6', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '6,000', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$417', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '6', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '6,000', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$417', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -409,10 +409,10 @@ export default [
 		tags: [{ key: 'tip', value: 'Reduced' }],
 		attrs: [
 			{ key: 'Est', value: '$820,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,300', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$357', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,300', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$357', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -425,10 +425,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Hot' }],
 		attrs: [
 			{ key: 'Est', value: '$970,000', desc: 'Estimate Price' },
-			{ key: '4', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '3.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '3,200', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$303', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '4', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '3.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '3,200', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$303', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -441,10 +441,10 @@ export default [
 		tags: [{ key: 'safe', value: 'New Listing' }],
 		attrs: [
 			{ key: 'Est', value: '$740,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2.5', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,600', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$285', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2.5', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,600', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$285', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -457,10 +457,10 @@ export default [
 		tags: [{ key: 'minor', value: 'Renovated' }],
 		attrs: [
 			{ key: 'Est', value: '$690,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,100', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$329', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,100', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$329', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 	{
@@ -473,10 +473,10 @@ export default [
 		tags: [{ key: 'safe', value: 'Pending' }],
 		attrs: [
 			{ key: 'Est', value: '$560,000', desc: 'Estimate Price' },
-			{ key: '3', value: 'Bd', desc: 'Bedrooms' },
-			{ key: '2', value: 'Ba', desc: 'Bathrooms' },
-			{ key: '2,500', value: 'Sqft', desc: 'Lot Size' },
-			{ key: '$224', value: '/sqft', desc: 'Price Per Sqft' },
+			{ value: '3', key: 'Bd', desc: 'Bedrooms' },
+			{ value: '2', key: 'Ba', desc: 'Bathrooms' },
+			{ value: '2,500', key: 'Sqft', desc: 'Lot Size' },
+			{ value: '$224', key: '/sqft', desc: 'Price Per Sqft' },
 		],
 	},
 ];
