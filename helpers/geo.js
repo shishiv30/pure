@@ -60,7 +60,8 @@ export function getBreadcrumbByGeo(geo, _path) {
 	};
 }
 
-export function getGeoByPath(path) {
+export function getGeoByPath(_path) {
+	let path = _path.replace(/^\//, '').replace(/\/$/, '');
 	let segments = path.split('/');
 	let geo = {};
 	if (/^[a-z]{2}$/i.test(segments[0])) {

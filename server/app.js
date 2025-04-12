@@ -35,5 +35,6 @@ app.use(express.static('dist'));
 app.listen(config.port, function () {
 	console.log(`Example app listening on port ${config.appUrl}`);
 	console.log(`API docs available at ${config.appUrl}/api-docs`);
-	console.log(`SAP docs available at ${config.appUrl}/sap`);
+	console.log(`SAP docs available at ${config.appUrl}/sap/?ip=99.39.118.234`);
+	console.log(`SAP docs available at ${config.appUrl}/sap/tx/round-rock`);
 });
