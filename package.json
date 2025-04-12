@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "webpack-dev-server --config webpack.config.dev.js --open",
-		"server": "nodemon server/app.js",
+		"server": "node server/app.js",
 		"build": "webpack --config webpack.config.build.js --env dev",
 		"prod": "webpack --config webpack.config.build.js --env production --env deploy",
 		"deploy": "node deploy"

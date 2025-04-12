@@ -16,37 +16,44 @@ export function getGeoCityByCityState(city, state) {
 }
 
 export function getBreadcrumbByGeo(geo, _path) {
-	let data = [];
+	let data = [
+		{
+			text: 'Home',
+			href: '/',
+		},
+	];
 	let path = _path || '';
-	if (geo.state) {
-		data.push({
-			text: geo.state,
-			href: `${path}/${getStatePath(geo.state)}`,
-		});
-	}
-	if (geo.county) {
-		data.push({
-			text: geo.county,
-			href: `${path}/${getCountyPath(geo.county, geo.state)}`,
-		});
-	}
-	if (geo.city) {
-		data.push({
-			text: geo.city,
-			href: `${path}/${getCityPath(geo.city, geo.state)}`,
-		});
-	}
-	if (geo.neighborhood) {
-		data.push({
-			text: geo.neighborhood,
-			href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
-		});
-	}
-	if (geo.zip) {
-		data.push({
-			text: geo.zip,
-			href: `${path}/${getZipPath(geo.zip, geo.state)}`,
-		});
+	if (geo) {
+		if (geo.state) {
+			data.push({
+				text: geo.state,
+				href: `${path}/${getStatePath(geo.state)}`,
+			});
+		}
+		if (geo.county) {
+			data.push({
+				text: geo.county,
+				href: `${path}/${getCountyPath(geo.county, geo.state)}`,
+			});
+		}
+		if (geo.city) {
+			data.push({
+				text: geo.city,
+				href: `${path}/${getCityPath(geo.city, geo.state)}`,
+			});
+		}
+		if (geo.neighborhood) {
+			data.push({
+				text: geo.neighborhood,
+				href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
+			});
+		}
+		if (geo.zip) {
+			data.push({
+				text: geo.zip,
+				href: `${path}/${getZipPath(geo.zip, geo.state)}`,
+			});
+		}
 	}
 	return {
 		links: data,

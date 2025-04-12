@@ -1,6 +1,9 @@
 @import './sap/_sap.theme.scss';
 @import './base.scss';
 
+html {
+    --comp-gap: min(var(--g4), 1.5%);
+}
 
 @keyframes box-wipe-enter {
     0% {
@@ -82,17 +85,20 @@
 .page-sap {
     --item-width: #{$screen-xs-min};
 
-    @media screen and (min-width: $screen-sm-min) {
+    @media screen and (max-width: $screen-xs-max) {
         --item-width: 250px;
     }
 
-    @media screen and (min-width: $screen-md-min) {
+    @media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        --item-width: 280px;
+    }
+
+    @media screen and (min-width: $screen-md-min) and (max-width: $screen-md-max) {
         --item-width: 300px;
     }
 
-
     @media screen and (min-width: $screen-lg-min) {
-        --item-width: 340px;
+        --item-width: 360px;
     }
 
     --main-size: var(--item-width);
@@ -238,11 +244,10 @@
     position: relative;
     z-index: 2;
     @include hidden-scrollbar();
-    --item-gap: min(var(--g4), 2.5%);
     //set padding min 8px max 5vw
-    padding: var(--item-gap);
+    padding: var(--comp-gap);
 
-    gap: var(--item-gap);
+    gap: var(--comp-gap);
 
     .item {
         cursor: pointer;
@@ -250,7 +255,7 @@
     }
 
     article {
-        --article-gap: min(var(--g2), 1.5%);
+        --article-gap: min(var(--g2), 3%);
         border-radius: 8px;
         box-shadow: 0 0 0 1px var(--color-bg-l1);
         display: flex;
@@ -310,7 +315,7 @@
             padding: 0 var(--article-gap);
             font-weight: var(--font-weight-medium);
             display: flex;
-            gap: var(--g3);
+            gap: var(--g2) var(--article-gap);
             align-items: baseline;
             flex-wrap: wrap;
             height: 1.2rem;
