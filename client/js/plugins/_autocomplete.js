@@ -13,7 +13,6 @@ export default {
 		delay: 100,
 		container: '.input',
 		abortController: null,
-		isPending: false,
 	},
 	init($el, opt, exportObj) {
 		let _show = function () {
@@ -43,7 +42,7 @@ export default {
 
 		let _selectSuggestion = function (item) {
 			if (item) {
-				console.table(getPathByGeo(item));
+				window.location.href = `/sap/${getPathByGeo(item)}`;
 			}
 		};
 		let _updateSuggestion = function (data) {
@@ -62,15 +61,6 @@ export default {
 			let value = $el.value.trim();
 			if (value.length === 0) {
 				return;
-			}
-
-			//if request is sending
-			if (opt.isPending) {
-				if (opt.abortController && opt.abortController.signal) {
-					opt.abortController.abort();
-				}
-				opt.abortController = null;
-				opt.isPending = false;
 			}
 
 			if (opt.timer) {
@@ -96,8 +86,15 @@ export default {
 						}
 					});
 				}
+				//check if previous request is still pending
+				if (
+					opt.abortController &&
+					opt.abortController.signal &&
+					opt.abortController.signal.aborted === false
+				) {
+					opt.abortController.abort();
+				}
 				opt.abortController = new AbortController();
-				opt.isPending = true;
 				new AbortController();
 				//fetch data from url
 				let body;
@@ -115,7 +112,6 @@ export default {
 					signal: opt.abortController.signal,
 				})
 					.then((response) => {
-						opt.isPending = false;
 						if (!response.ok) {
 							throw new Error(`HTTP error: ${response.status}`);
 						}
@@ -126,7 +122,6 @@ export default {
 						});
 					})
 					.catch((error) => {
-						opt.isPending = false;
 						console.error('Error sending data:', error);
 					});
 			}, opt.delay);
