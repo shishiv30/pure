@@ -16,10 +16,10 @@ export default {
 		let $list = $el.querySelector('.header-menu-list');
 		let $dropdown = $list.querySelectorAll('.list');
 		let $overlay = document.createElement('div');
-		$overlay.setAttribute('class', 'header-overlay');
+		$overlay.className = 'header-overlay';
+		$el.prepend($overlay);
 		let $swtichLink = $el.querySelectorAll('.header-switch-link');
 		opt.id = guid;
-		$el.prepend($overlay);
 		let _close = exportObj.addHeaderClose;
 		let _open = exportObj.removeHeaderClose;
 		let _show = function () {

@@ -5,6 +5,7 @@ import dialog from './_dialog.js';
 import form from './_form.js';
 // import gridtable from './_gridtable.js';
 import header from './_header.js';
+import autocomplete from './_autocomplete.js';
 // import inputformat from './_inputformat.js';
 // import links from './_links.js';
 import lazyload from './_lazyload.js';
@@ -35,6 +36,7 @@ export default {
 	form,
 	// gridtable,
 	header,
+	autocomplete,
 	// inputformat,
 	// links,
 	lazyload,

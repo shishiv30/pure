@@ -7,6 +7,7 @@ import geo from './middleware/geo.js';
 import config from './config.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig.js';
@@ -28,6 +29,11 @@ app.use((req, res, next) => {
 });
 
 /* routes */
+app.use(
+	cors({
+		origin: 'http://localhost:8080',
+	}),
+);
 app.use('/', pageRouter);
 app.use('/api', apiRouter);
 app.use(express.static('dist'));

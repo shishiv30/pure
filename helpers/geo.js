@@ -169,4 +169,16 @@ export function getGeoDisplayText(geo) {
 }
 export function getGeoByData() {}
 
-export function getPathBYGeo() {}
+export function getPathByGeo(geo) {
+	if (geo.type === geoType.state) {
+		return getStatePath(geo.state);
+	} else if (geo.type === geoType.city) {
+		return getCityPath(geo.city, geo.state);
+	} else if (geo.type === geoType.county) {
+		return getCountyPath(geo.county, geo.state);
+	} else if (geo.type === geoType.zip) {
+		return getZipPath(geo.zip, geo.state);
+	} else if (geo.type === geoType.neighborhood) {
+		return getNeighborhoodPath(geo.neighborhood, geo.city, geo.state);
+	}
+}

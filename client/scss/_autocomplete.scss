@@ -1,0 +1,28 @@
+.suggestion-list {
+  display: none;
+  position: absolute;
+  width: 100%;
+  background: var(--color);
+
+  line-height: 2;
+  border-radius: 0 0 var(--g2) var(--g2);
+}
+
+.suggestion-list:empty {
+  display: none !important;
+}
+
+.autocomplete-show {
+  .suggestion-list {
+    display: block;
+  }
+}
+
+.suggestion-item {
+  padding: 0 var(--g2);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-8);
+  }
+}
