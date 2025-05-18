@@ -1,7 +1,12 @@
 import useragent from 'express-useragent';
 import config from '../configs/index.js';
-import BaseFactory from '../factories/basefactory.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
+import fs from 'fs';
+import mime from 'mime';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const queryGroupKey = ['utm', 'hack'];
 
 export default class BaseController {
@@ -193,5 +198,24 @@ export default class BaseController {
 		model.breadcrumb = this.initialBreadcrumb(model);
 		//relative path of ejs template
 		this.res.render(`${this.config.name}.ejs`, model);
+	}
+
+	static async dist(res, fileName) {
+		//get file from dist folder
+		try {
+			const filePath = path.resolve(__dirname, '../../dist', fileName);
+			let extName = path.extname(filePath);
+			let contentType = mime.getType(extName) || 'application/octet-stream';
+			fs.readFile(filePath, 'utf8', (err, data) => {
+				if (err) {
+					res.status(500).send('Error loading file');
+				} else {
+					res.setHeader('Content-Type', contentType);
+					res.send(data);
+				}
+			});
+		} catch (error) {
+			res.status(500).send('Error loading file');
+		}
 	}
 }

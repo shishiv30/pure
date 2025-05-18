@@ -3,12 +3,11 @@ import BaseController from '../controllers/basecontroller.js';
 const router = Router();
 
 router.use((req, res, next) => {
-	console.log('Time: ', Date.now());
 	next();
 });
 
 router.get('/', (req, res) => {
-	res.send('Hello World');
+	BaseController.dist(res, 'index.html');
 });
 
 router.get(/^\/sap\/?$/, async (req, res) => {
