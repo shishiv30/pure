@@ -1,20 +1,26 @@
-.alum-processing {
+@import './_mixins.scss';
+
+.album-processing {
   position: absolute;
   text-align: center;
-  top: var(--g2);
-  right: 0;
-  left: 0;
+  bottom: var(--g2);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: center;
+  max-width: 100px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  gap: var(--g1);
+  @include hidden-scrollbar();
 
   >button {
+    flex-shrink: 0;
     display: block;
     width: var(--g2);
     height: 4px;
     border-radius: 2px;
-    margin: 0 var(--g0);
     background-color: var(--color-l1);
     opacity: 0.5;
 
@@ -114,9 +120,12 @@
   position: absolute;
   top: 0;
   left: 0;
-  touch-action: none;
-  will-change: transform;
   transform: translateX(-100%);
+  cursor: grab;
+
+  &:focus {
+    cursor: grabbing;
+  }
 
   >img {
     flex: 1;
@@ -125,16 +134,21 @@
     flex-shrink: 0;
     object-fit: cover;
 
-    &:nth-child(1) {
+    &.current {
       order: 2;
     }
 
-    &:nth-child(2) {
+    &.prev {
       order: 1;
     }
 
-    &:nth-child(3) {
+    &.next {
       order: 3;
+    }
+
+    &.preload {
+      order: 4;
+      display: none !important;
     }
   }
 
