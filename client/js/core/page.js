@@ -178,7 +178,7 @@ export class Page extends Plugin {
 					if (!types) {
 						return;
 					}
-					item.setAttribute('loaded', true);
+					item.setAttribute('loaded', 1);
 					types = types.trim().split(/\s+/g);
 					types.forEach((type) => {
 						let plugin = Plugin.getPlugin(type);
@@ -186,6 +186,7 @@ export class Page extends Plugin {
 							plugin(item, data);
 						}
 					});
+					item.setAttribute('loaded', 2);
 				});
 			}),
 		);
