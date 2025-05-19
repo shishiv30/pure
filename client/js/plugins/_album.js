@@ -74,7 +74,7 @@ export default {
 		}
 		let currentImg = $el.querySelector('img');
 		if (currentImg) {
-			opt.imgIndex = opt.images.indexOf(currentImg.src);
+			opt.imgIndex = opt.images.findIndex((img) => currentImg.src.indexOf(img) > -1);
 			if (currentImg.alt && opt.alt === '') {
 				opt.alt = currentImg.alt;
 			}
@@ -420,6 +420,7 @@ export default {
 				process.appendChild(button);
 			}
 			$el.appendChild(process);
+			updateProcess();
 		}
 
 		exportOb.next = next;
