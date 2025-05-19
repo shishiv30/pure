@@ -177,7 +177,6 @@ export default {
 					let touch = e.touches[0];
 					deltaX = touch.clientX - touchStart;
 					$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
-					translateX = touch.clientX - width;
 				});
 			});
 			$list.addEventListener('touchend', function (e) {
