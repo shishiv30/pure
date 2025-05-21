@@ -136,11 +136,11 @@ body {
 	--color-active-border-hover: var(--color-default);
 	--color-disabled: var(--color-default-l1);
 
-	--section-gap-x: var(--section-gap-default-x);
-	--section-gap-y: var(--section-gap-default-y);
+	--section-gap-x: var(--g3);
+	--section-gap-y: var(--g4);
 
-	--panel-gap-x: var(--panel-gap-default-x);
-	--panel-gap-y: var(--panel-gap-default-y);
+	--panel-gap-x: var(--g2);
+	--panel-gap-y: var(--g3);
 
 	//comps like: button, input, select, etc
 	//f3(f5*1.618)
@@ -151,9 +151,7 @@ body {
 	--comp-size-3: 2.75rem;
 	//1.25 * 1.25 +  0.5 * 2 = 2.25
 	--comp-size-4: 3.2rem;
-	//default size
-	--comp-gap-x: var(--g1);
-	--comp-gap-y: var(--g1);
+
 	--comp-height: var(--comp-size-3);
 	--comp-font-size: var(--font-size-5);
 	--comp-border-radius: 6px;
