@@ -31,11 +31,13 @@
     }
 
     .breadcrumb {
+        z-index: #{$ui-header-index - 1};
         grid-area: breadcrumb;
     }
 
     .detail {
         grid-area: detail;
+        overflow: hidden;
 
         &:empty {
             display: none;
@@ -48,45 +50,62 @@
 
     .aside {
         grid-area: aside;
-
-        &:empty {
-            display: none;
-        }
     }
 
     .footer {
         grid-area: footer;
     }
 
+    display: grid;
+    transition: grid-template-columns 0.5s ease-in-out;
+    grid-template-columns: 1fr;
+
+    --result-width: auto;
+
+    @media screen and (orientation:portrait) {
+        grid-template-columns: 1fr 0;
+        grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
+        grid-template-areas:
+            "header header"
+            "breadcrumb breadcrumb"
+            "detail aside"
+            "result aside"
+            "footer aside";
+    }
+
+    @media screen and (orientation:landscape) {
+        --result-width: var(--item-width);
+        grid-template-columns: calc(100% - var(--result-width) - var(--g2)) var(--result-width) var(--g2);
+        grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
+        grid-template-areas:
+            "header header header"
+            "breadcrumb breadcrumb breadcrumb"
+            "detail result aside"
+            "detail footer aside";
+    }
+
+    @media (orientation:landscape) and (min-width: $screen-lg-min) {
+        --result-width: calc(var(--item-width) * 2 + var(--g2));
+    }
 
     &.view-grid {
-        grid-template-areas:
-            "header"
-            "breadcrumb"
-            "detail"
-            "result"
-            "footer";
+        @media screen and (orientation:portrait) {
+            grid-template-rows: var(--header-height) var(--breadcrumb-height) 0 auto auto;
+        }
+
+        @media screen and (orientation:landscape) {
+            grid-template-columns: 0 100%;
+            grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
+        }
 
         .result {
             padding: var(--g2);
-        }
-
-        .detail {
-            display: none;
         }
     }
 
     &.view-detail {
         @media screen and (orientation:portrait) {
-            --main-size: var(--item-height);
             grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
-            grid-template-columns: 1fr;
-            grid-template-areas:
-                "header"
-                "breadcrumb"
-                "detail"
-                "result"
-                "footer";
 
             .result {
                 padding: var(--g2);
@@ -94,28 +113,32 @@
         }
 
         @media screen and (orientation:landscape) {
-            display: grid;
-            grid-template-columns: auto minmax(400px, 20%);
-            grid-template-rows: var(--header-height) var(--breadcrumb-height) calc(100dvh - var(--header-height) - var(--breadcrumb-height));
-            grid-template-areas:
-                "header header"
-                "breadcrumb breadcrumb"
-                "detail result";
+            .header-close {
+                transform: none;
+            }
 
-            .footer {
-                display: none;
+            .breadcrumb {
+                position: sticky;
+                top: var(--header-height);
             }
 
             .detail {
+                position: sticky;
+                top: calc(var(--header-height) + var(--breadcrumb-height));
+                height: calc(100dvh - var(--header-height) - var(--breadcrumb-height));
+                overflow-y: auto;
+                overflow-x: hidden;
+                @include hidden-scrollbar();
+            }
+
+            .result {
+                padding: var(--g2) 0;
                 overflow-y: auto;
                 overflow-x: hidden;
             }
 
-            .result {
-                padding: var(--g2) var(--g2) var(--g2) 0;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
+            .result,
+            .footer {}
         }
     }
 
