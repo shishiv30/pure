@@ -33,6 +33,10 @@
     .breadcrumb {
         z-index: #{$ui-header-index - 1};
         grid-area: breadcrumb;
+        position: sticky;
+        top: var(--header-height);
+        transition: transform 0.5s;
+        transform: translateY(0%);
     }
 
     .detail {
@@ -50,6 +54,16 @@
 
     .aside {
         grid-area: aside;
+        width: 100%;
+        background-color: var(--color);
+        color: var(--color-bg);
+        position: sticky;
+        height: calc(100dvh - var(--header-height) - var(--breadcrumb-height));
+        top: calc(var(--header-height) + var(--breadcrumb-height));
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
     }
 
     .footer {
@@ -58,12 +72,12 @@
 
     display: grid;
     transition: grid-template-columns 0.5s ease-in-out;
-    grid-template-columns: 1fr;
 
     --result-width: auto;
 
     @media screen and (orientation:portrait) {
-        grid-template-columns: 1fr 0;
+        --aside-width: 0px;
+        grid-template-columns: 1fr var(--aside-width);
         grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
         grid-template-areas:
             "header header"
@@ -75,7 +89,8 @@
 
     @media screen and (orientation:landscape) {
         --result-width: var(--item-width);
-        grid-template-columns: calc(100% - var(--result-width) - var(--g2)) var(--result-width) var(--g2);
+        --aside-width: var(--g2);
+        grid-template-columns: calc(100% - var(--result-width) - var(--g2)) var(--result-width) var(--aside-width);
         grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
         grid-template-areas:
             "header header header"
@@ -88,13 +103,21 @@
         --result-width: calc(var(--item-width) * 2 + var(--g2));
     }
 
+    &.asided {
+        --aside-width: 100px !important;
+
+        .openaside {
+            display: none;
+        }
+    }
+
     &.view-grid {
         @media screen and (orientation:portrait) {
             grid-template-rows: var(--header-height) var(--breadcrumb-height) 0 auto auto;
         }
 
         @media screen and (orientation:landscape) {
-            grid-template-columns: 0 100%;
+            grid-template-columns: 0 100% 0;
             grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
         }
 
@@ -118,8 +141,7 @@
             }
 
             .breadcrumb {
-                position: sticky;
-                top: var(--header-height);
+                transform: none;
             }
 
             .detail {
@@ -299,5 +321,16 @@
                 }
             }
         }
+    }
+}
+
+.scroll-down {
+    .breadcrumb {
+        transform: translateY(-100%);
+    }
+
+    .aside {
+        height: calc(100dvh - var(--header-height));
+        top: calc(var(--breadcrumb-height));
     }
 }

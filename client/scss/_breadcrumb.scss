@@ -63,5 +63,7 @@
 		line-height: var(--comp-size-3);
 		display: flex;
 		align-items: center;
+		justify-content: flex-end;
+		width: fit-content;
 	}
 }

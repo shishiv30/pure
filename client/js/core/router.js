@@ -17,36 +17,41 @@ export class Router {
 	}
 	async navigate(state, method) {
 		try {
-            let res = await this.loading(state);
-            this.loaded(state, res);
-            this.currentRouter = state;
+			let res = await this.loading(state);
+			this.loaded(state, res);
+			this.currentRouter = state;
 			if (method === 'push') {
-                window.history.pushState({ pathname: state.pathname }, '', state.pathname);
-            } else if (method === 'replace') {
+				window.history.pushState({ pathname: state.pathname }, '', state.pathname);
+			} else if (method === 'replace') {
 				window.history.replaceState({ pathname: state.pathname }, null, state.pathname);
-			} 
+			}
 		} catch (error) {
-            console.error('Navigation error:', error);
-        }
-    }
-    async push(path) {
-		if(this.currentRouter && this.currentRouter.pathname === path){
+			console.error('Navigation error:', error);
+		}
+	}
+	async push(path) {
+		if (this.currentRouter && this.currentRouter.pathname === path) {
 			return;
 		}
-        let state = await this.routerTo(path);
-        await this.navigate(state, 'push');
-    }
-    async replace(path) {
-		if(this.currentRouter && this.currentRouter.pathname === path){
-			return;	
+		let state = await this.routerTo(path);
+		await this.navigate(state, 'push');
+	}
+	async replace(path) {
+		if (this.currentRouter && this.currentRouter.pathname === path) {
+			return;
 		}
-        let state = await this.routerTo(path);
-        await this.navigate(state, 'replace');
-    }
+		let state = await this.routerTo(path);
+		await this.navigate(state, 'replace');
+	}
 	init() {
 		//on popstate check if it back or forward
 		window.addEventListener('popstate', (e) => {
-			if(this.currentRouter && e.state && e.state.pathname && this.currentRouter.pathname === e.state.pathname){
+			if (
+				this.currentRouter &&
+				e.state &&
+				e.state.pathname &&
+				this.currentRouter.pathname === e.state.pathname
+			) {
 				return;
 			}
 			let state = this.routerTo(e.state.pathname);
@@ -54,7 +59,7 @@ export class Router {
 			e.preventDefault();
 		});
 		document.addEventListener('click', (e) => {
-			 let target = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+			let target = e.target.tagName === 'A' ? e.target : e.target.closest('a');
 			if (target) {
 				let href = target.getAttribute('href');
 
@@ -68,7 +73,7 @@ export class Router {
 				}
 
 				e.preventDefault();
-                this.push(internalPath);
+				this.push(internalPath);
 			}
 		});
 		this.replace(window.location.pathname);
@@ -83,7 +88,7 @@ export class Router {
 				return null;
 			}
 		}
-        return null;
+		return null;
 	}
 
 	async loaded(to) {
@@ -104,16 +109,16 @@ export class Router {
 					toRule = rule;
 					break;
 				} else {
-                    console.log(`${rule.reg} : ${pathname} `)
-                }
+					console.log(`${rule.reg} : ${pathname} `);
+				}
 			} else if (rule.path === pathname) {
 				toRule = rule;
 				break;
 			}
 		}
-        if(!toRule){
-             throw new Error('No rule found for path: ' + pathname);
-        }
+		if (!toRule) {
+			throw new Error('No rule found for path: ' + pathname);
+		}
 		const state = {
 			rule: toRule,
 			pathname: pathname,
@@ -141,7 +146,7 @@ export class Router {
 		// 			//forward
 
 		// 		} else if (state.index < this.currentRouter.index) {
-		// 			//back	
+		// 			//back
 		// 		}
 
 		// 	} else {

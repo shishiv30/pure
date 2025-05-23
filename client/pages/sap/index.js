@@ -4,12 +4,12 @@ import { Router } from '../../js/core/router.js';
 import scss from '../../scss/sap.scss';
 
 // eslint-disable-next-line no-unused-vars
-const boolStatus = ['lock', 'collapse'];
+const boolStatus = ['lock', 'collapse', 'asided'];
 
 const enumStatus = [
 	{
 		key: 'view',
-		names: ['grid', 'detail', 'aside'],
+		names: ['grid', 'detail', 'map'],
 	},
 ];
 
@@ -37,6 +37,19 @@ let sap = {
 				loading: () => {
 					return new Promise((resolve) => {
 						exportObj.switchToDetail();
+						resolve(null);
+					});
+				},
+			},
+			{
+				reg: /^\/sap\/aside\/(\w+)/i,
+				loading: ({ pathname }) => {
+					return new Promise((resolve) => {
+						if (pathname.indexOf('close') > -1) {
+							exportObj.removeAsided();
+						} else {
+							exportObj.addAsided();
+						}
 						resolve(null);
 					});
 				},
