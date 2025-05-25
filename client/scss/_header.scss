@@ -38,6 +38,10 @@
 			width: auto;
 			object-fit: contain;
 		}
+
+		@media screen and (max-width: $screen-xs-min) {
+			display: none;
+		}
 	}
 
 	.menu-icon {

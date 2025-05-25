@@ -5,22 +5,22 @@
 .page-sap {
     --header-height: var(--comp-size-3);
     --breadcrumb-height: var(--comp-size-3);
-    --item-width: 250px;
+    --item-width: 260px;
 
     @media screen and (max-width: $screen-xs-max) {
-        --item-width: 250px;
+        --item-width: 260px;
     }
 
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-        --item-width: 280px;
+        --item-width: 320px;
     }
 
     @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-        --item-width: 300px;
+        --item-width: 360px;
     }
 
     @media screen and (min-width: $screen-lg-min) {
-        --item-width: 360px;
+        --item-width: 400px;
     }
 
 
@@ -52,18 +52,34 @@
         grid-area: result;
     }
 
-    .aside {
-        grid-area: aside;
-        width: 100%;
+    .menu {
+        grid-area: menu;
+        width: var(--menu-width);
         background-color: var(--color);
         color: var(--color-bg);
         position: sticky;
         height: calc(100dvh - var(--header-height) - var(--breadcrumb-height));
         top: calc(var(--header-height) + var(--breadcrumb-height));
         display: flex;
-        flex-flow: row;
+        flex-direction: column;
+        gap: var(--g3);
         justify-content: center;
         align-items: center;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease-in-out;
+
+        >a,
+        button {
+            font-size: var(--font-size-3);
+            transition: transform 0.2s ease-in-out;
+
+            &:hover {
+                transform: (scale(1.5));
+                color: var(--color-bg-l1);
+            }
+        }
     }
 
     .footer {
@@ -74,39 +90,50 @@
     transition: grid-template-columns 0.5s ease-in-out;
 
     --result-width: auto;
+    --menu-width: 0px;
 
     @media screen and (orientation:portrait) {
-        --aside-width: 0px;
-        grid-template-columns: 1fr var(--aside-width);
+        grid-template-columns: minmax(0, 100%) var(--menu-width);
         grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
         grid-template-areas:
             "header header"
             "breadcrumb breadcrumb"
-            "detail aside"
-            "result aside"
-            "footer aside";
+            "detail menu"
+            "result menu"
+            "footer menu";
     }
 
     @media screen and (orientation:landscape) {
         --result-width: var(--item-width);
-        --aside-width: var(--g2);
-        grid-template-columns: calc(100% - var(--result-width) - var(--g2)) var(--result-width) var(--aside-width);
+        grid-template-columns: calc(100% - var(--result-width) - var(--menu-width)) var(--result-width) var(--menu-width);
         grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
         grid-template-areas:
             "header header header"
             "breadcrumb breadcrumb breadcrumb"
-            "detail result aside"
-            "detail footer aside";
+            "detail result menu"
+            "detail footer menu";
     }
 
     @media (orientation:landscape) and (min-width: $screen-lg-min) {
         --result-width: calc(var(--item-width) * 2 + var(--g2));
     }
 
-    &.asided {
-        --aside-width: 100px !important;
+    &.menu {
+        --menu-width: 50px !important;
 
-        .openaside {
+        .menu {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .open-menu {
+            display: none;
+        }
+    }
+
+    &:not(.menu) {
+
+        .close-menu {
             display: none;
         }
     }
@@ -117,22 +144,16 @@
         }
 
         @media screen and (orientation:landscape) {
-            grid-template-columns: 0 100% 0;
+            grid-template-columns: 0 auto var(--menu-width);
             grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto;
         }
 
-        .result {
-            padding: var(--g2);
-        }
+
     }
 
     &.view-detail {
         @media screen and (orientation:portrait) {
             grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
-
-            .result {
-                padding: var(--g2);
-            }
         }
 
         @media screen and (orientation:landscape) {
@@ -163,52 +184,6 @@
             .footer {}
         }
     }
-
-    // &.view-aside {
-    //     @media screen and (orientation:portrait) {
-    //         --main-size: var(--item-height);
-    //         grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
-    //         grid-template-columns: 1fr;
-    //         grid-template-areas:
-    //             "header"
-    //             "breadcrumb"
-    //             "detail"
-    //             "result"
-    //             "footer";
-
-    //         .result {
-    //             display: flex;
-    //             overflow-x: auto;
-    //             // backdrop-filter: blur(20px);
-    //             @include scroll-smooth();
-    //             padding: var(--g2);
-
-    //             >* {
-    //                 flex-shrink: 0;
-    //             }
-    //         }
-    //     }
-
-    //     @media screen and (orientation:landscape) {
-    //         display: grid;
-    //         grid-template-columns: auto minmax(400px, 20%);
-    //         grid-template-rows: var(--header-height) var(--breadcrumb-height) calc(100dvh - var(--header-height) - var(--breadcrumb-height));
-    //         grid-template-areas:
-    //             "header header"
-    //             "breadcrumb breadcrumb"
-    //             "detail result";
-
-    //         .footer {
-    //             display: none;
-    //         }
-
-    //         .result {
-    //             padding: var(--g2) var(--g2) var(--g2) 0;
-    //             overflow-y: auto;
-    //             overflow-x: hidden;
-    //         }
-    //     }
-    // }
 }
 
 .filter {
@@ -227,14 +202,19 @@
 }
 
 .result {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--item-width), 1fr));
-    position: relative;
-    z-index: 2;
-    @include hidden-scrollbar();
-    gap: var(--g2);
+    >ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(calc(var(--item-width) - var(--g2)*2), 1fr));
+        position: relative;
+        z-index: 2;
+        @include hidden-scrollbar();
+        gap: var(--g2);
+        margin-left: var(--g2);
+        margin-right: var(--g2);
+    }
 
-    .item {
+
+    li {
         cursor: pointer;
     }
 
@@ -329,7 +309,7 @@
         transform: translateY(-100%);
     }
 
-    .aside {
+    .menu {
         height: calc(100dvh - var(--header-height));
         top: calc(var(--breadcrumb-height));
     }

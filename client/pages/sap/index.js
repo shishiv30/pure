@@ -4,7 +4,7 @@ import { Router } from '../../js/core/router.js';
 import scss from '../../scss/sap.scss';
 
 // eslint-disable-next-line no-unused-vars
-const boolStatus = ['lock', 'collapse', 'asided'];
+const boolStatus = ['lock', 'collapse', 'menu'];
 
 const enumStatus = [
 	{
@@ -22,6 +22,10 @@ let sap = {
 		enumStatus.forEach((e) => {
 			defEnum(e.key, e.names, $el, opt, exportObj);
 		});
+		exportObj.updateDetail = function (id) {
+			//update detail content
+			console.log('updateDetail', id);
+		};
 		let tmp = new Router([
 			{
 				reg: /^\/(sap|sap.html)$/i,
@@ -34,21 +38,25 @@ let sap = {
 			},
 			{
 				reg: /^\/sap\/detail\/(\w+)/i,
-				loading: () => {
+				loading: (to) => {
 					return new Promise((resolve) => {
+						exportObj.updateDetail(to.params[0]);
 						exportObj.switchToDetail();
+						document.querySelector('.detail').scrollIntoView({
+							behavior: 'smooth',
+						});
 						resolve(null);
 					});
 				},
 			},
 			{
-				reg: /^\/sap\/aside\/(\w+)/i,
+				reg: /^\/sap\/menu\/(\w+)/i,
 				loading: ({ pathname }) => {
 					return new Promise((resolve) => {
 						if (pathname.indexOf('close') > -1) {
-							exportObj.removeAsided();
+							exportObj.removeMenu();
 						} else {
-							exportObj.addAsided();
+							exportObj.addMenu();
 						}
 						resolve(null);
 					});

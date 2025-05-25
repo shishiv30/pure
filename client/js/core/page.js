@@ -89,7 +89,6 @@ export class Page extends Plugin {
 	static height;
 	static landscape;
 	static scrollTop;
-	static originalScrollTop;
 
 	static onResize() {
 		Page.updatePageInfo();
@@ -104,9 +103,8 @@ export class Page extends Plugin {
 	}
 
 	static onScroll() {
-		Page.originalScrollTop = Page.scrollTop;
 		Page.scrollTop = Page.getScrollTop();
-		if (Page.scrollTop > Page.originalScrollTop) {
+		if (Page.scrollTop > 400) {
 			Page.isScrollDown = true;
 		} else {
 			Page.isScrollDown = false;
@@ -129,10 +127,10 @@ export class Page extends Plugin {
 	static initCtxByWindow() {
 		Page.updatePageInfo();
 		return {
-			isLandscape: Page.height,
-			scrollTop: Page.width,
+			isLandscape: Page.landscape,
+			scrollTop: Page.scrollTop,
 			height: Page.height,
-			width: Page.getWidth(),
+			width: Page.width,
 		};
 	}
 
@@ -200,7 +198,8 @@ export class Page extends Plugin {
 		);
 		window.addEventListener(
 			'scroll',
-			debounce(() => {
+			debounce((e) => {
+				//how to get scrollTop
 				Page.onScroll();
 			}, 100),
 		);

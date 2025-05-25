@@ -102,11 +102,16 @@ export class Router {
 			return;
 		}
 		let toRule = null;
+		let params = null;
 		for (let i = 0; i < this.rules.length; i++) {
 			let rule = this.rules[i];
 			if (rule.reg instanceof RegExp) {
 				if (rule.reg.test(pathname)) {
 					toRule = rule;
+					params = pathname.match(rule.reg);
+					if (params && params.length > 1) {
+						params = params.slice(1); // remove the full match
+					}
 					break;
 				} else {
 					console.log(`${rule.reg} : ${pathname} `);
@@ -121,6 +126,7 @@ export class Router {
 		}
 		const state = {
 			rule: toRule,
+			params: params || null,
 			pathname: pathname,
 		};
 		// if (method === 'push') {

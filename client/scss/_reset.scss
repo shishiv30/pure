@@ -2,6 +2,8 @@
 	box-sizing: border-box;
 }
 
+nav,
+menu,
 input,
 div,
 span,
@@ -74,7 +76,7 @@ button {
 	border: none;
 	margin: 0;
 	padding: 0;
-	color: var(--color);
+	color: inherit;
 	font-family: $font-family, 'Helvetica Neue', Arial, sans-serif;
 	font-style: normal;
 	font-size: var(--font-size-5);
