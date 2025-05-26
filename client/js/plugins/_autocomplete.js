@@ -15,6 +15,8 @@ export default {
 		abortController: null,
 	},
 	init($el, opt, exportObj) {
+		let $container = $el.closest(opt.container);
+
 		let _show = function () {
 			if (!$container.classList.contains('autocomplete-show')) {
 				document.addEventListener('click', _clickOutside);
@@ -25,7 +27,7 @@ export default {
 		let _hide = function () {
 			if ($container.classList.contains('autocomplete-show')) {
 				document.removeEventListener('click', _clickOutside);
-				$container.classList.remove('autocomplete-hide');
+				$container.classList.remove('autocomplete-show');
 				enableScroll('autocomplete');
 			}
 		};
@@ -34,7 +36,6 @@ export default {
 				_hide();
 			}
 		};
-		let $container = $el.closest(opt.container);
 		//insert suggestionList below the input
 		let $suggestionList = document.createElement('div');
 		$suggestionList.className = 'suggestion-list';
