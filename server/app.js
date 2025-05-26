@@ -42,5 +42,11 @@ app.listen(config.port, function () {
 	console.log(`Example app listening on port ${config.appUrl}`);
 	console.log(`API docs available at ${config.appUrl}/api-docs`);
 	console.log(`SAP docs available at ${config.appUrl}/sap/?ip=99.39.118.234`);
-	console.log(`SAP docs available at ${config.appUrl}/sap/tx/round-rock`);
+	console.log(`SAP docs available at state like ${config.appUrl}/sap/tx`);
+	console.log(`SAP docs available at city like ${config.appUrl}/sap/tx/round-rock`);
+	console.log(`SAP docs available at zip like ${config.appUrl}/sap/tx/78664`);
+	console.log(`SAP docs available at county like ${config.appUrl}/sap/tx/williamson_county`);
+	console.log(
+		`SAP docs available at neighborhood like ${config.appUrl}/sap/tx/round-rock/old-town_neighborhood`,
+	);
 });

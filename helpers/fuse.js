@@ -58,7 +58,7 @@ export function initialFuseNeighborhood(neighborhood) {
 		return globalThis[geoType.neighborhood];
 	}
 	globalThis[geoType.neighborhood] = new Fuse(neighborhood, {
-		keys: ['neighborhood'],
+		keys: ['neighborhoodFull'],
 		threshold: 0.1,
 	});
 	return globalThis[geoType.neighborhood];

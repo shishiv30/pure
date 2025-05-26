@@ -13,10 +13,15 @@ export default {
 			let ip = req.query.ip || req.ip;
 			geo = getGeoCityByIp(ip);
 		}
+
 		if (geo) {
+			let text = geo[geo.type];
+			if (geo.type === 'neighborhood' && geo.state) {
+				text = `${text}, ${geo.state}`;
+			}
 			return {
 				type: geo.type,
-				text: geo[geo.type],
+				text: text,
 				size: 1,
 			};
 		}
@@ -24,7 +29,7 @@ export default {
 	},
 	preload: function (req, model) {
 		let preload = null;
-		if (model.data.articles && model.data.articles.length > 0) {
+		if (model?.data?.articles?.length > 0) {
 			preload = [
 				{
 					as: 'image',
@@ -70,3 +75,26 @@ export default {
 		return model;
 	},
 };
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const body = document.body;
+//   let timer = null;
+//   // Apply initial 3D styles dynamically
+//   body.style.cssText = `
+//     perspective: 1000px;
+//     transform-style: preserve-3d;
+//   `;
+
+//   // Mouse movement effect with max ±75° rotateY
+//   document.addEventListener("mousemove", (e) => {
+//     const halfWidth = window.innerWidth / 2;
+//     const halfHeight = window.innerHeight / 2;
+//     const x = ((e.clientX - halfWidth) / halfWidth) * 30; // Max ±75°
+//     const y = ((halfHeight - e.clientY) / halfHeight) * 40; // Max ±40°
+//     if(timer) clearTimeout(timer);
+//     timer = requestAnimationFrame(() => {
+//       body.style.transition = "transform 0.1s linear";
+//       body.style.transform = `rotateX(${y}deg) rotateY(${x}deg) translateZ(-100px)`;
+//     });
+//   });
+// });

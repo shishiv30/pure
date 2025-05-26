@@ -124,7 +124,8 @@ export async function initialGeoData() {
 			let item = {
 				type: 'neighborhood',
 				neighborhood: e.neighborhood_ascii,
-				city: matchedCity.city_name,
+				neighborhoodFull: `${e.neighborhood_ascii}, ${e.state_id}`,
+				city: matchedCity.city,
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,

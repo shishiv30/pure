@@ -1,56 +1,42 @@
 <%- include('html_above') %>
   <%- include('comp_header') %>
   <%- include('comp_breadcrumb') %>
-  <main class="view">
-      <div class="view-content">
-          <h1 class="h3">The title of the content</h1>
-          <div>Desc content</div>
-          <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
-                  type="button">home</button> <button class="tag major active" type="button">welcome</button> <button
-                  class="tag major active" type="button">bird</button> <button class="tag major active"
-                  type="button">feed</button><button class="tag major active" type="button">landing</button> <button
-                  class="tag major active" type="button">digital</button> <button class="tag major active"
-                  type="button">AI paint</button> <button class="tag major active" type="button">nest</button></div>
-      </div>
+  <section class="detail">
+
+  </section>
+  <section class="detail">
+    <div class="grid grid-xs-1">
       <a href="/sap/index" class="img-bg">
-          <img src="<%=meta.origin%>/img.welcome.webp" alt="SAP" loading="lazy">
+        <img src="<%=meta.origin%>/img.welcome.webp" alt="SAP" loading="lazy">
       </a>
-  </main>
+      <h1 class="h3">Send a Page on Real Estate</h1>
+      <div>Welcome to SAP on Real Estate, your trusted destination for buying, selling, and renting real
+          estate. Whether you're searching for a cozy home, a luxury estate, or a prime commercial space, we
+          offer a seamless experience with powerful search tools, high-resolution listings, and expert
+          guidance every step of the way. Explore neighborhoods, compare prices, and connect with top-rated
+          agents — all in one place. Start your journey to the perfect property today.</div>
+      <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
+              type="button">home</button> <button class="tag major active" type="button">welcome</button>
+          <button class="tag major active" type="button">bird</button> <button class="tag major active"
+              type="button">feed</button><button class="tag major active" type="button">landing</button>
+          <button class="tag major active" type="button">digital</button> <button class="tag major active"
+              type="button">AI paint</button> <button class="tag major active" type="button">nest</button>
+      </div>
+    </div>
+  </section>
+
   <%if(data.articles && data.articles.length){%>
-  <ul class="result">
-    <%for(var i=0; i<data.articles.length; i++){%>
-      <li class="item">
-        <% const article = data.articles[i]; %>
-        <%- include('comp_article', {article: article}) %>
-      </li>
-    <%}%>
-  </ul>
+  <section class="result">
+    <ul>
+      <%for(var i=0; i<data.articles.length; i++){%>
+        <li class="item">
+          <% const article=data.articles[i]; %>
+            <%- include('comp_article', {article: article}) %>
+        </li>
+      <%}%>
+    </ul>
+  </section>
   <%}%>
-<!-- <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const body = document.body;
-  let timer = null;
-  // Apply initial 3D styles dynamically
-  body.style.cssText = `
-    perspective: 1000px;
-    transform-style: preserve-3d;
-  `;
-
-  // Mouse movement effect with max ±75° rotateY
-  document.addEventListener("mousemove", (e) => {
-    const halfWidth = window.innerWidth / 2;
-    const halfHeight = window.innerHeight / 2;
-    const x = ((e.clientX - halfWidth) / halfWidth) * 30; // Max ±75°
-    const y = ((halfHeight - e.clientY) / halfHeight) * 40; // Max ±40°
-    if(timer) clearTimeout(timer);
-    timer = requestAnimationFrame(() => {
-      body.style.transition = "transform 0.1s linear";
-      body.style.transform = `rotateX(${y}deg) rotateY(${x}deg) translateZ(-100px)`;
-    });
-  });
-});
-
-
-
-</script> -->
+  <%- include('html_menu') %>
+  <%- include('html_footer') %>
 <%- include('html_below') %>

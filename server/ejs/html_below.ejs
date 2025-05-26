@@ -1,7 +1,7 @@
   </body>
   <%if(data){%>
     <script>
-      window.__DATA__ = <%- JSON.stringify(data) %>;
+      window.context = <%- JSON.stringify(data) %>;
     </script>
     <%}%>
   <%if(meta.js){%>

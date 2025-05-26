@@ -154,6 +154,11 @@
     &.view-detail {
         @media screen and (orientation:portrait) {
             grid-template-rows: var(--header-height) var(--breadcrumb-height) auto auto auto;
+
+            .detail {
+                margin-left: var(--g2);
+                margin-right: var(--g2);
+            }
         }
 
         @media screen and (orientation:landscape) {
@@ -172,10 +177,11 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 @include hidden-scrollbar();
+                margin-left: var(--g2);
             }
 
             .result {
-                padding: var(--g2) 0;
+
                 overflow-y: auto;
                 overflow-x: hidden;
             }
@@ -209,6 +215,7 @@
         z-index: 2;
         @include hidden-scrollbar();
         gap: var(--g2);
+        padding: var(--g2) 0;
         margin-left: var(--g2);
         margin-right: var(--g2);
     }

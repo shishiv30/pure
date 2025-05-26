@@ -99,7 +99,7 @@ export function getGeoByPath(_path) {
 		return geo;
 	} else if (segments[2].endsWith('_neighborhood')) {
 		geo.type = geoType.neighborhood;
-		geo.neighborhood = segments[2].replace(/_neighborhood$/i).replace(/-/g, ' ');
+		geo.neighborhood = segments[2].replace(/_neighborhood$/i, '').replace(/-/g, ' ');
 		return geo;
 	}
 
@@ -151,7 +151,7 @@ export function getGeoDisplayText(geo) {
 	if (geo.address) {
 		return `${geo.address} ${geo.city}, ${geo.state} ${geo.zip}`;
 	} else if (geo.neighborhood) {
-		if (geo.city.include(geo.neighborhood)) {
+		if (geo.city.includes(geo.neighborhood)) {
 			return `${geo.neighborhood}, ${geo.state}`;
 		}
 		return `${geo.neighborhood} ${geo.city}, ${geo.state}`;
