@@ -116,7 +116,7 @@
 			background-color: rgba(255, 255, 255, 0.05);
 		}
 
-		&.hightlight {
+		&.highlight {
 			position: relative;
 
 			&:after {
@@ -141,7 +141,7 @@
 				position: relative;
 			}
 
-			.splict {
+			.split {
 				border-bottom: 1px solid var(--header-color-border);
 			}
 		}
@@ -254,7 +254,7 @@ body:not(.body-expand-header) {
 					.header-expand {
 						background-color: var(--header-color-active-bg);
 						color: var(--header-color-active);
-						border-left: 1px solid var(--head--color-activ-border);
+						border-left: 1px solid var(--head--color-active-border);
 						width: var(--comp-size-3);
 						height: var(--comp-size-3);
 						line-height: var(--comp-size-3);
