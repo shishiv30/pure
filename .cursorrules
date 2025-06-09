@@ -1,0 +1,71 @@
+{
+  "rules": {
+    "formatting": {
+      "indentSize": 2,
+      "useTabs": true,
+      "trimTrailingWhitespace": true,
+      "insertFinalNewline": true,
+      "trailingComma": "all",
+      "semi": true,
+      "singleQuote": true
+    },
+    "analysis": {
+      "maxLineLength": 100,
+      "enforceTypeScript": true,
+      "enforceESLint": true,
+      "enforcePrettier": true
+    },
+    "search": {
+      "excludePatterns": [
+        "node_modules/**",
+        "dist/**",
+        "client/assets/video/**",
+        "**/*.png",
+        "**/*.jpg",
+        "**/*.jpeg",
+        "**/*.gif",
+        "**/*.svg",
+        "**/*.ico",
+        "**/*.webp",
+        "**/*.mp4",
+        "**/*.mp3",
+        "**/*.wav",
+        "**/*.ogg",
+        "**/*.flac",
+        "**/.DS_Store",
+        "**/*.log",
+        "records.json",
+        "report.html"
+      ]
+    },
+    "editor": {
+      "wordWrap": "off",
+      "rulers": [
+        100
+      ],
+      "bracketPairColorization": true,
+      "guides": {
+        "indentation": true,
+        "bracketPairs": true
+      }
+    },
+    "naming": {
+      "function": {
+        "pattern": "^[a-z][a-zA-Z0-9]*$",
+        "example": "appleTree"
+      },
+      "cssClass": {
+        "pattern": "^[a-z][a-z0-9-]*$",
+        "example": "apple-tree"
+      },
+      "className": {
+        "pattern": "^[A-Z][a-zA-Z0-9]*$",
+        "example": "AppleTree"
+      },
+      "constant": {
+        "pattern": "^[A-Z][A-Z0-9_]*$",
+        "example": "APPLE_TREE"
+      }
+    }
+  }
+}

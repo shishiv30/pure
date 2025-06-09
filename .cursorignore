@@ -1,0 +1,20 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+node_modules/
+dist/
+client/assets/video/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webp
+*.mp4
+*.mp3
+*.wav
+*.ogg
+*.flac
+.DS_Store
+*.log
+records.json
+report.html
