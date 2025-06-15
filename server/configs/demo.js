@@ -4,7 +4,7 @@ import articles from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
 
 export default {
-	name: 'sap',
+	name: 'demo',
 	beforeGet: function (req, payload) {
 		let geo;
 		if (req.query.path) {

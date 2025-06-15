@@ -1,8 +1,8 @@
-@import './sap/_sap.theme.scss';
+@import './demo/_demo.theme.scss';
 @import './base.scss';
-@import './sap-animation.scss';
+@import './demo/demo-animation.scss';
 
-.page-sap {
+.page-demo {
     --header-height: var(--comp-size-3);
     --breadcrumb-height: var(--comp-size-3);
     --item-width: 260px;

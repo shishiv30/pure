@@ -5,7 +5,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '5678 Oak St, Los Angeles',
 		title: '5678 Oak St, Los Angeles, 90001 CA',
-		href: '/sap/detail/001',
+		href: '/demo/detail/001',
 		tags: [{ key: 'major', value: 'New' }],
 		attrs: [
 			{ key: 'Est', value: '$600,000', desc: 'Estimate Price' },
@@ -21,7 +21,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '1234 Maple Ave, San Francisco',
 		title: '1234 Maple Ave, San Francisco, 94123 CA',
-		href: '/sap/detail/002',
+		href: '/demo/detail/002',
 		tags: [{ key: 'major', value: 'Updated' }],
 		attrs: [
 			{ key: 'Est', value: '$1,200,000', desc: 'Estimate Price' },
@@ -37,7 +37,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '8765 Pine Dr, Austin',
 		title: '8765 Pine Dr, Austin, 78701 TX',
-		href: '/sap/detail/003',
+		href: '/demo/detail/003',
 		tags: [{ key: 'danger', value: 'For Sale' }],
 		attrs: [
 			{ key: 'Est', value: '$450,000', desc: 'Estimate Price' },
@@ -53,7 +53,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '4321 Birch Ln, Seattle',
 		title: '4321 Birch Ln, Seattle, 98101 WA',
-		href: '/sap/detail/004',
+		href: '/demo/detail/004',
 		tags: [{ key: 'danger', value: 'Luxury' }],
 		attrs: [
 			{ key: 'Est', value: '$2,300,000', desc: 'Estimate Price' },
@@ -69,7 +69,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '5678 Cedar Rd, Denver',
 		title: '5678 Cedar Rd, Denver, 80203 CO',
-		href: '/sap/detail/005',
+		href: '/demo/detail/005',
 		tags: [{ key: 'minor', value: 'Reduced' }],
 		attrs: [
 			{ key: 'Est', value: '$800,000', desc: 'Estimate Price' },
@@ -85,7 +85,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '9812 Elm St, Chicago',
 		title: '9812 Elm St, Chicago, 60601 IL',
-		href: '/sap/detail/006',
+		href: '/demo/detail/006',
 		tags: [{ key: 'safe', value: 'Hot' }],
 		attrs: [
 			{ key: 'Est', value: '$950,000', desc: 'Estimate Price' },
@@ -101,7 +101,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '6547 Walnut Ave, Miami',
 		title: '6547 Walnut Ave, Miami, 33101 FL',
-		href: '/sap/detail/007',
+		href: '/demo/detail/007',
 		tags: [{ key: 'minor', value: 'New Listing' }],
 		attrs: [
 			{ key: 'Est', value: '$720,000', desc: 'Estimate Price' },
@@ -117,7 +117,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '2309 Spruce Blvd, Dallas',
 		title: '2309 Spruce Blvd, Dallas, 75201 TX',
-		href: '/sap/detail/008',
+		href: '/demo/detail/008',
 		tags: [{ key: 'danger', value: 'Renovated' }],
 		attrs: [
 			{ key: 'Est', value: '$670,000', desc: 'Estimate Price' },
@@ -133,7 +133,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '7777 Cypress Ln, Portland',
 		title: '7777 Cypress Ln, Portland, 97201 OR',
-		href: '/sap/detail/009',
+		href: '/demo/detail/009',
 		tags: [{ key: 'danger', value: 'Pending' }],
 		attrs: [
 			{ key: 'Est', value: '$540,000', desc: 'Estimate Price' },
@@ -149,7 +149,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '8890 Redwood Dr, Phoenix',
 		title: '8890 Redwood Dr, Phoenix, 85001 AZ',
-		href: '/sap/detail/010',
+		href: '/demo/detail/010',
 		tags: [{ key: 'safe', value: 'Sold' }],
 		attrs: [
 			{ key: 'Est', value: '$480,000', desc: 'Estimate Price' },
@@ -165,7 +165,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '1023 Willow Ct, Boston',
 		title: '1023 Willow Ct, Boston, 02108 MA',
-		href: '/sap/detail/011',
+		href: '/demo/detail/011',
 		tags: [{ key: 'danger', value: 'Price Drop' }],
 		attrs: [
 			{ key: 'Est', value: '$1,050,000', desc: 'Estimate Price' },
@@ -181,7 +181,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '4532 Poplar St, Nashville',
 		title: '4532 Poplar St, Nashville, 37201 TN',
-		href: '/sap/detail/012',
+		href: '/demo/detail/012',
 		tags: [{ key: 'tip', value: 'Move-In Ready' }],
 		attrs: [
 			{ key: 'Est', value: '$650,000', desc: 'Estimate Price' },
@@ -197,7 +197,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '3210 Aspen Dr, Atlanta',
 		title: '3210 Aspen Dr, Atlanta, 30303 GA',
-		href: '/sap/detail/013',
+		href: '/demo/detail/013',
 		tags: [{ key: 'danger', value: 'Best Value' }],
 		attrs: [
 			{ key: 'Est', value: '$550,000', desc: 'Estimate Price' },
@@ -213,7 +213,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '4567 Chestnut Ln, Las Vegas',
 		title: '4567 Chestnut Ln, Las Vegas, 89109 NV',
-		href: '/sap/detail/014',
+		href: '/demo/detail/014',
 		tags: [{ key: 'minor', value: 'Modern' }],
 		attrs: [
 			{ key: 'Est', value: '$900,000', desc: 'Estimate Price' },
@@ -229,7 +229,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '8743 Magnolia Blvd, San Diego',
 		title: '8743 Magnolia Blvd, San Diego, 92101 CA',
-		href: '/sap/detail/015',
+		href: '/demo/detail/015',
 		tags: [{ key: 'minor', value: 'Charming' }],
 		attrs: [
 			{ key: 'Est', value: '$750,000', desc: 'Estimate Price' },
@@ -245,7 +245,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '6451 Birchwood Ave, Houston',
 		title: '6451 Birchwood Ave, Houston, 77002 TX',
-		href: '/sap/detail/016',
+		href: '/demo/detail/016',
 		tags: [{ key: 'danger', value: 'Under Construction' }],
 		attrs: [
 			{ key: 'Est', value: '$500,000', desc: 'Estimate Price' },
@@ -261,7 +261,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '9810 Cherry Rd, Sacramento',
 		title: '9810 Cherry Rd, Sacramento, 94203 CA',
-		href: '/sap/detail/017',
+		href: '/demo/detail/017',
 		tags: [{ key: 'danger', value: 'Cozy' }],
 		attrs: [
 			{ key: 'Est', value: '$320,000', desc: 'Estimate Price' },
@@ -277,7 +277,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '2021 Juniper Dr, Orlando',
 		title: '2021 Juniper Dr, Orlando, 32801 FL',
-		href: '/sap/detail/018',
+		href: '/demo/detail/018',
 		tags: [{ key: 'major', value: 'Spacious' }],
 		attrs: [
 			{ key: 'Est', value: '$890,000', desc: 'Estimate Price' },
@@ -293,7 +293,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '1876 Oakwood Dr, Charlotte',
 		title: '1876 Oakwood Dr, Charlotte, 28202 NC',
-		href: '/sap/detail/019',
+		href: '/demo/detail/019',
 		tags: [{ key: 'safe', value: 'Family Home' }],
 		attrs: [
 			{ key: 'Est', value: '$460,000', desc: 'Estimate Price' },
@@ -309,7 +309,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '3694 Evergreen Ln, Salt Lake City',
 		title: '3694 Evergreen Ln, Salt Lake City, 84101 UT',
-		href: '/sap/detail/020',
+		href: '/demo/detail/020',
 		tags: [{ key: 'danger', value: 'Green Living' }],
 		attrs: [
 			{ key: 'Est', value: '$520,000', desc: 'Estimate Price' },
@@ -325,7 +325,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '1234 Elm St, New York',
 		title: '1234 Elm St, New York, 10001 NY',
-		href: '/sap/detail/021',
+		href: '/demo/detail/021',
 		tags: [{ key: 'danger', value: 'Exclusive' }],
 		attrs: [
 			{ key: 'Est', value: '$1,500,000', desc: 'Estimate Price' },
@@ -341,7 +341,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '5678 Pine St, San Jose',
 		title: '5678 Pine St, San Jose, 95112 CA',
-		href: '/sap/detail/022',
+		href: '/demo/detail/022',
 		tags: [{ key: 'minor', value: 'New Construction' }],
 		attrs: [
 			{ key: 'Est', value: '$1,100,000', desc: 'Estimate Price' },
@@ -357,7 +357,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '9101 Maple Ave, Dallas',
 		title: '9101 Maple Ave, Dallas, 75201 TX',
-		href: '/sap/detail/023',
+		href: '/demo/detail/023',
 		tags: [{ key: 'safe', value: 'Investment' }],
 		attrs: [
 			{ key: 'Est', value: '$750,000', desc: 'Estimate Price' },
@@ -373,7 +373,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '3456 Oak Dr, Austin',
 		title: '3456 Oak Dr, Austin, 78701 TX',
-		href: '/sap/detail/024',
+		href: '/demo/detail/024',
 		tags: [{ key: 'major', value: 'Charming' }],
 		attrs: [
 			{ key: 'Est', value: '$680,000', desc: 'Estimate Price' },
@@ -389,7 +389,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '7890 Birch Ln, Seattle',
 		title: '7890 Birch Ln, Seattle, 98101 WA',
-		href: '/sap/detail/025',
+		href: '/demo/detail/025',
 		tags: [{ key: 'safe', value: 'Luxury' }],
 		attrs: [
 			{ key: 'Est', value: '$2,500,000', desc: 'Estimate Price' },
@@ -405,7 +405,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '1234 Cedar Rd, Denver',
 		title: '1234 Cedar Rd, Denver, 80203 CO',
-		href: '/sap/detail/026',
+		href: '/demo/detail/026',
 		tags: [{ key: 'tip', value: 'Reduced' }],
 		attrs: [
 			{ key: 'Est', value: '$820,000', desc: 'Estimate Price' },
@@ -421,7 +421,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '5678 Elm St, Chicago',
 		title: '5678 Elm St, Chicago, 60601 IL',
-		href: '/sap/detail/027',
+		href: '/demo/detail/027',
 		tags: [{ key: 'safe', value: 'Hot' }],
 		attrs: [
 			{ key: 'Est', value: '$970,000', desc: 'Estimate Price' },
@@ -437,7 +437,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '6547 Walnut Ave, Miami',
 		title: '6547 Walnut Ave, Miami, 33101 FL',
-		href: '/sap/detail/028',
+		href: '/demo/detail/028',
 		tags: [{ key: 'safe', value: 'New Listing' }],
 		attrs: [
 			{ key: 'Est', value: '$740,000', desc: 'Estimate Price' },
@@ -453,7 +453,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '2309 Spruce Blvd, Dallas',
 		title: '2309 Spruce Blvd, Dallas, 75201 TX',
-		href: '/sap/detail/029',
+		href: '/demo/detail/029',
 		tags: [{ key: 'minor', value: 'Renovated' }],
 		attrs: [
 			{ key: 'Est', value: '$690,000', desc: 'Estimate Price' },
@@ -469,7 +469,7 @@ export default [
 		imgTag: 'Provide By Picsum',
 		imgAlt: '7777 Cypress Ln, Portland',
 		title: '7777 Cypress Ln, Portland, 97201 OR',
-		href: '/sap/detail/030',
+		href: '/demo/detail/030',
 		tags: [{ key: 'safe', value: 'Pending' }],
 		attrs: [
 			{ key: 'Est', value: '$560,000', desc: 'Estimate Price' },

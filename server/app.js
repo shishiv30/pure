@@ -41,12 +41,12 @@ app.use(express.static('dist'));
 app.listen(config.port, function () {
 	console.log(`Example app listening on port ${config.appUrl}`);
 	console.log(`API docs available at ${config.appUrl}/api-docs`);
-	console.log(`SAP docs available at ${config.appUrl}/sap/?ip=99.39.118.234`);
-	console.log(`SAP docs available at state like ${config.appUrl}/sap/tx`);
-	console.log(`SAP docs available at city like ${config.appUrl}/sap/tx/round-rock`);
-	console.log(`SAP docs available at zip like ${config.appUrl}/sap/tx/78664`);
-	console.log(`SAP docs available at county like ${config.appUrl}/sap/tx/williamson_county`);
+	console.log(`Demo docs available at ${config.appUrl}/demo/?ip=99.39.118.234`);
+	console.log(`Demo docs available at state like ${config.appUrl}/demo/tx`);
+	console.log(`Demo docs available at city like ${config.appUrl}/demo/tx/round-rock`);
+	console.log(`Demo docs available at zip like ${config.appUrl}/demo/tx/78664`);
+	console.log(`Demo docs available at county like ${config.appUrl}/demo/tx/williamson_county`);
 	console.log(
-		`SAP docs available at neighborhood like ${config.appUrl}/sap/tx/round-rock/old-town_neighborhood`,
+		`Demo docs available at neighborhood like ${config.appUrl}/demo/tx/round-rock/old-town_neighborhood`,
 	);
 });

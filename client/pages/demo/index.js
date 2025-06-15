@@ -1,7 +1,7 @@
 import { defBool, defEnum } from '../../js/core/def.js';
 import { main } from '../../js/index.js';
 import { Router } from '../../js/core/router.js';
-import scss from '../../scss/sap.scss';
+import scss from '../../scss/demo.scss';
 
 // eslint-disable-next-line no-unused-vars
 const boolStatus = ['lock', 'collapse', 'menu'];
@@ -13,8 +13,8 @@ const enumStatus = [
 	},
 ];
 
-let sap = {
-	name: 'sap',
+let demo = {
+	name: 'demo',
 	init: function ($el, opt, exportObj) {
 		boolStatus.forEach((name) => {
 			defBool(name, $el, opt, exportObj);
@@ -28,7 +28,7 @@ let sap = {
 		};
 		let tmp = new Router([
 			{
-				reg: /^\/(sap|sap.html)$/i,
+				reg: /^\/(demo|demo.html)$/i,
 				loading: () => {
 					return new Promise((resolve) => {
 						exportObj.switchToGrid();
@@ -37,7 +37,7 @@ let sap = {
 				},
 			},
 			{
-				reg: /^\/sap\/detail\/(\w+)/i,
+				reg: /^\/demo\/detail\/(\w+)/i,
 				loading: (to) => {
 					return new Promise((resolve) => {
 						exportObj.updateDetail(to.params[0]);
@@ -50,7 +50,7 @@ let sap = {
 				},
 			},
 			{
-				reg: /^\/sap\/menu\/(\w+)/i,
+				reg: /^\/demo\/menu\/(\w+)/i,
 				loading: ({ pathname }) => {
 					return new Promise((resolve) => {
 						if (pathname.indexOf('close') > -1) {
@@ -63,7 +63,7 @@ let sap = {
 				},
 			},
 			{
-				reg: /^\/sap\/*/i,
+				reg: /^\/demo\/*/i,
 				loading: () => {
 					return new Promise((resolve) => {
 						exportObj.switchToGrid();
@@ -87,5 +87,5 @@ let sap = {
 };
 
 export default (function (win) {
-	window.page = main(win, sap);
+	window.page = main(win, demo);
 })(window);

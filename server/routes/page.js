@@ -10,15 +10,15 @@ router.get('/', (req, res) => {
 	BaseController.dist(res, 'index.html');
 });
 
-router.get(/^\/sap\/?$/, async (req, res) => {
-	let controller = new BaseController(req, res, 'sap');
+router.get(/^\/demo\/?$/, async (req, res) => {
+	let controller = new BaseController(req, res, 'demo');
 	let model = await controller.get();
 	controller.toPage(model);
 });
 
-router.get(/^\/sap([\/\w\-]+)\/?$/, async (req, res) => {
+router.get(/^\/demo([\/\w\-]+)\/?$/, async (req, res) => {
 	req.query.path = req?.params[0] || '';
-	let controller = new BaseController(req, res, 'sap');
+	let controller = new BaseController(req, res, 'demo');
 	let model = await controller.get();
 	controller.toPage(model);
 });

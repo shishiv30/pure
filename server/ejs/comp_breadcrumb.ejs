@@ -1,7 +1,7 @@
   <nav class="breadcrumb gray" aria-label="breadcrumb">
     <%if(breadcrumb && breadcrumb.links && breadcrumb.links.length){%>
       <ul>
-        <li><a href="/sap"><i class="icon-angle-left"></i></a></li>
+        <li><a href="/demo"><i class="icon-angle-left"></i></a></li>
         <% for(var i=0; i<breadcrumb.links.length; i++) { %>
             <li>
               <% if(!breadcrumb.links[i].href) { %>
@@ -16,7 +16,7 @@
       </ul>
     <%}%>
     <div class="breadcrumb-button flex">
-        <a href="/sap/menu/close" class="f3 close-menu"><i class="icon-arrow-circle-o-right"></i></a>
-        <a href="/sap/menu/open" class="f3 open-menu"><i class="icon-arrow-circle-o-left"></i></a>
+        <a href="/demo/menu/close" class="f3 close-menu"><i class="icon-arrow-circle-o-right"></i></a>
+        <a href="/demo/menu/open" class="f3 open-menu"><i class="icon-arrow-circle-o-left"></i></a>
     </div>
   </nav>

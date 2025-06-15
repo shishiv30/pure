@@ -294,7 +294,7 @@ npm run server
 ### API Documentation
 After starting the server, you can access:
 - API Documentation: `http://localhost:3000/api-docs`
-- Search Page: `http://localhost:3000/sap/ca/san-jose`
+- Search Page: `http://localhost:3000/demo/ca/san-jose`
 
 ## Building
 

@@ -18,5 +18,5 @@
 // 	},
 // }
 import geo from './geo.js';
-import sap from './sap.js';
-export default [geo, sap];
+import demo from './demo.js';
+export default [geo, demo];

@@ -6,14 +6,14 @@ const pageConfig = {
 			name: 'animation',
 		},
 		{
-			name: 'sap',
+			name: 'demo',
 		},
 		{
 			name: 'index',
 		},
 		{
-			name: '3d'
-		}
+			name: '3d',
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {
