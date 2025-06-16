@@ -4,13 +4,15 @@ import { defBool, defEnum } from '../core/def.js';
 const boolStatus = ['input-focus'];
 import { disableScroll, enableScroll } from '../core/scroll.js';
 import { getPathByGeo } from '../../../helpers/geo.js';
+import debounce from 'lodash/debounce.js';
+
 export default {
 	name: 'autocomplete',
 	defaultOpt: {
 		method: 'GET',
 		type: 'city',
 		name: 'text',
-		delay: 100,
+		delay: 300,
 		container: '.input',
 		abortController: null,
 	},

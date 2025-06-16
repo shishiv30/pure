@@ -86,26 +86,37 @@ export function initialFuseGeo({ state, city, county, zip, address, neighborhood
 }
 
 export function searchGeo(query, type) {
-	let result = [];
-	switch (type) {
-		case geoType.state:
-			result = globalThis.STATE.search(query);
-			break;
-		case geoType.city:
-			result = globalThis[geoType.city].search(query);
-			break;
-		case geoType.county:
-			result = globalThis[geoType.county].search(query);
-			break;
-		case geoType.zip:
-			result = globalThis[geoType.zip].search(query);
-			break;
-		case 'neighborhood':
-			result = globalThis[geoType.neighborhood].search(query);
-			break;
-		default:
-			result = globalThis[geoType.city].search(query);
-			break;
+	try {
+		// Validate inputs
+		if (!query || typeof query !== 'string') {
+			console.warn('searchGeo: Invalid query parameter');
+			return [];
+		}
+		if (!type || !Object.values(geoType).includes(type)) {
+			console.warn('searchGeo: Invalid type parameter');
+			return [];
+		}
+
+		let result = [];
+		const fuseInstance = globalThis[type];
+
+		// Check if Fuse instance exists
+		if (!fuseInstance) {
+			console.warn(`searchGeo: No Fuse instance found for type ${type}`);
+			return [];
+		}
+
+		// Perform search
+		try {
+			result = fuseInstance.search(query);
+		} catch (searchError) {
+			console.error('searchGeo: Search operation failed', searchError);
+			return [];
+		}
+
+		return result;
+	} catch (error) {
+		console.error('searchGeo: Unexpected error', error);
+		return [];
 	}
-	return result;
 }

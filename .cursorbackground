@@ -1,0 +1,440 @@
+{
+  "project": {
+    "name": "pure",
+    "type": "web-application",
+    "architecture": {
+      "client": {
+        "type": "plugin-based",
+        "entry": "client/js/index.js",
+        "core": {
+          "plugin": "client/js/core/plugin.js",
+          "event": "client/js/core/event.js",
+          "page": "client/js/core/page.js"
+        },
+        "components": {
+          "structure": {
+            "javascript": "Event handling and state management",
+            "scss": "UI state definitions",
+            "html": "Component markup with custom attributes"
+          }
+        }
+      },
+      "server": {
+        "type": "modular",
+        "layers": {
+          "controller": {
+            "responsibilities": [
+              "Request handling",
+              "Input validation",
+              "Response formatting"
+            ]
+          },
+          "service": {
+            "responsibilities": [
+              "Business logic",
+              "Data processing",
+              "External service integration"
+            ]
+          },
+          "data": {
+            "responsibilities": [
+              "Database operations",
+              "Data persistence",
+              "Query optimization"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "rules": {
+    "event_system": {
+      "core_functions": {
+        "on": {
+          "signature": "on(eventName, callback, options)",
+          "behavior": [
+            "Registers event listeners for custom events or DOM events",
+            "Supports space-separated multiple events",
+            "Supports namespaced events",
+            "Options parameter for DOM events"
+          ],
+          "example": "on('user.login', (userData) => console.log(userData))"
+        },
+        "once": {
+          "signature": "once(eventName, callback)",
+          "behavior": [
+            "Registers one-time event listener",
+            "Automatically removes after first execution"
+          ],
+          "example": "once('initial.load', () => console.log('Loaded'))"
+        },
+        "off": {
+          "signature": "off(eventName)",
+          "behavior": [
+            "Removes event listeners",
+            "Supports space-separated multiple events"
+          ],
+          "example": "off('user.login')"
+        },
+        "emit": {
+          "signature": "emit(eventName, data)",
+          "behavior": [
+            "Triggers custom events",
+            "Supports space-separated multiple events",
+            "Data can be single value or array"
+          ],
+          "example": "emit('user.login', { id: 1 })"
+        },
+        "trigger": {
+          "signature": "trigger(name, ...params)",
+          "behavior": [
+            "Calls function directly if name is function",
+            "Calls window[name] if name is string and function exists",
+            "Emits event if name is string and no function exists"
+          ],
+          "example": "trigger('user.login', { id: 1 })"
+        }
+      },
+      "data_attributes": {
+        "data-trigger": {
+          "purpose": "Specifies event name or function to trigger",
+          "example": "data-trigger='user.login'"
+        },
+        "data-params": {
+          "purpose": "JSON string containing parameters",
+          "example": "data-params='{\"id\": 1}'"
+        }
+      },
+      "namespaces": {
+        "format": "event.namespace",
+        "default": "DEFAULT",
+        "example": "user.login"
+      }
+    },
+    "plugin_system": {
+      "structure": {
+        "name": "String",
+        "defaultOpt": "Object",
+        "init": "Function",
+        "load": "Function",
+        "render": "Function",
+        "destroy": "Function"
+      },
+      "events": {
+        "initialization": [
+          "initBefore",
+          "initAfter"
+        ],
+        "loading": [
+          "loadBefore",
+          "loadAfter"
+        ],
+        "rendering": [
+          "renderBefore",
+          "renderAfter"
+        ],
+        "destruction": [
+          "destroyBefore",
+          "destroyAfter"
+        ]
+      }
+    },
+    "best_practices": {
+      "event_handling": {
+        "naming": [
+          "Use descriptive, action-oriented names",
+          "Follow consistent naming patterns",
+          "Use namespaces for organization"
+        ],
+        "cleanup": [
+          "Remove listeners on component destruction",
+          "Use off() for cleanup",
+          "Use once() for one-time events"
+        ],
+        "data": [
+          "Keep data minimal and relevant",
+          "Use consistent data structures",
+          "Document expected formats"
+        ],
+        "error_handling": [
+          "Implement error handling in callbacks",
+          "Use try-catch for critical operations",
+          "Log errors appropriately"
+        ]
+      },
+      "performance": {
+        "listeners": [
+          "Remove unused listeners",
+          "Use once() for one-time events",
+          "Implement proper cleanup"
+        ],
+        "data": [
+          "Keep payloads small",
+          "Avoid unnecessary data",
+          "Use references for large objects"
+        ],
+        "frequency": [
+          "Throttle high-frequency events",
+          "Debounce rapid sequences",
+          "Batch related events"
+        ]
+      },
+      "request_handling": {
+        "error_handling": [
+          "Never reject promises, always resolve with default values",
+          "Log all errors through sendError system",
+          "Categorize errors by type (NETWORK, TIMEOUT, HTTP, PARSE, VALIDATION)",
+          "Include detailed error information in logs"
+        ],
+        "timeout_handling": [
+          "Default timeout of 15 seconds",
+          "Use AbortController for timeout management",
+          "Clean up timeout on request completion"
+        ],
+        "retry_logic": [
+          "Default 3 retries with 1 second delay",
+          "Configurable retry count and delay",
+          "Exponential backoff between retries"
+        ],
+        "validation": [
+          "Validate URL presence",
+          "Validate request data can be stringified",
+          "Check content-type headers",
+          "Handle JSON parsing errors"
+        ],
+        "configuration": {
+          "timeout": "15 seconds",
+          "retry_count": 3,
+          "retry_delay": "1 second",
+          "error_types": [
+            "NETWORK_ERROR",
+            "TIMEOUT_ERROR",
+            "HTTP_ERROR",
+            "PARSE_ERROR",
+            "VALIDATION_ERROR"
+          ]
+        }
+      },
+      "validation": {
+        "input_validation": [
+          "Validate all user inputs",
+          "Use appropriate validation methods",
+          "Handle edge cases"
+        ],
+        "format_validation": [
+          "Support international formats",
+          "Use comprehensive regex patterns",
+          "Consider using validation libraries"
+        ],
+        "error_messages": [
+          "Provide clear error messages",
+          "Include validation rules in messages",
+          "Support internationalization"
+        ]
+      },
+      "state_management": {
+        "global_state": [
+          "Avoid using globalThis",
+          "Use module-level variables",
+          "Implement proper state management"
+        ],
+        "error_handling": [
+          "Handle all error cases",
+          "Provide meaningful error messages",
+          "Log errors appropriately"
+        ],
+        "type_safety": [
+          "Use constants for type checking",
+          "Validate type parameters",
+          "Handle type mismatches"
+        ]
+      }
+    },
+    "code_standards": {
+      "formatting": {
+        "indentSize": 2,
+        "useTabs": true,
+        "trimTrailingWhitespace": true,
+        "insertFinalNewline": true,
+        "trailingComma": "all",
+        "semi": true,
+        "singleQuote": true
+      },
+      "analysis": {
+        "maxLineLength": 100,
+        "enforceTypeScript": true,
+        "enforceESLint": true,
+        "enforcePrettier": true
+      },
+      "naming": {
+        "function": {
+          "pattern": "^[a-z][a-zA-Z0-9]*$",
+          "example": "appleTree"
+        },
+        "cssClass": {
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "example": "apple-tree"
+        },
+        "className": {
+          "pattern": "^[A-Z][a-zA-Z0-9]*$",
+          "example": "AppleTree"
+        },
+        "constant": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "example": "APPLE_TREE"
+        }
+      }
+    },
+    "geo_system": {
+      "types": {
+        "state": "state",
+        "city": "city",
+        "county": "county",
+        "zip": "zip",
+        "address": "address",
+        "neighborhood": "neighborhood"
+      },
+      "path_patterns": {
+        "state": "{stateCode}",
+        "city": "{stateCode}/{cityCode}",
+        "county": "{stateCode}/{countyCode}_county",
+        "zip": "{stateCode}/{zipCode}",
+        "address": "{stateCode}/{cityCode}/{addressCode}_address",
+        "neighborhood": "{stateCode}/{cityCode}/{neighborhoodCode}_neighborhood"
+      },
+      "conventions": {
+        "state_code": {
+          "format": "2-letter lowercase",
+          "example": "ca",
+          "validation": "/^[a-z]{2}$/i"
+        },
+        "path_segments": {
+          "format": "lowercase with hyphens",
+          "example": "san-francisco",
+          "transformation": "toLowerCase().replace(/\\s+/g, '-')"
+        },
+        "suffixes": {
+          "county": "_county",
+          "address": "_address",
+          "neighborhood": "_neighborhood"
+        }
+      },
+      "functions": {
+        "getGeoByPath": {
+          "purpose": "Convert URL path to geo object",
+          "input": "URL path string",
+          "output": "Geo object with type and properties",
+          "validation": [
+            "State code must be 2 letters",
+            "Path segments must match expected patterns",
+            "Suffixes must match type conventions"
+          ]
+        },
+        "getPathByGeo": {
+          "purpose": "Convert geo object to URL path",
+          "input": "Geo object",
+          "output": "URL path string",
+          "validation": [
+            "Geo object must have type property",
+            "Required properties must be present for type",
+            "Values must be properly formatted"
+          ]
+        },
+        "getGeoDisplayText": {
+          "purpose": "Generate human-readable location text",
+          "input": "Geo object",
+          "output": "Formatted string",
+          "format": {
+            "address": "{address} {city}, {state} {zip}",
+            "neighborhood": "{neighborhood} {city}, {state}",
+            "city": "{city}, {state}",
+            "county": "{county}, {state}",
+            "zip": "{zip} {state}",
+            "state": "{state}"
+          }
+        }
+      },
+      "best_practices": {
+        "path_generation": [
+          "Always validate state codes",
+          "Handle special characters in names",
+          "Use consistent case (lowercase)",
+          "Replace spaces with hyphens",
+          "Add appropriate type suffixes"
+        ],
+        "geo_objects": [
+          "Include type property",
+          "Validate required properties",
+          "Handle missing optional properties",
+          "Maintain consistent property names"
+        ],
+        "error_handling": [
+          "Validate input parameters",
+          "Handle invalid state codes",
+          "Handle malformed paths",
+          "Return null for invalid inputs"
+        ]
+      },
+      "known_issues": {}
+    },
+    "known_issues": {
+      "fuse_system": {
+        "type_handling": {
+          "issue": "Inconsistent use of geoType constants",
+          "fix": "Use geoType.neighborhood instead of string literal"
+        },
+        "error_handling": {
+          "issue": "Missing error handling in search functions",
+          "fix": "Add try-catch blocks and input validation"
+        }
+      },
+      "request_system": {
+        "error_handling": {
+          "issue": "Resolving with null on error",
+          "design": "Intentional design choice to prevent app crashes",
+          "impact": "All errors are logged but not propagated",
+          "benefit": "Graceful degradation and consistent error handling"
+        },
+        "response_handling": {
+          "issue": "No response status validation",
+          "design": "Handled through error logging system",
+          "impact": "All HTTP errors are logged but not thrown",
+          "benefit": "Consistent error handling across the application"
+        },
+        "content_type": {
+          "issue": "Assumes all responses are JSON",
+          "design": "Falls back to text for non-JSON responses",
+          "impact": "May need to handle different response types",
+          "benefit": "Flexible response handling"
+        }
+      },
+      "validation_system": {
+        "phone_number": {
+          "issue": "Limited to 10-digit US format",
+          "fix": "Add international format support"
+        },
+        "email": {
+          "issue": "Basic regex validation",
+          "fix": "Use more comprehensive email validation"
+        },
+        "url": {
+          "issue": "Basic regex validation",
+          "fix": "Use URL constructor or more comprehensive validation"
+        },
+        "date": {
+          "issue": "Only validates Date objects",
+          "fix": "Add string date validation"
+        },
+        "price": {
+          "issue": "Only validates integers",
+          "fix": "Add decimal support"
+        }
+      },
+      "getGeoByData": {
+        "status": "Not implemented",
+        "reason": "Pending SOA API integration",
+        "action": "Implement when SOA API is ready"
+      }
+    }
+  }
+}
