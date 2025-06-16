@@ -16,13 +16,14 @@ export function getGeoCityByCityState(city, state) {
 }
 
 export function getBreadcrumbByGeo(geo, _path) {
+	let path = _path || '';
 	let data = [
 		{
 			text: 'Home',
-			href: '/',
+			href: path,
 		},
 	];
-	let path = _path || '';
+
 	if (geo) {
 		if (geo.state) {
 			data.push({

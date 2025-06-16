@@ -122,7 +122,12 @@ export class Router {
 			}
 		}
 		if (!toRule) {
-			throw new Error('No rule found for path: ' + pathname);
+			if (pathname) {
+				//if pathname is not a rule, redirect to the pathname
+				window.location.href = pathname;
+			} else {
+				throw new Error('No rule found for path: ' + pathname);
+			}
 		}
 		const state = {
 			rule: toRule,
