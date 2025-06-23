@@ -436,5 +436,219 @@
         "action": "Implement when SOA API is ready"
       }
     }
+  },
+  "build_system": {
+    "overview": {
+      "type": "webpack-based",
+      "environments": [
+        "development",
+        "staging",
+        "production"
+      ],
+      "architecture": "multi-page entry system",
+      "focus": "lightweight and performance-focused"
+    },
+    "core_components": {
+      "base_config": {
+        "file": "webpack.config.base.js",
+        "purpose": "Common webpack rules and plugins",
+        "features": [
+          "Asset management (fonts, images, SCSS, JS, HTML)",
+          "Multiple page entries",
+          "Dynamic entry point generation"
+        ]
+      },
+      "page_config": {
+        "file": "webpack.config.base.page.js",
+        "purpose": "Page-specific configurations",
+        "pages": [
+          "animation",
+          "demo",
+          "index",
+          "3d"
+        ],
+        "auto_config": {
+          "entry": "./client/pages/{pageName}/index.js",
+          "template": "./client/pages/{pageName}/index.html",
+          "output": "{pageName}.html",
+          "favicon": "./client/assets/img/logo.png"
+        }
+      },
+      "environment_configs": {
+        "development": "webpack.config.dev.js",
+        "build": "webpack.config.build.js",
+        "production": "webpack.config.build.js with production flags"
+      }
+    },
+    "build_scripts": {
+      "dev": {
+        "command": "npm run dev",
+        "config": "webpack.config.dev.js",
+        "features": [
+          "webpack-dev-server",
+          "Hot reloading",
+          "Source maps",
+          "Auto browser open"
+        ]
+      },
+      "build": {
+        "command": "npm run build",
+        "config": "webpack.config.build.js --env dev",
+        "features": [
+          "Production mode with dev optimizations",
+          "PWA manifest",
+          "Service worker",
+          "dist/ output"
+        ]
+      },
+      "prod": {
+        "command": "npm run prod",
+        "config": "webpack.config.build.js --env production --env deploy",
+        "features": [
+          "Full production optimizations",
+          "CDN public path for GitHub Pages",
+          "Optimized bundles"
+        ]
+      },
+      "deploy": {
+        "command": "npm run deploy",
+        "purpose": "GitHub Pages deployment",
+        "process": "Publishes dist/ to gh-pages branch"
+      }
+    },
+    "webpack_features": {
+      "development": [
+        "Source maps",
+        "Development mode optimizations",
+        "Webpack dev server with hot reloading"
+      ],
+      "production": [
+        "Bundle optimization and minification",
+        "PWA manifest generation",
+        "Service worker integration (Workbox)",
+        "CDN path configuration",
+        "Bundle analyzer support"
+      ]
+    },
+    "file_structure": {
+      "config_files": [
+        "webpack.config.base.js",
+        "webpack.config.base.page.js",
+        "webpack.config.dev.js",
+        "webpack.config.build.js",
+        "deploy.js"
+      ],
+      "directories": {
+        "client/pages/": "Page-specific code",
+        "client/assets/": "Static assets",
+        "dist/": "Build output"
+      }
+    },
+    "environment_variables": {
+      "development": "No specific variables required",
+      "production": {
+        "serverConfig.cdnUrl": "CDN URL for assets",
+        "github_pages": "https://shishiv30.github.io/pure/"
+      }
+    },
+    "build_process": {
+      "flow": [
+        "Development: npm run dev → Webpack dev server → Hot reloading",
+        "Staging: npm run build → Production build → dist/ output",
+        "Production: npm run prod → Optimized build → dist/ output",
+        "Deployment: npm run deploy → GitHub Pages upload"
+      ]
+    },
+    "performance_optimizations": [
+      "Code splitting per page",
+      "Asset optimization",
+      "CSS extraction",
+      "PWA support",
+      "Bundle analysis capability"
+    ],
+    "customization": {
+      "new_pages": [
+        "Create client/pages/{pageName}/ directory",
+        "Add index.js and index.html files",
+        "Update webpack.config.base.page.js if needed"
+      ],
+      "build_modification": {
+        "development": "Edit webpack.config.dev.js",
+        "production": "Edit webpack.config.build.js",
+        "base": "Edit webpack.config.base.js"
+      }
+    },
+    "troubleshooting": {
+      "common_issues": [
+        "Port conflicts (default 8080)",
+        "Build failures (check syntax errors)",
+        "Asset loading (verify file paths)",
+        "Deployment issues (check GitHub Pages branch)"
+      ],
+      "debug_tools": [
+        "Webpack bundle analyzer",
+        "Source maps in development",
+        "Console logging in build process"
+      ]
+    }
+  },
+  "known_issues": {
+    "fuse_system": {
+      "type_handling": {
+        "issue": "Inconsistent use of geoType constants",
+        "fix": "Use geoType.neighborhood instead of string literal"
+      },
+      "error_handling": {
+        "issue": "Missing error handling in search functions",
+        "fix": "Add try-catch blocks and input validation"
+      }
+    },
+    "request_system": {
+      "error_handling": {
+        "issue": "Resolving with null on error",
+        "design": "Intentional design choice to prevent app crashes",
+        "impact": "All errors are logged but not propagated",
+        "benefit": "Graceful degradation and consistent error handling"
+      },
+      "response_handling": {
+        "issue": "No response status validation",
+        "design": "Handled through error logging system",
+        "impact": "All HTTP errors are logged but not thrown",
+        "benefit": "Consistent error handling across the application"
+      },
+      "content_type": {
+        "issue": "Assumes all responses are JSON",
+        "design": "Falls back to text for non-JSON responses",
+        "impact": "May need to handle different response types",
+        "benefit": "Flexible response handling"
+      }
+    },
+    "validation_system": {
+      "phone_number": {
+        "issue": "Limited to 10-digit US format",
+        "fix": "Add international format support"
+      },
+      "email": {
+        "issue": "Basic regex validation",
+        "fix": "Use more comprehensive email validation"
+      },
+      "url": {
+        "issue": "Basic regex validation",
+        "fix": "Use URL constructor or more comprehensive validation"
+      },
+      "date": {
+        "issue": "Only validates Date objects",
+        "fix": "Add string date validation"
+      },
+      "price": {
+        "issue": "Only validates integers",
+        "fix": "Add decimal support"
+      }
+    },
+    "getGeoByData": {
+      "status": "Not implemented",
+      "reason": "Pending SOA API integration",
+      "action": "Implement when SOA API is ready"
+    }
   }
 }

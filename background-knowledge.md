@@ -7,6 +7,7 @@ This document consolidates all the documentation for the project, serving as a c
 1. [Server Architecture](#server-architecture)
 2. [Client Architecture](#client-architecture)
 3. [Event Handling System](#event-handling-system)
+4. [State Validation System](#state-validation-system)
 
 ## Server Architecture
 
@@ -312,3 +313,77 @@ The event system supports namespacing:
    - Memory management
    - Event listener cleanup
    - Resource pooling 
+
+## State Validation System
+
+### Overview
+
+The system implements a comprehensive state validation system using a centralized state dictionary instead of regex patterns. This approach provides better maintainability, accuracy, and extensibility for handling US state codes and names.
+
+### State Dictionary
+
+The state validation system is built around `helpers/stateDict.js`, which contains:
+
+1. **Complete State Dictionary**
+   - All 50 US states with their codes and full names
+   - US territories (DC, AS, GU, MP, PR, VI)
+   - Case-insensitive validation
+
+2. **Helper Functions**
+   - `isValidStateCode(stateCode)`: Validates state codes
+   - `getStateFullName(stateCode)`: Gets full state name from code
+   - `getStateCode(fullName)`: Gets state code from full name
+   - `getAllStateCodes()`: Returns array of all state codes
+   - `getAllStateFullNames()`: Returns array of all state full names
+
+### Usage Examples
+
+```javascript
+import { isValidStateCode, getStateFullName, getStateCode } from './helpers/stateDict.js';
+
+// Validate state codes
+isValidStateCode('CA');     // true
+isValidStateCode('ca');     // true (case-insensitive)
+isValidStateCode('XX');     // false
+
+// Get full state names
+getStateFullName('CA');     // 'California'
+getStateFullName('TX');     // 'Texas'
+
+// Get state codes from full names
+getStateCode('California'); // 'CA'
+getStateCode('california'); // 'CA' (case-insensitive)
+```
+
+### Integration Points
+
+1. **Geo Path Validation**
+   - Used in `helpers/geo.js` for path parsing
+   - Replaces regex pattern `/^[a-z]{2}$/i` with `isValidStateCode()`
+   - Ensures only valid state codes are accepted
+
+2. **API Validation**
+   - Validates state parameters in API endpoints
+   - Provides consistent error messages for invalid states
+   - Supports both state codes and full names
+
+### Benefits Over Regex Validation
+
+1. **Accuracy**
+   - Only accepts valid US state codes
+   - Prevents false positives from invalid 2-letter codes
+   - Includes all US territories
+
+2. **Maintainability**
+   - Centralized state definitions
+   - Easy to update state information
+   - Clear validation logic
+
+3. **Extensibility**
+   - Easy to add new validation functions
+   - Support for both codes and full names
+   - Future-proof for additional state-related features
+
+### Migration from Regex
+
+The system previously used regex pattern `/^[a-z]{2}$/i` for state validation. This has been replaced with the state dictionary approach for better accuracy and maintainability. 

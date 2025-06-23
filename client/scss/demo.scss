@@ -1,5 +1,6 @@
 @import './demo/_demo.theme.scss';
 @import './base.scss';
+@import './_tag.scss';
 @import './demo/demo-animation.scss';
 
 .page-demo {
@@ -227,6 +228,7 @@
 
     article {
         --article-gap: min(var(--g2), 3%);
+        position: relative;
         border-radius: 8px;
         box-shadow: inset 0 0 0 1px var(--color-bg-l1);
         display: flex;
@@ -236,6 +238,13 @@
         overflow: hidden;
         gap: var(--g2);
         padding-bottom: var(--g2);
+
+        .tags {
+            position: absolute;
+            top: var(--g0);
+            left: var(--g1);
+            z-index: 3;
+        }
 
         >figure {
             width: 100%;

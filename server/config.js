@@ -1,7 +1,13 @@
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
 let config = {
 	sessionSecret: 'the session key',
-	port: 3000,
-	domain: 'localhost',
+	port: process.env.PORT || 3000,
+	domain: process.env.DOMAIN || 'localhost',
+	soaApiDomain: process.env.SOA_API_DOMAIN || '',
 };
 
 config.appUrl = `http://${config.domain}:${config.port}`;

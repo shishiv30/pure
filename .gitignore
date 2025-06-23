@@ -5,3 +5,7 @@ records.json
 report.html
 /dist
 /client/assets/video
+.env
+.env.local
+.env.development
+.env.production

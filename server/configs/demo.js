@@ -2,6 +2,34 @@ import { getGeoByPath, getGeoDisplayText } from '../../helpers/geo.js';
 import geoConfig from './geo.js';
 import articles from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
+import { mapGeoToSOAPath } from '../../helpers/geo.js';
+import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
+import config from '../config.js';
+
+// Reusable function for fetching properties from SOA API
+export async function fetchPropertiesFromSOA(soaPath) {
+	try {
+		if (!soaPath) {
+			throw new Error('Path is required');
+		}
+
+		const response = await fetch(`${config.soaApiDomain}/widget/api/nearbyhomes/${soaPath}`);
+
+		if (!response.ok) {
+			throw new Error(`SOA API request failed: ${response.status} ${response.statusText}`);
+		}
+
+		const result = await response.json();
+
+		if (!result.data || !result.data.listings) {
+			throw new Error('Invalid response from SOA API');
+		}
+		return result.data.listings || [];
+	} catch (error) {
+		console.error('Error fetching properties:', error);
+		return [];
+	}
+}
 
 export default {
 	name: 'demo',
@@ -41,9 +69,10 @@ export default {
 	},
 	get: async function (payload) {
 		let geo = null;
+		let articles = [];
 		if (payload && payload.text && payload.type) {
 			if (payload.type === 'ip') {
-				let geo = await getGeoByIp(payload.text);
+				let geo = await getGeoCityByIp(payload.text);
 				if (geo) {
 					return geo;
 				}
@@ -57,15 +86,11 @@ export default {
 				geo = null;
 			}
 		}
-		//change mock articles title
+		//use api to fetch properties
 		if (geo) {
-			let displayGeo = getGeoDisplayText(geo);
-			if (displayGeo) {
-				articles.forEach((article) => {
-					article.imgAlt = `${article.title.split(',')[0]} in ${displayGeo}`;
-					article.title = `${article.title.split(',')[0]}, ${displayGeo}`;
-				});
-			}
+			let soaPath = mapGeoToSOAPath(geo);
+			let properties = await fetchPropertiesFromSOA(soaPath);
+			articles = mapPropertiesToArticles(properties);
 		}
 		let model = {
 			geo: geo,

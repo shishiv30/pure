@@ -9,7 +9,7 @@
         <%for(var i=0; i<article.attrs.length; i++){%>
           <% const attr = article.attrs[i]; %>
           <li>
-              <span><%=attr.value%></span> <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
+              <span class="<%=attr.className%>" ><%=attr.value%></span> <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
           </li>
         <%}%>
       <%}%>
@@ -18,5 +18,13 @@
       <img src="<%=article.img%>" alt="<%=article.imgAlt%>" loading="lazy">
       <figcaption><%=article.imgTag%></figcaption>
   </figure>
+  <%if(article.tags && article.tags.length){%>
+    <div class="tags">
+      <%for(var i=0; i<article.tags.length; i++){%>
+        <% const tag = article.tags[i]; %>
+        <span class="tag <%=tag.className%>"><%=tag.text%></span>
+      <%}%>
+    </div>
+  <%}%>
 </article>
 <%}%>
