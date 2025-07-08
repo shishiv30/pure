@@ -71,25 +71,8 @@ export async function initialGeoData() {
 			return {
 				type: 'state',
 				path: getStatePath(e.state_id),
-				state: e.state_name,
-				lat: e.lat,
-				lng: e.lng,
-				population: e.population,
-			};
-		})
-		.sort((a, b) => {
-			return b.population - a.population;
-		});
-
-	let city = await csvToJson('uscities');
-	city = city
-		.map((e) => {
-			return {
-				type: 'city',
-				city: e.city_ascii,
-				path: getCityPath(e.city_ascii, e.state_id),
-				county: e.county_name,
 				state: e.state_id,
+				name: e.state_name,
 				lat: e.lat,
 				lng: e.lng,
 				population: e.population,
@@ -98,7 +81,6 @@ export async function initialGeoData() {
 		.sort((a, b) => {
 			return b.population - a.population;
 		});
-
 	let county = await csvToJson('uscounties');
 	county = county
 		.map((e) => {
@@ -106,10 +88,31 @@ export async function initialGeoData() {
 				type: 'county',
 				path: getCountyPath(e.county_ascii, e.state_id),
 				county: e.county_full,
+				countyCode: e.county,
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,
 				id: e.county_fips,
+				population: e.population,
+			};
+		})
+		.sort((a, b) => {
+			return b.population - a.population;
+		});
+	let city = await csvToJson('uscities');
+	city = city
+		.map((e) => {
+			let matchedCounty = county.find(
+				(c) => c.countyCode === e.county_name && c.state === e.state_id,
+			);
+			return {
+				type: 'city',
+				city: e.city_ascii,
+				path: getCityPath(e.city_ascii, e.state_id),
+				county: matchedCounty ? matchedCounty.county : e.county_name,
+				state: e.state_id,
+				lat: e.lat,
+				lng: e.lng,
 				population: e.population,
 			};
 		})

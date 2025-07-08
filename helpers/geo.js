@@ -224,8 +224,8 @@ export function mapGeoToSOAPath(geo) {
 	// Auto-detect geo type based on geo properties
 	// Priority order: zipcode > neighborhood > city > county > state
 
-	if (geo.zipcode) {
-		return pathMappings.zipcode(geo.zipcode, geo.state);
+	if (geo.zip) {
+		return pathMappings.zipcode(geo.zip, geo.state);
 	}
 
 	if (geo.neighborhood) {
