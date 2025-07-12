@@ -302,11 +302,25 @@ After starting the server, you can access:
 ```bash
 npm run build
 ```
+Builds the project for development with optimizations and source maps.
 
 ### Production Build
 ```bash
 npm run prod
 ```
+Builds the project for production with full optimizations, minification, and deployment settings.
+
+### Deployment
+```bash
+npm run deploy
+```
+Deploys the built project to GitHub Pages.
+
+### Testing
+```bash
+npm test
+```
+Runs the test suite including geo-mapping and auto-detection tests.
 
 ## Deployment
 

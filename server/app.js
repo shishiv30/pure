@@ -8,6 +8,7 @@ import config from './config.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig.js';
@@ -16,6 +17,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set('views', path.join(__dirname, './ejs'));
 app.set('view engine', 'ejs');
+
 /* swagger */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -28,6 +30,20 @@ app.use((req, res, next) => {
 	next();
 });
 
+/* Development proxy to webpack-dev-server */
+if (process.env.NODE_ENV === 'development') {
+	app.use(
+		'/webpack-dev-server',
+		createProxyMiddleware({
+			target: 'http://localhost:8081',
+			changeOrigin: true,
+			pathRewrite: {
+				'^/webpack-dev-server': '',
+			},
+		}),
+	);
+}
+
 /* routes */
 app.use(
 	cors({
@@ -36,7 +52,13 @@ app.use(
 );
 app.use('/', pageRouter);
 app.use('/api', apiRouter);
-app.use(express.static('dist'));
+
+// Serve static files from dist in production, or proxy to webpack-dev-server in development
+if (process.env.NODE_ENV === 'development') {
+	app.use(express.static('dist'));
+} else {
+	app.use(express.static('dist'));
+}
 
 app.listen(config.port, function () {
 	console.log(`Example app listening on port ${config.appUrl}`);
@@ -44,7 +66,7 @@ app.listen(config.port, function () {
 	console.log(`Demo docs available at ${config.appUrl}/demo?ip=99.39.118.234`);
 	console.log(`Demo docs available at state like ${config.appUrl}/demo/tx`);
 	console.log(`Demo docs available at city like ${config.appUrl}/demo/tx/round-rock`);
-	console.log(`Demo docs available at zip like ${config.appUrl}/demo/tx/78664`);
+	console.log(`Demo docs available at zipcode like ${config.appUrl}/demo/tx/78664`);
 	console.log(`Demo docs available at county like ${config.appUrl}/demo/tx/williamson_county`);
 	console.log(
 		`Demo docs available at neighborhood like ${config.appUrl}/demo/tx/round-rock/old-town_neighborhood`,

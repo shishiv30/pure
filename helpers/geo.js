@@ -4,7 +4,7 @@ export const geoType = {
 	state: 'state',
 	city: 'city',
 	county: 'county',
-	zip: 'zip',
+	zipcode: 'zipcode',
 	address: 'address',
 	neighborhood: 'neighborhood',
 };
@@ -51,10 +51,10 @@ export function getBreadcrumbByGeo(geo, _path) {
 				href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
 			});
 		}
-		if (geo.zip) {
+		if (geo.zipcode) {
 			data.push({
-				text: geo.zip,
-				href: `${path}/${getZipPath(geo.zip, geo.state)}`,
+				text: geo.zipcode,
+				href: `${path}/${getZipcodePath(geo.zipcode, geo.state)}`,
 			});
 		}
 	}
@@ -84,8 +84,8 @@ export function getGeoByPath(_path) {
 		geo.county = segments[1].replace(/_county$/i, '').replace(/-/g, ' ');
 		return geo;
 	} else if (segments[1].match(/^\d{5}$/)) {
-		geo.type = geoType.zip;
-		geo.zip = segments[1];
+		geo.type = geoType.zipcode;
+		geo.zipcode = segments[1];
 		return geo;
 	}
 
@@ -132,9 +132,9 @@ export function getCountyPath(county, state) {
 	return `${stateCode}/${countyCode}_county`;
 }
 
-export function getZipPath(zip, state) {
+export function getZipcodePath(zipcode, state) {
 	let stateCode = state.toLowerCase();
-	return `${stateCode}/${zip}`;
+	return `${stateCode}/${zipcode}`;
 }
 
 export function getAddressPath(address, city, state) {
@@ -161,7 +161,7 @@ export function getGeoDisplayText(geo) {
 	}
 
 	if (geo.address) {
-		return `${geo.address} ${geo.city}, ${geo.state} ${geo.zip}`;
+		return `${geo.address} ${geo.city}, ${geo.state} ${geo.zipcode}`;
 	} else if (geo.neighborhood) {
 		if (geo.city.includes(geo.neighborhood)) {
 			return `${geo.neighborhood}, ${geo.state}`;
@@ -171,8 +171,8 @@ export function getGeoDisplayText(geo) {
 		return `${geo.city}, ${geo.state}`;
 	} else if (geo.county) {
 		return `${geo.county}, ${geo.state}`;
-	} else if (geo.zip) {
-		return `${geo.zip} ${geo.state}`;
+	} else if (geo.zipcode) {
+		return `${geo.zipcode} ${geo.state}`;
 	} else if (geo.state) {
 		return `${geo.state}`;
 	}
@@ -187,8 +187,8 @@ export function getPathByGeo(geo) {
 		return getCityPath(geo.city, geo.state);
 	} else if (geo.type === geoType.county) {
 		return getCountyPath(geo.county, geo.state);
-	} else if (geo.type === geoType.zip) {
-		return getZipPath(geo.zip, geo.state);
+	} else if (geo.type === geoType.zipcode) {
+		return getZipcodePath(geo.zipcode, geo.state);
 	} else if (geo.type === geoType.neighborhood) {
 		return getNeighborhoodPath(geo.neighborhood, geo.city, geo.state);
 	} else if (geo.type === geoType.address) {
@@ -205,7 +205,7 @@ export function getPathByGeo(geo) {
 const pathMappings = {
 	city: (city, state) => `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/`,
 	state: (state) => `${state.toLowerCase()}/`,
-	zipcode: (zip, state) => `${state.toLowerCase()}/${zip}/`,
+	zipcode: (zipcode, state) => `${state.toLowerCase()}/${zipcode}/`,
 	neighborhood: (city, neighborhood, state) =>
 		`${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/${neighborhood
 			.toLowerCase()
@@ -224,8 +224,8 @@ export function mapGeoToSOAPath(geo) {
 	// Auto-detect geo type based on geo properties
 	// Priority order: zipcode > neighborhood > city > county > state
 
-	if (geo.zip) {
-		return pathMappings.zipcode(geo.zip, geo.state);
+	if (geo.zipcode) {
+		return pathMappings.zipcode(geo.zipcode, geo.state);
 	}
 
 	if (geo.neighborhood) {

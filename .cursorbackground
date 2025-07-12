@@ -303,7 +303,7 @@
         "state": "state",
         "city": "city",
         "county": "county",
-        "zip": "zip",
+        "zipcode": "zipcode",
         "address": "address",
         "neighborhood": "neighborhood"
       },
@@ -311,7 +311,7 @@
         "state": "{stateCode}",
         "city": "{stateCode}/{cityCode}",
         "county": "{stateCode}/{countyCode}_county",
-        "zip": "{stateCode}/{zipCode}",
+        "zipcode": "{stateCode}/{zipCode}",
         "address": "{stateCode}/{cityCode}/{addressCode}_address",
         "neighborhood": "{stateCode}/{cityCode}/{neighborhoodCode}_neighborhood"
       },
@@ -358,11 +358,11 @@
           "input": "Geo object",
           "output": "Formatted string",
           "format": {
-            "address": "{address} {city}, {state} {zip}",
+            "address": "{address} {city}, {state} {zipcode}",
             "neighborhood": "{neighborhood} {city}, {state}",
             "city": "{city}, {state}",
             "county": "{county}, {state}",
-            "zip": "{zip} {state}",
+            "zipcode": "{zipcode} {state}",
             "state": "{state}"
           }
         }
@@ -444,7 +444,9 @@
         "production"
       ],
       "architecture": "multi-page entry system",
-      "focus": "lightweight and performance-focused"
+      "focus": "lightweight and performance-focused",
+      "hot_reloading": "enabled for development",
+      "source_maps": "enabled for debugging"
     },
     "core_components": {
       "base_config": {
@@ -453,7 +455,9 @@
         "features": [
           "Asset management (fonts, images, SCSS, JS, HTML)",
           "Multiple page entries",
-          "Dynamic entry point generation"
+          "Dynamic entry point generation",
+          "Babel loader for JavaScript transpilation",
+          "HTML webpack plugin for page generation"
         ]
       },
       "page_config": {
@@ -489,6 +493,16 @@
           "Auto browser open"
         ]
       },
+      "debug": {
+        "command": "npm run debug",
+        "config": "webpack.config.dev.js --mode development --devtool source-map",
+        "features": [
+          "Enhanced debugging capabilities",
+          "Source maps for debugging",
+          "Hot reloading",
+          "Development optimizations"
+        ]
+      },
       "build": {
         "command": "npm run build",
         "config": "webpack.config.build.js --env dev",
@@ -516,30 +530,51 @@
     },
     "webpack_features": {
       "development": [
-        "Source maps",
+        "Source maps for debugging",
         "Development mode optimizations",
-        "Webpack dev server with hot reloading"
+        "Webpack dev server with hot reloading",
+        "Fast rebuild times",
+        "Live reload for CSS and JS changes"
       ],
       "production": [
         "Bundle optimization and minification",
         "PWA manifest generation",
         "Service worker integration (Workbox)",
         "CDN path configuration",
-        "Bundle analyzer support"
+        "Bundle analyzer support",
+        "Code splitting and lazy loading"
       ]
     },
-    "file_structure": {
-      "config_files": [
-        "webpack.config.base.js",
-        "webpack.config.base.page.js",
-        "webpack.config.dev.js",
-        "webpack.config.build.js",
-        "deploy.js"
-      ],
-      "directories": {
-        "client/pages/": "Page-specific code",
-        "client/assets/": "Static assets",
-        "dist/": "Build output"
+    "development_workflow": {
+      "hot_reloading": {
+        "enabled": true,
+        "watches": [
+          "client/**/*"
+        ],
+        "auto_reload": "CSS and JS changes",
+        "no_manual_refresh": "required"
+      },
+      "debugging": {
+        "source_maps": "enabled in development",
+        "chrome_devtools": "recommended for client-side debugging",
+        "vs_code_debugging": "available for server-side code",
+        "breakpoints": "set in original source files"
+      },
+      "file_structure": {
+        "config_files": [
+          "webpack.config.base.js",
+          "webpack.config.base.page.js",
+          "webpack.config.dev.js",
+          "webpack.config.build.js",
+          "deploy.js"
+        ],
+        "directories": {
+          "client/pages/": "Page-specific code",
+          "client/assets/": "Static assets",
+          "client/js/": "JavaScript modules",
+          "client/scss/": "Stylesheets",
+          "dist/": "Build output"
+        }
       }
     },
     "environment_variables": {
@@ -551,7 +586,7 @@
     },
     "build_process": {
       "flow": [
-        "Development: npm run dev → Webpack dev server → Hot reloading",
+        "Development: npm run debug → Webpack dev server → Hot reloading",
         "Staging: npm run build → Production build → dist/ output",
         "Production: npm run prod → Optimized build → dist/ output",
         "Deployment: npm run deploy → GitHub Pages upload"
@@ -562,7 +597,8 @@
       "Asset optimization",
       "CSS extraction",
       "PWA support",
-      "Bundle analysis capability"
+      "Bundle analysis capability",
+      "Lazy loading for better performance"
     ],
     "customization": {
       "new_pages": [
@@ -581,12 +617,14 @@
         "Port conflicts (default 8080)",
         "Build failures (check syntax errors)",
         "Asset loading (verify file paths)",
-        "Deployment issues (check GitHub Pages branch)"
+        "Deployment issues (check GitHub Pages branch)",
+        "Hot reloading not working (check file watchers)"
       ],
       "debug_tools": [
         "Webpack bundle analyzer",
         "Source maps in development",
-        "Console logging in build process"
+        "Console logging in build process",
+        "Chrome DevTools for client debugging"
       ]
     }
   }

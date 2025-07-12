@@ -7,5 +7,20 @@ export default (env) => {
 		mode: 'development',
 		devtool: 'source-map',
 		stats: { warnings: false },
+		devServer: {
+			port: 8080,
+			hot: true,
+			liveReload: true,
+			watchFiles: ['client/**/*'],
+			open: true,
+			historyApiFallback: true,
+			compress: true,
+			client: {
+				overlay: {
+					errors: true,
+					warnings: false,
+				},
+			},
+		},
 	});
 };
