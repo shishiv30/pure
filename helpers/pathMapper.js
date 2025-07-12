@@ -1,4 +1,5 @@
 import { getGeoByPath } from './geo.js';
+import { geoType } from './geo.js';
 import { formatPrice, formatNumber, formatSqft } from '../client/js/core/format.js';
 
 /**
@@ -17,15 +18,15 @@ export function mapGeoPathToSOAPath(ourPath) {
 	}
 
 	switch (geo.type) {
-		case 'state':
+		case geoType.state:
 			return `${geo.state}/`;
-		case 'city':
+		case geoType.city:
 			return `${geo.city.toLowerCase().replace(/\s+/g, '-')}-${geo.state.toLowerCase()}/`;
-		case 'county':
+		case geoType.county:
 			return `${geo.county.toLowerCase().replace(/\s+/g, '-')}-county-${geo.state.toLowerCase()}/`;
-		case 'zip':
+		case geoType.zip:
 			return `${geo.state.toLowerCase()}/${geo.zip}/`;
-		case 'neighborhood':
+		case geoType.neighborhood:
 			return `${geo.city
 				.toLowerCase()
 				.replace(/\s+/g, '-')}-${geo.state.toLowerCase()}/${geo.neighborhood

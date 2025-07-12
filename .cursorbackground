@@ -248,6 +248,19 @@
           "Validate type parameters",
           "Handle type mismatches"
         ]
+      },
+      "import_management": {
+        "rule": "Before adding any import, verify that the function/class is not already defined locally in the file",
+        "checklist": [
+          "Read the entire file or at least function definitions before adding imports",
+          "Check for local function declarations",
+          "Check for local class declarations",
+          "Check for local variable assignments"
+        ],
+        "examples": [
+          "data/index.js: csvToJson and saveAsJson are local functions, not external imports",
+          "Always verify local scope before importing from external modules"
+        ]
       }
     },
     "code_standards": {
@@ -378,16 +391,6 @@
       "known_issues": {}
     },
     "known_issues": {
-      "fuse_system": {
-        "type_handling": {
-          "issue": "Inconsistent use of geoType constants",
-          "fix": "Use geoType.neighborhood instead of string literal"
-        },
-        "error_handling": {
-          "issue": "Missing error handling in search functions",
-          "fix": "Add try-catch blocks and input validation"
-        }
-      },
       "request_system": {
         "error_handling": {
           "issue": "Resolving with null on error",
@@ -429,11 +432,6 @@
           "issue": "Only validates integers",
           "fix": "Add decimal support"
         }
-      },
-      "getGeoByData": {
-        "status": "Not implemented",
-        "reason": "Pending SOA API integration",
-        "action": "Implement when SOA API is ready"
       }
     }
   },
@@ -590,65 +588,6 @@
         "Source maps in development",
         "Console logging in build process"
       ]
-    }
-  },
-  "known_issues": {
-    "fuse_system": {
-      "type_handling": {
-        "issue": "Inconsistent use of geoType constants",
-        "fix": "Use geoType.neighborhood instead of string literal"
-      },
-      "error_handling": {
-        "issue": "Missing error handling in search functions",
-        "fix": "Add try-catch blocks and input validation"
-      }
-    },
-    "request_system": {
-      "error_handling": {
-        "issue": "Resolving with null on error",
-        "design": "Intentional design choice to prevent app crashes",
-        "impact": "All errors are logged but not propagated",
-        "benefit": "Graceful degradation and consistent error handling"
-      },
-      "response_handling": {
-        "issue": "No response status validation",
-        "design": "Handled through error logging system",
-        "impact": "All HTTP errors are logged but not thrown",
-        "benefit": "Consistent error handling across the application"
-      },
-      "content_type": {
-        "issue": "Assumes all responses are JSON",
-        "design": "Falls back to text for non-JSON responses",
-        "impact": "May need to handle different response types",
-        "benefit": "Flexible response handling"
-      }
-    },
-    "validation_system": {
-      "phone_number": {
-        "issue": "Limited to 10-digit US format",
-        "fix": "Add international format support"
-      },
-      "email": {
-        "issue": "Basic regex validation",
-        "fix": "Use more comprehensive email validation"
-      },
-      "url": {
-        "issue": "Basic regex validation",
-        "fix": "Use URL constructor or more comprehensive validation"
-      },
-      "date": {
-        "issue": "Only validates Date objects",
-        "fix": "Add string date validation"
-      },
-      "price": {
-        "issue": "Only validates integers",
-        "fix": "Add decimal support"
-      }
-    },
-    "getGeoByData": {
-      "status": "Not implemented",
-      "reason": "Pending SOA API integration",
-      "action": "Implement when SOA API is ready"
     }
   }
 }

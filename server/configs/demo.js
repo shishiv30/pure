@@ -1,4 +1,4 @@
-import { getGeoByPath, getGeoDisplayText } from '../../helpers/geo.js';
+import { getGeoByPath, getGeoDisplayText, geoType } from '../../helpers/geo.js';
 import geoConfig from './geo.js';
 import articles from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
@@ -44,7 +44,7 @@ export default {
 
 		if (geo) {
 			let text = geo[geo.type];
-			if (geo.type === 'neighborhood' && geo.state) {
+			if (geo.type === geoType.neighborhood && geo.state) {
 				text = `${text}, ${geo.state}`;
 			}
 			return {

@@ -1,4 +1,4 @@
-import { getCityPath, getCountyPath, getGeoByPath, getPathByGeo } from './helpers/geo.js';
+import { getCityPath, getCountyPath, getGeoByPath, getPathByGeo, geoType } from './helpers/geo.js';
 
 // Helper function to compare objects regardless of property order
 function deepEqual(obj1, obj2) {
@@ -93,22 +93,22 @@ console.log('=====================================');
 const reverseTestCases = [
 	{
 		path: 'ca/san-mateo',
-		expected: { type: 'city', city: 'san mateo', state: 'ca' },
+		expected: { type: geoType.city, city: 'san mateo', state: 'ca' },
 		description: 'City path to geo',
 	},
 	{
 		path: 'ca/san-mateo_county',
-		expected: { type: 'county', county: 'san mateo', state: 'ca' },
+		expected: { type: geoType.county, county: 'san mateo', state: 'ca' },
 		description: 'County path to geo',
 	},
 	{
 		path: 'ny/new-york',
-		expected: { type: 'city', city: 'new york', state: 'ny' },
+		expected: { type: geoType.city, city: 'new york', state: 'ny' },
 		description: 'New York city path to geo',
 	},
 	{
 		path: 'ca/los-angeles_county',
-		expected: { type: 'county', county: 'los angeles', state: 'ca' },
+		expected: { type: geoType.county, county: 'los angeles', state: 'ca' },
 		description: 'Los Angeles county path to geo',
 	},
 ];
@@ -136,17 +136,17 @@ console.log('=============================');
 
 const geoTestCases = [
 	{
-		geo: { type: 'city', city: 'San Mateo City', state: 'CA' },
+		geo: { type: geoType.city, city: 'San Mateo City', state: 'CA' },
 		expected: 'ca/san-mateo',
 		description: 'City geo with "City" suffix',
 	},
 	{
-		geo: { type: 'county', county: 'San Mateo County', state: 'CA' },
+		geo: { type: geoType.county, county: 'San Mateo County', state: 'CA' },
 		expected: 'ca/san-mateo_county',
 		description: 'County geo with "County" suffix',
 	},
 	{
-		geo: { type: 'city', city: 'New York City', state: 'NY' },
+		geo: { type: geoType.city, city: 'New York City', state: 'NY' },
 		expected: 'ny/new-york',
 		description: 'New York City geo',
 	},

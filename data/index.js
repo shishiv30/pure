@@ -1,12 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import {
-	getCityPath,
 	getStatePath,
+	getCityPath,
 	getCountyPath,
-	getNeighborhoodPath,
 	getZipPath,
+	getNeighborhoodPath,
 } from '../helpers/geo.js';
+import { geoType } from '../helpers/geo.js';
 
 const rootPath = process.cwd(); // Get the root directory
 const inputFolder = path.join(rootPath, 'data/csv'); // Define the input folder
@@ -69,7 +70,7 @@ export async function initialGeoData() {
 	state = state
 		.map((e) => {
 			return {
-				type: 'state',
+				type: geoType.state,
 				path: getStatePath(e.state_id),
 				state: e.state_id,
 				name: e.state_name,
@@ -85,7 +86,7 @@ export async function initialGeoData() {
 	county = county
 		.map((e) => {
 			return {
-				type: 'county',
+				type: geoType.county,
 				path: getCountyPath(e.county_ascii, e.state_id),
 				county: e.county_full,
 				countyCode: e.county,
@@ -106,7 +107,7 @@ export async function initialGeoData() {
 				(c) => c.countyCode === e.county_name && c.state === e.state_id,
 			);
 			return {
-				type: 'city',
+				type: geoType.city,
 				city: e.city_ascii,
 				path: getCityPath(e.city_ascii, e.state_id),
 				county: matchedCounty ? matchedCounty.county : e.county_name,
@@ -125,7 +126,7 @@ export async function initialGeoData() {
 		.map((e) => {
 			let matchedCity = city.find((c) => c.city === e.city_name && c.state === e.state_id);
 			let item = {
-				type: 'neighborhood',
+				type: geoType.neighborhood,
 				neighborhood: e.neighborhood_ascii,
 				neighborhoodFull: `${e.neighborhood_ascii}, ${e.state_id}`,
 				city: matchedCity.city,
@@ -145,18 +146,17 @@ export async function initialGeoData() {
 	let zip = await csvToJson('uszips');
 	zip = zip
 		.map((e) => {
-			let item = {
-				type: 'zip',
+			return {
+				type: geoType.zip,
 				zip: e.zip,
+				path: getZipPath(e.zip, e.state_id),
 				city: e.city,
+				county: e.county_name,
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,
-				id: e.zip,
 				population: e.population,
 			};
-			item.path = getZipPath(e.zip, e.state_id);
-			return item;
 		})
 		.sort((a, b) => {
 			return b.population - a.population;
