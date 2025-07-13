@@ -8,7 +8,7 @@ export default async function (app) {
 					state: data.state,
 					city: data.city,
 					county: data.county,
-					zip: data.zip,
+					zipcode: data.zipcode,
 					// address: data.address,
 					neighborhood: data.neighborhood,
 				});

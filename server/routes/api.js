@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import BaseController from '../controllers/baseController.js';
+import BaseController from '../controllers/basecontroller.js';
 import { fetchPropertiesFromSOA } from '../configs/demo.js';
 import { mapGeoPathToSOAPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
@@ -16,7 +16,7 @@ import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
  *         name: type
  *         schema:
  *           type: string
- *           enum: [state, city, county, zip, neighborhood]
+ *           enum: [state, city, county, zipcode, neighborhood]
  *         description: Type of geo information
  *       - in: query
  *         name: text

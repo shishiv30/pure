@@ -24,8 +24,8 @@ export function mapGeoPathToSOAPath(ourPath) {
 			return `${geo.city.toLowerCase().replace(/\s+/g, '-')}-${geo.state.toLowerCase()}/`;
 		case geoType.county:
 			return `${geo.county.toLowerCase().replace(/\s+/g, '-')}-county-${geo.state.toLowerCase()}/`;
-		case geoType.zip:
-			return `${geo.state.toLowerCase()}/${geo.zip}/`;
+		case geoType.zipcode:
+			return `${geo.state.toLowerCase()}/${geo.zipcode}/`;
 		case geoType.neighborhood:
 			return `${geo.city
 				.toLowerCase()

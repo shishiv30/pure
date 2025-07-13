@@ -4,7 +4,7 @@ import {
 	getStatePath,
 	getCityPath,
 	getCountyPath,
-	getZipPath,
+	getZipcodePath,
 	getNeighborhoodPath,
 } from '../helpers/geo.js';
 import { geoType } from '../helpers/geo.js';
@@ -143,13 +143,13 @@ export async function initialGeoData() {
 			return b.population - a.population;
 		});
 
-	let zip = await csvToJson('uszips');
-	zip = zip
+	let zipcode = await csvToJson('uszips');
+	zipcode = zipcode
 		.map((e) => {
 			return {
-				type: geoType.zip,
-				zip: e.zip,
-				path: getZipPath(e.zip, e.state_id),
+				type: geoType.zipcode,
+				zipcode: e.zip,
+				path: getZipcodePath(e.zip, e.state_id),
 				city: e.city,
 				county: e.county_name,
 				state: e.state_id,
@@ -166,6 +166,6 @@ export async function initialGeoData() {
 	saveAsJson('uscities', city);
 	saveAsJson('uscounties', county);
 	saveAsJson('usneighborhoods', neighborhood);
-	saveAsJson('uszips', zip);
-	return { state, city, county, neighborhood, zip };
+	saveAsJson('uszips', zipcode);
+	return { state, city, county, neighborhood, zipcode };
 }

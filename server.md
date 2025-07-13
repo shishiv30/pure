@@ -82,7 +82,7 @@ The system uses a hierarchical model structure that's built up through several s
   geo: {
     state: String,
     city: String,
-    zip: String,
+    zipcode: String,
     type: String,
     // ... other geo properties
   },
@@ -126,7 +126,7 @@ The system uses a hierarchical model structure that's built up through several s
   state: 'state',
   city: 'city',
   county: 'county',
-  zip: 'zip',
+  zipcode: 'zipcode',
   address: 'address',
   neighborhood: 'neighborhood'
 }

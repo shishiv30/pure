@@ -31,15 +31,15 @@ export function initialFuseCounty(county) {
 	return globalThis[geoType.county];
 }
 
-export function initialFuseZip(zip) {
-	if (globalThis[geoType.zip]) {
-		return globalThis[geoType.zip];
+export function initialFuseZipcode(zipcode) {
+	if (globalThis[geoType.zipcode]) {
+		return globalThis[geoType.zipcode];
 	}
-	globalThis[geoType.zip] = new Fuse(zip, {
-		keys: ['zip'],
+	globalThis[geoType.zipcode] = new Fuse(zipcode, {
+		keys: ['zipcode'],
 		threshold: 0.1,
 	});
-	return globalThis[geoType.zip];
+	return globalThis[geoType.zipcode];
 }
 
 export function initialFuseAddress(address) {
@@ -64,15 +64,15 @@ export function initialFuseNeighborhood(neighborhood) {
 	return globalThis[geoType.neighborhood];
 }
 
-export function initialFuseGeo({ state, city, county, zip, address, neighborhood }) {
+export function initialFuseGeo({ state, city, county, zipcode, address, neighborhood }) {
 	if (!globalThis[geoType.state] && state) {
 		initialFuseState(state);
 	}
 	if (!globalThis[geoType.city] && city) {
 		initialFuseCity(city);
 	}
-	if (!globalThis[geoType.zip] && zip) {
-		initialFuseZip(zip);
+	if (!globalThis[geoType.zipcode] && zipcode) {
+		initialFuseZipcode(zipcode);
 	}
 	if (!globalThis[geoType.county] && county) {
 		initialFuseCounty(county);

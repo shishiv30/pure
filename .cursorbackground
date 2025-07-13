@@ -303,7 +303,7 @@
         "state": "state",
         "city": "city",
         "county": "county",
-        "zip": "zip",
+        "zipcode": "zipcode",
         "address": "address",
         "neighborhood": "neighborhood"
       },
@@ -311,7 +311,7 @@
         "state": "{stateCode}",
         "city": "{stateCode}/{cityCode}",
         "county": "{stateCode}/{countyCode}_county",
-        "zip": "{stateCode}/{zipCode}",
+        "zipcode": "{stateCode}/{zipCode}",
         "address": "{stateCode}/{cityCode}/{addressCode}_address",
         "neighborhood": "{stateCode}/{cityCode}/{neighborhoodCode}_neighborhood"
       },
@@ -358,11 +358,11 @@
           "input": "Geo object",
           "output": "Formatted string",
           "format": {
-            "address": "{address} {city}, {state} {zip}",
+            "address": "{address} {city}, {state} {zipcode}",
             "neighborhood": "{neighborhood} {city}, {state}",
             "city": "{city}, {state}",
             "county": "{county}, {state}",
-            "zip": "{zip} {state}",
+            "zipcode": "{zipcode} {state}",
             "state": "{state}"
           }
         }
@@ -539,6 +539,8 @@
       "directories": {
         "client/pages/": "Page-specific code",
         "client/assets/": "Static assets",
+        "client/js/": "JavaScript modules",
+        "client/scss/": "Stylesheets",
         "dist/": "Build output"
       }
     },
