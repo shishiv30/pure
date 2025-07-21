@@ -14,6 +14,9 @@ const pageConfig = {
 		{
 			name: '3d',
 		},
+		{
+			name: 'about',
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {

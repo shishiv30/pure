@@ -5,6 +5,7 @@ import { env } from 'process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import pageSettings from './webpack.config.base.page.js';
+import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -66,8 +67,20 @@ export default () => {
 									tag: 'a-videosphere',
 									attribute: 'src',
 									type: 'src',
-								}
+								},
 							],
+						},
+						preprocessor: (content, loaderContext) => {
+							// Simple include processor for <!-- include:header.html -->
+							return content.replace(/<!--\s*include:([^>]+?)\s*-->/g, (match, includePath) => {
+								const fullPath = path.resolve(__dirname, 'client/components', includePath.trim());
+								try {
+									return fs.readFileSync(fullPath, 'utf8');
+								} catch (error) {
+									console.warn(`Could not include ${includePath}: ${error.message}`);
+									return match;
+								}
+							});
 						},
 					},
 				},
