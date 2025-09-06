@@ -104,7 +104,7 @@ export default class BaseController {
 		};
 	}
 	initialBreadcrumb(model) {
-		if (model) {
+		if (model && model.data && model.data.geo) {
 			return getBreadcrumbByGeo(model.data.geo, `/${this.config.name}`);
 		} else {
 			return null;

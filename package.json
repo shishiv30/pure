@@ -5,10 +5,11 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"dev": "webpack-dev-server --config webpack.config.dev.js --open",
-		"server": "node server/app.js",
-		"build": "webpack --config webpack.config.build.js --env dev",
-		"prod": "webpack --config webpack.config.build.js --env production --env deploy",
+		"dev:client": "webpack-dev-server --config webpack.config.dev.js --open",
+		"dev:server": "node server/app.js",
+		"dev": "concurrently \"webpack-dev-server --config webpack.config.dev.js\" \"nodemon server/app.js\"",
+		"build:dev": "concurrently \"webpack --config webpack.config.build.js --env dev\" \"node server/app.js\"",
+		"build:prod": "webpack --config webpack.config.build.js --env production --env deploy",
 		"deploy": "node deploy",
 		"test": "node test-geo-mapping.js && node test-auto-detection.js"
 	},

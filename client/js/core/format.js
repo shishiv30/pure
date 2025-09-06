@@ -2,10 +2,22 @@ const formatPhone = function (phone) {
 	return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 };
 const formatCurrency = function (value) {
-	return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+	let strValue = value?.toString()?.split('.');
+	if (/^\d+$/.test(strValue[0])) {
+		strValue[0] = strValue[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+	if (strValue[1] && /^\d+$/.test(strValue[1])) {
+		strValue[0] += '.' + strValue[1];
+	}
+	return strValue[0];
 };
 const formatNumber = function (value) {
-	return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+	let strValue = value?.toString()?.split('.');
+	if (/^\d+$/.test(strValue[0])) {
+		//format 100000 to 100,000
+		strValue[0] = strValue[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+	return strValue[0];
 };
 const formatPercent = function (value) {
 	return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '%';

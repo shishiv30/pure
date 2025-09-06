@@ -8,31 +8,27 @@ export function mapPropertyToArticle(property) {
 	switch (status.toUpperCase()) {
 		case 'ACTIVE':
 			const openHouse = property.openHouses;
-			const dom = property.daysOnMovoto;
 			if (openHouse && openHouse.length > 0) {
 				tags.push({ className: 'major active', text: 'Open House' });
-			} else if ((dom && parseInt(dom) <= 7) || dom === 0) {
-				tags.push({ className: 'major active', text: 'New' });
-			} else {
-				tags.push({ className: 'major active', text: 'For Sale' });
+			} else if (property.labelName) {
+				tags.push({ className: 'major active', text: property.labelName || 'For Sale' });
 			}
 			break;
 		case 'PENDING':
-			tags.push({
-				value: 'Pending active',
-				className: 'tip',
-			});
+			if (property.labelName) {
+				tags.push({ className: 'tip', text: property.labelName || 'Pending' });
+			}
 			break;
 		case 'SOLD':
-			tags.push({ className: 'minor', text: 'Sold' });
+			tags.push({ className: 'minor', text: property.labelName || 'Sold' });
 			break;
 
 		case 'OFF_MARKET':
-			tags.push({ className: 'minor', text: 'Off Market' });
+			tags.push({ className: 'minor', text: property.labelName || 'Off Market' });
 			break;
 
 		case 'REMOVED':
-			tags.push({ className: 'minor', text: 'Removed' });
+			tags.push({ className: 'minor', text: property.labelName || 'Expired' });
 			break;
 	}
 
@@ -48,9 +44,10 @@ export function mapPropertyToArticle(property) {
 	let attrs = [];
 	if (property.listPrice) {
 		attrs.push({
-			key: 'Est',
+			className: 'f4 text-bold',
+			key: !property.isSold && !property.isActive ? 'Est' : '',
 			value: `$${formatNumber(property.listPrice)}`,
-			desc: 'Estimate Price',
+			desc: !property.isSold && !property.isActive ? 'Estimate Price' : '',
 		});
 	}
 	if (property.bed) {
@@ -76,16 +73,15 @@ export function mapPropertyToArticle(property) {
 	}
 	if (property.pricePerArea) {
 		attrs.push({
-			key: `/${property.areaUnit}`,
-			value: `${formatNumber(Math.round(property.pricePerArea))}`,
+			key: `$${formatNumber(Math.round(property.pricePerArea))}/${property.areaUnit}`,
 			desc: 'Price Per Sqft',
 		});
 	}
 
 	if (property.yearBuilt) {
 		attrs.push({
-			key: 'Yr',
-			value: property.yearBuilt,
+			key: `${property.yearBuilt} Yr`,
+			value: '',
 			desc: 'Year Built',
 		});
 	}

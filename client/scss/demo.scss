@@ -9,7 +9,7 @@
     --item-width: 260px;
 
     @media screen and (max-width: $screen-xs-max) {
-        --item-width: 260px;
+        --item-width: 280px;
     }
 
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
@@ -17,11 +17,11 @@
     }
 
     @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-        --item-width: 360px;
+        --item-width: 328px;
     }
 
     @media screen and (min-width: $screen-lg-min) {
-        --item-width: 400px;
+        --item-width: 329px;
     }
 
 

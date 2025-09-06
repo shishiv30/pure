@@ -88,9 +88,14 @@ export default {
 		}
 		//use api to fetch properties
 		if (geo) {
-			let soaPath = mapGeoToSOAPath(geo);
-			let properties = await fetchPropertiesFromSOA(soaPath);
-			articles = mapPropertiesToArticles(properties);
+			try {
+				let soaPath = mapGeoToSOAPath(geo);
+				let properties = await fetchPropertiesFromSOA(soaPath);
+				articles = mapPropertiesToArticles(properties);
+			} catch (error) {
+				console.error('Error fetching properties:', error);
+				articles = [];
+			}
 		}
 		let model = {
 			geo: geo,

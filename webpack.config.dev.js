@@ -25,6 +25,10 @@ export default (env) => {
 			port: 8080,
 			hot: true,
 			watchFiles: ['client/**/*'],
+			// Write files to disk so they're available to the Node server
+			devMiddleware: {
+				writeToDisk: true,
+			},
 			proxy: [
 				{
 					context: (pathname) => {

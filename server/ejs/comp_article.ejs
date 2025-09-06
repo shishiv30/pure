@@ -1,30 +1,34 @@
-<%if(article){%>
+<%_if(article){_%>
 <article>
   <a href="<%=article.href%>" data-id="<%= article.id%>">
       <address><%=article.title%></address>
   </a>
   <ul>
-        
-      <%if(article.attrs && article.attrs.length){%>
-        <%for(var i=0; i<article.attrs.length; i++){%>
-          <% const attr = article.attrs[i]; %>
-          <li>
-              <span class="<%=attr.className%>" ><%=attr.value%></span> <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
-          </li>
-        <%}%>
-      <%}%>
+    <%_if(article.attrs && article.attrs.length){_%>
+    <%_for(var i=0; i<article.attrs.length; i++){_%>
+    <%_ const attr = article.attrs[i]; _%>
+    <li>
+      <%_if(attr.value){_%>
+      <span <%if(attr.className){_%> class="<%=attr.className%>"<%_}_%>><%=attr.value%></span>
+      <%_}_%>
+      <%_if(attr.key){_%>
+      <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
+      <%_}_%>
+    </li>
+    <%_}_%>
+    <%_}_%>
   </ul>
   <figure>
       <img src="<%=article.img%>" alt="<%=article.imgAlt%>" loading="lazy">
       <figcaption><%=article.imgTag%></figcaption>
   </figure>
-  <%if(article.tags && article.tags.length){%>
-    <div class="tags">
-      <%for(var i=0; i<article.tags.length; i++){%>
-        <% const tag = article.tags[i]; %>
-        <span class="tag <%=tag.className%>"><%=tag.text%></span>
-      <%}%>
-    </div>
-  <%}%>
+  <%_if(article.tags && article.tags.length){_%>
+  <div class="tags">
+    <%_for(var i=0; i<article.tags.length; i++){_%>
+    <%_ const tag = article.tags[i]; _%>
+    <span class="tag<%=tag.className ? ' ' + tag.className : ''%>"><%=tag.text%></span>
+    <%_}_%>
+  </div>
+  <%_}_%>
 </article>
-<%}%>
+<%_}_%>

@@ -279,17 +279,35 @@ npm install
 
 ## Development
 
-### Client-Side Development
-Start the development server with hot-reload:
+### Full Development Environment
+Start both client and server with hot-reload and auto-restart:
 ```bash
 npm run dev
 ```
+This runs:
+- Webpack dev server (port 8080) with hot-reload
+- Node server (port 3000) with nodemon auto-restart
 
-### Server-Side Development
-Start the backend server with auto-reload:
+### Client-Side Only
+Start only the webpack dev server:
 ```bash
-npm run server
+npm run dev:client
 ```
+
+### Server-Side Only
+Start only the Node server:
+```bash
+npm run dev:server
+```
+
+### Development Build
+Build and serve static files:
+```bash
+npm run build:dev
+```
+This runs:
+- Webpack build process
+- Node server serving static files
 
 ### API Documentation
 After starting the server, you can access:
@@ -298,22 +316,17 @@ After starting the server, you can access:
 
 ## Building
 
-### Development Build
-```bash
-npm run build
-```
-
 ### Production Build
 ```bash
-npm run prod
+npm run build:prod
 ```
 
 ## Deployment
 
 To deploy a new version:
 ```bash
-npm run prod    # Build for production
-npm run deploy  # Deploy to GitHub Pages
+npm run build:prod  # Build for production
+npm run deploy      # Deploy to GitHub Pages
 ```
 
 ## Project Structure

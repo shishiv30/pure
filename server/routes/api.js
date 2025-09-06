@@ -199,7 +199,7 @@ router.get('/geo', async (req, res) => {
  *       - Properties
  *     externalDocs:
  *       description: SOA API Documentation
- *       url:apiDomain/widget/api/nearbyhomes/
+ *       url: apiDomain/widget/api/nearbyhomes/
  */
 router.get('/properties/:path(*)', async (req, res) => {
 	try {

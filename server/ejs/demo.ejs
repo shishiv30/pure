@@ -25,18 +25,18 @@
     </div>
   </section>
 
-  <%if(data.articles && data.articles.length){%>
+  <%_if(data.articles && data.articles.length){_%>
   <section class="result">
     <ul>
-      <%for(var i=0; i<data.articles.length; i++){%>
+      <%_for(var i=0; i<data.articles.length; i++){_%>
         <li class="item">
-          <% const article=data.articles[i]; %>
-            <%- include('comp_article', {article: article}) %>
+          <%_ const article=data.articles[i]; _%>
+          <%- include('comp_article', {article: article}) %>
         </li>
-      <%}%>
+      <%_}_%>
     </ul>
   </section>
-  <%}%>
+  <%_}_%>
   <%- include('html_menu') %>
   <%- include('html_footer') %>
 <%- include('html_below') %>

@@ -1,10 +1,10 @@
   </body>
-  <%if(data){%>
+  <%_if(data){_%>
     <script>
       window.context = <%- JSON.stringify(data) %>;
     </script>
-    <%}%>
-  <%if(meta.js){%>
+    <%_}_%>
+  <%_if(meta.js){_%>
     <script src="<%=meta.js%>"></script>
-  <%}%>
+  <%_}_%>
 </html>

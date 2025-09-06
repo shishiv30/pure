@@ -16,6 +16,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set('views', path.join(__dirname, './ejs'));
 app.set('view engine', 'ejs');
+// app.set('view options', { rmWhitespace: true });
+
 /* swagger */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
