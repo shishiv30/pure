@@ -76,6 +76,7 @@ export async function initialGeoData() {
 				name: e.state_name,
 				lat: e.lat,
 				lng: e.lng,
+				input: `${e.state_id} ${e.state_name}`,
 				population: e.population,
 			};
 		})
@@ -94,6 +95,7 @@ export async function initialGeoData() {
 				lat: e.lat,
 				lng: e.lng,
 				id: e.county_fips,
+				input: `${e.county_ascii} ${e.state_id}`,
 				population: e.population,
 			};
 		})
@@ -114,6 +116,7 @@ export async function initialGeoData() {
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,
+				input: `${e.city_ascii} ${e.state_id}`,
 				population: e.population,
 			};
 		})
@@ -128,12 +131,12 @@ export async function initialGeoData() {
 			let item = {
 				type: geoType.neighborhood,
 				neighborhood: e.neighborhood_ascii,
-				neighborhoodFull: `${e.neighborhood_ascii}, ${e.state_id}`,
 				city: matchedCity.city,
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,
 				id: e.id,
+				input: `${e.neighborhood_ascii} ${matchedCity.city} ${e.state_id}`,
 			};
 			item.population = matchedCity.population;
 			item.path = getNeighborhoodPath(e.neighborhood_ascii, matchedCity.city, e.state_id);
@@ -155,6 +158,7 @@ export async function initialGeoData() {
 				state: e.state_id,
 				lat: e.lat,
 				lng: e.lng,
+				input: `${e.zip} ${e.state_id}`,
 				population: e.population,
 			};
 		})

@@ -61,11 +61,11 @@ export default {
 		};
 
 		let _getSuggestion = function () {
-			let value = $el.value.trim();
-			if (value.length === 0) {
+			if (!$el || !$el.value || $el.value.trim() === '') {
 				return;
 			}
 
+			let value = $el.value;
 			if (opt.timer) {
 				clearTimeout(opt.timer);
 			}

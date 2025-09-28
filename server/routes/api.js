@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import BaseController from '../controllers/basecontroller.js';
-import { fetchPropertiesFromSOA } from '../configs/demo.js';
+import { fetchPropertiesFromSOA, fetchPropertiesImagesFromSOA } from '../configs/demo.js';
 import { mapGeoPathToSOAPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
 
@@ -17,17 +17,32 @@ import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
  *         schema:
  *           type: string
  *           enum: [state, city, county, zipcode, neighborhood]
+ *         examples:
+ *           type:
+ *             summary: Type of geo information
+ *             value: city
+ *             description: Type of geo information
  *         description: Type of geo information
  *       - in: query
  *         name: text
  *         schema:
  *           type: string
+ *         examples:
+ *           text:
+ *             summary: Search text
+ *             value: round-rock
+ *             description: Search text for the geo information
  *         description: Search text
  *       - in: query
  *         name: size
  *         schema:
  *           type: integer
  *           default: 10
+ *         examples:
+ *           size:
+ *             summary: Number of results
+ *             value: 10
+ *             description: Number of results
  *         description: Number of results
  *     responses:
  *       200:
@@ -72,6 +87,8 @@ import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
  *                 cost:
  *                   type: integer
  *                   example: 58
+ *     tags:
+ *       - Geo
  */
 router.get('/geo', async (req, res) => {
 	//get current router is get or post or put or delete
@@ -175,31 +192,8 @@ router.get('/geo', async (req, res) => {
  *                           type: string
  *                           example: "Estimate Price"
  *                     description: Property attributes (price, beds, baths, sqft, price per sqft)
- *       400:
- *         description: Invalid path parameter or mapping error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Invalid path format"
- *       500:
- *         description: Server error or invalid response from SOA API
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Invalid response from SOA API"
  *     tags:
  *       - Properties
- *     externalDocs:
- *       description: SOA API Documentation
- *       url: apiDomain/widget/api/nearbyhomes/
  */
 router.get('/properties/:path(*)', async (req, res) => {
 	try {
@@ -209,6 +203,53 @@ router.get('/properties/:path(*)', async (req, res) => {
 		const properties = await fetchPropertiesFromSOA(soaPath);
 		const articles = mapPropertiesToArticles(properties);
 		res.json(articles);
+	} catch (error) {
+		console.error('Error fetching properties:', error);
+		res.status(500).json({ error: 'Internal server error' });
+	}
+});
+
+/**
+ * @swagger
+ * /properties-images/{url}:
+ *   get:
+ *     summary: Get properties images by url
+ *     description: Retrieve property images from SOA API based on url.
+ *     parameters:
+ *       - in: path
+ *         name: url
+ *         required: true
+ *         examples:
+ *           url:
+ *             summary: Url encoded
+ *             value: austin-tx%2F4831-trail-crest-cir-austin-tx-78735%2Fpid_u0y0bh54nh%2F
+ *             description: encoded Url of the property
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of properties images
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 properties:
+ *                   path:
+ *                     type: string
+ *                     description: Image path
+ *     tags:
+ *       - Properties
+ */
+router.get('/properties-images/:url(*)', async (req, res) => {
+	try {
+		const { url } = req.params;
+		if (!url) {
+			throw new Error('Url is required');
+		}
+		const imageUrls = await fetchPropertiesImagesFromSOA(url);
+		res.json(imageUrls);
 	} catch (error) {
 		console.error('Error fetching properties:', error);
 		res.status(500).json({ error: 'Internal server error' });

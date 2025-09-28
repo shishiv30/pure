@@ -30,6 +30,42 @@ export async function fetchPropertiesFromSOA(soaPath) {
 		return [];
 	}
 }
+export async function fetchPropertiesImagesFromSOA(url) {
+	try {
+		if (!url) {
+			throw new Error('Url is required');
+		}
+		const response = await fetch(
+			`${config.soaApiDomain}/api/v/property/photo/?url=${encodeURIComponent(url)}`,
+		);
+		if (!response.ok) {
+			throw new Error(`SOA API request failed: ${response.status} ${response.statusText}`);
+		}
+		const result = await response.json();
+		let images = [];
+		if (result.data && result.data.length > 0) {
+			images = result.data.reduce((acc, curr) => {
+				if (curr.photos && curr.photos.length > 0) {
+					let urls = curr.photos.map((e) => {
+						let url = e.url;
+						if (/.webp$/.test(url)) {
+							url = url.replace(/(_[a-z])?.webp$/, '_p.webp');
+						}
+						return url;
+					});
+					acc = acc.concat(urls);
+				}
+				return acc;
+			}, []);
+		} else {
+			throw new Error('No images found, result:', result);
+		}
+		return images;
+	} catch (error) {
+		console.error('Error fetching properties:', error);
+		return [];
+	}
+}
 
 export default {
 	name: 'demo',

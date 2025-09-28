@@ -21,6 +21,13 @@ export default {
 					return;
 				}
 
+				//remove  unnecessary spaces and characters
+				text = text.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/, ' ');
+
+				if (text.length >= 2 && /^[A-Z]{2}\s/.test(text)) {
+					text = text.replace(/^([A-Z]{2})\s(.*)/, '$2 $1');
+				}
+
 				// Set default type if not provided
 				if (!type) {
 					type = geoType.city;

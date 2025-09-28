@@ -3,7 +3,16 @@ import { geoType } from '../helpers/geo.js';
 
 export function initialFuseState(state) {
 	globalThis[geoType.state] = new Fuse(state, {
-		keys: ['state', 'path'],
+		keys: [
+			{
+				name: 'state',
+				weight: 0.5,
+			},
+			{
+				name: 'name',
+				weight: 0.5,
+			},
+		],
 		threshold: 0.1,
 	});
 	return globalThis[geoType.state];
@@ -14,8 +23,12 @@ export function initialFuseCity(city) {
 		return globalThis[geoType.city];
 	}
 	globalThis[geoType.city] = new Fuse(city, {
-		keys: ['city'],
+		keys: ['input'],
 		threshold: 0.1,
+		includeScore: true,
+		ignoreLocation: true,
+		findAllMatches: true,
+		limit: 10, // Limit to 10 results
 	});
 	return globalThis[geoType.city];
 }
@@ -25,8 +38,24 @@ export function initialFuseCounty(county) {
 		return globalThis[geoType.county];
 	}
 	globalThis[geoType.county] = new Fuse(county, {
-		keys: ['county'],
-		threshold: 0.1,
+		keys: [
+			{
+				name: 'input',
+				weight: 0.8,
+			},
+			{
+				name: 'county',
+				weight: 0.15,
+			},
+			{
+				name: 'state',
+				weight: 0.05,
+			},
+		],
+		threshold: 0.3,
+		includeScore: true,
+		ignoreLocation: true,
+		findAllMatches: true,
 	});
 	return globalThis[geoType.county];
 }
@@ -36,8 +65,20 @@ export function initialFuseZipcode(zipcode) {
 		return globalThis[geoType.zipcode];
 	}
 	globalThis[geoType.zipcode] = new Fuse(zipcode, {
-		keys: ['zipcode'],
-		threshold: 0.1,
+		keys: [
+			{
+				name: 'input',
+				weight: 0.8,
+			},
+			{
+				name: 'zipcode',
+				weight: 0.2,
+			},
+		],
+		threshold: 0.3,
+		includeScore: true,
+		ignoreLocation: true,
+		findAllMatches: true,
 	});
 	return globalThis[geoType.zipcode];
 }
@@ -58,8 +99,28 @@ export function initialFuseNeighborhood(neighborhood) {
 		return globalThis[geoType.neighborhood];
 	}
 	globalThis[geoType.neighborhood] = new Fuse(neighborhood, {
-		keys: ['neighborhoodFull'],
-		threshold: 0.1,
+		keys: [
+			{
+				name: 'input',
+				weight: 0.6,
+			},
+			{
+				name: 'neighborhood',
+				weight: 0.2,
+			},
+			{
+				name: 'city',
+				weight: 0.1,
+			},
+			{
+				name: 'state',
+				weight: 0.1,
+			},
+		],
+		threshold: 0.3,
+		includeScore: true,
+		ignoreLocation: true,
+		findAllMatches: true,
 	});
 	return globalThis[geoType.neighborhood];
 }
@@ -85,7 +146,7 @@ export function initialFuseGeo({ state, city, county, zipcode, address, neighbor
 	// }
 }
 
-export function searchGeo(query, type) {
+export function searchGeo(query, type, limit = 10) {
 	try {
 		// Validate inputs
 		if (!query || typeof query !== 'string') {
@@ -114,7 +175,8 @@ export function searchGeo(query, type) {
 			return [];
 		}
 
-		return result;
+		// Apply limit
+		return result.slice(0, limit);
 	} catch (error) {
 		console.error('searchGeo: Unexpected error', error);
 		return [];
