@@ -33,7 +33,11 @@ app.use((req, res, next) => {
 /* routes */
 app.use(
 	cors({
-		origin: 'http://localhost:8080',
+		origin: [
+			`http://${config.domain}:${config.webpackDevServerPort}`,
+			`http://${config.domain}:${config.port}`,
+			`http://${config.domain}:3001`,
+		],
 	}),
 );
 app.use('/', pageRouter);

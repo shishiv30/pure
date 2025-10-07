@@ -2,16 +2,17 @@ import baseConfig from './webpack.config.base.js';
 import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import config from './server/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default (env) => {
-	var config = baseConfig(env);
-	return merge(config, {
-		mode: 'development',
-		devtool: 'source-map',
-		stats: { warnings: false },
+	var baseWebpackConfig = baseConfig(env);
+	return merge(baseWebpackConfig, {
+		mode: config.webpackMode,
+		devtool: config.webpackDevtool,
+		stats: config.webpackStats === 'minimal' ? { warnings: false } : 'normal',
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].min.js',
@@ -22,8 +23,9 @@ export default (env) => {
 				directory: path.join(__dirname, 'dist'),
 			},
 			compress: true,
-			port: 8080,
-			hot: true,
+			port: config.webpackDevServerPort,
+			host: config.webpackDevServerHost,
+			hot: config.webpackHotReload,
 			watchFiles: ['client/**/*'],
 			// Write files to disk so they're available to the Node server
 			devMiddleware: {
@@ -40,7 +42,7 @@ export default (env) => {
 						// Don't proxy files with extensions or webpack dev server assets
 						return !hasExtension && !isWebpackAsset;
 					},
-					target: 'http://localhost:3000',
+					target: config.appUrl,
 					changeOrigin: true,
 				},
 			],

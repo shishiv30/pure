@@ -30,7 +30,7 @@ import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
  *         examples:
  *           text:
  *             summary: Search text
- *             value: round-rock
+ *             value: round rock
  *             description: Search text for the geo information
  *         description: Search text
  *       - in: query

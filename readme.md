@@ -311,15 +311,61 @@ This runs:
 
 ### API Documentation
 After starting the server, you can access:
-- API Documentation: `http://localhost:3000/api-docs`
-- Search Page: `http://localhost:3000/demo/ca/san-jose`
+- API Documentation: `http://localhost:3000/api-docs` (or `http://localhost:3002/api-docs` for Docker)
+- Search Page: `http://localhost:3000/demo/ca/san-jose` (or `http://localhost:3002/demo/ca/san-jose` for Docker)
 
 ## Building
+
+### Local Development Build
+Build and serve with hot reload:
+```bash
+npm run build:dev
+```
+This runs:
+- Webpack build process (development mode)
+- Node server serving static files
+- Concurrent execution for faster development
 
 ### Production Build
 ```bash
 npm run build:prod
 ```
+Creates optimized production build with:
+- Minified assets
+- Optimized bundles
+- Production configuration
+
+### Docker Development
+Run in Docker container (auto-rebuilds with no cache):
+```bash
+npm run build-docker:dev
+```
+Access at: `http://localhost:3002`
+
+### Docker Production
+Run production build in Docker:
+```bash
+npm run build-docker:prod
+```
+Access at: `http://localhost:3002`
+
+### Docker Quick Start
+Simple Docker setup:
+```bash
+./run-docker.sh
+```
+
+## Available Scripts
+
+| Command | Description | Port | Cache |
+|---------|-------------|------|-------|
+| `npm run dev` | Development with hot reload | 3000 | - |
+| `npm run build:dev` | Local development build | 3000 | - |
+| `npm run build:prod` | Production build | - | - |
+| `npm run build-docker:dev` | Docker development (auto-rebuild) | 3002 | No cache |
+| `npm run build-docker:prod` | Docker production | 3002 | - |
+| `npm run clean` | Clean dist folder | - | - |
+| `npm run start` | Start production server | 3000 | - |
 
 ## Deployment
 

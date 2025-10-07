@@ -2,7 +2,7 @@ import baseConfig from './webpack.config.base.js';
 import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import serverConfig from './server/config.js';
+import config from './server/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,15 +11,22 @@ import WebpackPwaManifest from 'webpack-pwa-manifest';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
 export default (env) => {
-	console.log('deploy:', env.deploy);
-	const publicPath = env.deploy ? 'https://shishiv30.github.io/pure/' : `${serverConfig.cdnUrl}/`;
+	// console.log('deploy:', env.deploy);
+	//list all the environment variables
+	console.log('environment variables:', env);
+	const publicPath = `${config.cdnUrl}/`;
 	return merge(baseConfig(env), {
-		mode: 'production',
+		mode: config.webpackMode,
+		devtool: config.webpackDevtool,
+		stats: config.webpackStats,
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].min.js',
 			publicPath: publicPath,
 			clean: true,
+		},
+		optimization: {
+			minimize: config.webpackMinimize,
 		},
 		// recordsPath: path.join(__dirname, 'records.json'),
 		plugins: [
@@ -43,6 +50,6 @@ export default (env) => {
 			new WorkboxPlugin.InjectManifest({
 				swSrc: './sw.js',
 			}),
-		]
+		],
 	});
 };

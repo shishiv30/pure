@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import config from './config.js';
 
 const options = {
 	definition: {
@@ -10,7 +11,7 @@ const options = {
 		},
 		servers: [
 			{
-				url: 'http://localhost:3000/api', // Base URL of your API
+				url: `${config.appUrl}/api`, // Dynamic URL based on config
 			},
 		],
 	},

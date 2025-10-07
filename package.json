@@ -6,12 +6,18 @@
 	"type": "module",
 	"scripts": {
 		"dev:client": "webpack-dev-server --config webpack.config.dev.js --open",
-		"dev:server": "node server/app.js",
-		"dev": "concurrently \"webpack-dev-server --config webpack.config.dev.js\" \"nodemon server/app.js\"",
-		"build:dev": "concurrently \"webpack --config webpack.config.build.js --env dev\" \"node server/app.js\"",
-		"build:prod": "webpack --config webpack.config.build.js --env production --env deploy",
+		"dev:server": "NODE_ENV=development node server/app.js",
+		"dev": "NODE_ENV=development concurrently \"webpack-dev-server --config webpack.config.dev.js\" \"nodemon server/app.js\"",
+		"build:dev": "NODE_ENV=development concurrently \"webpack --config webpack.config.build.js --env dev\" \"node server/app.js\"",
+		"build:prod": "NODE_ENV=production webpack --config webpack.config.build.js --env production",
+		"build-docker:dev": "NODE_ENV=development ./run-docker.sh",
+		"build-docker:prod": "NODE_ENV=production ./run-docker.sh",
+		"start": "NODE_ENV=production node server/app.js",
 		"deploy": "node deploy",
-		"test": "node test-geo-mapping.js && node test-auto-detection.js"
+		"test": "node test-geo-mapping.js && node test-auto-detection.js",
+		"lint": "echo 'Add your linting command here'",
+		"clean": "rm -rf dist",
+		"prebuild": "npm run clean"
 	},
 	"repository": {
 		"type": "git",

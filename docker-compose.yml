@@ -1,0 +1,14 @@
+services:
+  pure-ui:
+    build: .
+    ports:
+      - "${DOCKER_PORT}:${PORT}"
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+      - DOCKER_PORT=${DOCKER_PORT}
+      - CDN_URL=${CDN_URL}
+    volumes:
+      - ./dist:/app/dist
+    restart: unless-stopped

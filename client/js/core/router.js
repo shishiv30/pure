@@ -80,7 +80,7 @@ export class Router {
 	}
 
 	async loading(to) {
-		if (to.rule && to.rule.loading) {
+		if (to && to.rule && to.rule.loading) {
 			let res = await to.rule.loading(to, this.currentRouter);
 			if (res) {
 				return res;
@@ -124,6 +124,9 @@ export class Router {
 		if (!toRule) {
 			if (pathname) {
 				//if pathname is not a rule, redirect to the pathname
+				if (window.location.pathname === pathname) {
+					return;
+				}
 				window.location.href = pathname;
 			} else {
 				throw new Error('No rule found for path: ' + pathname);
