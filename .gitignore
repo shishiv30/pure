@@ -5,3 +5,4 @@ records.json
 report.html
 /dist
 /client/assets/video
+*.env

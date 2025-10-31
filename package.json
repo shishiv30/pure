@@ -16,6 +16,8 @@
 		"deploy": "node deploy",
 		"test": "node test-geo-mapping.js && node test-auto-detection.js",
 		"lint": "echo 'Add your linting command here'",
+		"review": "cursor-agent --force --output-format=text --print 'Review the uncommitted changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursorrules. Provide concise, actionable feedback.'",
+		"review:staged": "cursor-agent --force --output-format=text --print 'Review the staged changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursorrules. Provide concise, actionable feedback.'",
 		"clean": "rm -rf dist",
 		"prebuild": "npm run clean"
 	},

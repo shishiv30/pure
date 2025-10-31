@@ -366,6 +366,72 @@ Simple Docker setup:
 | `npm run build-docker:prod` | Docker production | 3002 | - |
 | `npm run clean` | Clean dist folder | - | - |
 | `npm run start` | Start production server | 3000 | - |
+| `npm run review` | Review uncommitted changes with Cursor CLI | - | - |
+| `npm run review:staged` | Review staged changes with Cursor CLI | - | - |
+
+## Code Review
+
+This project supports automated code reviews using Cursor CLI. The review system focuses on code quality, best practices, potential bugs, and adherence to project standards.
+
+### Local Code Review
+
+Review your uncommitted changes:
+```bash
+npm run review
+```
+
+Review only staged changes:
+```bash
+npm run review:staged
+```
+
+### Automated PR Reviews
+
+The project includes a GitHub Actions workflow (`.github/workflows/cursor-code-review.yml`) that automatically reviews pull requests. The workflow:
+
+- Runs on PR events (opened, synchronized, reopened, ready for review)
+- Reviews code changes and provides inline feedback
+- Focuses on critical issues with concise, actionable comments
+- Uses emojis to categorize feedback (🚨 Critical, 🔒 Security, ⚡ Performance, ⚠️ Logic, ✨ Improvement)
+
+### Configuration
+
+The code review behavior is configured in `.cursor/cli.json`:
+- Limits agent permissions to prevent unwanted repository changes
+- Configures review settings (max comments, focus on critical issues)
+- Ensures reviews follow project coding standards
+
+### Setup Requirements
+
+For automated PR reviews to work, you need to:
+
+1. **Get your CURSOR_API_KEY**:
+   - Log in to your Cursor account at [cursor.com](https://cursor.com)
+   - Navigate to **Settings** → **Integrations** (or Account Settings)
+   - Go to **User API Keys** section
+   - Click **Generate New API Key** (or create one if you don't have any)
+   - Copy the generated API key
+
+2. **Set up for local use** (optional):
+   ```bash
+   export CURSOR_API_KEY=your_api_key_here
+   ```
+   Or add it to your `~/.zshrc` or `~/.bashrc` for persistence:
+   ```bash
+   echo 'export CURSOR_API_KEY=your_api_key_here' >> ~/.zshrc
+   ```
+
+3. **Set up for GitHub Actions**:
+   - Go to your GitHub repository → **Settings** → **Secrets and variables** → **Actions**
+   - Click **New repository secret**
+   - Name: `CURSOR_API_KEY`
+   - Value: Paste your API key
+   - Click **Add secret**
+
+4. **Enable GitHub Actions permissions**:
+   - Ensure the repository has pull request write permissions enabled for GitHub Actions
+   - Go to **Settings** → **Actions** → **General** → **Workflow permissions**
+   - Select **Read and write permissions**
 
 ## Deployment
 
