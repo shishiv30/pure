@@ -12,6 +12,9 @@ export async function fetchPropertiesFromSOA(soaPath) {
 		if (!soaPath) {
 			throw new Error('Path is required');
 		}
+		if (!config.soaApiDomain) {
+			throw new Error('SOA API domain is required');
+		}
 
 		const response = await fetch(`${config.soaApiDomain}/widget/api/nearbyhomes/${soaPath}`);
 

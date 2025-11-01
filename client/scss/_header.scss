@@ -10,12 +10,6 @@
 
 	background-color: var(--header-color-bg);
 	color: var(--header-color);
-
-	&.active {
-		color: var(--header-color-active);
-		background-color: var(--header-color-active-bg);
-	}
-
 	position: relative;
 	width: 100%;
 	display: flex;
@@ -23,6 +17,50 @@
 	transition: transform 0.5s;
 	transform: translateY(0%);
 	z-index: $ui-header-index;
+
+	.header-bar {
+		.input {
+			--input-color: var(--header-color);
+			--input-color-bg: var(--header-color-bg);
+			--input-color-border: var(--header-color-border);
+			border-left: 1px solid var(--color-l1);
+			border-right: 1px solid var(--color-l1);
+
+			input {
+				box-shadow: none;
+				border-radius: 0;
+				border: none;
+			}
+		}
+
+		.btn {
+			--btn-color: var(--header-color);
+			--btn-color-bg: var(--header-color-bg);
+			--btn-color-border: var(--header-color-border);
+			--btn-color-hover: var(--header-color-hover);
+			--btn-color-bg-hover: var(--header-color-bg-hover);
+			--btn-color-border-hover: var(--header-color-border-hover);
+		}
+	}
+
+	&.active {
+		color: var(--header-color-active);
+		background-color: var(--header-color-active-bg);
+
+		.header-bar {
+			.input {
+				--input-color: var(--header-color-active);
+				--input-color-bg: var(--header-color-active-bg);
+				--input-color-border: var(--header-color-active-border);
+			}
+
+			.btn {
+				--btn-color: var(--header-color-active);
+				--btn-color-bg: var(--header-color-active-bg);
+				--btn-color-border: var(--header-color-active-border);
+			}
+		}
+	}
 
 	&.header-close {
 		transform: translateY(-100%);
@@ -59,16 +97,6 @@
 		width: 100%;
 		min-width: 1px;
 		flex-shrink: 1;
-	}
-
-	.input {
-		input {
-			box-shadow: none;
-			border-radius: 0;
-			background-color: rgba(255, 255, 255, 0.05);
-			border-color: transparent;
-			color: inherit;
-		}
 	}
 }
 

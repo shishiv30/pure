@@ -53,14 +53,14 @@
 		}
 
 		>input {
-			padding-top: calc(var(--g2) + var(--font-size-5));
+			padding-top: var(--font-size-5);
 			padding-bottom: var(--g0);
 		}
 
 		&.small {
 			&.input {
 				>input {
-					padding-top: var(--font-size-5);
+					padding-top: var(--font-size-6);
 					padding-bottom: 0;
 				}
 
@@ -134,11 +134,6 @@
 	}
 
 	&.focus {
-
-		input,
-		textarea {
-			color: inherit;
-		}
 
 		.input,
 		.textarea {

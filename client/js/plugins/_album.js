@@ -1,7 +1,10 @@
 import { trigger, emit, on, off } from '../core/event.js';
 import { stringToObj } from '../convert.js';
-import { set, update } from 'lodash';
-
+const ImgStatus = {
+	INIT: 0,
+	LOADING: 1,
+	LOADED: 2,
+};
 let _getNextIndex = function (index, length) {
 	if (index === length - 1) {
 		return 0;
@@ -57,10 +60,21 @@ export default {
 		throttle: 50,
 		alt: '',
 	},
-	init($el, opt, exportOb) {
+	async init($el, opt, exportOb) {
+		if (opt.imagesUrl) {
+			//fetch images from url
+			try {
+				const response = await fetch(opt.imagesUrl);
+				opt.images = await response.json();
+			} catch (error) {
+				console.error('Error fetching images:', error);
+				return;
+			}
+		}
 		if (!opt.images) {
 			return;
 		}
+
 		opt.images = stringToObj(opt.images);
 		let length = opt.images.length;
 		if (length <= 1) {
@@ -75,7 +89,7 @@ export default {
 		let currentImg = $el.querySelector('img');
 		if (currentImg) {
 			opt.imgIndex = opt.images.findIndex((img) => currentImg.src.indexOf(img) > -1);
-			if (currentImg.alt && opt.alt === '') {
+			if (currentImg.alt && !opt.alt) {
 				opt.alt = currentImg.alt;
 			}
 			if (opt.imgIndex < 0) {
@@ -168,16 +182,13 @@ export default {
 				if (active) {
 					active.classList.remove('active');
 				}
-				let current = $el.querySelector(
-					`.album-processing > button[data-index="${opt.imgIndex}"]`,
-				);
+				let current = $el.querySelector(`.album-processing > button[data-index="${opt.imgIndex}"]`);
 				if (current) {
 					current.classList.add('active');
 				}
 				if (current) {
 					let process = $el.querySelector('.album-processing');
-					let offset =
-						current.offsetLeft - process.clientWidth / 2 + current.clientWidth / 2;
+					let offset = current.offsetLeft - process.clientWidth / 2 + current.clientWidth / 2;
 					process.scrollTo({
 						left: offset,
 						behavior: 'smooth',
@@ -215,6 +226,7 @@ export default {
 				length,
 			);
 		}
+
 		function prev() {
 			//update image
 			opt.nextIndex = opt.imgIndex;
@@ -245,8 +257,10 @@ export default {
 				length,
 			);
 		}
-		let isTouchScreen = window.ontouchstart !== undefined;
-		let onStart = isTouchScreen
+		//how to check if the device has mouse or touch pad
+		let isOnlyTouchScreen =
+			window.ontouchstart !== undefined && window.matchMedia('(hover: hover)').matches === false;
+		let onStart = isOnlyTouchScreen
 			? (e) => {
 					let touch = e.touches[0];
 					clearTimeout(timer);
@@ -263,8 +277,9 @@ export default {
 					width = $list.clientWidth;
 					reset();
 					touchStart = e.clientX;
+					touchStartY = e.clientY;
 			  };
-		let onMove = isTouchScreen
+		let onMove = isOnlyTouchScreen
 			? (e) => {
 					if ($list.style.transition) {
 						$list.style.transition = 'none';
@@ -274,6 +289,8 @@ export default {
 					timer = requestAnimationFrame(() => {
 						let touch = e.touches[0];
 						deltaX = touch.clientX - touchStart;
+						//base on deltaX, to get a percentage of the animation
+						let percentage = (deltaX / width) * 100;
 						$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
 					});
 			  }
@@ -291,7 +308,7 @@ export default {
 						$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
 					});
 			  };
-		let onEnd = isTouchScreen
+		let onEnd = isOnlyTouchScreen
 			? (e) => {
 					if (!touchStart) {
 						return;
@@ -339,7 +356,7 @@ export default {
 						reset();
 					}, opt.duration * 1100);
 			  };
-		if (isTouchScreen) {
+		if (isOnlyTouchScreen) {
 			$list.addEventListener('touchstart', (e) => {
 				onStart(e);
 			});
@@ -348,10 +365,12 @@ export default {
 				if (e.touches.length === 1 && touchStart && touchStartY) {
 					const dx = Math.abs(e.touches[0].clientX - touchStart);
 					const dy = Math.abs(e.touches[0].clientY - touchStartY);
-					if (dx > dy) {
+					//after I get horizontal move and vertical move, I need to check if user want to scroll
+					if (dx > dy && dy < 150) {
 						e.preventDefault();
 						onMove(e);
 					} else {
+						//check why need to reset touchStart and touchStartY
 						touchStart = null;
 						touchStartY = null;
 					}

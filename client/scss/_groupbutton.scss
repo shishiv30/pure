@@ -59,15 +59,4 @@
 		display: none;
 	}
 
-	&.large {
-		>label span {
-			@include form-large-1();
-		}
-	}
-
-	&.small {
-		>label span {
-			@include form-small();
-		}
-	}
 }
