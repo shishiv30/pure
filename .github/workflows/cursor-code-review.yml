@@ -50,7 +50,7 @@ jobs:
           Procedure:
           - Get existing comments: gh pr view --json comments
           - Get diff: gh pr diff
-          - Get changed files with patches to compute inline positions: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --paginate --jq ''.[] | {filename,patch}''
+          - Get changed files with patches to compute inline positions: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --paginate --jq '.[] | {filename: .filename, patch: .patch}'
           - If a previously reported issue appears resolved by nearby changes, respond: ✅ This issue appears resolved by recent changes
           - Avoid duplicates: skip commenting if similar feedback already exists on or near the same lines
 
@@ -64,6 +64,6 @@ jobs:
           - Submit one review containing inline comments plus a concise summary
           - Use the GitHub Reviews API to ensure comments are inline:
             - Build a JSON array of comments like: [{ "path": "<file>", "position": <diff_position>, "body": "..." }]
-            - Submit via: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews -f event=COMMENT -f body="$SUMMARY" -f comments=''[$COMMENTS_JSON]''
+            - Submit via: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews -f event=COMMENT -f body="$SUMMARY" -f comments="[$COMMENTS_JSON]"
           - Do NOT use: gh pr review --approve or --request-changes
           '
