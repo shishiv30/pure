@@ -73,6 +73,9 @@ jobs:
             - Obvious logic errors with incorrect behavior
             - Clear performance anti-patterns with measurable impact
             - Definitive security vulnerabilities
+            - Typos and spelling errors in visible content
+            - Code quality issues and best practice violations
+            - Potential bugs and edge cases
           - Avoid duplicates: skip if similar feedback already exists on or near the same lines.
 
           Commenting rules:
