@@ -373,6 +373,10 @@ Simple Docker setup:
 
 This project supports automated code reviews using Cursor CLI. The review system focuses on code quality, best practices, potential bugs, and adherence to project standards.
 
+**Note**: Code review is different from `npm run test`:
+- `npm run test`: Runs automated tests (pass/fail)
+- `npm run review`: AI-powered code review (actionable feedback, suggestions, quality checks)
+
 ### Local Code Review
 
 Review your uncommitted changes:
@@ -390,9 +394,14 @@ npm run review:staged
 The project includes a GitHub Actions workflow (`.github/workflows/cursor-code-review.yml`) that automatically reviews pull requests. The workflow:
 
 - Runs on PR events (opened, synchronized, reopened, ready for review)
-- Reviews code changes and provides inline feedback
+- Reviews cdoe changes and provides **inline comments directly on the PR**
+- Uses GitHub Reviews API to post comments on specific lines
 - Focuses on critical issues with concise, actionable comments
 - Uses emojis to categorize feedback (🚨 Critical, 🔒 Security, ⚡ Performance, ⚠️ Logic, ✨ Improvement)
+
+**Key difference from `npm run test`**:
+- `test` → Automated pass/fail checks
+- `review` → AI analyzes code quality and posts feedback as PR comments
 
 ### Configuration
 
