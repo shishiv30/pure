@@ -1,3 +1,4 @@
+@include comp-color('input');
 @include comp-size('input');
 
 .input {
@@ -11,7 +12,6 @@
 		appearance: none;
 		background: transparent;
 		cursor: pointer;
-		background: var(--color-bg);
 
 		&[disabled] {
 			color: var(--color-l1);
@@ -37,6 +37,8 @@
 		padding: var(--input-gap) var(--g2);
 		min-width: var(--input-size);
 		line-height: var(--input-line-height);
+		color: var(--input-color);
+		background-color: var(--input-color-bg);
 	}
 
 	>i,
@@ -54,9 +56,10 @@
 		padding-top: 0;
 		padding-bottom: 0;
 	}
+
 	>.btn {
-		background-color: inherit;
-		color: inherit;
+		background-color: var(--input-color-bg);
+		color: var(--input-color);
 		border-color: transparent;
 		box-shadow: none;
 		border-radius: 0;
@@ -140,4 +143,5 @@
 			color: var(--color-danger-l1);
 		}
 	}
+
 }

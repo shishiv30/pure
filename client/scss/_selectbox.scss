@@ -5,7 +5,7 @@
 	position: relative;
 	background: var(--color-bg);
 	width: 100%;
-	border-radius: calc(var(--selectbox-size) / 2);
+	border-radius: 0;
 	color: var(--selectbox-color);
 	background-color: var(--selectbox-color-bg);
 	box-shadow: inset 0 0 0 var(--selectbox-border-weight) var(--selectbox-color-border);
@@ -18,7 +18,7 @@
 
 	>label {
 		position: absolute;
-		top: var(--gxs);
+		top: var(--g0);
 		left: var(--g2);
 		color: var(--color-l1);
 		font-size: var(--font-size-7);
@@ -31,7 +31,7 @@
 		font-weight: var(--selectbox-font-weight);
 		padding-left: var(--g2);
 		padding-right: var(--g2);
-		padding-top: var(--selectbox-font-size);
+		padding-top: var(--font-size-7);
 		padding-bottom: 0;
 		font-size: var(--selectbox-font-size);
 		line-height: var(--selectbox-line-height);
