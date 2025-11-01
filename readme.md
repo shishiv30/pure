@@ -373,26 +373,49 @@ Simple Docker setup:
 
 This project supports automated code reviews using Cursor CLI. The review system focuses on code quality, best practices, potential bugs, and adherence to project standards.
 
+**Note**: Code review is different from `npm run test`:
+- `npm run test`: Runs automated tests (pass/fail)
+- `npm run review`: AI-powered code review (actionable feedback, suggestions, quality checks)
+
 ### Local Code Review
 
-Review your uncommitted changes:
+**Before running**, make sure you have:
+1. `CURSOR_API_KEY` set in your environment:
+   ```bash
+   export CURSOR_API_KEY=your_api_key_here
+   ```
+2. Cursor CLI installed (check with `which cursor-agent`)
+
+**Review uncommitted changes:**
 ```bash
 npm run review
 ```
+This reviews all modified files that haven't been committed yet.
 
-Review only staged changes:
+**Review only staged changes:**
 ```bash
 npm run review:staged
 ```
+This reviews only files that are staged with `git add`.
+
+**Testing tips:**
+- Make a test change (e.g., add a typo) in a file
+- Run `npm run review` to see if it catches the issue
+- The review will analyze code quality, typos, bugs, and adherence to `.cursorrules`
 
 ### Automated PR Reviews
 
 The project includes a GitHub Actions workflow (`.github/workflows/cursor-code-review.yml`) that automatically reviews pull requests. The workflow:
 
 - Runs on PR events (opened, synchronized, reopened, ready for review)
-- Reviews code changes and provides inline feedback
+- Reviews code changes and provides **inline comments directly on the PR**
+- Uses GitHub Reviews API to post comments on specific lines
 - Focuses on critical issues with concise, actionable comments
 - Uses emojis to categorize feedback (🚨 Critical, 🔒 Security, ⚡ Performance, ⚠️ Logic, ✨ Improvement)
+
+**Key difference from `npm run test`**:
+- `test` → Automated pass/fail checks
+- `review` → AI analyzes code quality and posts feedback as PR comments
 
 ### Configuration
 
