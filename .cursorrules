@@ -66,6 +66,26 @@
         "pattern": "^[A-Z][A-Z0-9_]*$",
         "example": "APPLE_TREE"
       }
+    },
+    "code_reuse": {
+      "rule": "Maximum reuse of utilities code",
+      "requirements": [
+        "Always check existing utilities before implementing new functionality",
+        "Import and reuse utility functions from client/js/core/ and helpers/ directories",
+        "Never duplicate utility functionality - use existing utilities instead",
+        "If similar functionality exists, extend or refactor existing utilities rather than creating duplicates",
+        "Before writing new helper functions, search for existing utilities that can be reused or extended"
+      ],
+      "utility_locations": [
+        "client/js/core/ - Core client-side utilities (format, validate, query, log, etc.)",
+        "helpers/ - Server-side and shared utilities (geo, fuse, mappers, etc.)"
+      ],
+      "checklist": [
+        "Search existing utilities before implementing new functionality",
+        "Import from appropriate utility modules",
+        "Extend existing utilities if needed rather than duplicating",
+        "Document any new utility functions added"
+      ]
     }
   }
 }

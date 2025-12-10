@@ -591,5 +591,424 @@
         "Console logging in build process"
       ]
     }
+  },
+  "utilities": {
+    "client_core": {
+      "format": {
+        "file": "client/js/core/format.js",
+        "functions": [
+          {
+            "name": "formatPhone",
+            "purpose": "Format phone number to (XXX) XXX-XXXX",
+            "params": ["phone"]
+          },
+          {
+            "name": "formatCurrency",
+            "purpose": "Format number as currency with commas",
+            "params": ["value"]
+          },
+          {
+            "name": "formatNumber",
+            "purpose": "Format number with thousand separators",
+            "params": ["value"]
+          },
+          {
+            "name": "formatPercent",
+            "purpose": "Format number as percentage",
+            "params": ["value"]
+          },
+          {
+            "name": "formatDate",
+            "purpose": "Format date to locale date string",
+            "params": ["date"]
+          },
+          {
+            "name": "formatDateTime",
+            "purpose": "Format date to locale date-time string",
+            "params": ["date"]
+          },
+          {
+            "name": "formatTime",
+            "purpose": "Format date to locale time string",
+            "params": ["date"]
+          },
+          {
+            "name": "formatSqft",
+            "purpose": "Format square feet (converts to acres if >= 20000)",
+            "params": ["value"]
+          },
+          {
+            "name": "formatPrice",
+            "purpose": "Format price with K/M suffixes",
+            "params": ["value"]
+          },
+          {
+            "name": "formatTrim",
+            "purpose": "Trim whitespace from string",
+            "params": ["value"]
+          },
+          {
+            "name": "formatClassToStatus",
+            "purpose": "Convert CSS class name to camelCase status name",
+            "params": ["name"]
+          }
+        ]
+      },
+      "validate": {
+        "file": "client/js/core/validate.js",
+        "functions": [
+          {
+            "name": "isMobile",
+            "purpose": "Check if user agent is mobile device",
+            "params": ["userAgent"]
+          },
+          {
+            "name": "isPhoneNumber",
+            "purpose": "Validate 10-digit US phone number",
+            "params": ["value"]
+          },
+          {
+            "name": "isEmail",
+            "purpose": "Validate email format",
+            "params": ["value"]
+          },
+          {
+            "name": "isUrl",
+            "purpose": "Validate URL format",
+            "params": ["value"]
+          },
+          {
+            "name": "isDate",
+            "purpose": "Check if value is valid Date object",
+            "params": ["value"]
+          },
+          {
+            "name": "isZipcode",
+            "purpose": "Validate 5-digit zipcode",
+            "params": ["value"]
+          },
+          {
+            "name": "isPrice",
+            "purpose": "Validate positive integer price",
+            "params": ["value"]
+          }
+        ]
+      },
+      "query": {
+        "file": "client/js/core/query.js",
+        "functions": [
+          {
+            "name": "hasInput",
+            "purpose": "Check if input has value different from default",
+            "params": ["$input"]
+          }
+        ]
+      },
+      "guid": {
+        "file": "client/js/core/guid.js",
+        "purpose": "Generate unique GUIDs",
+        "methods": [
+          {
+            "name": "get",
+            "purpose": "Get next GUID (increments counter)"
+          }
+        ]
+      },
+      "log": {
+        "file": "client/js/core/log.js",
+        "functions": [
+          {
+            "name": "logError",
+            "purpose": "Log error to console",
+            "params": ["data"]
+          },
+          {
+            "name": "logInfo",
+            "purpose": "Log info to console",
+            "params": ["data"]
+          }
+        ]
+      },
+      "load": {
+        "file": "client/js/core/load.js",
+        "purpose": "Load external JS/CSS resources",
+        "functions": [
+          {
+            "name": "load",
+            "purpose": "Load multiple JS/CSS files",
+            "params": ["options"],
+            "options": {
+              "files": "Array of file URLs",
+              "type": "File type (js/css)",
+              "callback": "Callback function name for JS"
+            }
+          }
+        ]
+      },
+      "loadImg": {
+        "file": "client/js/core/load.img.js",
+        "purpose": "Load image with success/error handling",
+        "functions": [
+          {
+            "name": "loadImg",
+            "purpose": "Load image and add success/error classes",
+            "params": ["img", "imgSrc"],
+            "returns": "Promise<boolean>"
+          }
+        ]
+      },
+      "scroll": {
+        "file": "client/js/core/scroll.js",
+        "functions": [
+          {
+            "name": "disableScroll",
+            "purpose": "Disable page scrolling with named lock",
+            "params": ["name"]
+          },
+          {
+            "name": "enableScroll",
+            "purpose": "Enable page scrolling by removing named lock",
+            "params": ["name"]
+          }
+        ]
+      },
+      "def": {
+        "file": "client/js/core/def.js",
+        "purpose": "Define boolean and enum state management helpers",
+        "functions": [
+          {
+            "name": "defBool",
+            "purpose": "Define boolean state with add/remove/toggle/is methods",
+            "params": ["name", "$el", "opt", "exportObj"]
+          },
+          {
+            "name": "defEnum",
+            "purpose": "Define enum state with switchTo methods",
+            "params": ["key", "names", "$el", "opt", "exportObj"]
+          }
+        ]
+      },
+      "base": {
+        "file": "client/js/core/base.js",
+        "purpose": "Base class for components",
+        "class": "Base",
+        "constructor": ["name", "type"]
+      }
+    },
+    "server_helpers": {
+      "geo": {
+        "file": "helpers/geo.js",
+        "purpose": "Geographic location utilities",
+        "constants": [
+          {
+            "name": "geoType",
+            "purpose": "Geo type constants (state, city, county, zipcode, address, neighborhood)"
+          }
+        ],
+        "functions": [
+          {
+            "name": "getGeoByPath",
+            "purpose": "Convert URL path to geo object",
+            "params": ["_path"]
+          },
+          {
+            "name": "getPathByGeo",
+            "purpose": "Convert geo object to URL path",
+            "params": ["geo"]
+          },
+          {
+            "name": "getGeoDisplayText",
+            "purpose": "Generate human-readable location text",
+            "params": ["geo"]
+          },
+          {
+            "name": "getStatePath",
+            "purpose": "Get state path from state name",
+            "params": ["state"]
+          },
+          {
+            "name": "getCityPath",
+            "purpose": "Get city path from city and state",
+            "params": ["city", "state"]
+          },
+          {
+            "name": "getCountyPath",
+            "purpose": "Get county path from county and state",
+            "params": ["county", "state"]
+          },
+          {
+            "name": "getZipcodePath",
+            "purpose": "Get zipcode path from zipcode and state",
+            "params": ["zipcode", "state"]
+          },
+          {
+            "name": "getAddressPath",
+            "purpose": "Get address path from address, city, and state",
+            "params": ["address", "city", "state"]
+          },
+          {
+            "name": "getNeighborhoodPath",
+            "purpose": "Get neighborhood path from neighborhood, city, and state",
+            "params": ["neighborhood", "city", "state"]
+          },
+          {
+            "name": "getGeoCityByCityState",
+            "purpose": "Get geo object for city by city and state names",
+            "params": ["city", "state"]
+          },
+          {
+            "name": "getBreadcrumbByGeo",
+            "purpose": "Generate breadcrumb navigation from geo object",
+            "params": ["geo", "_path"]
+          },
+          {
+            "name": "mapGeoToSOAPath",
+            "purpose": "Map geo object to SOA API path format",
+            "params": ["geo"]
+          },
+          {
+            "name": "mapGeoPathToSOAPath",
+            "purpose": "Map geo path to SOA API path format",
+            "params": ["geoPath"]
+          }
+        ]
+      },
+      "fuse": {
+        "file": "helpers/fuse.js",
+        "purpose": "Fuzzy search utilities using Fuse.js",
+        "functions": [
+          {
+            "name": "initialFuseState",
+            "purpose": "Initialize Fuse instance for state search",
+            "params": ["state"]
+          },
+          {
+            "name": "initialFuseCity",
+            "purpose": "Initialize Fuse instance for city search",
+            "params": ["city"]
+          },
+          {
+            "name": "initialFuseCounty",
+            "purpose": "Initialize Fuse instance for county search",
+            "params": ["county"]
+          },
+          {
+            "name": "initialFuseZipcode",
+            "purpose": "Initialize Fuse instance for zipcode search",
+            "params": ["zipcode"]
+          },
+          {
+            "name": "initialFuseAddress",
+            "purpose": "Initialize Fuse instance for address search",
+            "params": ["address"]
+          },
+          {
+            "name": "initialFuseNeighborhood",
+            "purpose": "Initialize Fuse instance for neighborhood search",
+            "params": ["neighborhood"]
+          },
+          {
+            "name": "initialFuseGeo",
+            "purpose": "Initialize all geo Fuse instances",
+            "params": ["{state, city, county, zipcode, address, neighborhood}"]
+          },
+          {
+            "name": "searchGeo",
+            "purpose": "Search geo data by type and query",
+            "params": ["query", "type", "limit"]
+          }
+        ]
+      },
+      "pathMapper": {
+        "file": "helpers/pathMapper.js",
+        "purpose": "Map geo paths and properties to articles",
+        "functions": [
+          {
+            "name": "mapGeoPathToSOAPath",
+            "purpose": "Map our geo path format to SOA API format",
+            "params": ["ourPath"]
+          },
+          {
+            "name": "mapSOAToGeoPath",
+            "purpose": "Map SOA API path format to our geo path format",
+            "params": ["soaPath", "stateCode"]
+          },
+          {
+            "name": "mapPropertyToArticle",
+            "purpose": "Map property object to article object",
+            "params": ["property"]
+          },
+          {
+            "name": "mapPropertiesToArticles",
+            "purpose": "Map array of properties to array of articles",
+            "params": ["properties"]
+          }
+        ]
+      },
+      "propertyMapper": {
+        "file": "helpers/propertyMapper.js",
+        "purpose": "Map property objects to article objects",
+        "functions": [
+          {
+            "name": "mapPropertyToArticle",
+            "purpose": "Map property object to article object with tags and attrs",
+            "params": ["property"]
+          },
+          {
+            "name": "mapPropertiesToArticles",
+            "purpose": "Map array of properties to array of articles",
+            "params": ["properties"]
+          }
+        ]
+      },
+      "ip": {
+        "file": "helpers/ip.js",
+        "purpose": "IP-based geolocation utilities",
+        "functions": [
+          {
+            "name": "getGeoCityByIp",
+            "purpose": "Get geo city object from IP address",
+            "params": ["ip"]
+          }
+        ]
+      },
+      "stateDict": {
+        "file": "helpers/stateDict.js",
+        "purpose": "US state code and name mapping utilities",
+        "constants": [
+          {
+            "name": "stateDict",
+            "purpose": "Dictionary mapping state codes to full names"
+          }
+        ],
+        "functions": [
+          {
+            "name": "isValidStateCode",
+            "purpose": "Check if string is valid US state code",
+            "params": ["stateCode"]
+          },
+          {
+            "name": "getStateFullName",
+            "purpose": "Get full state name from state code",
+            "params": ["stateCode"]
+          },
+          {
+            "name": "getStateCode",
+            "purpose": "Get state code from full name",
+            "params": ["fullName"]
+          },
+          {
+            "name": "getAllStateCodes",
+            "purpose": "Get all state codes as array",
+            "params": []
+          },
+          {
+            "name": "getAllStateFullNames",
+            "purpose": "Get all state full names as array",
+            "params": []
+          }
+        ]
+      }
+    }
   }
 }
