@@ -2,16 +2,15 @@ name: Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-
-permissions:
-  pull-requests: write
-  contents: read
-  issues: write
+    types: [ready_for_review]
 
 jobs:
   code-review:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      issues: write
     # Skip automated code review for draft PRs
     if: github.event.pull_request.draft == false
     steps:
@@ -26,43 +25,18 @@ jobs:
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> $GITHUB_PATH
 
-      - name: Verify Cursor authentication
-        env:
-          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-        run: |
-          if [ -z "$CURSOR_API_KEY" ]; then
-            echo "❌ Error: CURSOR_API_KEY secret is not set in repository settings"
-            echo "Please add CURSOR_API_KEY as a repository secret:"
-            echo "1. Go to Settings > Secrets and variables > Actions"
-            echo "2. Click 'New repository secret'"
-            echo "3. Name: CURSOR_API_KEY"
-            echo "4. Value: Your Cursor API key"
-            exit 1
-          else
-            echo "✅ CURSOR_API_KEY is set"
-          fi
-
-      - name: Configure git identity
-        run: |
-          git config user.name "Cursor Agent"
-          git config user.email "cursoragent@cursor.com"
-
       - name: Perform automated code review
         env:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-          MODEL: gpt-5
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BLOCKING_REVIEW: ${{ vars.BLOCKING_REVIEW || 'false' }}
         run: |
-          cursor-agent --force --model "$MODEL" --output-format=text --print <<PROMPT_END
-          You are operating in a GitHub Actions runner performing automated code review. The gh CLI is available and authenticated via GH_TOKEN. You may comment on pull requests.
+          cursor-agent --force --model "$MODEL" --output-format=text --print "You are operating in a GitHub Actions runner performing automated code review. The gh CLI is available and authenticated via GH_TOKEN. You may comment on pull requests.
 
           Context:
           - Repo: ${{ github.repository }}
           - PR Number: ${{ github.event.pull_request.number }}
           - PR Head SHA: ${{ github.event.pull_request.head.sha }}
           - PR Base SHA: ${{ github.event.pull_request.base.sha }}
-          - Blocking Review: ${{ env.BLOCKING_REVIEW }}
 
           Project Rules and Background:
           The repository has project-specific rules defined in .cursorrules and .cursorbackground files located in the repository root. You MUST read these files and strictly enforce all rules defined within them.
@@ -176,23 +150,4 @@ jobs:
           - If there ARE issues to report, submit ONE review containing ONLY inline comments plus an optional concise summary body. Use the GitHub Reviews API to ensure comments are inline:
             - Build a JSON array of comments like: [{ \"path\": \"<file>\", \"position\": <diff_position>, \"body\": \"...\" }]
             - Submit via: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews -f event=COMMENT -f body=\"$SUMMARY\" -f comments='\''[$COMMENTS_JSON]'\''
-          - Do NOT use: gh pr review --approve or --request-changes
-
-          Blocking behavior:
-          - If BLOCKING_REVIEW is true and any 🚨 or 🔒 issues were posted: echo \"CRITICAL_ISSUES_FOUND=true\" >> $GITHUB_ENV
-          - Otherwise: echo \"CRITICAL_ISSUES_FOUND=false\" >> $GITHUB_ENV
-          - Always set CRITICAL_ISSUES_FOUND at the end
-          PROMPT_END
-
-      - name: Check blocking review results
-        if: env.BLOCKING_REVIEW == 'true'
-        run: |
-          echo "Checking for critical issues..."
-          echo "CRITICAL_ISSUES_FOUND: ${CRITICAL_ISSUES_FOUND:-unset}"
-
-          if [ "${CRITICAL_ISSUES_FOUND:-false}" = "true" ]; then
-            echo "❌ Critical issues found and blocking review is enabled. Failing the workflow."
-            exit 1
-          else
-            echo "✅ No blocking issues found."
-          fi
+          - Do NOT use: gh pr review --approve or --request-changes"
