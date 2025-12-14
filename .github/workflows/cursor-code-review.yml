@@ -115,7 +115,7 @@ jobs:
           - If CURRENT run finds issues and any prior \"no issues\" comments exist:
             - Prefer to remove them to avoid confusion:
               - Try deleting top-level issue comments via: gh api -X DELETE repos/${{ github.repository }}/issues/comments/<comment_id>
-              - If deletion isn'\''t possible, minimize them via GraphQL (minimizeComment) or edit to prefix \"[Superseded by new findings]\".
+              - If deletion is not possible, minimize them via GraphQL (minimizeComment) or edit to prefix \"[Superseded by new findings]\".
             - If neither delete nor minimize is possible, reply to that comment: \"⚠️ Superseded: issues were found in newer commits\".
           - If a previously reported issue appears fixed by nearby changes, reply: ✅ This issue appears to be resolved by the recent changes
           - Analyze for:
