@@ -23,7 +23,7 @@ pageSettings.pages.forEach((page) => {
 	plugins.push(new HtmlWebpackPlugin(page));
 });
 export default () => {
-	console.log(env);
+	// console.log(env);
 	return {
 		entry: entry,
 		module: {

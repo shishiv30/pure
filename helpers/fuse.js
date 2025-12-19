@@ -2,6 +2,9 @@ import Fuse from 'fuse.js';
 import { geoType } from '../helpers/geo.js';
 
 export function initialFuseState(state) {
+	if (globalThis[geoType.state]) {
+		return globalThis[geoType.state];
+	}
 	globalThis[geoType.state] = new Fuse(state, {
 		keys: [
 			{

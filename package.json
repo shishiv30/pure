@@ -7,7 +7,7 @@
 	"scripts": {
 		"dev:client": "webpack-dev-server --config webpack.config.dev.js --open",
 		"dev:server": "npx cross-env NODE_ENV=development node server/app.js",
-		"dev": "npx cross-env NODE_ENV=development concurrently \"webpack-dev-server --config webpack.config.dev.js\" \"node server/app.js\"",
+		"dev": "npx cross-env NODE_ENV=development concurrently \"webpack-dev-server --config webpack.config.dev.js\" \"nodemon server/app.js\"",
 		"build:dev": "npx cross-env NODE_ENV=development concurrently \"webpack --config webpack.config.build.js --env dev\" \"node server/app.js\"",
 		"build:prod": "npx cross-env NODE_ENV=production webpack --config webpack.config.build.js --env production",
 		"build-docker:dev": "npx cross-env NODE_ENV=development ./run-docker.sh",

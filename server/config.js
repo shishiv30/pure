@@ -21,7 +21,7 @@ dotenv.config({ path: path.join(__dirname, '../.env.local'), override: false });
 let config = {
 	// Server Configuration
 	sessionSecret: process.env.SESSION_SECRET || '',
-	port: parseInt(process.env.PORT) || 9999,
+	port: parseInt(process.env.PORT) || 3000,
 	domain: process.env.DOMAIN || '127.0.0.1',
 	mode: NODE_ENV,
 
@@ -32,13 +32,14 @@ let config = {
 	webpackMode: process.env.WEBPACK_MODE || NODE_ENV,
 	webpackDevtool:
 		process.env.WEBPACK_DEVTOOL || (NODE_ENV === 'development' ? 'source-map' : undefined),
-	webpackStats: process.env.WEBPACK_STATS || (NODE_ENV === 'development' ? 'minimal' : 'normal'),
+	webpackStats:
+		process.env.WEBPACK_STATS || (NODE_ENV === 'development' ? 'minimal' : 'errors-only'),
 
 	// CDN Configuration
 	cdnUrl: process.env.CDN_URL || '',
 
 	// Development Configuration
-	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 8080,
+	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 3001,
 	webpackDevServerHost: process.env.WEBPACK_DEV_SERVER_HOST || 'localhost',
 	webpackHotReload: process.env.WEBPACK_HOT_RELOAD === 'true' || NODE_ENV === 'development',
 
@@ -52,12 +53,12 @@ config.appUrl = `http://${config.domain}:${config.port}`;
 config.cdnUrl = config.cdnUrl || config.appUrl;
 config.webpackDevServerUrl = `http://${config.webpackDevServerHost}:${config.webpackDevServerPort}`;
 
-console.log('Configuration loaded:', {
-	mode: config.mode,
-	port: config.port,
-	domain: config.domain,
-	soaApiDomain: config.soaApiDomain,
-	webpackDevServerPort: config.webpackDevServerPort,
-});
+// console.table({
+// 	mode: config.mode,
+// 	port: config.port,
+// 	domain: config.domain,
+// 	soaApiDomain: config.soaApiDomain,
+// 	webpackDevServerPort: config.webpackDevServerPort,
+// });
 
 export default config;

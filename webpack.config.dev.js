@@ -12,7 +12,7 @@ export default (env) => {
 	return merge(baseWebpackConfig, {
 		mode: config.webpackMode,
 		devtool: config.webpackDevtool,
-		stats: config.webpackStats === 'minimal' ? { warnings: false } : 'normal',
+		stats: config.webpackStats,
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].min.js',
@@ -31,6 +31,9 @@ export default (env) => {
 			devMiddleware: {
 				writeToDisk: true,
 			},
+			client: {
+				logging: 'error',
+			},
 			proxy: [
 				{
 					context: (pathname) => {
@@ -42,6 +45,7 @@ export default (env) => {
 						// Don't proxy files with extensions or webpack dev server assets
 						return !hasExtension && !isWebpackAsset;
 					},
+					logLevel: 'error',
 					target: config.appUrl,
 					changeOrigin: true,
 				},
