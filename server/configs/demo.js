@@ -1,6 +1,6 @@
 import { getGeoByPath, getGeoDisplayText, geoType } from '../../helpers/geo.js';
 import geoConfig from './geo.js';
-import articles from '../../data/mock/articles.js';
+import articlesData from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
 import { mapGeoToSOAPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
@@ -29,8 +29,7 @@ export async function fetchPropertiesFromSOA(soaPath) {
 		}
 		return result.data.listings || [];
 	} catch (error) {
-		console.error('Error fetching properties:', error);
-		return [];
+		throw new Error('Error fetching properties:', error);
 	}
 }
 export async function fetchPropertiesImagesFromSOA(url) {
@@ -65,8 +64,7 @@ export async function fetchPropertiesImagesFromSOA(url) {
 		}
 		return images;
 	} catch (error) {
-		console.error('Error fetching properties:', error);
-		return [];
+		throw new Error('Error fetching properties:', error);
 	}
 }
 
@@ -133,7 +131,7 @@ export default {
 				articles = mapPropertiesToArticles(properties);
 			} catch (error) {
 				console.error('Error fetching properties:', error);
-				articles = [];
+				articles = articlesData;
 			}
 		}
 		let model = {
