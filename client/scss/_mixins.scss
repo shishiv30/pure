@@ -1,3 +1,5 @@
+@use './_var.screen.scss' as *;
+
 @mixin text-shadow {
 	text-shadow: 1px 0px 5px rgba(129, 129, 129, 0.5);
 }
@@ -30,7 +32,6 @@
 			--#{$name}-font-size: var(--font-size-5);
 			--#{$name}-size: var(--comp-size-3);
 			--#{$name}-line-height: var(--line-height-3);
-			--#{$name}-font-weight: #{$font-weight-regular};
 			--#{$name}-width: #{$width};
 		}
 
@@ -173,13 +174,13 @@
 
 @mixin clearFloat {
 
-	&:after,
-	&:before {
+	&::after,
+	&::before {
 		content: '';
 		display: table;
 	}
 
-	&:after {
+	&::after {
 		clear: both;
 		overflow: hidden;
 	}
@@ -428,13 +429,13 @@ $blur-size: $blur-width $card-height;
 
 @mixin clearfix {
 
-	&:after,
-	&:before {
+	&::after,
+	&::before {
 		content: '';
 		display: table;
 	}
 
-	&:after {
+	&::after {
 		clear: both;
 		overflow: hidden;
 	}
@@ -507,41 +508,41 @@ $blur-size: $blur-width $card-height;
 }
 
 @mixin f1 {
-	font-size: $font-size-1;
+	font-size: var(--font-size-1);
 }
 
 @mixin f2 {
-	font-size: $font-size-2;
+	font-size: var(--font-size-2);
 }
 
 @mixin f3 {
-	font-size: $font-size-3;
+	font-size: var(--font-size-3);
 }
 
 @mixin f4 {
-	font-size: $font-size-4;
+	font-size: var(--font-size-4);
 }
 
 @mixin f5 {
-	font-size: $font-size-5;
+	font-size: var(--font-size-5);
 }
 
 @mixin f6 {
-	font-size: $font-size-6;
+	font-size: var(--font-size-6);
 }
 
 @mixin f7 {
-	font-size: $font-size-7;
+	font-size: var(--font-size-7);
 }
 
 @mixin font-light {
-	font-weight: $font-weight-light !important;
+	font-weight: var(--font-weight-light) !important;
 }
 
 @mixin font-normal {
-	font-weight: $font-weight-regular !important;
+	font-weight: var(--font-weight-regular) !important;
 }
 
 @mixin font-bold {
-	font-weight: $font-weight-bold !important;
+	font-weight: var(--font-weight-bold) !important;
 }

@@ -157,4 +157,20 @@ body {
 	--comp-border-radius: 6px;
 	--comp-max-width: auto;
 	--comp-line-height: var(--line-height-3);
+
+	//z-index
+	--ui-tooltip-index: 1000;
+	--ui-popover-index: 1050;
+	--ui-buttongroup-index: 1100;
+	--ui-pin-index: 1930;
+	--ui-pin-hover-index: 1940;
+	--ui-stick-index: 1960;
+	--ui-header-overlay: 1990;
+	--ui-header-index: 2000;
+	--ui-header-list-index: 2010;
+	--ui-datepicker-index: 2100;
+	--ui-gautocomplete-index: 3000;
+	--ui-dropdown-index: 3100;
+	--ui-dialog-overlay: 10000;
+	--ui-dialog-index: 10010;
 }

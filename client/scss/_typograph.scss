@@ -1,107 +1,115 @@
-.h1,
-.f1 {
-	font-size: var(--font-size-1);
-}
+@use './_mixins.scss' as *;
 
-.h2,
-.f2 {
-	font-size: var(--font-size-2);
-}
+#body {
 
-.h3,
-.f3 {
-	font-size: var(--font-size-3);
-}
+	.h1,
+	.f1 {
+		font-size: var(--font-size-1);
+	}
 
-.h4,
-.f4 {
-	font-size: var(--font-size-4);
-}
+	.h2,
+	.f2 {
+		font-size: var(--font-size-2);
+	}
 
-.h5,
-.f5 {
-	font-size: var(--font-size-5);
-}
+	.h3,
+	.f3 {
+		font-size: var(--font-size-3);
+	}
 
-.h6,
-.f6 {
-	font-size: var(--font-size-6);
-}
+	.h4,
+	.f4 {
+		font-size: var(--font-size-4);
+	}
 
-.h7,
-.f7 {
-	font-size: var(--font-size-7);
-}
+	.h5,
+	.f5 {
+		font-size: var(--font-size-5);
+	}
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-.h7 {
-	position: relative;
-	@include singleline();
-	line-height: var(--line-height-2);
-}
+	.h6,
+	.f6 {
+		font-size: var(--font-size-6);
+	}
 
-.sub {
-	vertical-align: sub;
-}
+	.h7,
+	.f7 {
+		font-size: var(--font-size-7);
+	}
 
-.sup {
-	vertical-align: super;
-}
+	.h1,
+	.h2,
+	.h3,
+	.h4,
+	.h5,
+	.h6,
+	.h7 {
+		position: relative;
+		@include singleline();
+		line-height: var(--line-height-2);
+	}
 
-.text-light {
-	font-weight: $font-weight-light;
-}
+	.sub {
+		vertical-align: sub;
+	}
 
-.text-regular {
-	font-weight: $font-weight-regular;
-}
+	.sup {
+		vertical-align: super;
+	}
 
-.text-bold {
-	font-weight: $font-weight-bold;
-}
+	.text-light {
+		font-weight: var(--font-weight-light);
+	}
 
-.text-left {
-	text-align: left;
-}
+	.text-regular {
+		font-weight: var(--font-weight-regular);
+	}
 
-.text-right {
-	text-align: right;
-}
+	.text-bold {
+		font-weight: var(--font-weight-bold);
+	}
 
-.text-center {
-	text-align: center;
-}
+	.text-left {
+		text-align: left;
+	}
 
-.text-capitalize {
-	text-transform: capitalize;
-}
+	.text-right {
+		text-align: right;
+	}
 
-.text-through {
-	text-decoration: line-through;
-}
+	.text-center {
+		text-align: center;
+	}
 
-.text-underline {
-	text-decoration: underline;
-}
+	.text-capitalize {
+		text-transform: capitalize;
+	}
 
-.text-uppercase {
-	text-transform: uppercase;
-}
+	.text-through {
+		text-decoration: line-through;
+	}
 
-.text-lowercase {
-	text-transform: lowercase;
-}
+	.text-underline {
+		text-decoration: underline;
+	}
 
-.text-shadow {
-	@include text-shadow();
-}
+	.text-uppercase {
+		text-transform: uppercase;
+	}
 
-img {
-	max-width: 100%;
-	object-fit: cover;
+	.text-lowercase {
+		text-transform: lowercase;
+	}
+
+	.text-sentence {
+		text-transform: lowercase;
+
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	.text-shadow {
+		@include text-shadow();
+	}
 }

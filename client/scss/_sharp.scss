@@ -10,16 +10,19 @@
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
+
 	&.active {
 		color: var(--color-active);
 		background-color: var(--color-active-bg);
 		box-shadow: inset 0 0 1px var(--color-active-border);
 	}
+
 	&.small {
 		@include f6();
 		height: var(--comp-size-2);
 		width: var(--comp-size-2);
 	}
+
 	&.large {
 		@include f4();
 		height: var(--comp-size-4);
@@ -65,7 +68,7 @@
 // 		align-items: center;
 // 		gap: var(--gxs);
 // 		width: auto;
-// 		&:before {
+// 		&::before {
 // 			content: '';
 // 			height: var(--font-size-5);
 // 			width: var(--font-size-5);

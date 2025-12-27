@@ -1,7 +1,8 @@
 .locked {
     pointer-events: none;
     position: relative;
-    &:after {
+
+    &::after {
         content: 'locked';
         position: absolute;
         top: 0;

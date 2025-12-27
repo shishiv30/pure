@@ -1,10 +1,12 @@
+@use './_mixins.scss' as *;
+
 .dialog {
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: $ui-dialog-index;
+	z-index: var(--ui-dialog-index);
 	display: none;
 	opacity: 0;
 	transition: opacity 0.5s ease-in-out;
@@ -28,7 +30,7 @@
 		left: 0;
 		right: 0;
 		background-color: rgba(0, 0, 0, 0.8);
-		z-index: $ui-dialog-overlay;
+		z-index: var(--ui-dialog-overlay);
 	}
 
 	.dialog-panel {
@@ -37,7 +39,7 @@
 		height: auto;
 		max-width: var(--screen-xs-max);
 		border-radius: 5px;
-		z-index: $ui-dialog-index;
+		z-index: var(--ui-dialog-index);
 		background-color: var(--color-bg);
 		top: 50%;
 		left: 50%;

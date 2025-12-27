@@ -1,3 +1,5 @@
+@use './_var.icon.scss' as *;
+
 @keyframes iconZoom {
 	0% {
 		font-size: 21px;
@@ -91,7 +93,7 @@
 %img-loading {
 	position: relative;
 
-	&:before {
+	&::before {
 		position: absolute;
 		z-index: 2;
 		top: 50%;
@@ -104,7 +106,7 @@
 		content: var(--icon-refresh);
 	}
 
-	&:after {
+	&::after {
 		position: absolute;
 		top: 0;
 		right: 0;

@@ -1,3 +1,5 @@
+@use './_mixins.scss' as *;
+
 #body {
 	@include color();
 
@@ -92,6 +94,7 @@
 	.bg-safe {
 		background-color: var(--color-safe);
 	}
+
 	.bg-safe-l1 {
 		background-color: var(--color-safe-l1);
 	}

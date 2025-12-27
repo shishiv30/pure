@@ -1,3 +1,5 @@
+@use './_mixins.scss' as *;
+
 @include comp-color('input');
 @include comp-size('input');
 

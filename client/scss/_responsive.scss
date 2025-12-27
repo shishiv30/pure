@@ -1,3 +1,5 @@
+@use './_mixins.scss' as *;
+@use './_var.screen.scss' as *;
 
 @media (max-width: $screen-xs-max) {
     @include responsive-invisibility('.hidden-xs');
@@ -17,12 +19,12 @@
 
 @include only-mobile() {
     .hidden-mobile {
-        display: none!important;
+        display: none !important;
     }
 }
 
 @include only-desktop() {
     .hidden-desktop {
-        display: none!important;
+        display: none !important;
     }
 }

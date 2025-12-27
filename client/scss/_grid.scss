@@ -1,3 +1,6 @@
+@use './_mixins.scss' as *;
+@use './_var.screen.scss' as *;
+
 .grid {
 	--grid-col-1: repeat(1, minmax(80%, 1fr));
 	--grid-col-2: repeat(2, minmax(40%, 1fr));
@@ -16,18 +19,23 @@
 	grid-template-columns: var(--grid-xs);
 	@include gap-size();
 	gap: var(--panel-gap-y) var(--panel-gap-x);
+
 	@media screen and (max-width: $screen-xs-max) {
 		grid-template-columns: var(--grid-xs);
 	}
+
 	@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
 		grid-template-columns: var(--grid-sm);
 	}
+
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
 		grid-template-columns: var(--grid-md);
 	}
+
 	@media (min-width: $screen-lg-min) and (max-width: $screen-lg-max) {
 		grid-template-columns: var(--grid-lg);
 	}
+
 	@media (min-width: $screen-xl-min) {
 		grid-template-columns: var(--grid-xl);
 	}
@@ -39,6 +47,7 @@
 		--grid-lg: var(--grid-col-1);
 		--grid-xl: var(--grid-col-1);
 	}
+
 	&.grid-xs-2 {
 		--grid-xs: var(--grid-col-2);
 		--grid-sm: var(--grid-col-2);
@@ -46,6 +55,7 @@
 		--grid-lg: var(--grid-col-2);
 		--grid-xl: var(--grid-col-2);
 	}
+
 	&.grid-xs-3 {
 		--grid-xs: var(--grid-col-3);
 		--grid-sm: var(--grid-col-3);
@@ -53,6 +63,7 @@
 		--grid-lg: var(--grid-col-3);
 		--grid-xl: var(--grid-col-3);
 	}
+
 	&.grid-xs-4 {
 		--grid-xs: var(--grid-col-4);
 		--grid-sm: var(--grid-col-4);
@@ -60,6 +71,7 @@
 		--grid-lg: var(--grid-col-4);
 		--grid-xl: var(--grid-col-4);
 	}
+
 	&.grid-xs-5 {
 		--grid-xs: var(--grid-col-5);
 		--grid-sm: var(--grid-col-5);
@@ -67,6 +79,7 @@
 		--grid-lg: var(--grid-col-5);
 		--grid-xl: var(--grid-col-5);
 	}
+
 	&.grid-xs-6 {
 		--grid-xs: var(--grid-col-6);
 		--grid-sm: var(--grid-col-6);
@@ -74,6 +87,7 @@
 		--grid-lg: var(--grid-col-6);
 		--grid-xl: var(--grid-col-6);
 	}
+
 	@media (min-width: $screen-sm-min) {
 		&.grid-sm-1 {
 			--grid-sm: var(--grid-col-1);
@@ -81,30 +95,35 @@
 			--grid-lg: var(--grid-col-1);
 			--grid-xl: var(--grid-col-1);
 		}
+
 		&.grid-sm-2 {
 			--grid-sm: var(--grid-col-2);
 			--grid-md: var(--grid-col-2);
 			--grid-lg: var(--grid-col-2);
 			--grid-xl: var(--grid-col-2);
 		}
+
 		&.grid-sm-3 {
 			--grid-sm: var(--grid-col-3);
 			--grid-md: var(--grid-col-3);
 			--grid-lg: var(--grid-col-3);
 			--grid-xl: var(--grid-col-3);
 		}
+
 		&.grid-sm-4 {
 			--grid-sm: var(--grid-col-4);
 			--grid-md: var(--grid-col-4);
 			--grid-lg: var(--grid-col-4);
 			--grid-xl: var(--grid-col-4);
 		}
+
 		&.grid-sm-5 {
 			--grid-sm: var(--grid-col-5);
 			--grid-md: var(--grid-col-5);
 			--grid-lg: var(--grid-col-5);
 			--grid-xl: var(--grid-col-5);
 		}
+
 		&.grid-sm-6 {
 			--grid-sm: var(--grid-col-6);
 			--grid-md: var(--grid-col-6);
@@ -112,102 +131,125 @@
 			--grid-xl: var(--grid-col-6);
 		}
 	}
+
 	@media (min-width: $screen-md-min) {
 		&.grid-md-1 {
 			--grid-md: var(--grid-col-1);
 			--grid-lg: var(--grid-col-1);
 			--grid-xl: var(--grid-col-1);
 		}
+
 		&.grid-md-2 {
 			--grid-md: var(--grid-col-2);
 			--grid-lg: var(--grid-col-2);
 			--grid-xl: var(--grid-col-2);
 		}
+
 		&.grid-md-3 {
 			--grid-md: var(--grid-col-3);
 			--grid-lg: var(--grid-col-3);
 			--grid-xl: var(--grid-col-3);
 		}
+
 		&.grid-md-4 {
 			--grid-md: var(--grid-col-4);
 			--grid-lg: var(--grid-col-4);
 			--grid-xl: var(--grid-col-4);
 		}
+
 		&.grid-md-5 {
 			--grid-md: var(--grid-col-5);
 			--grid-lg: var(--grid-col-5);
 			--grid-xl: var(--grid-col-5);
 		}
+
 		&.grid-md-6 {
 			--grid-md: var(--grid-col-6);
 			--grid-lg: var(--grid-col-6);
 			--grid-xl: var(--grid-col-6);
 		}
 	}
+
 	@media (min-width: $screen-lg-min) {
 		&.grid-lg-1 {
 			--grid-lg: var(--grid-col-1);
 			--grid-xl: var(--grid-col-1);
 		}
+
 		&.grid-lg-2 {
 			--grid-lg: var(--grid-col-2);
 			--grid-xl: var(--grid-col-2);
 		}
+
 		&.grid-lg-3 {
 			--grid-lg: var(--grid-col-3);
 			--grid-xl: var(--grid-col-3);
 		}
+
 		&.grid-lg-4 {
 			--grid-lg: var(--grid-col-4);
 			--grid-xl: var(--grid-col-4);
 		}
+
 		&.grid-lg-5 {
 			--grid-lg: var(--grid-col-5);
 			--grid-xl: var(--grid-col-5);
 		}
+
 		&.grid-lg-6 {
 			--grid-lg: var(--grid-col-6);
 			--grid-xl: var(--grid-col-6);
 		}
 	}
+
 	@media (min-width: $screen-lg-max) {
 		&.grid-xl-1 {
 			--grid-xl: var(--grid-col-1);
 		}
+
 		&.grid-xl-2 {
 			--grid-xl: var(--grid-col-2);
 		}
+
 		&.grid-xl-3 {
 			--grid-xl: var(--grid-col-3);
 		}
+
 		&.grid-xl-4 {
 			--grid-xl: var(--grid-col-4);
 		}
+
 		&.grid-xl-5 {
 			--grid-xl: var(--grid-col-5);
 		}
+
 		&.grid-xl-6 {
 			--grid-xl: var(--grid-col-6);
 		}
 	}
+
 	.wrap {
 		grid-column: 1/-1;
 	}
+
 	@media screen and (max-width: $screen-xs-max) {
 		.wrap-xs {
 			grid-column: 1/-1;
 		}
 	}
+
 	@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
 		.wrap-sm {
 			grid-column: 1/-1;
 		}
 	}
+
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
 		.wrap-md {
 			grid-column: 1/-1;
 		}
 	}
+
 	@media (min-width: $screen-md-min) {
 		.wrap-lg {
 			grid-column: 1/-1;
@@ -217,21 +259,27 @@
 	&.left {
 		justify-items: start;
 	}
+
 	&.right {
 		justify-items: end;
 	}
+
 	&.center {
 		justify-items: center;
 	}
+
 	&.top {
 		align-items: start;
 	}
+
 	&.middle {
 		align-items: center;
 	}
+
 	&.baseline {
 		align-items: baseline;
 	}
+
 	&.bottom {
 		align-items: end;
 	}

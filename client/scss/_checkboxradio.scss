@@ -1,3 +1,5 @@
+@use './_var.icon.scss' as *;
+@use './_mixins.scss' as *;
 @include comp-size('checkbox');
 @include comp-size('radio');
 
@@ -42,7 +44,7 @@
 			display: inline-flex;
 			align-items: center;
 
-			&:before {
+			&::before {
 				@include icon();
 				margin-right: var(--g0);
 			}

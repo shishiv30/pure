@@ -1,15 +1,21 @@
+@use './_var.screen.scss' as *;
+@use './_mixins.scss' as *;
+
 .gridtable {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--color-l1);
+
   th {
     background-color: var(--color-l1);
     text-align: left;
   }
+
   td,
   th {
     text-align: left;
   }
+
   tbody tr {
     max-height: 500px;
   }
@@ -17,15 +23,18 @@
 
 @media (min-width: $screen-sm-min) {
   table.gridtable {
+
     td,
     th {
       border: 1px solid var(--color-l1);
       padding: var(--g1) !important;
     }
+
     tbody {
       tr {
         height: auto !important;
       }
+
       tr:nth-of-type(even) {
         background: #fafafa;
       }
@@ -37,6 +46,7 @@
   table.gridtable {
     display: block;
     position: relative;
+
     tbody,
     td,
     th,
@@ -44,49 +54,60 @@
     tr {
       display: block;
     }
+
     thead tr {
       position: absolute;
       top: -9999px;
       left: -9999px;
       z-index: -1;
     }
+
     tr {
       border-bottom: dashed 1px var(--color-l1);
       overflow: hidden;
       @include clearFloat();
+
       td {
         margin: 0 var(--g1);
         padding: 0;
         word-break: break-all;
-        &:before {
+
+        &::before {
           float: left;
           content: attr(data-th) ": ";
         }
       }
+
       &.open {
         position: relative;
       }
+
       &.close {
         max-height: 3em;
         position: relative;
         cursor: pointer;
         opacity: 0.8;
+
         @include hover() {
-            opacity: 1;
+          opacity: 1;
         }
+
         td {
           @include singleline();
         }
       }
+
       &:last-child {
         border-bottom: none;
       }
     }
+
     tbody {
       td {
         border: none;
         position: relative;
       }
+
       td:before {
         color: var(--color-l1);
         @include singleline();

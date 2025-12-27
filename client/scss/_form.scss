@@ -1,3 +1,5 @@
+@use './_mixins.scss' as *;
+
 .form {
 	label {
 		margin-bottom: var(--g1);
@@ -12,14 +14,17 @@
 	flex-wrap: nowrap;
 	gap: var(--g2);
 	@include hidden-scrollbar();
+
 	&.horizontal {
-		> * {
+		>* {
 			flex-shrink: 0;
 		}
+
 		overflow-x: scroll;
 		overflow-y: hidden;
 		flex-direction: roww;
 	}
+
 	&.vertical {
 		overflow-x: hidden;
 		overflow-y: scroll;

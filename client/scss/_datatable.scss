@@ -1,6 +1,9 @@
+@use './_var.icon.scss' as *;
+
 .datatable {
 	width: 100%;
 	border-collapse: collapse;
+
 	th,
 	td {
 		padding: 10px 5px;
@@ -12,21 +15,23 @@
 .datatable-sort {
 	position: relative;
 	display: block;
-	&:before {
+
+	&::before {
 		position: absolute;
 		right: 0;
 		top: 0;
 		@include icon();
 		display: inline-block;
 	}
+
 	&.active {
-		&:before {
+		&::before {
 			content: $icon-sort;
 		}
 	}
 
 	&.desc {
-		&:before {
+		&::before {
 			content: $icon-sort;
 			transform: rotateX(180deg);
 		}

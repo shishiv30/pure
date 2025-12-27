@@ -1,3 +1,6 @@
+@use './_mixins.scss' as *;
+@use './_var.icon.scss' as *;
+
 @keyframes player-zoom {
     0% {
         transform: scale(1) translateX(0);
@@ -184,21 +187,21 @@
     }
 
     .player-prev {
-        &:before {
+        &::before {
             @include icon();
             content: $icon-chevron-left;
         }
     }
 
     .player-next {
-        &:before {
+        &::before {
             @include icon();
             content: $icon-chevron-right;
         }
     }
 
     .player-toggle {
-        &:before {
+        &::before {
             @include icon();
             content: $icon-play;
         }
@@ -206,7 +209,7 @@
 
     &.playing {
         .player-toggle {
-            &:before {
+            &::before {
                 content: $icon-pause;
             }
         }

@@ -1,7 +1,8 @@
-@import './demo/_demo.theme.scss';
-@import './base.scss';
-@import './_tag.scss';
-@import './demo/demo-animation.scss';
+@use './_var.screen.scss' as *;
+@use './_mixins.scss' as *;
+@forward './demo/_demo.theme.scss';
+@forward './demo/demo-animation.scss';
+@forward './base.scss';
 
 .page-demo {
     --header-height: var(--comp-size-3);
@@ -32,7 +33,7 @@
     }
 
     .breadcrumb {
-        z-index: #{$ui-header-index - 1};
+        z-index: calc(var(--ui-header-index) - 1);
         grid-area: breadcrumb;
         position: sticky;
         top: var(--header-height);

@@ -1,6 +1,7 @@
 [data-role*='datetimepicker'] {
 	cursor: pointer;
 }
+
 .datetimepicker {
 	--color-datepicker-active: var(--color-major);
 	--color-datepicker-hover: var(--color-major-l1);
@@ -23,8 +24,10 @@
 	margin-top: 1px;
 	white-space: normal;
 	direction: ltr;
+
 	&.datetimepicker-rtl {
 		direction: rtl;
+
 		table {
 			tr {
 				td {
@@ -35,9 +38,11 @@
 			}
 		}
 	}
-	& > div {
+
+	&>div {
 		display: none;
 	}
+
 	&.minutes {
 		div {
 			&.datetimepicker-minutes {
@@ -45,6 +50,7 @@
 			}
 		}
 	}
+
 	&.hours {
 		div {
 			&.datetimepicker-hours {
@@ -52,6 +58,7 @@
 			}
 		}
 	}
+
 	&.days {
 		div {
 			&.datetimepicker-days {
@@ -59,6 +66,7 @@
 			}
 		}
 	}
+
 	&.months {
 		div {
 			&.datetimepicker-months {
@@ -66,6 +74,7 @@
 			}
 		}
 	}
+
 	&.years {
 		div {
 			&.datetimepicker-years {
@@ -73,8 +82,10 @@
 			}
 		}
 	}
+
 	table {
 		margin: 0;
+
 		tr {
 			td {
 				&.minute {
@@ -83,18 +94,21 @@
 						cursor: pointer;
 					}
 				}
+
 				&.hour {
 					&:hover {
 						background: var(--color-datepicker-hover);
 						cursor: pointer;
 					}
 				}
+
 				&.day {
 					&:hover {
 						background: var(--color-datepicker-hover);
 						cursor: pointer;
 					}
 				}
+
 				span {
 					display: block;
 					width: 23%;
@@ -104,9 +118,11 @@
 					margin: 1%;
 					cursor: pointer;
 					border-radius: 27px;
+
 					&:hover {
 						background: var(--color-datepicker-hover);
 					}
+
 					&.old {
 						color: #999999;
 					}
@@ -114,18 +130,21 @@
 			}
 		}
 	}
+
 	.datetimepicker-hours {
 		span {
 			height: 26px;
 			line-height: 26px;
 		}
 	}
+
 	.datetimepicker-minutes {
 		span {
 			height: 26px;
 			line-height: 26px;
 		}
 	}
+
 	th {
 		&.switch {
 			width: 145px;
@@ -184,44 +203,48 @@
 }
 
 .datetimepicker-dropdown-bottom-left {
-	&:before {
+	&::before {
 		top: -7px;
 		right: 6px;
 	}
-	&:after {
+
+	&::after {
 		top: -6px;
 		right: 7px;
 	}
 }
 
 .datetimepicker-dropdown-bottom-right {
-	&:before {
+	&::before {
 		top: -7px;
 		left: 6px;
 	}
-	&:after {
+
+	&::after {
 		top: -6px;
 		left: 7px;
 	}
 }
 
 .datetimepicker-dropdown-top-left {
-	&:before {
+	&::before {
 		bottom: -7px;
 		right: 6px;
 	}
-	&:after {
+
+	&::after {
 		bottom: -6px;
 		right: 7px;
 	}
 }
 
 .datetimepicker-dropdown-top-right {
-	&:before {
+	&::before {
 		bottom: -7px;
 		left: 6px;
 	}
-	&:after {
+
+	&::after {
 		bottom: -6px;
 		left: 7px;
 	}
@@ -418,6 +441,7 @@
 }
 
 .table-condensed {
+
 	th,
 	td {
 		padding: 4px 5px;

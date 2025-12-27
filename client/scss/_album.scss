@@ -1,4 +1,5 @@
-@import './_mixins.scss';
+@use './_mixins.scss' as *;
+@use './_var.icon.scss' as *;
 
 .album-processing {
   position: absolute;
@@ -90,21 +91,21 @@
   }
 
   .album-prev {
-    &:before {
+    &::before {
       @include icon();
       content: $icon-chevron-left;
     }
   }
 
   .album-next {
-    &:before {
+    &::before {
       @include icon();
       content: $icon-chevron-right;
     }
   }
 
   .album-toggle {
-    &:before {
+    &::before {
       @include icon();
       content: $icon-play;
     }
@@ -112,7 +113,7 @@
 
   &.playing {
     .album-toggle {
-      &:before {
+      &::before {
         content: $icon-pause;
       }
     }

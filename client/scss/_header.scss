@@ -1,3 +1,6 @@
+@use './_mixins.scss' as *;
+@use './_var.screen.scss' as *;
+
 @include comp-color('header');
 
 .header {
@@ -16,7 +19,7 @@
 	justify-content: space-between;
 	transition: transform 0.5s;
 	transform: translateY(0%);
-	z-index: $ui-header-index;
+	z-index: var(--ui-header-index);
 
 	.header-bar {
 		.input {
@@ -111,14 +114,14 @@
 	right: 0;
 	left: 0;
 	bottom: 0;
-	z-index: $ui-header-overlay;
+	z-index: var(--ui-header-overlay);
 }
 
 .header-menu {
 	display: flex;
 	align-items: center;
 	position: relative;
-	z-index: $ui-header-list-index;
+	z-index: var(--ui-header-list-index);
 	background-color: inherit;
 }
 
@@ -147,7 +150,7 @@
 		&.highlight {
 			position: relative;
 
-			&:after {
+			&::after {
 				content: ' ';
 				display: block;
 				width: 5px;

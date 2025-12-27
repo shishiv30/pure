@@ -1,0 +1,16 @@
+/* latin */
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	src: url('../assets/fonts/Roboto-Light.woff2') format('woff2');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-style: 400;
+	font-weight: var(--font-weight-regular);
+	src: url('../assets/fonts/Roboto-Regular.woff2') format('woff2');
+	font-display: swap;
+}

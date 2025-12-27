@@ -1,3 +1,5 @@
+@use './_mixins.scss' as *;
+
 @include comp-size('btn');
 @include comp-color('btn');
 
@@ -8,7 +10,7 @@
 	cursor: pointer;
 	@include singleline();
 
-	&:before {
+	&::before {
 		transition: transform var(--animation-time) ease-in-out;
 		content: '';
 		position: absolute;
@@ -25,7 +27,7 @@
 	}
 
 	@include hover() {
-		&:before {
+		&::before {
 			transform: scale(1);
 		}
 	}
