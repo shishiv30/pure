@@ -50,7 +50,7 @@ app.use(express.static('dist'));
 	app.listen(config.port, function () {
 		console.log(`Example app listening on port ${config.appUrl}`);
 		console.log(`API docs available at ${config.appUrl}/api-docs`);
-		console.log(`Demo docs available at ${config.appUrl}/demo?ip=99.39.118.234`);
 		console.log(`Demo docs available at state like ${config.appUrl}/demo/tx`);
+		console.log(`About page available at ${config.appUrl}/about`);
 	});
 })();

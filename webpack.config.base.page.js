@@ -1,21 +1,25 @@
 const favicon = './client/assets/img/logo.png';
 //default names
-const pageConfig = {
+export const pageConfig = {
 	pages: [
 		{
 			name: 'animation',
+			static: true,
 		},
 		{
 			name: 'demo',
 		},
 		{
 			name: 'index',
+			static: true,
 		},
 		{
 			name: '3d',
+			static: true,
 		},
 		{
 			name: 'about',
+			static: true,
 		},
 	],
 };
