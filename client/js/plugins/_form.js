@@ -33,42 +33,16 @@ export default {
 		};
 		exportObj.getValue = function () {
 			let obj = {};
-			$el.querySelectorAll('input[type="tel"]').forEach(function (item, index) {
+			$el.querySelectorAll('input').forEach(function (item, index) {
 				let name = item.name;
+				if (['radio', 'checkbox'].includes(item.type)) {
+					return;
+				}
 				if (name) {
 					obj[name] = item.value;
 				}
 			});
-			$el.querySelectorAll('input[type="email"]').forEach(function (item, index) {
-				let name = item.name;
-				if (name) {
-					obj[name] = item.value;
-				}
-			});
-			$el.querySelectorAll('input[type="text"]').forEach(function (item, index) {
-				let name = item.name;
-				if (name) {
-					obj[name] = item.value;
-				}
-			});
-			$el.querySelectorAll('input[type="number"]').forEach(function (item, index) {
-				let name = item.name;
-				if (name) {
-					obj[name] = item.value;
-				}
-			});
-			$el.querySelectorAll('input[type="password"]').forEach(function (item, index) {
-				let name = item.name;
-				if (name) {
-					obj[name] = item.value;
-				}
-			});
-			$el.querySelectorAll('input[type="hidden"]').forEach(function (item, index) {
-				let name = item.name;
-				if (name) {
-					obj[name] = item.value;
-				}
-			});
+
 			$el.querySelectorAll('textarea').forEach(function (item, index) {
 				let name = item.name;
 				if (name) {
@@ -85,8 +59,8 @@ export default {
 				let name;
 				let checkbox;
 				let checkboxList;
-				if (item.dataset.type == 'single') {
-					checkbox = item.querySelectorAll(':checkbox');
+				if (item.classList.contains('single')) {
+					checkbox = item.querySelectorAll('input[type="checkbox"]');
 					if (checkbox.length) {
 						name = checkbox.name;
 						if (checkbox.is(':checked')) {
@@ -97,11 +71,15 @@ export default {
 					}
 				} else {
 					checkboxList = item.querySelectorAll(':checked');
-					name = checkboxList.name;
-					if (name) {
-						obj[name] = $.map(checkboxList, function (item) {
-							return item.value;
-						});
+					if (checkboxList && checkboxList.length) {
+						for (let i = 0; i < checkboxList.length; i++) {
+							let checkbox = checkboxList[i];
+							if (checkbox.name && obj[checkbox.name]) {
+								obj[checkbox.name].push(checkbox.value);
+							} else {
+								obj[checkbox.name] = [checkbox.value];
+							}
+						}
 					}
 				}
 			});

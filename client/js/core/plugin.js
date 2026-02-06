@@ -23,7 +23,9 @@ export class Plugin extends Base {
 	}
 	static namespace = 'cui';
 	static records = {};
-	static instance = {};
+	static instanceMap = new Map();
+	static pendingCleanup = new Set();
+	static cleanupScheduled = false;
 
 	static getPlugin(name) {
 		return Plugin.records[Plugin.namespace + '_' + name];
@@ -55,7 +57,92 @@ export class Plugin extends Base {
 			_pids = exportObj._pid;
 		}
 		$el.dataset[_name] = _pids;
-		$el.dataset[`${_name}_${exportObj._pid}`] = exportObj;
+		let instanceKey = `${_name}_${exportObj._pid}`;
+		Plugin.instanceMap.set(instanceKey, exportObj);
+	}
+
+	static scheduleCleanup() {
+		if (Plugin.cleanupScheduled) {
+			return;
+		}
+		Plugin.cleanupScheduled = true;
+		logInfo('[Plugin] Scheduling cleanup, pending elements:', Plugin.pendingCleanup.size);
+
+		const cleanupFn = window.requestIdleCallback
+			? window.requestIdleCallback
+			: (cb) => setTimeout(cb, 0);
+
+		cleanupFn(() => {
+			logInfo('[Plugin] Performing cleanup');
+			Plugin.performCleanup();
+			Plugin.cleanupScheduled = false;
+		});
+	}
+
+	static performCleanup() {
+		const count = Plugin.pendingCleanup.size;
+		logInfo(`[Plugin] Starting cleanup for ${count} element(s)`);
+		let cleanedCount = 0;
+		Plugin.pendingCleanup.forEach(($el) => {
+			if (Plugin.cleanupInstance($el)) {
+				cleanedCount++;
+			}
+		});
+		Plugin.pendingCleanup.clear();
+		logInfo(`[Plugin] Cleanup completed: ${cleanedCount}/${count} element(s) cleaned`);
+	}
+
+	static cleanupInstance($el) {
+		if (!$el || !$el.dataset) {
+			logInfo('[Plugin] cleanupInstance: element is null or has no dataset');
+			return false;
+		}
+		let _name = Plugin.namespace;
+		// Get PIDs before deleting
+		let _pids = $el.dataset[_name];
+		if (!_pids) {
+			logInfo('[Plugin] cleanupInstance: element has no plugin instances', {
+				element: $el,
+				tagName: $el.tagName,
+			});
+			return false;
+		}
+
+		logInfo(`[Plugin] cleanupInstance: cleaning up element with pids: ${_pids}`, {
+			element: $el,
+			tagName: $el.tagName,
+			id: $el.id,
+			className: $el.className,
+			pids: _pids,
+		});
+
+		let cleanedCount = 0;
+		// Cleanup all instances for this element
+		_pids.split(',').forEach((pid) => {
+			let instanceKey = `${_name}_${pid}`;
+			let exportObj = Plugin.instanceMap.get(instanceKey);
+			if (exportObj) {
+				logInfo(`[Plugin] cleanupInstance: found instance ${instanceKey}, calling destroy`);
+				// Call destroy hooks if exportObj has destroy method
+				if (exportObj.destroy && typeof exportObj.destroy === 'function') {
+					try {
+						exportObj.destroy();
+						logInfo(`[Plugin] cleanupInstance: destroy called for ${instanceKey}`);
+					} catch (e) {
+						logError('Error calling destroy on exportObj:', e);
+					}
+				}
+				// Remove from Map
+				Plugin.instanceMap.delete(instanceKey);
+				cleanedCount++;
+				logInfo(`[Plugin] cleanupInstance: removed instance ${instanceKey} from Map`);
+			} else {
+				logInfo(`[Plugin] cleanupInstance: instance ${instanceKey} not found in Map`);
+			}
+		});
+
+		logInfo(`[Plugin] cleanupInstance: cleaned ${cleanedCount} instance(s) for element`);
+		return cleanedCount > 0;
 	}
 
 	static getInstance($el, name) {
@@ -65,13 +152,17 @@ export class Plugin extends Base {
 			return null;
 		}
 		let items = _pids.split(',');
+		if (!name) {
+			name = items[0] || '';
+		}
 		let _pid = items.find((item) => {
 			return item.indexOf(name) > -1;
 		});
 		if (!_pid) {
 			return null;
 		}
-		return $el.dataset[`${_name}_${_pid}`];
+		let instanceKey = `${_name}_${_pid}`;
+		return Plugin.instanceMap.get(instanceKey) || null;
 	}
 
 	//todo what if element be removed instance cannot be recly

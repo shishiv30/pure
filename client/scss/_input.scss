@@ -4,6 +4,7 @@
 @include comp-size('input');
 
 .input {
+	--input-placeholder-color: var(--color-l1);
 	position: relative;
 	display: block;
 	width: 100%;
@@ -25,7 +26,7 @@
 	}
 
 	>input::placeholder {
-		color: inherit;
+		color: var(--input-placeholder-color);
 	}
 
 	>input,

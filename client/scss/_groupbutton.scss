@@ -9,11 +9,11 @@
 	overflow: hidden;
 	display: flex;
 	flex-wrap: nowrap;
-	border: 1px solid var(--group-btn-border-color);
+	border: 1px solid var(--group-btn-color-border);
 
 	input {
 		&:checked+span {
-			background-color: var(--group-btn-border-color);
+			background-color: var(--group-btn-color-border);
 			color: var(--color-bg);
 		}
 	}
@@ -22,16 +22,16 @@
 		flex: 1;
 		overflow: hidden;
 		margin-right: 0;
-		border-color: var(--group-btn-border-color);
+		border-color: var(--group-btn-color-border);
 
 		+label {
-			border-left: 1px dashed var(--group-btn-border-color);
+			border-left: 1px dashed var(--group-btn-color-border);
 		}
 
 		span {
 			display: block;
 			color: var(--group-btn-color);
-			background-color: var(--group-btn-bg-color);
+			background-color: var(--group-btn-color-bg);
 			text-align: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -53,7 +53,7 @@
 	input {
 		&:checked+span {
 			color: var(--group-btn-color-active);
-			background-color: var(--group-btn-bg-color-active);
+			background-color: var(--group-btn-color-active-bg);
 		}
 	}
 

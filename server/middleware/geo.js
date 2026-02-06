@@ -17,7 +17,11 @@ export default async function (app) {
 			return;
 		}
 
-		const data = await initialGeoData();
+		let data = await initialGeoData();
+		if (!data) {
+			console.error('Error initializing geo data');
+			return;
+		}
 		initialFuseGeo({
 			state: data.state,
 			city: data.city,

@@ -99,7 +99,7 @@ export async function initialGeoData() {
 	}
 
 	// Try to load from existing JSON files first (read in parallel for faster loading)
-	const [state, county, city, neighborhood, zipcode] = await Promise.all([
+	let [state, county, city, neighborhood, zipcode] = await Promise.all([
 		loadFromJson('usstates'),
 		loadFromJson('uscounties'),
 		loadFromJson('uscities'),
@@ -108,7 +108,7 @@ export async function initialGeoData() {
 	]);
 
 	// If any file is missing, regenerate all from CSV
-	const needsRegeneration = !state || !county || !city || !neighborhood || !zipcode;
+	let needsRegeneration = !state || !county || !city || !neighborhood || !zipcode;
 
 	if (needsRegeneration) {
 		console.log('Regenerating geo data from CSV files...');

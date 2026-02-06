@@ -31,6 +31,7 @@
 	.input,
 	.textarea {
 		>label {
+			color: var(--input-placeholder-color);
 			padding: 0;
 			pointer-events: none;
 			margin: 0;

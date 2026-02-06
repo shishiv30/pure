@@ -5,6 +5,9 @@ export default {
     },
     init: function ($el, opt, exportObj) {
         exportObj.toggle = function ($target) {
+            if (Number.isInteger($target)) {
+                $target = $el.querySelectorAll('[data-target]')[$target];
+            }
             if ($target.classList && $target.classList.contains('active')) {
                 return;
             }
@@ -26,7 +29,7 @@ export default {
                 } else {
                     item.classList.add('active');
                 }
-                
+
             });
             item.addEventListener('click', (e) => {
                 exportObj.toggle(e.target);

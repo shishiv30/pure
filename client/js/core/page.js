@@ -84,6 +84,42 @@ export class Page extends Plugin {
 		//trigger this function when you want to recycle the page
 		//todo
 	}
+
+	/**
+	 * Refresh (init) plugins on [data-role] elements within root.
+	 * Call after HTML update/replace/add (e.g. after innerHTML, appendChild).
+	 * @param {Document|Element} [root=document] - Root to scan; defaults to document
+	 */
+	static refreshComponents(root = document) {
+		const list = root.querySelectorAll
+			? Array.from(root.querySelectorAll('[data-role]'))
+			: [];
+		if (root.matches && root.matches('[data-role]')) {
+			list.unshift(root);
+		}
+		list.forEach((item) => {
+			if (item.hasAttribute('loaded')) {
+				return;
+			}
+			const data = item.dataset;
+			const types = data.role;
+			if (!types) {
+				return;
+			}
+			item.setAttribute('loaded', 1);
+			types
+				.trim()
+				.split(/\s+/g)
+				.forEach((type) => {
+					const plugin = Plugin.getPlugin(type);
+					if (plugin) {
+						plugin(item, data);
+					}
+				});
+			item.setAttribute('loaded', 2);
+		});
+	}
+
 	static init;
 	static width;
 	static height;
@@ -166,28 +202,17 @@ export class Page extends Plugin {
 		on(
 			'dom.load',
 			throttle(() => {
-				// the interface wil be follow ARIA which is nice for more accessibility
-				document.querySelectorAll('[data-role]').forEach((item) => {
-					if (item.hasAttribute('loaded')) {
-						return;
-					}
-					let data = item.dataset;
-					let types = data.role;
-					if (!types) {
-						return;
-					}
-					item.setAttribute('loaded', 1);
-					types = types.trim().split(/\s+/g);
-					types.forEach((type) => {
-						let plugin = Plugin.getPlugin(type);
-						if (plugin) {
-							plugin(item, data);
-						}
-					});
-					item.setAttribute('loaded', 2);
-				});
+				Page.refreshComponents();
 			}),
 		);
+		on('dom.updated', (payload) => {
+			const elements = payload && payload.elements ? payload.elements : [payload];
+			elements.forEach((el) => {
+				if (el && el.querySelectorAll) {
+					Page.refreshComponents(el);
+				}
+			});
+		});
 		window.addEventListener(
 			'resize',
 			debounce(() => {

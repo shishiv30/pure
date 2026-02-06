@@ -16,7 +16,7 @@ if (NODE_ENV === 'production') {
 }
 
 // Also load .env.local if it exists (for local overrides)
-dotenv.config({ path: path.join(__dirname, '../.env.local'), override: false });
+dotenv.config({ path: path.join(__dirname, '../.env.local'), override: true });
 
 let config = {
 	// Server Configuration
