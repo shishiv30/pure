@@ -31,125 +31,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cursor-agent --force --model "$MODEL" --output-format=text --print <<PROMPT_END
-          You are operating in a GitHub Actions runner performing automated code review. The gh CLI is available and authenticated via GH_TOKEN. You may comment on pull requests.
+          Code review this PR. GH_TOKEN is set; use gh CLI to post comments.
 
-          Context:
-          - Repo: ${{ github.repository }}
-          - PR Number: ${{ github.event.pull_request.number }}
-          - PR Head SHA: ${{ github.event.pull_request.head.sha }}
-          - PR Base SHA: ${{ github.event.pull_request.base.sha }}
+          Repo: ${{ github.repository }}, PR: ${{ github.event.pull_request.number }}
 
-          Project Rules and Background:
-          The repository has project-specific rules defined in .cursorrules and .cursorbackground files located in the repository root. You MUST read these files and strictly enforce all rules defined within them.
+          Rules: Read .cursor/rules/ and .cursor/background.json. Enforce them.
 
-          CRITICAL: Before reviewing any code, you MUST read and understand the following files from the repository root:
-          - .cursorrules - JSON file containing ALL project standards:
-            * rules.formatting: indentSize (2), useTabs (true), trailingComma ("all"), semi (true), singleQuote (true), maxLineLength (100)
-            * rules.naming: function pattern (^[a-z][a-zA-Z0-9]*$), cssClass pattern (^[a-z][a-z0-9-]*$), className pattern (^[A-Z][a-zA-Z0-9]*$), constant pattern (^[A-Z][A-Z0-9_]*$)
-            * rules.code_reuse: Maximum reuse requirements, utility locations, checklist
-          - .cursorbackground - JSON file containing:
-            * Project architecture and system design
-            * Best practices for event handling, request handling, validation, state management
-            * Complete utilities documentation with all available functions and their purposes
+          Flow: Read rules → gh pr diff → gh api .../files for patches → post inline comments on changed lines (max 10). Use prefixes: [Critical] [Security] [Rule Violation] [Code Reuse] etc. Reply "resolved" when issues fixed. Supersede prior "no issues" if new issues found.
 
-          Enforcement Requirements:
-          1. Formatting Rules (.cursorrules.rules.formatting):
-             - Enforce indentSize: 2 spaces
-             - Enforce useTabs: true
-             - Enforce trailingComma: "all"
-             - Enforce semi: true (semicolons required)
-             - Enforce singleQuote: true (single quotes only)
-             - Enforce maxLineLength: 100 characters
-             - Flag any violations of these formatting rules
-
-          2. Naming Conventions (.cursorrules.rules.naming):
-             - Functions: Must match pattern ^[a-z][a-zA-Z0-9]*$ (e.g., appleTree)
-             - CSS Classes: Must match pattern ^[a-z][a-z0-9-]*$ (e.g., apple-tree)
-             - Class Names: Must match pattern ^[A-Z][a-zA-Z0-9]*$ (e.g., AppleTree)
-             - Constants: Must match pattern ^[A-Z][A-Z0-9_]*$ (e.g., APPLE_TREE)
-             - Flag any naming violations with specific pattern requirements
-
-          3. Code Reuse Requirements (.cursorrules.rules.code_reuse):
-             - ALWAYS check if existing utilities can be reused before flagging new implementations
-             - Check client/js/core/ for client-side utilities (format, validate, query, log, load, etc.)
-             - Check helpers/ for server-side utilities (geo, fuse, mappers, etc.)
-             - Flag code that duplicates existing utility functionality
-             - Suggest importing and using existing utilities instead of reimplementing
-             - Reference .cursorbackground.utilities for complete list of available utilities
-
-          4. Best Practices (.cursorbackground.rules):
-             - Event handling: Use on(), once(), off(), emit(), trigger() from event system
-             - Request handling: Use request.js with proper error handling (no-reject pattern)
-             - Validation: Use validate.js functions (isEmail, isPhoneNumber, etc.)
-             - Formatting: Use format.js functions (formatPhone, formatCurrency, etc.)
-             - Geo operations: Use helpers/geo.js functions
-             - State management: Avoid globalThis, use proper state management
-
-          5. Available Utilities (.cursorbackground.utilities):
-             - Reference the complete utilities documentation for all available functions
-             - Check both client_core and server_helpers sections
-             - Verify code uses existing utilities before implementing new functionality
-
-          Objectives:
-          1) Re-check existing review comments and reply resolved when addressed.
-          2) Review the current PR diff and flag issues including:
-             - Violations of project rules (formatting, naming, code reuse)
-             - Missing utility reuse opportunities
-             - Non-compliance with best practices from .cursorbackground
-             - Clear, high-severity issues (security, bugs, logic errors)
-          3) Leave very short inline comments (1-2 sentences) on changed lines only and a brief summary at the end.
-
-          Procedure:
-          - FIRST STEP: Read and parse .cursorrules and .cursorbackground JSON files from the repository root
-          - Extract and understand ALL rules from:
-            * .cursorrules.rules.formatting (all formatting requirements)
-            * .cursorrules.rules.naming (all naming patterns)
-            * .cursorrules.rules.code_reuse (all reuse requirements)
-            * .cursorbackground.rules (all best practices)
-            * .cursorbackground.utilities (all available utilities)
-          - Apply these rules strictly when reviewing code
-          - Get existing comments: gh pr view --json comments
-          - Get diff: gh pr diff
-          - Get changed files with patches to compute inline positions: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --paginate --jq '.[] | {filename,patch}'
-          - Compute exact inline anchors for each issue (file path + diff position). Comments MUST be placed inline on the changed line in the diff, not as top-level comments.
-          - Detect prior top-level "no issues" style comments authored by this bot (match bodies like: "no issues", "No issues found", "LGTM").
-          - If CURRENT run finds issues and any prior "no issues" comments exist:
-            - Prefer to remove them to avoid confusion:
-              - Try deleting top-level issue comments via: gh api -X DELETE repos/${{ github.repository }}/issues/comments/<comment_id>
-              - If deletion is not possible, minimize them via GraphQL (minimizeComment) or edit to prefix "[Superseded by new findings]".
-            - If neither delete nor minimize is possible, reply to that comment: "Superseded: issues were found in newer commits".
-          - If a previously reported issue appears fixed by nearby changes, reply: This issue appears to be resolved by the recent changes
-          - Analyze for:
-            - Project rule violations (formatting, naming, code reuse)
-            - Missing utility reuse (check if code duplicates functionality in client/js/core/ or helpers/)
-            - Best practice violations from .cursorbackground
-            - Null/undefined dereferences
-            - Resource leaks (unclosed files or connections)
-            - Injection (SQL/XSS)
-            - Concurrency/race conditions
-            - Missing error handling for critical operations
-            - Obvious logic errors with incorrect behavior
-            - Clear performance anti-patterns with measurable impact
-            - Definitive security vulnerabilities
-            - Typos and spelling errors in visible content
-            - Code quality issues and best practice violations
-            - Potential bugs and edge cases
-          - Avoid duplicates: skip if similar feedback already exists on or near the same lines.
-
-          Commenting rules:
-          - Max 10 inline comments total; prioritize the most critical issues
-          - One issue per comment; place on the exact changed line
-          - All issue comments MUST be inline (anchored to a file and line/position in the PR diff)
-          - Natural tone, specific and actionable; do not mention automated or high-confidence
-          - Use prefixes for comment types: [Critical] [Security] [Performance] [Logic] [Resolved] [Improvement] [Rule Violation] [Code Reuse]
-          - For rule violations, suggest the correct approach (e.g., "Use formatPhone() from client/js/core/format.js instead")
-
-          Submission:
-          - If there are NO issues to report and an existing top-level comment indicating "no issues" already exists (e.g., "no issues", "No issues found", "LGTM"), do NOT submit another comment. Skip submission to avoid redundancy.
-          - If there are NO issues to report and NO prior "no issues" comment exists, submit one brief summary comment noting no issues.
-          - If there ARE issues to report and a prior "no issues" comment exists, ensure that prior comment is deleted/minimized/marked as superseded before submitting the new review.
-          - If there ARE issues to report, submit ONE review containing ONLY inline comments plus an optional concise summary body. Use the GitHub Reviews API to ensure comments are inline:
-            - Build a JSON array of comments like: [{ "path": "<file>", "position": <diff_position>, "body": "..." }]
-            - Submit via: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews -f event=COMMENT -f body="$SUMMARY" -f comments='[$COMMENTS_JSON]'
-          - Do NOT use: gh pr review --approve or --request-changes
+          Submit via: gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews -f event=COMMENT -f body="$SUMMARY" -f comments='[$COMMENTS_JSON]'
           PROMPT_END

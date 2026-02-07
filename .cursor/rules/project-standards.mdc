@@ -1,0 +1,60 @@
+---
+description: Core project standards - formatting, naming conventions, and code reuse requirements
+alwaysApply: true
+---
+
+# Project Standards
+
+## Formatting
+
+- **indentSize**: 2
+- **useTabs**: true
+- **trimTrailingWhitespace**: true
+- **insertFinalNewline**: true
+- **trailingComma**: "all"
+- **semi**: true (semicolons required)
+- **singleQuote**: true (single quotes only)
+- **maxLineLength**: 100 characters
+
+## Analysis
+
+- **enforceTypeScript**: true
+- **enforceESLint**: true
+- **enforcePrettier**: true
+
+## Search Exclude Patterns
+
+- node_modules/**, dist/**, client/assets/video/**
+- **/*.png, **/*.jpg, **/*.jpeg, **/*.gif, **/*.svg, **/*.ico, **/*.webp
+- **/*.mp4, **/*.mp3, **/*.wav, **/*.ogg, **/*.flac
+- **/.DS_Store, **/*.log, records.json, report.html
+
+## Naming Conventions
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| **Function** | ^[a-z][a-zA-Z0-9]*$ | appleTree |
+| **CSS Class** | ^[a-z][a-z0-9-]*$ | apple-tree |
+| **Class Name** | ^[A-Z][a-zA-Z0-9]*$ | AppleTree |
+| **Constant** | ^[A-Z][A-Z0-9_]*$ | APPLE_TREE |
+
+## Code Reuse
+
+**Rule**: Maximum reuse of utilities code.
+
+**Requirements**:
+- Always check existing utilities before implementing new functionality
+- Import and reuse utility functions from `client/js/core/` and `helpers/` directories
+- Never duplicate utility functionality - use existing utilities instead
+- If similar functionality exists, extend or refactor existing utilities rather than creating duplicates
+- Before writing new helper functions, search for existing utilities that can be reused or extended
+
+**Utility Locations**:
+- `client/js/core/` - Core client-side utilities (format, validate, query, log, load, etc.)
+- `helpers/` - Server-side and shared utilities (geo, fuse, mappers, etc.)
+
+**Checklist**:
+- Search existing utilities before implementing new functionality
+- Import from appropriate utility modules
+- Extend existing utilities if needed rather than duplicating
+- Document any new utility functions added

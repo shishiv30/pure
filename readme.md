@@ -401,7 +401,7 @@ This reviews only files that are staged with `git add`.
 **Testing tips:**
 - Make a test change (e.g., add a typo) in a file
 - Run `npm run review` to see if it catches the issue
-- The review will analyze code quality, typos, bugs, and adherence to `.cursorrules`
+- The review will analyze code quality, typos, bugs, and adherence to `.cursor/rules/` and `.cursor/background.json`
 
 ### Automated PR Reviews
 
