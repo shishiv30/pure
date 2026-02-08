@@ -51,24 +51,27 @@ let customValidate = {
 let _showValidate = function ($element, message) {
 	let parent = getParent($element);
 	if (parent) {
+		parent.classList.remove('has-success');
 		if (message && parent.dataset) {
 			parent.dataset.tooltip = message;
 		}
-		parent.classList.remove('has-success');
 		parent.classList.add('has-error');
 	}
 };
 let _passValidate = function ($element, isRequried) {
 	let parent = getParent($element);
 	if (parent) {
-		if (parent.dataset?.tooltip) {
-			delete parent.dataset.tooltip;
-		}
-		if (parent.dataset?.tooltip) {
-			delete parent.dataset.tooltip;
-		}
-		parent.classList.add('has-success');
 		parent.classList.remove('has-error');
+		if (parent.dataset?.tooltip) {
+			delete parent.dataset.tooltip;
+		}
+		if (isRequried) {
+			parent.classList.add('has-success');
+		} else if ($element.value) {
+			parent.classList.add('has-success');
+		} else {
+			parent.classList.remove('has-success');
+		}
 	}
 };
 let _validate = function ($element, type, errorText, addition) {

@@ -2,21 +2,9 @@
 import { emit, trigger } from '../core/event.js';
 import { Plugin } from '../core/plugin.js';
 export const getElementValue = function ($element) {
-	if ($element.type === 'checkbox') {
-		let value = $element.attributes['value'];
-		if ($element.checked) {
-			return value ? value : 'on';
-		} else {
-			return '';
-		}
-	}
-	if ($element.type === 'radio') {
-		let value = $element.attributes['value'];
-		if ($element.checked) {
-			return value ? value : 'on';
-		} else {
-			return '';
-		}
+	if ($element.type === 'checkbox' || $element.type === 'radio') {
+		const value = $element.attributes['value']?.value;
+		return $element.checked ? (value || 'on') : '';
 	}
 	return $element.value;
 };
@@ -90,7 +78,7 @@ export default {
 							}
 						} else if (checkboxList && checkboxList.length > 1) {
 							obj[name] = [];
-							checkboxList = checkboxList.forEach((item) => {
+							checkboxList.forEach((item) => {
 								if (item && item.checked) {
 									obj[name].push(item.value);
 								}

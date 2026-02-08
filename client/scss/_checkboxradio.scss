@@ -75,11 +75,11 @@
 }
 
 .radio {
-	input+span:before {
+	input+span::before {
 		content: $icon-circle-thin;
 	}
 
-	input:checked+span:before {
+	input:checked+span::before {
 		content: $icon-check-circle;
 	}
 }
