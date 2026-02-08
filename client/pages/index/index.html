@@ -356,7 +356,7 @@
 			<div>
 				<label>Rating</label>
 				<br />
-				<div class="radio group-btn default">
+				<div class="group-btn default">
 					<label for="rate0">
 						<input id="rate0" name="rating" type="radio" checked="checked" value="0" />
 						<span>0</span>
@@ -385,7 +385,7 @@
 			</div>
 			<div>
 				<label>Skills</label>
-				<div class="checkbox group-btn default">
+				<div class="group-btn default">
 					<label for="tag4">
 						<input id="tag4" name="skill" checked="checked" type="checkbox" value="C#" />
 						<span>C#</span>
@@ -405,8 +405,10 @@
 				</div>
 			</div>
 			<div class="checkbox single">
-				<label for="confirm"><input id="confirm" name="confirm" type="checkbox" data-type="required" /> Confirm to
-					submit</label>
+				<label for="confirm">
+					<input id="confirm" name="confirm" type="checkbox" data-role="validate" data-type="required" />
+					<span>Confirm to submit</span>
+				</label>
 			</div>
 			<div class="wrap text-center">
 				<button type="submit" class="btn default">Submit</button>

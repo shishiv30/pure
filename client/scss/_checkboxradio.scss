@@ -61,21 +61,25 @@
 }
 
 .checkbox {
-	input+span:before {
-		content: var(--icon-square-o);
+	input+span::before {
+		content: $icon-square-o;
 	}
 
-	input:checked+span:before {
-		content: var(--icon-check-square);
+	input:checked+span::before {
+		content: $icon-check-square;
+	}
+
+	&.has-error {
+		color: var(--color-danger);
 	}
 }
 
 .radio {
 	input+span:before {
-		content: var(--icon-circle-thin);
+		content: $icon-circle-thin;
 	}
 
 	input:checked+span:before {
-		content: var(--icon-check-circle);
+		content: $icon-check-circle;
 	}
 }

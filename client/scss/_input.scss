@@ -49,6 +49,7 @@
 	>a,
 	>button,
 	>.btn {
+		color: var(--input-color);
 		position: absolute;
 		top: 0;
 		z-index: 1;
@@ -107,7 +108,8 @@
 	}
 
 	&.has-error {
-		color: var(--color-danger);
+		--input-color: var(--color-danger);
+		--input-color-bg: var(--color-danger-l1);
 	}
 
 	&.has-error,
