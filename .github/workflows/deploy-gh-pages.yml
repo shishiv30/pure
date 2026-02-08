@@ -1,14 +1,17 @@
 ---
-# On merge to main: build production bundle then deploy dist/ to gh-pages branch.
+# On merge of a PR into main: build production bundle then deploy dist/ to gh-pages branch.
+# Does not run on direct pushes to main.
 name: Build and Deploy to GitHub Pages
 
 'on':
-  push:
+  pull_request:
+    types: [closed]
     branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     permissions:
       contents: write  # read repo, push gh-pages branch
 

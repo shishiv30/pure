@@ -95,7 +95,9 @@ Create a custom policy with this JSON (replace `123456789012` with your AWS acco
         "ecr:PutImage",
         "ecr:InitiateLayerUpload",
         "ecr:UploadLayerPart",
-        "ecr:CompleteLayerUpload"
+        "ecr:CompleteLayerUpload",
+        "ecr:CreateRepository",
+        "ecr:DescribeRepositories"
       ],
       "Resource": "arn:aws:ecr:*:*:repository/*"
     }
@@ -149,6 +151,17 @@ Then push a commit to `main`. The workflow **Build and Release to AWS ECR** shou
 ---
 
 ### Troubleshooting
+
+**"The repository with name 'pure' does not exist in the registry"**
+
+The ECR repository has not been created yet. Either:
+
+1. **Create it in AWS Console:** ECR → **Create repository** → name `pure` (or whatever you set in `ECR_REPOSITORY`) → **Create repository**.
+2. **Create it via CLI:** `aws ecr create-repository --repository-name pure --region us-east-1` (use your region if different).
+
+The workflow now includes a step that creates the repository if it is missing (when the IAM user has `ecr:CreateRepository` permission).
+
+---
 
 **"Could not load credentials from any providers"**
 
