@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:25.6-alpine AS base
 
 WORKDIR /app
 
@@ -11,8 +11,13 @@ RUN npm install
 # Copy source code (including .env file)
 COPY . .
 
-# Expose ports
 EXPOSE 3000 8080
 
-# Run build:dev command
+# Development: build and run dev server
+FROM base AS development
 CMD ["npm", "run", "build:dev"]
+
+# Production: build assets at image build time, then run server
+FROM base AS production
+RUN npm run build:prod
+CMD ["npm", "run", "start"]
