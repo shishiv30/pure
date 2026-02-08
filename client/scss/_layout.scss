@@ -455,12 +455,12 @@ hr {
 				}
 			}
 
-			&.prev:before {
+			&.prev::before {
 				line-height: var(--comp-size-2);
 				content: var(--icon-angle-left);
 			}
 
-			&.next:before {
+			&.next::before {
 				line-height: var(--comp-size-2);
 				content: var(--icon-angle-right);
 			}

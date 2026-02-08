@@ -108,7 +108,7 @@
         position: relative;
       }
 
-      td:before {
+      td::before {
         color: var(--color-l1);
         @include singleline();
         display: inline-block;

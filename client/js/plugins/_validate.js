@@ -2,6 +2,22 @@ import { emit } from '../core/event.js';
 import isNumber from 'lodash/isNumber.js';
 import { isPhoneNumber, isEmail, isZipcode, isPrice } from '../core/validate.js';
 import { formatTrim } from '../core/format.js';
+import { getElementValue } from '../plugins/_form.js';
+function getParent($element) {
+	if ($element.tagName === 'INPUT') {
+		if ($element.type === 'checkbox') {
+			return $element.closest('.checkbox');
+		} else if ($element.type === 'radio') {
+			return $element.closest('.radio');
+		}
+		return $element.closest('.input');
+	} else if ($element.tagName === 'TEXTAREA') {
+		return $element.closest('.textarea') || $element.closest('.input');
+	} else if ($element.tagName === 'SELECT') {
+		return $element.closest('.selectbox') || $element.closest('.input');
+	}
+	return $element.parentElement;
+}
 let customValidate = {
 	max: function ($element) {
 		let value = $element.value;
@@ -33,31 +49,35 @@ let customValidate = {
 	},
 };
 let _showValidate = function ($element, message) {
-	$element.closest('.input').classList.remove('has-success');
-	$element.closest('.input').classList.add('has-error');
-	if (message) {
-		$element.closest('.input').dataset.tooltip = message;
+	let parent = getParent($element);
+	if (parent) {
+		parent.classList.remove('has-success');
+		if (message && parent.dataset) {
+			parent.dataset.tooltip = message;
+		}
+		parent.classList.add('has-error');
 	}
 };
 let _passValidate = function ($element, isRequried) {
-	if ($element.closest('.input').dataset.tooltip) {
-		delete $element.closest('.input').dataset.tooltip;
-	}
-	$element.closest('.input').classList.remove('has-error');
-	if ($element.id) {
-		document.querySelector('[for=' + $element.id + ']').classList.remove('error-text');
-	}
-	if (isRequried) {
-		$element.closest('.input').classList.add('has-success');
-	} else if ($element.value) {
-		$element.closest('.input').classList.add('has-success');
-	} else {
-		$element.closest('.input').classList.remove('has-success');
+	let parent = getParent($element);
+	if (parent) {
+		parent.classList.remove('has-error');
+		if (parent.dataset?.tooltip) {
+			delete parent.dataset.tooltip;
+		}
+		if (isRequried) {
+			parent.classList.add('has-success');
+		} else if ($element.value) {
+			parent.classList.add('has-success');
+		} else {
+			parent.classList.remove('has-success');
+		}
 	}
 };
 let _validate = function ($element, type, errorText, addition) {
-	let value = formatTrim($element.value);
+	let value = formatTrim(getElementValue($element));
 	let isRequired = type.indexOf('required') >= 0;
+
 	let message = '';
 	for (let i = 0; i < type.length; i++) {
 		switch (type[i]) {

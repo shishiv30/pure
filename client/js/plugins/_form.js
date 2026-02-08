@@ -1,6 +1,13 @@
 //validate for form submit
 import { emit, trigger } from '../core/event.js';
 import { Plugin } from '../core/plugin.js';
+export const getElementValue = function ($element) {
+	if ($element.type === 'checkbox' || $element.type === 'radio') {
+		const value = $element.attributes['value']?.value;
+		return $element.checked ? (value || 'on') : '';
+	}
+	return $element.value;
+};
 export default {
 	name: 'form',
 	defaultOpt: {
@@ -56,38 +63,42 @@ export default {
 				}
 			});
 			$el.querySelectorAll('.checkbox').forEach(function (item, index) {
-				let name;
 				let checkbox;
 				let checkboxList;
-				if (item.classList.contains('single')) {
-					checkbox = item.querySelectorAll('input[type="checkbox"]');
-					if (checkbox.length) {
-						name = checkbox.name;
-						if (checkbox.is(':checked')) {
-							obj[name] = checkbox.value ? checkbox.value : true;
-						} else {
-							obj[name] = checkbox.value ? '' : false;
-						}
-					}
-				} else {
-					checkboxList = item.querySelectorAll(':checked');
-					if (checkboxList && checkboxList.length) {
-						for (let i = 0; i < checkboxList.length; i++) {
-							let checkbox = checkboxList[i];
-							if (checkbox.name && obj[checkbox.name]) {
-								obj[checkbox.name].push(checkbox.value);
+				checkboxList = item.querySelectorAll('input[type="checkbox"]');
+				if (checkboxList && checkboxList.length > 0) {
+					let name = checkboxList[0].name;
+					if (name) {
+						if (checkboxList && checkboxList.length === 1) {
+							checkbox = checkboxList[0];
+							if (checkbox && checkbox.checked) {
+								obj[name] = checkbox.value ? checkbox.value : true;
 							} else {
-								obj[checkbox.name] = [checkbox.value];
+								obj[name] = checkbox.value ? '' : false;
 							}
+						} else if (checkboxList && checkboxList.length > 1) {
+							obj[name] = [];
+							checkboxList.forEach((item) => {
+								if (item && item.checked) {
+									obj[name].push(item.value);
+								}
+							});
 						}
 					}
 				}
 			});
-			$el.querySelectorAll('.radio').forEach(function (item, index) {
-				let radioItem = item.querySelectorAll(':checked');
-				let name = radioItem.name;
-				if (name) {
-					obj[name] = $(radioItem).value;
+			$el.querySelectorAll('.radio').forEach((item) => {
+				let radioItem = item.querySelectorAll('input[type="radio"]');
+				if (radioItem && radioItem.length > 0) {
+					let name = radioItem[0].name;
+					if (name) {
+						obj[name] = '';
+						radioItem.forEach((item) => {
+							if (item && item.checked) {
+								obj[name] = item.value ? item.value : true;
+							}
+						});
+					}
 				}
 			});
 			return obj;
@@ -106,7 +117,6 @@ export default {
 			let payload = exportObj.getValue();
 			trigger(opt.onsubmit, payload);
 		});
-
 		return exportObj;
 	},
 	setOptionsBefore: null,

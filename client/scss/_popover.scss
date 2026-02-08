@@ -77,7 +77,7 @@
   }
 
   >.arrow,
-  .arrow:after {
+  .arrow::after {
     position: absolute;
     display: block;
     width: 0;

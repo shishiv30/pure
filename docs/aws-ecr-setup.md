@@ -1,0 +1,146 @@
+# AWS ECR setup for GitHub Actions
+
+Use this when you're ready to push Docker images to AWS. Until you complete it, the **Build and Release to AWS ECR** workflow is skipped on push (no failed runs). The job runs only when the repo variable **AWS_ECR_ENABLED** is set to `true`.
+
+---
+
+## Quick setup (AWS CLI)
+
+If you have an AWS account and want to do everything from the terminal:
+
+1. **Install and configure AWS CLI** (one-time):
+
+   ```bash
+   brew install awscli
+   aws configure
+   ```
+
+   Enter your **Access Key ID** and **Secret Access Key**. Get them in AWS Console: **IAM** → **Users** → your user (or create one with admin access) → **Security credentials** → **Create access key**. Use the same region you want for ECR (e.g. `us-east-1`).  
+   *New account? See [Create an IAM user with admin access](#create-an-iam-user-with-admin-access-for-aws-configure) below.*
+
+2. **Run the setup script** (creates ECR repo + IAM user + access key, prints values for GitHub):
+
+   ```bash
+   ./scripts/aws-ecr-setup.sh
+   ```
+
+   Defaults: region `us-east-1`, ECR repo name `pure`. Override: `./scripts/aws-ecr-setup.sh eu-west-1 my-repo`.
+
+3. **Add the printed values in GitHub**: repo **Settings** → **Secrets and variables** → **Actions** → add the two secrets and the **AWS_ECR_ENABLED** variable as shown in the script output.
+
+4. Push to `main` to trigger the first build.
+
+---
+
+## Manual setup (Console)
+
+### 1. Create an AWS account
+
+1. Go to [aws.amazon.com](https://aws.amazon.com) and choose **Create an AWS Account**.
+2. Complete sign-up (email, password, payment method, identity check).
+3. You get 12 months free tier; ECR has a small free allowance.
+
+---
+
+### Create an IAM user with admin access (for `aws configure`)
+
+You **don’t need to create a group**. Attach the admin policy directly to the user.
+
+1. In AWS Console, open **IAM** (search “IAM” in the top bar) → **Users** → **Create user**.
+2. **User name:** e.g. `admin` (or your name). Click **Next**.
+3. **Set permissions:** choose **Attach policies directly** (do not select “Add user to group”).
+4. In the policy list, search for **AdministratorAccess**, check the box next to it, then **Next**.
+5. **Create user**.
+6. Open the new user → **Security credentials** tab → **Create access key**.
+7. Use case: **Command Line Interface (CLI)** → **Next** → **Create access key**. Copy the **Access key ID** and **Secret access key** and use them in `aws configure`.
+
+*If you prefer using a group:* IAM → **User groups** → **Create group** (e.g. `Admins`) → attach **AdministratorAccess** → create group → **Users** → Create user → on “Set permissions” choose **Add user to group** and select **Admins**. Then create the access key as above.
+
+---
+
+### 2. Create an ECR repository
+
+1. In the AWS Console, open **ECR** (Elastic Container Registry): search "ECR" in the top search bar.
+2. Choose **Create repository**.
+3. **Repository name:** e.g. `pure` (or your GitHub repo name).
+4. Leave other options default, then **Create repository**.
+5. Note the **URI** (e.g. `123456789012.dkr.ecr.us-east-1.amazonaws.com/pure`) — you’ll use this to pull images later.
+
+---
+
+### 3. Create an IAM user for GitHub Actions
+
+1. In the AWS Console, open **IAM** → **Users** → **Create user**.
+2. **User name:** e.g. `github-actions-pure`.
+3. **Next** → attach policy directly. Create or use a policy that allows ECR push.
+
+**Option A – minimal policy (recommended)**  
+Create a custom policy with this JSON (replace `123456789012` with your AWS account ID if you want to limit to one repo):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ecr:GetAuthorizationToken",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload"
+      ],
+      "Resource": "arn:aws:ecr:*:*:repository/*"
+    }
+  ]
+}
+```
+
+**Option B – use AWS managed policy**  
+Attach **AmazonEC2ContainerRegistryPowerUser** (simpler, but broader ECR access).
+
+4. **Next** → **Create user**.
+5. Open the user → **Security credentials** → **Create access key**.
+6. Choose **Application running outside AWS** (e.g. GitHub Actions) → **Next** → **Create access key**.
+7. Copy the **Access key ID** and **Secret access key** and store them somewhere safe (you won’t see the secret again).
+
+---
+
+### 4. Add secrets in GitHub
+
+1. In your repo: **Settings** → **Secrets and variables** → **Actions**.
+2. **New repository secret**:
+   - Name: `AWS_ACCESS_KEY_ID`  
+     Value: the access key from step 3.
+3. **New repository secret**:
+   - Name: `AWS_SECRET_ACCESS_KEY`  
+     Value: the secret key from step 3.
+
+**Required variable** (under **Variables**):
+
+- `AWS_ECR_ENABLED` = `true` — turns on the build-and-push job. Leave unset until AWS is configured.
+
+Optional variables:
+
+- `AWS_REGION` — e.g. `us-east-1` (default in the workflow).
+- `ECR_REPOSITORY` — ECR repo name (e.g. `pure`). If not set, the workflow uses the GitHub repo name.
+
+---
+
+### 5. Test
+
+Push a commit to `main`. The workflow **Build and Release to AWS ECR** should run, build the image, and push it to your ECR repository. You can pull it with:
+
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
+docker pull 123456789012.dkr.ecr.us-east-1.amazonaws.com/pure:latest
+```
+
+(Replace region and URI with yours.)

@@ -163,7 +163,7 @@
 	left: 0;
 }
 
-[class*='datetimepicker-dropdown']:before {
+[class*='datetimepicker-dropdown']::before {
 	content: '';
 	display: inline-block;
 	border-left: 7px solid transparent;
@@ -174,7 +174,7 @@
 	position: absolute;
 }
 
-[class*='datetimepicker-dropdown']:after {
+[class*='datetimepicker-dropdown']::after {
 	content: '';
 	display: inline-block;
 	border-left: 6px solid transparent;
@@ -183,7 +183,7 @@
 	position: absolute;
 }
 
-[class*='datetimepicker-dropdown-top']:before {
+[class*='datetimepicker-dropdown-top']::before {
 	content: '';
 	display: inline-block;
 	border-left: 7px solid transparent;
@@ -193,7 +193,7 @@
 	border-bottom: 0;
 }
 
-[class*='datetimepicker-dropdown-top']:after {
+[class*='datetimepicker-dropdown-top']::after {
 	content: '';
 	display: inline-block;
 	border-left: 6px solid transparent;

@@ -145,8 +145,8 @@ acronym[title] {
 	cursor: help;
 }
 
-q:after,
-q:before {
+q::after,
+q::before {
 	content: '';
 }
 
