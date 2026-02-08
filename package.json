@@ -33,6 +33,9 @@
 	],
 	"author": "conjee zou",
 	"license": "ISC",
+	"engines": {
+		"node": ">=25.6.0"
+	},
 	"bugs": {
 		"url": "https://github.com/shishiv30/pure/issues"
 	},

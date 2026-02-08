@@ -24,6 +24,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate AWS secrets
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ] || [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "::error::AWS credentials not configured."
+            echo "Add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in Settings → Secrets and variables → Actions."
+            echo "See docs/aws-ecr-setup.md for setup instructions."
+            exit 1
+          fi
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

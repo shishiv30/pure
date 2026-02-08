@@ -134,9 +134,30 @@ Optional variables:
 
 ---
 
-### 5. Test
+### 5. Verify and test
 
-Push a commit to `main`. The workflow **Build and Release to AWS ECR** should run, build the image, and push it to your ECR repository. You can pull it with:
+Check that secrets and variables are configured:
+
+```bash
+./scripts/check-github-ecr-config.sh
+```
+
+Requires [GitHub CLI](https://cli.github.com/) (`brew install gh`) and `gh auth login`. Run from repo root.
+
+Then push a commit to `main`. The workflow **Build and Release to AWS ECR** should run, build the image, and push it to your ECR repository.
+
+---
+
+### Troubleshooting
+
+**"Could not load credentials from any providers"**
+
+This means `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are not set or are empty:
+
+1. Go to **Settings** → **Secrets and variables** → **Actions**.
+2. Ensure both `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` exist as **repository secrets** (not variables).
+3. Secret names are case-sensitive and must match exactly.
+4. If using organization secrets, ensure the repo has access under the org’s secret policies. You can pull it with:
 
 ```bash
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
