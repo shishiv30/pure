@@ -17,6 +17,7 @@ export default (env) => {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].min.js',
 			publicPath: '/',
+			clean: true,
 		},
 		devServer: {
 			static: {
