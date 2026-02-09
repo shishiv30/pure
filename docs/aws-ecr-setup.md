@@ -75,7 +75,7 @@ You **don’t need to create a group**. Attach the admin policy directly to the 
 3. **Next** → attach policy directly. Create or use a policy that allows ECR push.
 
 **Option A – minimal policy (recommended)**  
-Create a custom policy with this JSON (replace `123456789012` with your AWS account ID if you want to limit to one repo):
+Create a custom policy with this JSON (replace `123456789012` with your AWS account ID if you want to limit to one repo). If you use the S3 CDN sync (repo variable `AWS_S3_CDN_BUCKET`), add the S3 block below so the user can list, upload, and delete objects in that bucket:
 
 ```json
 {
@@ -100,13 +100,26 @@ Create a custom policy with this JSON (replace `123456789012` with your AWS acco
         "ecr:DescribeRepositories"
       ],
       "Resource": "arn:aws:ecr:*:*:repository/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::YOUR_CDN_BUCKET_NAME"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject", "s3:GetObject"],
+      "Resource": "arn:aws:s3:::YOUR_CDN_BUCKET_NAME/*"
     }
   ]
 }
 ```
 
-**Option B – use AWS managed policy**  
-Attach **AmazonEC2ContainerRegistryPowerUser** (simpler, but broader ECR access).
+Replace `YOUR_CDN_BUCKET_NAME` with your S3 bucket name (e.g. `cdn.conjeezou.com`).
+
+**Option B – use AWS managed policies**  
+- **ECR:** Attach **AmazonEC2ContainerRegistryPowerUser** (simpler, but broader ECR access).
+- **S3 CDN sync:** If you set the repo variable `AWS_S3_CDN_BUCKET`, attach **AmazonS3FullAccess** so the user can sync `dist/` to your bucket. This grants access to all S3 buckets in the account; for a single-bucket scope use the custom S3 block in Option A instead.
 
 4. **Next** → **Create user**.
 5. Open the user → **Security credentials** → **Create access key**.
