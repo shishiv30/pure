@@ -15,10 +15,8 @@ if (NODE_ENV === 'production') {
 	dotenv.config({ path: path.join(__dirname, '../.env.stage'), override: false });
 } else {
 	dotenv.config({ path: path.join(__dirname, '../.env'), override: false });
+	dotenv.config({ path: path.join(__dirname, '../.env.local'), override: true });
 }
-
-// Also load .env.local if it exists (for local overrides)
-dotenv.config({ path: path.join(__dirname, '../.env.local'), override: true });
 
 let config = {
 	// Server Configuration
