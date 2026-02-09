@@ -1,7 +1,6 @@
 ---
-# Builds on push to main and pushes Docker image to Amazon ECR.
-# To enable: set AWS_ECR_ENABLED = true and add secrets.
-# See docs/aws-ecr-setup.md. Until then this job is skipped.
+# Builds on push to main: Docker image to ECR; dist/ from the image is synced to S3 if AWS_S3_CDN_BUCKET is set.
+# To enable: set AWS_ECR_ENABLED = true and add secrets. See docs/aws-ecr-setup.md.
 
 name: Build AWS ECR (prod)
 
@@ -54,13 +53,33 @@ jobs:
           REPO=${{ env.ECR_REPOSITORY }}
           echo "ECR_REPOSITORY=$REPO" >> $GITHUB_ENV
 
-      - name: Build, tag, and push image
+      - name: Build and tag image
         env:
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --target production -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
             $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Extract dist from image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker create --name cdn-extract $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker cp cdn-extract:/app/dist ./dist
+          docker rm cdn-extract
+
+      - name: Push image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Sync dist to S3 (CDN bucket root)
+        if: vars.AWS_S3_CDN_BUCKET != ''
+        run: |
+          aws s3 sync ./dist/ s3://${{ vars.AWS_S3_CDN_BUCKET }}/ --delete
