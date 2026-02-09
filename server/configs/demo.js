@@ -139,7 +139,7 @@ export default {
 			articles: articles,
 			cdnUrl: config.cdnUrl,
 			appUrl: config.appUrl,
-			config: config,
+			soaApiDomain: config.soaApiDomain,
 		};
 
 		return model;
