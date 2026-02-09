@@ -38,8 +38,9 @@ let config = {
 		process.env.WEBPACK_STATS || (NODE_ENV === 'development' ? 'minimal' : 'errors-only'),
 
 	// CDN Configuration
-	cdnUrl: process.env.CDN_URL || '',
-	appUrl: process.env.APP_URL || '',
+	cdnUrl: process.env.CDN_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,
+	appUrl: process.env.APP_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,
+	webpackDevServerUrl: `http://${process.env.WEBPACK_DEV_SERVER_HOST}:${process.env.WEBPACK_DEV_SERVER_PORT}`,
 
 	// Development Configuration
 	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 3001,
@@ -61,10 +62,6 @@ let config = {
 };
 
 // Derived URLs
-config.appUrl = `http://${config.domain}:${config.port}`;
-config.cdnUrl = config.cdnUrl || config.appUrl;
-config.webpackDevServerUrl = `http://${config.webpackDevServerHost}:${config.webpackDevServerPort}`;
-
 config.corsOrigins = [
 	config.appUrl,
 	config.webpackDevServerUrl,
