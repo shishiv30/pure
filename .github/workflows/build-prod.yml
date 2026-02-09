@@ -3,7 +3,7 @@
 # To enable: set AWS_ECR_ENABLED = true and add secrets.
 # See docs/aws-ecr-setup.md. Until then this job is skipped.
 
-name: Build and Release to AWS ECR
+name: Build AWS ECR (prod)
 
 'on':
   push:
@@ -14,7 +14,7 @@ env:
   ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY || 'pure' }}
 
 jobs:
-  build-and-push:
+  build-prod-to-aws-ecr:
     runs-on: ubuntu-latest
     if: vars.AWS_ECR_ENABLED == 'true'
     permissions:

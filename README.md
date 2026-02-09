@@ -357,6 +357,8 @@ This project uses **Docker Compose**; image name is **pure**.
 
 From repo root you can also build only (no run): `docker compose build`, or `docker compose build --no-cache` for a clean dev rebuild. Do not use raw `docker build --target ...`.
 
+**Docker image security:** The Dockerfile upgrades Alpine packages (`apk upgrade`) and uses `npm ci` for reproducible installs. To fix reported npm vulnerabilities (e.g. in Docker Scout), run `npm audit fix` (or `npm audit fix --force` for major upgrades) in the repo, commit the updated `package-lock.json`, then rebuild the image.
+
 **Ports:** Host 3002 (DOCKER_PORT), Node listener 3000 (PORT). Config from `.env` / `.env.stage` / `.env.production` / `.env.local`.
 
 ### Environments (dev, stage, production)

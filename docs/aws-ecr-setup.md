@@ -127,7 +127,7 @@ Attach **AmazonEC2ContainerRegistryPowerUser** (simpler, but broader ECR access)
 
 **Required variable** (under **Variables**):
 
-- `AWS_ECR_ENABLED` = `true` — turns on the build-and-push job. Leave unset until AWS is configured.
+- `AWS_ECR_ENABLED` = `true` — turns on the build-prod job. Leave unset until AWS is configured.
 
 Optional variables:
 
