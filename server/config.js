@@ -5,14 +5,16 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Determine environment
+// Determine environment: development | stage (GitHub) | production (AWS)
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Load environment variables based on NODE_ENV
+// Load environment variables based on NODE_ENV (override: false so Docker/shell env wins)
 if (NODE_ENV === 'production') {
-	dotenv.config({ path: path.join(__dirname, '../.env.production') });
+	dotenv.config({ path: path.join(__dirname, '../.env.production'), override: false });
+} else if (NODE_ENV === 'stage') {
+	dotenv.config({ path: path.join(__dirname, '../.env.stage'), override: false });
 } else {
-	dotenv.config({ path: path.join(__dirname, '../.env') });
+	dotenv.config({ path: path.join(__dirname, '../.env'), override: false });
 }
 
 // Also load .env.local if it exists (for local overrides)
@@ -22,7 +24,7 @@ let config = {
 	// Server Configuration
 	sessionSecret: process.env.SESSION_SECRET || '',
 	port: parseInt(process.env.PORT) || 3000,
-	domain: process.env.DOMAIN || '127.0.0.1',
+	domain: process.env.DOMAIN,
 	mode: NODE_ENV,
 
 	// API Configuration
@@ -43,15 +45,30 @@ let config = {
 	webpackDevServerHost: process.env.WEBPACK_DEV_SERVER_HOST || 'localhost',
 	webpackHotReload: process.env.WEBPACK_HOT_RELOAD === 'true' || NODE_ENV === 'development',
 
-	// Production Configuration
-	webpackMinimize: process.env.WEBPACK_MINIMIZE === 'true' || NODE_ENV === 'production',
-	webpackOptimize: process.env.WEBPACK_OPTIMIZE === 'true' || NODE_ENV === 'production',
+	// Docker / host port (from .env DOCKER_PORT, e.g. 3002)
+	dockerPort: parseInt(process.env.DOCKER_PORT) || 3002,
+
+	// Production Configuration (production and stage use minified builds)
+	webpackMinimize:
+		process.env.WEBPACK_MINIMIZE === 'true' ||
+		NODE_ENV === 'production' ||
+		NODE_ENV === 'stage',
+	webpackOptimize:
+		process.env.WEBPACK_OPTIMIZE === 'true' ||
+		NODE_ENV === 'production' ||
+		NODE_ENV === 'stage',
 };
 
 // Derived URLs
 config.appUrl = `http://${config.domain}:${config.port}`;
 config.cdnUrl = config.cdnUrl || config.appUrl;
 config.webpackDevServerUrl = `http://${config.webpackDevServerHost}:${config.webpackDevServerPort}`;
+
+config.corsOrigins = [
+	config.appUrl,
+	config.webpackDevServerUrl,
+	...(config.dockerPort ? [`http://${config.domain}:${config.dockerPort}`] : []),
+];
 
 // console.table({
 // 	mode: config.mode,

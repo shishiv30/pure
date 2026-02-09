@@ -31,15 +31,7 @@ app.use((req, res, next) => {
 });
 
 /* routes */
-app.use(
-	cors({
-		origin: [
-			`http://${config.domain}:${config.webpackDevServerPort}`,
-			`http://${config.domain}:${config.port}`,
-			`http://${config.domain}:3001`,
-		],
-	}),
-);
+app.use(cors({ origin: config.corsOrigins }));
 app.use('/', pageRouter);
 app.use('/api', apiRouter);
 app.use(express.static('dist'));

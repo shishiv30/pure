@@ -11,10 +11,12 @@ import WebpackPwaManifest from 'webpack-pwa-manifest';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
 export default (env) => {
-	// console.log('deploy:', env.deploy);
-	//list all the environment variables
 	console.log('environment variables:', env);
-	const publicPath = `${config.cdnUrl}/`;
+	// Use relative path when no explicit CDN so assets are same-origin (avoids CORS on Docker/local)
+	const publicPath =
+		config.cdnUrl && config.cdnUrl !== config.appUrl
+			? `${String(config.cdnUrl).replace(/\/$/, '')}/`
+			: '/';
 	return merge(baseConfig(env), {
 		mode: config.webpackMode,
 		devtool: config.webpackDevtool,

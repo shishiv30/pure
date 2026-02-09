@@ -1,11 +1,15 @@
 services:
   pure-ui:
-    build: .
+    image: pure
+    build:
+      context: .
+      target: ${DOCKER_BUILD_TARGET:-production}
     ports:
       - "${DOCKER_PORT}:${PORT}"
     env_file:
       - .env
     environment:
+      - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
       - DOCKER_PORT=${DOCKER_PORT}
       - CDN_URL=${CDN_URL}

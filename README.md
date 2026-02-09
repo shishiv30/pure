@@ -335,19 +335,37 @@ Creates optimized production build with:
 - Optimized bundles
 - Production configuration
 
-### Docker Development
-Run in Docker container (auto-rebuilds with no cache):
+### Docker Development (local)
+Build and run the **development** image (uses `.env` only, not `.env.production`). Rebuilds with no cache.
 ```bash
 npm run build-docker:dev
 ```
 Access at: `http://localhost:3002`
 
 ### Docker Production
-Run production build in Docker:
+Build and run the **production** image (uses `.env.production`).
 ```bash
 npm run build-docker:prod
 ```
 Access at: `http://localhost:3002`
+
+### Build Docker image
+This project uses **Docker Compose**; image name is **pure**.
+
+- **Production:** `npm run build-docker:prod` — builds production stage and starts container.
+- **Local / dev:** `npm run build-docker:dev` — builds development stage (no cache) and starts container.
+
+From repo root you can also build only (no run): `docker compose build`, or `docker compose build --no-cache` for a clean dev rebuild. Do not use raw `docker build --target ...`.
+
+**Ports:** Host 3002 (DOCKER_PORT), Node listener 3000 (PORT). Config from `.env` / `.env.stage` / `.env.production` / `.env.local`.
+
+### Environments (dev, stage, production)
+
+| Env | File | Use case |
+|-----|------|----------|
+| **dev** | `.env` | Local and Docker dev (`build-docker:dev`). |
+| **stage** | `.env.stage` | GitHub Pages: `npm run deploy-gh` (builds with `.env.stage` and publishes to gh-pages). Auto-runs on merge to main. |
+| **production** | `.env.production` | AWS (Docker): `build-docker:prod` or CI. CDN_URL empty = same-origin. No AWS deploy script yet. |
 
 ### Docker Quick Start
 Simple Docker setup:
@@ -361,9 +379,11 @@ Simple Docker setup:
 |---------|-------------|------|-------|
 | `npm run dev` | Development with hot reload | 3000 | - |
 | `npm run build:dev` | Local development build | 3000 | - |
-| `npm run build:prod` | Production build | - | - |
-| `npm run build-docker:dev` | Docker development (auto-rebuild) | 3002 | No cache |
-| `npm run build-docker:prod` | Docker production | 3002 | - |
+| `npm run build:prod` | Production build (AWS) | - | - |
+| `npm run build:stage` | Stage build (GitHub Pages, uses .env.stage) | - | - |
+| `npm run build-docker:dev` | Docker local/dev (uses .env, no cache) | 3002 | No cache |
+| `npm run build-docker:prod` | Docker production (uses .env.production) | 3002 | - |
+| `npm run deploy-gh` | Publish dist to GitHub Pages (gh-pages); run after build:stage | - | - |
 | `npm run clean` | Clean dist folder | - | - |
 | `npm run start` | Start production server | 3000 | - |
 | `npm run review` | Review uncommitted changes with Cursor CLI | - | - |
@@ -458,11 +478,8 @@ For automated PR reviews to work, you need to:
 
 ## Deployment
 
-To deploy a new version:
-```bash
-npm run build:prod  # Build for production
-npm run deploy      # Deploy to GitHub Pages
-```
+- **Stage (GitHub Pages):** `npm run build:stage` then `npm run deploy-gh` — or use the workflow that runs on merge to main. Publishes `dist` to `gh-pages`.
+- **Production (AWS):** No deploy script yet. Use the Docker image from `build-docker:prod` or CI; `.env.production` has CDN_URL empty for same-origin.
 
 ## Project Structure
 

@@ -1,0 +1,13 @@
+---
+description: How to build the Docker image for this project
+alwaysApply: true
+---
+
+# Docker image build
+
+When the user asks to **build the image** (or "build Docker", "rebuild image", etc.):
+
+- **Production:** `npm run build-docker:prod` — builds production stage image and starts container (uses `.env.production`).
+- **Local / dev:** `npm run build-docker:dev` — builds development stage image with no cache and starts container (uses `.env` only, not `.env.production`).
+
+Both use Docker Compose under the hood; image name is **pure**. From repo root you can also run `docker compose build` (optionally `--no-cache` for dev). Do **not** use raw `docker build --target ...`.

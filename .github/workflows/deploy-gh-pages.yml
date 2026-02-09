@@ -1,7 +1,7 @@
 ---
-# On merge of a PR into main: build production bundle then deploy dist/ to gh-pages branch.
+# On merge of a PR into main: build stage bundle (.env.stage, GitHub CDN) then deploy dist/ to gh-pages.
 # Does not run on direct pushes to main.
-name: Build and Deploy to GitHub Pages
+name: Build and Deploy to GitHub Pages (stage)
 
 'on':
   pull_request:
@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build production
-        run: npm run build:prod
+      - name: Build stage
+        run: npm run build:stage
 
       - name: Configure git for gh-pages push
         run: |
@@ -38,4 +38,4 @@ jobs:
           git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
       - name: Deploy to GitHub Pages
-        run: npm run deploy
+        run: npm run deploy-gh

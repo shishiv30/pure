@@ -1,31 +1,50 @@
 #!/bin/bash
 
 # Pure UI Docker Runner Script
-# This script loads configuration from environment variables
-# and uses the same defaults as server/config.js
+# Loads port and config from .env / .env.stage / .env.production (by NODE_ENV), then .env.local overrides.
 
-# Load environment variables (same as server/config.js)
-# These will be loaded from .env or .env.production based on NODE_ENV
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Load a .env-style file into the current shell (skip comments and empty lines)
+load_env_file() {
+	local file="$1"
+	[[ ! -f "$file" ]] && return
+	while IFS= read -r line || [[ -n "$line" ]]; do
+		line="${line%%#*}"
+		line="${line#"${line%%[![:space:]]*}"}"
+		line="${line%"${line##*[![:space:]]}"}"
+		[[ -z "$line" ]] && continue
+		if [[ "$line" == *=* ]]; then
+			export "$line"
+		fi
+	done < "$file"
+}
+
+# NODE_ENV decides which env file to load: development | stage (GitHub) | production (AWS)
 NODE_ENV=${NODE_ENV:-development}
 
-# Server configuration - use different ports to avoid conflicts with local dev
-# Local dev uses 3000, so Docker uses 3001 for internal and 3002 for external
-PORT=3003
+if [[ "$NODE_ENV" = "production" ]]; then
+	load_env_file "$SCRIPT_DIR/.env.production"
+elif [[ "$NODE_ENV" = "stage" ]]; then
+	load_env_file "$SCRIPT_DIR/.env.stage"
+else
+	load_env_file "$SCRIPT_DIR/.env"
+fi
+load_env_file "$SCRIPT_DIR/.env.local"
+
+# Defaults only when not set by env files. All envs: host 3002 (DOCKER_PORT), Node listener 3000 (PORT).
+PORT=${PORT:-3000}
 DOMAIN=${DOMAIN:-localhost}
 SESSION_SECRET=${SESSION_SECRET:-dev-session-secret-change-in-production}
-
-# API configuration
 SOA_API_DOMAIN=${SOA_API_DOMAIN:-}
-
-# Docker-specific configuration - use different ports to avoid conflicts
-DOCKER_PORT=3002
-
-# Set CDN_URL to use Docker port for static assets (only if not already set)
-# This ensures Docker serves assets from port 3002 while local dev uses 3000
+DOCKER_PORT=${DOCKER_PORT:-3002}
+DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-$([ "$NODE_ENV" = "development" ] && echo "development" || echo "production")}
+# stage and production both use production Docker target
 CDN_URL=${CDN_URL:-"http://${DOMAIN}:${DOCKER_PORT}"}
 
 echo "🚀 Starting Pure UI Docker Container"
 echo "📡 Environment: $NODE_ENV"
+echo "📡 Docker build target: $DOCKER_BUILD_TARGET (development → build:dev, production → start)"
 echo "📡 Docker Port: $DOCKER_PORT"
 echo "🔧 Server Port: $PORT"
 echo "🌐 Domain: $DOMAIN"
@@ -35,19 +54,27 @@ if [ -n "$CDN_URL" ]; then
 fi
 echo ""
 
-# Stop existing containers
+# Export environment variables for docker-compose (must be before build so target is set)
+export NODE_ENV
+export PORT
+export DOCKER_PORT
+export CDN_URL
+export DOCKER_BUILD_TARGET
+
+# Stop existing containers and remove the previous image so only one image exists
 docker compose down 2>/dev/null
+docker rmi pure:latest 2>/dev/null || true
+docker image prune -f 2>/dev/null || true
 
 # For development, always rebuild with no cache to ensure latest code
 if [ "$NODE_ENV" = "development" ]; then
 	echo "🔄 Development mode: Rebuilding Docker image with no cache..."
 	docker compose build --no-cache
+else
+	docker compose build
 fi
-
-# Export environment variables for docker-compose
-export PORT
-export DOCKER_PORT
-export CDN_URL
+# Prune dangling images so only the current pure image remains
+docker image prune -f 2>/dev/null || true
 
 # Start with docker compose, passing environment variables
 docker compose up -d
@@ -77,7 +104,4 @@ echo "  - Local dev (npm run dev): uses localhost:3000"
 echo "  - Docker: uses localhost:3002 (mapped from internal port 3001)"
 echo "  - CDN_URL: automatically set to localhost:3002 for Docker"
 echo ""
-echo "📝 Environment files supported:"
-echo "  - .env (development)"
-echo "  - .env.production (production)"
-echo "  - .env.local (local overrides)"
+echo "📝 Config loaded from: .env / .env.stage / .env.production (by NODE_ENV), then .env.local (overrides)"

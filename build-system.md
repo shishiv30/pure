@@ -40,40 +40,43 @@ Each page is automatically configured with:
 
 ## Build Scripts
 
-### Development Environment
+### Development (local)
 ```bash
 npm run dev
 ```
 - Uses `webpack-dev-server` with `webpack.config.dev.js`
-- Opens browser automatically
-- Provides hot reloading
-- Generates source maps
+- Opens browser automatically, hot reloading, source maps
 
-### Staging Environment
+### Build: dev (local)
 ```bash
-npm run build
+npm run build:dev
 ```
-- Uses `webpack.config.build.js` with `--env dev` flag
-- Production mode with development optimizations
-- Outputs to `dist/` directory
-- Includes PWA manifest and service worker
+- `NODE_ENV=development` → loads `.env`
+- Uses `webpack.config.build.js`; runs webpack and server together
+- Outputs to `dist/`, includes PWA manifest and service worker
 
-### Production Environment
+### Build: stage (GitHub Pages)
 ```bash
-npm run prod
+npm run build:stage
 ```
-- Uses `webpack.config.build.js` with `--env production --env deploy` flags
-- Full production optimizations
-- Configures CDN public path for GitHub Pages
-- Generates optimized bundles
+- `NODE_ENV=stage` → loads `.env.stage`
+- Uses `webpack.config.build.js`; CDN for GitHub Pages
+- Optimized bundles; then run `npm run deploy-gh` to publish
 
-### Deployment
+### Build: production (AWS)
 ```bash
-npm run deploy
+npm run build:prod
 ```
-- Publishes `dist/` directory to GitHub Pages
-- Uses `gh-pages` branch
-- Automatically runs after `npm run prod`
+- `NODE_ENV=production` → loads `.env.production`
+- Full production optimizations; same-origin or CDN from `.env.production`
+- For Docker: `npm run build-docker:prod`
+
+### Deployment (stage → GitHub Pages)
+```bash
+npm run deploy-gh
+```
+- Publishes `dist/` to `gh-pages` branch
+- Run after `npm run build:stage`; workflow runs both on merge to main
 
 ## Webpack Configuration Details
 
@@ -129,7 +132,7 @@ npm run deploy
 1. **Development**: `npm run dev` → Webpack dev server → Hot reloading
 2. **Staging**: `npm run build` → Production build → `dist/` output
 3. **Production**: `npm run prod` → Optimized build → `dist/` output
-4. **Deployment**: `npm run deploy` → GitHub Pages upload
+4. **Deployment**: `npm run deploy-gh` → GitHub Pages upload
 
 ## Performance Optimizations
 

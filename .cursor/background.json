@@ -440,7 +440,7 @@
       "type": "webpack-based",
       "environments": [
         "development",
-        "staging",
+        "stage",
         "production"
       ],
       "architecture": "multi-page entry system",
@@ -473,9 +473,9 @@
         }
       },
       "environment_configs": {
-        "development": "webpack.config.dev.js",
-        "build": "webpack.config.build.js",
-        "production": "webpack.config.build.js with production flags"
+        "development": "webpack.config.dev.js or webpack.config.build.js with NODE_ENV=development (.env)",
+        "stage": "webpack.config.build.js with NODE_ENV=stage (.env.stage, CDN for GitHub Pages)",
+        "production": "webpack.config.build.js with NODE_ENV=production (.env.production, AWS same-origin)"
       }
     },
     "build_scripts": {
@@ -489,29 +489,46 @@
           "Auto browser open"
         ]
       },
-      "build": {
-        "command": "npm run build",
-        "config": "webpack.config.build.js --env dev",
+      "build:dev": {
+        "command": "npm run build:dev",
+        "config": "webpack.config.build.js (NODE_ENV=development loads .env)",
         "features": [
-          "Production mode with dev optimizations",
+          "Uses .env",
           "PWA manifest",
           "Service worker",
           "dist/ output"
         ]
       },
-      "prod": {
-        "command": "npm run prod",
-        "config": "webpack.config.build.js --env production --env deploy",
+      "build:stage": {
+        "command": "npm run build:stage",
+        "config": "webpack.config.build.js (NODE_ENV=stage loads .env.stage)",
         "features": [
-          "Full production optimizations",
+          "Uses .env.stage",
           "CDN public path for GitHub Pages",
           "Optimized bundles"
         ]
       },
-      "deploy": {
-        "command": "npm run deploy",
-        "purpose": "GitHub Pages deployment",
-        "process": "Publishes dist/ to gh-pages branch"
+      "build:prod": {
+        "command": "npm run build:prod",
+        "config": "webpack.config.build.js (NODE_ENV=production loads .env.production)",
+        "features": [
+          "Uses .env.production",
+          "Full production optimizations",
+          "Same-origin or AWS CDN (no cross-domain)"
+        ]
+      },
+      "build-docker:dev": {
+        "command": "npm run build-docker:dev",
+        "purpose": "Docker local/dev image, uses .env only"
+      },
+      "build-docker:prod": {
+        "command": "npm run build-docker:prod",
+        "purpose": "Docker production image (AWS), uses .env.production"
+      },
+      "deploy-gh": {
+        "command": "npm run deploy-gh",
+        "purpose": "GitHub Pages deployment (stage)",
+        "process": "Publishes dist/ to gh-pages branch (run after build:stage)"
       }
     },
     "webpack_features": {
@@ -545,18 +562,17 @@
       }
     },
     "environment_variables": {
-      "development": "No specific variables required",
-      "production": {
-        "serverConfig.cdnUrl": "CDN URL for assets",
-        "github_pages": "https://shishiv30.github.io/pure/"
-      }
+      "development": ".env (and .env.local overrides)",
+      "stage": ".env.stage (CDN_URL for GitHub Pages)",
+      "production": ".env.production (CDN_URL empty for AWS same-origin or set AWS/CloudFront URL)"
     },
     "build_process": {
       "flow": [
         "Development: npm run dev → Webpack dev server → Hot reloading",
-        "Staging: npm run build → Production build → dist/ output",
-        "Production: npm run prod → Optimized build → dist/ output",
-        "Deployment: npm run deploy → GitHub Pages upload"
+        "Local build: npm run build:dev → .env, dist/ output",
+        "Stage (GitHub): npm run build:stage → .env.stage → then npm run deploy-gh",
+        "Production (AWS): npm run build:prod or build-docker:prod → .env.production",
+        "Deploy stage: npm run deploy-gh → publishes dist/ to gh-pages (workflow runs build:stage then deploy-gh on merge to main)"
       ]
     },
     "performance_optimizations": [
