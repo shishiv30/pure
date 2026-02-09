@@ -39,6 +39,7 @@ let config = {
 
 	// CDN Configuration
 	cdnUrl: process.env.CDN_URL || '',
+	appUrl: process.env.APP_URL || '',
 
 	// Development Configuration
 	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 3001,
