@@ -137,6 +137,9 @@ export default {
 		let model = {
 			geo: geo,
 			articles: articles,
+			cdnUrl: config.cdnUrl,
+			appUrl: config.appUrl,
+			config: config,
 		};
 
 		return model;
