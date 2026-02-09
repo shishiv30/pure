@@ -1,5 +1,6 @@
 import useragent from 'express-useragent';
 import config from '../configs/index.js';
+import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import fs from 'fs';
 import mime from 'mime';
@@ -80,10 +81,15 @@ export default class BaseController {
 		//get lang from this.req.headers['accept-language'] with format like en-US
 		let lang = this.req.acceptsLanguages();
 		let origin = this.req.headers.origin || `${this.req.protocol}://${this.req.get('host')}`;
+		// Use CDN URL if configured, otherwise use relative paths
+		const cdnBase = serverConfig.cdnUrl && serverConfig.cdnUrl !== serverConfig.appUrl
+			? `${serverConfig.cdnUrl.replace(/\/$/, '')}`
+			: '';
+		const assetPath = (path) => cdnBase ? `${cdnBase}${path}` : path;
 		let preload = [
 			{
 				as: 'image',
-				href: `/img.logo-bg.svg`,
+				href: assetPath('/img.logo-bg.svg'),
 			},
 		];
 		if (this.config.preload) {
@@ -98,9 +104,11 @@ export default class BaseController {
 			path: this.req.path,
 			origin: origin,
 			preload: preload,
-			css: `/${this.config.name}.min.css`,
-			js: `/${this.config.name}.min.js`,
+			css: assetPath(`/${this.config.name}.min.css`),
+			js: assetPath(`/${this.config.name}.min.js`),
 			pageType: `page-${this.config.name}`,
+			cdnUrl: cdnBase,
+			appUrl: serverConfig.appUrl,
 		};
 	}
 	initialBreadcrumb(model) {
