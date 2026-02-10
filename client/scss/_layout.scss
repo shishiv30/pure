@@ -504,7 +504,7 @@ hr {
 		padding: var(--g2);
 		color: var(--color-f);
 		background-color: #49d9e2;
-		border-radius: 2px;
+		border-radius: var(--radius-0);
 		text-shadow: var(--color);
 
 		&:hover {

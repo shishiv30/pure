@@ -1,16 +1,19 @@
 @use './_mixins.scss' as *;
 
-textarea {
-	width: 100%;
-	resize: none;
-	border: 1px solid var(--color-l1);
-	min-height: 70px;
-	overflow-y: auto;
-	color: var(--color);
-	background-color: var(--color-bg);
-}
+@include comp-color('textarea');
 
 .textarea {
+	--textarea-placeholder-color: color-mix(in hsl, var(--textarea-color) 60%, var(--textarea-color-bg));
 	position: relative;
 	margin-bottom: 20px;
+
+	textarea {
+		width: 100%;
+		resize: none;
+		border: 1px solid var(--textarea-color-border);
+		min-height: 70px;
+		overflow-y: auto;
+		color: var(--textarea-color);
+		background-color: var(--textarea-color-bg);
+	}
 }

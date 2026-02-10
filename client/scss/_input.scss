@@ -4,7 +4,7 @@
 @include comp-size('input');
 
 .input {
-	--input-placeholder-color: var(--color-l1);
+	--input-placeholder-color: color-mix(in hsl, var(--input-color) 80%, var(--input-color-bg));
 	position: relative;
 	display: block;
 	width: 100%;
@@ -42,6 +42,7 @@
 		line-height: var(--input-line-height);
 		color: var(--input-color);
 		background-color: var(--input-color-bg);
+		border-radius: var(--radius-0);
 	}
 
 	>i,
