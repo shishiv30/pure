@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="<%= meta.lang || 'en' %>">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title><%= seo.title || 'Page Title' %></title>
-      <meta name="description" content="<%= seo.desc || 'Page Description' %>">
-      <%_if(meta.preload && meta.preload.length){for(var i=0; i<meta.preload.length; i++){_%>
-      <link rel="preload" href="<%=meta.preload[i].href%>" as="<%=meta.preload[i].as%>">
-      <%_} }_%>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= seo.title || 'Page Title' %>
+  </title>
+  <meta name="description" content="<%= seo.desc || 'Page Description' %>">
+  <%_if(meta.preload && meta.preload.length){for(var i=0; i<meta.preload.length; i++){_%>
+    <link rel="preload" href="<%=meta.preload[i].href%>" as="<%=meta.preload[i].as%>">
+    <%_} }_%>
       <link rel="icon" href="<%=meta.origin%>/img.favicon.ico" type="image/x-icon">
       <%_if(meta.css){_%>
-      <link rel="preload" href="<%=meta.css%>" as="style">
-      <link rel="stylesheet" href="<%=meta.css%>">
-      <%_}_%>
-      <%_if(meta.js){_%>
-      <link rel="preload" href="<%=meta.js%>" as="script">
-      <%_}_%>
-  </head>
-  <body id="body" class="<%=meta.pageType%>">
+        <link rel="preload" href="<%=meta.css%>" as="style">
+        <link rel="stylesheet" href="<%=meta.css%>">
+        <%_}_%>
+          <%_if(meta.js){_%>
+            <link rel="preload" href="<%=meta.js%>" as="script">
+            <%_}_%>
+</head>
 
+<body id="body" class="<%=meta.pageType%>">

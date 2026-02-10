@@ -69,9 +69,9 @@
 	.safe,
 	.tip {
 		--color-hover: color-mix(in srgb, var(--color) 90%, var(--color-bg));
-		--color-bg-hover: color-mix(in srgb, var(--color-bg) 90%, var(--color-bg-default));
+		--color-bg-hover: color-mix(in srgb, var(--color-bg) 10%, var(--color));
 		--color-active-hover: color-mix(in srgb, var(--color-active) 90%, var(--color-active-bg));
-		--color-active-bg-hover: color-mix(in srgb, var(--color-active-bg) 90%, var(--color-bg-default));
+		--color-active-bg-hover: color-mix(in srgb, var(--color-active-bg) 10%, var(--color-active));
 		--color-border-hover: color-mix(in srgb, var(--color-border) 90%, var(--color-bg));
 		--color-active-border-hover: color-mix(in srgb, var(--color-active-border) 90%, var(--color-active-bg));
 	}
@@ -87,11 +87,11 @@
 
 	.gray {
 		--color: var(--color-default-l1);
-		--color-bg: var(--color-bg-l1);
+		--color-bg: var(--color-bg-default-l1);
 		--color-border: var(--color-default-l1);
-		--color-active: var(--color-bg-l1);
+		--color-active: var(--color-bg-default-l1);
 		--color-active-bg: var(--color-default-l1);
-		--color-active-border: var(--color-default-l1);
+		--color-active-border: var(--color-bg-default-l1);
 	}
 
 	.major {

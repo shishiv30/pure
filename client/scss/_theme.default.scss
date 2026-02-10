@@ -19,10 +19,23 @@
 	--color-glb-default-lightness: 90%;
 	--color-glb-default-saturation: 100%;
 
-	--color-default: var(--color-9);
-	--color-default-l1: color-mix(in hsl, var(--color-9) 96%, var(--color-0));
-	--color-bg-default: var(--color-0);
-	--color-bg-default-l1: color-mix(in hsl, var(--color-0) 70%, var(--color-9));
+
+	--color: var(--color-bg-default);
+	--color-border: var(--color-default);
+	--color-bg: var(--color-default);
+	--color-hover: var(--color-bg-default);
+	--color-border-hover: var(--color-default);
+	--color-bg-hover: var(--color-default);
+	--color-l1: var(--color-dbg-default-l1);
+	--color-bg-l1: var(--color-default-l1);
+
+	--color-active: var(--color-default);
+	--color-active-bg: var(--color-bg-default);
+	--color-active-border: var(--color-bg-default);
+	--color-active-hover: var(--color-default);
+	--color-active-bg-hover: var(--color-bg-default);
+	--color-active-border-hover: var(--color-bg-default);
+	--color-disabled: var(--color-dbg-default-l1);
 
 	--color-major-lightness: var(--color-major-default-lightness-l1);
 	--color-major-lightness-l1: var(--color-major-default-lightness);
@@ -34,6 +47,12 @@
 	--color-danger-lightness-l1: var(--color-danger-default-lightness);
 	--color-tip-lightness: var(--color-tip-default-lightness-l1);
 	--color-tip-lightness-l1: var(--color-tip-default-lightness);
+
+	.header {
+		--header-color-active: var(--color-bg-default);
+		--header-color-active-bg: var(--color-default);
+		--header-color-active-bg-hover: var(--color-default-l1);
+	}
 }
 
 html {
@@ -90,7 +109,7 @@ html {
 
 	--logo: url('../assets/img/logo.svg');
 	--logo-bg: url('../assets/img/logo-bg.svg');
-	--logo-size: 50px;
+	--logo-size: 60px;
 
 
 	--line-height-1: 1;
@@ -181,10 +200,10 @@ body {
 	--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
 	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
 
-	--color-default: var(--color-9);
-	--color-default-l1: color-mix(in hsl, var(--color-9) 70%, var(--color-0));
-	--color-bg-default: var(--color-0);
-	--color-bg-default-l1: color-mix(in hsl, var(--color-0) 96%, var(--color-9));
+	--color-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
+	--color-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
+	--color-bg-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
+	--color-bg-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 96%);
 
 
 
