@@ -139,12 +139,12 @@ export class Page extends Plugin {
 	}
 
 	static onScroll() {
-		Page.scrollTop = Page.getScrollTop();
-		if (Page.scrollTop > 400) {
+		if (Page.scrollTop < Page.getScrollTop() && Page.scrollTop > 500) {
 			Page.isScrollDown = true;
 		} else {
 			Page.isScrollDown = false;
 		}
+		Page.scrollTop = Page.getScrollTop();
 		if (Page.isScrollDown) {
 			document.querySelector('body').classList.add('scroll-down');
 		} else {

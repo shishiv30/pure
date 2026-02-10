@@ -72,7 +72,7 @@ export default {
 		exportObj.open = _open;
 		on('dom.resize.header' + opt.id, _hide);
 		on('dom.scroll.header' + opt.id, (status) => {
-			if (status.isScrollDown && status.scrollTop > 500) {
+			if (status.isScrollDown) {
 				_close();
 			} else {
 				_open();
