@@ -5,6 +5,9 @@ import { getGeoCityByIp } from '../../helpers/ip.js';
 import { mapGeoToSOAPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
 import config from '../config.js';
+import { createArticleComponent } from '../ejs/comp_article.js';
+import { createHeaderComponent } from '../ejs/comp_header.js';
+import { createFooterComponent } from '../ejs/comp_footer.js';
 
 // Reusable function for fetching properties from SOA API
 export async function fetchPropertiesFromSOA(soaPath) {
@@ -134,9 +137,16 @@ export default {
 				articles = articlesData;
 			}
 		}
+		const articleComponent = createArticleComponent(articles);
+		const headerComponent = createHeaderComponent();
+		const footerComponent = createFooterComponent();
+
 		let model = {
 			geo: geo,
 			articles: articles,
+			articleComponent: articleComponent,
+			headerComponent: headerComponent,
+			footerComponent: footerComponent,
 			cdnUrl: config.cdnUrl,
 			appUrl: config.appUrl,
 			soaApiDomain: config.soaApiDomain,

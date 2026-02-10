@@ -109,6 +109,7 @@ export default class BaseController {
 			pageType: `page-${this.config.name}`,
 			cdnUrl: cdnBase,
 			appUrl: serverConfig.appUrl,
+			appName: serverConfig.appName,
 		};
 	}
 	initialBreadcrumb(model) {

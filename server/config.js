@@ -35,6 +35,9 @@ let config = {
 	webpackStats:
 		process.env.WEBPACK_STATS || (NODE_ENV === 'development' ? 'minimal' : 'errors-only'),
 
+	// App
+	appName: process.env.APP_NAME || 'Pure',
+
 	// CDN Configuration
 	cdnUrl: process.env.CDN_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,
 	appUrl: process.env.APP_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,

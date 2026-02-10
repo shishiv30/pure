@@ -1,5 +1,10 @@
 <%- include('html_above') %>
-  <%- include('comp_header') %>
+  <%_ const headerComponent = data.headerComponent; _%>
+  <%_ if (headerComponent) { _%>
+    <%- include(headerComponent.template, { header: headerComponent.data }) %>
+  <%_ } else { _%>
+    <%- include('comp_header') %>
+  <%_ } _%>
   <%- include('comp_breadcrumb') %>
   <section class="detail">
 
@@ -25,18 +30,24 @@
     </div>
   </section>
 
-  <%_if(data.articles && data.articles.length){_%>
+  <%_ const articleComponent = data.articleComponent; _%>
+  <%_if(articleComponent && articleComponent.data && articleComponent.data.length){_%>
   <section class="result">
     <ul>
-      <%_for(var i=0; i<data.articles.length; i++){_%>
+      <%_for(var i=0; i<articleComponent.data.length; i++){_%>
         <li class="item">
-          <%_ const article=data.articles[i]; _%>
-          <%- include('comp_article', {article: article}) %>
+          <%_ const article=articleComponent.data[i]; _%>
+          <%- include(articleComponent.template, {article: article}) %>
         </li>
       <%_}_%>
     </ul>
   </section>
   <%_}_%>
   <%- include('html_menu') %>
-  <%- include('html_footer') %>
+  <%_ const footerComponent = data.footerComponent; _%>
+  <%_ if (footerComponent) { _%>
+    <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+  <%_ } else { _%>
+    <%- include('html_footer') %>
+  <%_ } _%>
 <%- include('html_below') %>

@@ -4,7 +4,6 @@
 @include comp-color('header');
 
 .header {
-	--header-height: 56px;
 
 	&.sticky {
 		position: sticky;
@@ -14,6 +13,8 @@
 		box-shadow: 0 0 5px 0 hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.2);
 	}
 
+	--header-height: 56px;
+	height: var(--header-height);
 	background-color: var(--header-color-bg);
 	color: var(--header-color);
 	position: relative;
@@ -70,8 +71,8 @@
 
 		.header-menu-list {
 			>li>ul {
-				background-color: var(--header-color-bg);
-				color: var(--header-color);
+				background-color: var(--header-color-active-bg);
+				color: var(--header-color-active);
 			}
 		}
 	}
@@ -382,8 +383,10 @@ body:not(.body-expand-header) {
 				&>ul {
 					position: absolute;
 					top: var(--header-height);
+					transform: translateY(1px);
 					left: 0;
 					right: auto;
+					overflow: hidden;
 					min-width: 160px;
 					border-radius: var(--radius-1);
 					box-shadow: 0 1px 3px 1px hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.2);

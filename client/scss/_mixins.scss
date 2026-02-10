@@ -68,12 +68,12 @@
 	.danger,
 	.safe,
 	.tip {
-		--color-hover: color-mix(in srgb, var(--color) 90%, var(--color-bg));
-		--color-bg-hover: color-mix(in srgb, var(--color-bg) 10%, var(--color));
-		--color-active-hover: color-mix(in srgb, var(--color-active) 90%, var(--color-active-bg));
-		--color-active-bg-hover: color-mix(in srgb, var(--color-active-bg) 10%, var(--color-active));
-		--color-border-hover: color-mix(in srgb, var(--color-border) 90%, var(--color-bg));
-		--color-active-border-hover: color-mix(in srgb, var(--color-active-border) 90%, var(--color-active-bg));
+		--color-hover: color-mix(in srgb, var(--color) 90%, var(--color-default));
+		--color-bg-hover: color-mix(in srgb, var(--color-bg) 90%, var(--color-bg-default));
+		--color-active-hover: color-mix(in srgb, var(--color-active) 90%, var(--color-default));
+		--color-active-bg-hover: color-mix(in srgb, var(--color-active-bg) 90%, var(--color-bg-default));
+		--color-border-hover: color-mix(in srgb, var(--color-border) 90%, var(--color-default));
+		--color-active-border-hover: color-mix(in srgb, var(--color-active-border) 90%, var(--color-bg-default));
 	}
 
 	.default {
