@@ -61,6 +61,10 @@
 				--btn-color-border: var(--header-color-active-border);
 			}
 		}
+
+		.menu-img {
+			background-image: var(--logo-bg);
+		}
 	}
 
 	&.header-close {
@@ -359,10 +363,6 @@ body:not(.body-expand-header) {
 			max-width: fit-content;
 
 			&.active {
-				.menu-img {
-					background-image: var(--logo-bg);
-				}
-
 				.header-menu-list {
 					height: 100vh;
 				}
