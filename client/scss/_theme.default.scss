@@ -19,6 +19,11 @@
 	--color-glb-default-lightness: 90%;
 	--color-glb-default-saturation: 100%;
 
+	--color-default: var(--color-9);
+	--color-default-l1: color-mix(in hsl, var(--color-9) 96%, var(--color-0));
+	--color-bg-default: var(--color-0);
+	--color-bg-default-l1: color-mix(in hsl, var(--color-0) 70%, var(--color-9));
+
 	--color-major-lightness: var(--color-major-default-lightness-l1);
 	--color-major-lightness-l1: var(--color-major-default-lightness);
 	--color-minor-lightness: var(--color-minor-default-lightness-l1);
@@ -36,7 +41,7 @@ html {
 	--cui-font: 'Roboto';
 	--color-glb-front-lightness: 23%;
 	--color-glb-bg-lightness: 95%;
-	--color-glb-front-saturation: 10%;
+	--color-glb-front-saturation: 20%;
 	--color-glb-bg-saturation: 100%;
 	--color-glb-default-saturation: 100%;
 	--color-glb-default-lightness: 30%;
@@ -177,9 +182,9 @@ body {
 	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
 
 	--color-default: var(--color-9);
-	--color-default-l1: color-mix(in hsl, var(--color-default) 80%, white);
+	--color-default-l1: color-mix(in hsl, var(--color-9) 70%, var(--color-0));
 	--color-bg-default: var(--color-0);
-	--color-bg-default-l1: color-mix(in hsl, var(--color-bg-default) 90%, black);
+	--color-bg-default-l1: color-mix(in hsl, var(--color-0) 96%, var(--color-9));
 
 
 

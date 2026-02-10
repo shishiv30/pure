@@ -75,7 +75,6 @@
 		background-position: center center;
 		background-repeat: no-repeat;
 		width: var(--logo-size);
-		//add filter for background image base on green, fill color green with --header-color-active
 		height: 100%;
 
 		@media screen and (max-width: $screen-xs-min) {

@@ -79,7 +79,7 @@
     z-index: 2;
     transform: translateX(-50%);
     display: flex;
-    background-color: hsla(var(--color-major-hue), var(--color-glb-front-saturation), 100%, 0.3);
+    background-color: hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.3);
     border-radius: var(--g3);
 
     >button {

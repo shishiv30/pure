@@ -1,6 +1,6 @@
 @use './_var.screen.scss' as *;
 @use './_mixins.scss' as *;
-@forward './demo/_demo.theme.scss';
+@forward './_theme.default.scss';
 @forward './demo/demo-animation.scss';
 @forward './base.scss';
 
