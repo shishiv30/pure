@@ -317,7 +317,6 @@ body:not(.body-expand-header) {
 //larger screen
 @media (min-width: $screen-sm-min) {
 	.header {
-		justify-content: center;
 
 		.header-menu-list {
 			display: flex;
