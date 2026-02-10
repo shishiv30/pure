@@ -4,7 +4,7 @@
 @include comp-size('group-btn');
 
 .group-btn {
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 	margin: 0;
 	overflow: hidden;
 	display: flex;

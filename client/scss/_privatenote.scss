@@ -3,7 +3,7 @@
     border: 1px solid #d7d7d7;
     height: 100px;
     overflow: hidden;
-    box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: -1px 1px 3px hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.5);
     transition(height 0.3 s);
 }
 

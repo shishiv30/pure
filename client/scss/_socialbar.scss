@@ -99,7 +99,7 @@ $social-list: socialbar-email $socialbar-email,
 			}
 
 			&:active {
-				box-shadow: inset 1px 3px 15px 0 rgba(22, 0, 0, 0.25);
+				box-shadow: inset 1px 3px 15px 0 hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.25);
 			}
 		}
 
@@ -137,70 +137,70 @@ $social-list: socialbar-email $socialbar-email,
 			}
 
 			&:first-child:nth-last-child(2),
-			&:first-child:nth-last-child(2) ~ li {
+			&:first-child:nth-last-child(2)~li {
 				a {
 					font-size: $font-size-5;
 				}
 			}
 
 			&:first-child:nth-last-child(3),
-			&:first-child:nth-last-child(3) ~ li {
+			&:first-child:nth-last-child(3)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(4),
-			&:first-child:nth-last-child(4) ~ li {
+			&:first-child:nth-last-child(4)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(5),
-			&:first-child:nth-last-child(5) ~ li {
+			&:first-child:nth-last-child(5)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(6),
-			&:first-child:nth-last-child(6) ~ li {
+			&:first-child:nth-last-child(6)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(7),
-			&:first-child:nth-last-child(7) ~ li {
+			&:first-child:nth-last-child(7)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(8),
-			&:first-child:nth-last-child(8) ~ li {
+			&:first-child:nth-last-child(8)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(9),
-			&:first-child:nth-last-child(9) ~ li {
+			&:first-child:nth-last-child(9)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(10),
-			&:first-child:nth-last-child(10) ~ li {
+			&:first-child:nth-last-child(10)~li {
 				a {
 					font-size: 14px;
 				}
 			}
 
 			&:first-child:nth-last-child(11),
-			&:first-child:nth-last-child(11) ~ li {
+			&:first-child:nth-last-child(11)~li {
 				a {
 					font-size: 14px;
 				}

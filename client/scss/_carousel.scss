@@ -3,19 +3,23 @@
 	--carousel-height: auto;
 	position: relative;
 	--arrow-size: var(--comp-size-2);
+
 	&.small {
 		--arrow-size: var(--comp-size-1);
 	}
+
 	&.hasNext {
 		.arrow.next {
 			display: block;
 		}
 	}
+
 	&.hasPrev {
 		.arrow.prev {
 			display: block;
 		}
 	}
+
 	.arrow {
 		z-index: 2;
 		display: none;
@@ -28,33 +32,39 @@
 		text-align: center;
 		font-size: var(--arrow-size);
 		padding: 0;
-		background: rgba(255, 255, 255);
+		background: hsla(var(--color-major-hue), var(--color-glb-bg-saturation), 100%, 0.9);
 		opacity: 0.9;
 		border: 1px solid var(--color-bg-l1);
 		color: var(--color-major);
 		cursor: pointer;
 		border-radius: 50%;
+
 		&.prev {
 			left: 15px;
 			transition: opacity, left 0.5s linear;
 		}
+
 		&.next {
 			right: 15px;
 			transition: opacity, right 0.5s linear;
 		}
 	}
+
 	&:hover {
 		.arrow {
 			opacity: 1;
 		}
+
 		.prev {
 			left: 5px;
 		}
+
 		.next {
 			right: 5px;
 		}
 	}
 }
+
 .landscape {
 	@media screen and (max-width: $screen-sm-max) {
 		[data-role*='scrollbar'] {
@@ -62,11 +72,13 @@
 		}
 	}
 }
+
 [data-role*='scrollbar']:not(.moving) {
-	> * {
+	>* {
 		scroll-snap-align: start;
 	}
 }
+
 @include only-mobile {
 	[data-role*='carousel'] {
 		[data-role*='scrollbar'] {
@@ -76,22 +88,25 @@
 			-webkit-overflow-scrolling: touch;
 			-ms-overflow-style: none;
 		}
+
 		&:not(.center) {
 			[data-role*='scrollbar'] {
-				> * {
+				>* {
 					scroll-snap-align: start;
 				}
 			}
 		}
+
 		&.center {
 			[data-role*='scrollbar'] {
-				> * {
+				>* {
 					scroll-snap-align: center;
 				}
 			}
 		}
 	}
 }
+
 [data-role*='scrollbar'] {
 	height: var(--carousel-height);
 	width: 100%;
@@ -103,37 +118,44 @@
 	padding: 0;
 	@include hidden-scrollbar();
 	max-height: 30vh;
-	> * {
+
+	>* {
 		flex-shrink: 0;
 	}
+
 	&[count] {
-		> * {
+		>* {
 			height: 100% !important;
 			width: 100% !important;
 		}
 	}
+
 	&[count='1'] {
-		> * {
+		>* {
 			flex: 0 0 100%;
 		}
 	}
+
 	&[count='2'] {
-		> * {
+		>* {
 			flex: 0 0 50%;
 		}
 	}
+
 	&[count='3'] {
-		> * {
+		>* {
 			flex: 0 0 33.333333%;
 		}
 	}
+
 	&[count='4'] {
-		> * {
+		>* {
 			flex: 0 0 25%;
 		}
 	}
+
 	&[count='5'] {
-		> * {
+		>* {
 			flex: 0 0 20%;
 		}
 	}

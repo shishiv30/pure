@@ -20,7 +20,7 @@
 		color: var(--tooltip-color);
 		background-color: var(--tooltip-color-bg);
 		border: 1px solid var(--tooltip-color-border);
-		border-radius: 4px;
+		border-radius: var(--radius-0);
 	}
 
 	&.in {

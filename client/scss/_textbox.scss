@@ -31,7 +31,6 @@
 	.input,
 	.textarea {
 		>label {
-			color: var(--input-placeholder-color);
 			padding: 0;
 			pointer-events: none;
 			margin: 0;
@@ -53,6 +52,7 @@
 			right: auto;
 			top: 50%;
 			width: calc(100% - var(--g2));
+			color: var(--input-placeholder-color);
 		}
 
 		>input {
@@ -124,6 +124,7 @@
 			left: 0;
 			right: 0;
 			top: var(--g3);
+			color: var(--textarea-placeholder-color);
 		}
 
 		textarea {

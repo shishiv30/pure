@@ -1,9 +1,93 @@
 // very small screen / phone
+@mixin theme-dark-vars {
+	--logo-bg: url('../assets/img/logo.svg');
+	--logo: url('../assets/img/logo-bg.svg');
+	--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
+	--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
+	--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
+	--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
+	--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
+	--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
+	--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
+	--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
+	--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
+	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
+
+	//flip the lightness values for  dark mode
+	--color-glb-bg-lightness: 10%;
+	--color-glb-front-lightness: 80%;
+	--color-glb-default-lightness: 90%;
+	--color-glb-default-saturation: 100%;
+
+	--color-major-lightness: var(--color-major-default-lightness-l1);
+	--color-major-lightness-l1: var(--color-major-default-lightness);
+	--color-minor-lightness: var(--color-minor-default-lightness-l1);
+	--color-minor-lightness-l1: var(--color-minor-default-lightness);
+	--color-safe-lightness: var(--color-safe-default-lightness-l1);
+	--color-safe-lightness-l1: var(--color-safe-default-lightness);
+	--color-danger-lightness: var(--color-danger-default-lightness-l1);
+	--color-danger-lightness-l1: var(--color-danger-default-lightness);
+	--color-tip-lightness: var(--color-tip-default-lightness-l1);
+	--color-tip-lightness-l1: var(--color-tip-default-lightness);
+}
+
 html {
 	--animation-time: 0.1s;
 	--cui-font: 'Roboto';
+	--color-glb-front-lightness: 23%;
+	--color-glb-bg-lightness: 95%;
+	--color-glb-front-saturation: 10%;
+	--color-glb-bg-saturation: 100%;
+	--color-glb-default-saturation: 100%;
+	--color-glb-default-lightness: 30%;
 
-	//line-height
+	--color-r0-hue: 4;
+	--color-r1-hue: 34;
+	--color-r2-hue: 54;
+	--color-r3-hue: 84;
+	--color-r4-hue: 169;
+	--color-r5-hue: 174;
+	--color-r6-hue: 204;
+	--color-r7-hue: 224;
+	--color-r8-hue: 274;
+	--color-r9-hue: 344;
+
+	--color-major-hue: 169;
+	--color-major-default-lightness: 23%;
+	--color-major-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-major-lightness: var(--color-major-default-lightness);
+	--color-major-lightness-l1: var(--color-major-default-lightness-l1);
+	--color-major-saturation: 76%;
+	--color-minor-hue: 185;
+	--color-minor-default-lightness: 15%;
+	--color-minor-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-minor-lightness: var(--color-minor-default-lightness);
+	--color-minor-lightness-l1: var(--color-minor-default-lightness-l1);
+	--color-minor-saturation: 100%;
+	--color-safe-hue: 169;
+	--color-safe-default-lightness: 30%;
+	--color-safe-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-safe-lightness: var(--color-safe-default-lightness);
+	--color-safe-lightness-l1: var(--color-safe-default-lightness-l1);
+	--color-safe-saturation: var(--color-glb-default-saturation);
+	--color-danger-hue: 4;
+	--color-danger-default-lightness: 30%;
+	--color-danger-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-danger-lightness: var(--color-danger-default-lightness);
+	--color-danger-lightness-l1: var(--color-danger-default-lightness-l1);
+	--color-danger-saturation: var(--color-glb-default-saturation);
+	--color-tip-hue: 54;
+	--color-tip-default-lightness: 30%;
+	--color-tip-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-tip-lightness: var(--color-tip-default-lightness);
+	--color-tip-lightness-l1: var(--color-tip-default-lightness-l1);
+	--color-tip-saturation: var(--color-glb-default-saturation);
+
+	--logo: url('../assets/img/logo.svg');
+	--logo-bg: url('../assets/img/logo-bg.svg');
+	--logo-size: 50px;
+
+
 	--line-height-1: 1;
 	--line-height-2: 1.25;
 	--line-height-3: 1.75;
@@ -53,71 +137,51 @@ html {
 }
 
 body {
-	--color-r0: hsl(4, 100%, 30%);
-	--color-r1: hsl(34, 100%, 30%);
-	--color-r2: hsl(54, 100%, 30%);
-	--color-r3: hsl(84, 100%, 30%);
-	--color-r4: hsl(144, 100%, 30%);
-	--color-r5: hsl(174, 100%, 30%);
-	--color-r6: hsl(204, 100%, 30%);
-	--color-r7: hsl(224, 100%, 30%);
-	--color-r8: hsl(274, 100%, 30%);
-	--color-r9: hsl(344, 100%, 30%);
+	--color-r0: hsl(var(--color-r0-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r1: hsl(var(--color-r1-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r2: hsl(var(--color-r2-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r3: hsl(var(--color-r3-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r4: hsl(var(--color-r4-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r5: hsl(var(--color-r5-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r6: hsl(var(--color-r6-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r7: hsl(var(--color-r7-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r8: hsl(var(--color-r8-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
+	--color-r9: hsl(var(--color-r9-hue), var(--color-glb-default-saturation), var(--color-glb-default-lightness));
 
-	--color-major: hsl(200, 100%, 20%);
-	--color-major-l1: hsl(200, 100%, 95%);
+	--color-major: hsl(var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness));
+	--color-major-l1: hsl(var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness-l1));
 	--color-link: var(--color-major);
-	--color-link-hover: hsl(200, 100%, 10%);
+	--color-link-hover: var(--color-minor);
 
-	--color-minor: hsl(200, 100%, 50%);
-	--color-minor-l1: hsl(200, 100%, 95%);
+	--color-minor: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness));
+	--color-minor-l1: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness-l1));
 
-	--color-safe: var(--color-r4);
-	--color-safe-l1: hsl(144, 100%, 95%);
-	--color-danger: var(--color-r0);
-	--color-danger-l1: hsl(4, 100%, 95%);
-	--color-tip: var(--color-r2);
-	--color-tip-l1: hsl(54, 100%, 95%);
+	--color-safe: hsl(var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness));
+	--color-safe-l1: hsl(var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness-l1));
 
-	//write dynamic --color-0 to --color-9 base on hsl from 0% to 100%
-	@for $i from 0 through 9 {
-		--color-#{$i}: hsl(0, 0%, #{100% - 10% * $i});
-	}
+	--color-danger: hsl(var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness));
+	--color-danger-l1: hsl(var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness-l1));
+
+	--color-tip: hsl(var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness));
+	--color-tip-l1: hsl(var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness-l1));
+
+	--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
+	--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
+	--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
+	--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
+	--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
+	--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
+	--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
+	--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
+	--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
+	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
 
 	--color-default: var(--color-9);
-	--color-default-l1: var(--color-7);
+	--color-default-l1: color-mix(in hsl, var(--color-default) 80%, white);
 	--color-bg-default: var(--color-0);
-	--color-bg-default-l1: var(--color-1);
+	--color-bg-default-l1: color-mix(in hsl, var(--color-bg-default) 90%, black);
 
-	&.dark {
-		@media (prefers-color-scheme: dark) {
-			@for $i from 0 through 9 {
-				--color-#{$i}: hsl(0, 0%, #{10% * $i});
-			}
 
-			--color-major-l1: hsl(200, 100%, 20%);
-			--color-major: hsl(200, 100%, 95%);
-			--color-link-hover: hsl(200, 100%, 80%);
-
-			--color-minor-l1: hsl(200, 100%, 50%);
-			--color-minor: hsl(200, 100%, 95%);
-
-			--color-r0: hsl(4, 100%, 95%);
-			--color-r1: hsl(34, 100%, 95%);
-			--color-r2: hsl(54, 100%, 95%);
-			--color-r3: hsl(84, 100%, 95%);
-			--color-r4: hsl(144, 100%, 95%);
-			--color-r5: hsl(174, 100%, 95%);
-			--color-r6: hsl(204, 100%, 95%);
-			--color-r7: hsl(224, 100%, 95%);
-			--color-r8: hsl(274, 100%, 95%);
-			--color-r9: hsl(344, 100%, 95%);
-
-			--color-safe-l1: hsl(144, 100%, 10%);
-			--color-danger-l1: hsl(4, 100%, 10%);
-			--color-tip-l1: hsl(54, 100%, 10%);
-		}
-	}
 
 	--color: var(--color-default);
 	--color-border: var(--color-bg-default);
@@ -154,7 +218,17 @@ body {
 
 	--comp-height: var(--comp-size-3);
 	--comp-font-size: var(--font-size-5);
-	--comp-border-radius: 6px;
+	--comp-border-radius: var(--radius-1);
 	--comp-max-width: auto;
 	--comp-line-height: var(--line-height-3);
+
+	&.theme-auto {
+		@media (prefers-color-scheme: dark) {
+			@include theme-dark-vars;
+		}
+	}
+
+	&.theme-dark {
+		@include theme-dark-vars;
+	}
 }

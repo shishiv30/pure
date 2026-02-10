@@ -9,6 +9,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
+		box-shadow: 0 0 5px 0 hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.2);
 	}
 
 	background-color: var(--header-color-bg);
@@ -25,9 +26,6 @@
 		.input {
 			--input-color: var(--header-color);
 			--input-color-bg: var(--header-color-bg);
-			--input-color-border: var(--header-color-border);
-			border-left: 1px solid var(--color-l1);
-			border-right: 1px solid var(--color-l1);
 
 			input {
 				box-shadow: none;
@@ -71,14 +69,14 @@
 
 	.menu-img {
 		flex-shrink: 0;
-		padding: 0 var(--g1);
-
-		&,
-		&>img {
-			height: var(--comp-size-3);
-			width: auto;
-			object-fit: contain;
-		}
+		display: block;
+		background-image: var(--logo);
+		background-size: 70% auto;
+		background-position: center center;
+		background-repeat: no-repeat;
+		width: var(--logo-size);
+		//add filter for background image base on green, fill color green with --header-color-active
+		height: 100%;
 
 		@media screen and (max-width: $screen-xs-min) {
 			display: none;
@@ -144,7 +142,7 @@
 
 		@include hover() {
 			opacity: 1;
-			background-color: rgba(255, 255, 255, 0.05);
+			background-color: color-mix(in srgb, var(--color-bg) 15%, transparent);
 		}
 
 		&.highlight {
@@ -316,6 +314,8 @@ body:not(.body-expand-header) {
 //larger screen
 @media (min-width: $screen-sm-min) {
 	.header {
+		justify-content: center;
+
 		.header-menu-list {
 			display: flex;
 			flex-shrink: 1;
@@ -360,6 +360,10 @@ body:not(.body-expand-header) {
 			max-width: fit-content;
 
 			&.active {
+				.menu-img {
+					background-image: var(--logo-bg);
+				}
+
 				.header-menu-list {
 					height: 100vh;
 				}
