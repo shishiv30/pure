@@ -54,18 +54,28 @@ cd cms
 npm install
 ```
 
-2. **Configure environment**:
+2. **Database setup** (choose one):
+   - **Option A (recommended):** Run the shell script, then start the server (server creates DB on first run).
+     ```bash
+     ./scripts/setup-db.sh    # from cms/; or ./cms/scripts/setup-db.sh from repo root
+     ```
+   - **Option B:** After `npm install`, init the DB explicitly:
+     ```bash
+     npm run setup-db
+     ```
+
+3. **Configure environment**:
 ```bash
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env: set SESSION_SECRET and optionally DB_PATH, CORS_ORIGINS
 ```
 
-3. **Start development server**:
+4. **Start development server**:
 ```bash
 npm run dev
 ```
 
-4. **Create admin user** (first time only):
+5. **Create admin user** (first time only):
 ```bash
 curl -X POST http://localhost:3003/api/setup/create-admin \
   -H "Content-Type: application/json" \
@@ -190,7 +200,7 @@ The workflow **Build CMS (prod)** (`.github/workflows/build-cms-prd.yml`) runs o
 - **Secrets**: Uses `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
 - **Variables**: `AWS_REGION` (default `us-east-2`), `ECR_REPOSITORY_CMS` (default `pure-cms`)
 
-After the workflow runs, pull the new image on your AWS instance and restart the container. Data is preserved as long as you use a persistent volume for the database (see below).
+After the workflow runs, pull the new image on your AWS instance and restart the container. Data is preserved as long as you use a persistent volume for the database (see below). For the IAM permissions the workflow needs (ECR only) and how to run the same build/push locally with AWS CLI, see [docs/github-actions-iam.md](docs/github-actions-iam.md).
 
 ### Data preservation on AWS
 
@@ -204,6 +214,31 @@ The workflow **does not modify or replace your database**. It only builds and pu
 
 3. **Example (ECS)**  
    Use a task definition with a volume (e.g. EFS or EBS) mounted at `/app/data` and set `DB_PATH=/app/data/cms.db`. When you deploy a new task revision with the updated image, attach the same volume so the existing database is reused.
+
+### Deploy on ECS Fargate (data preserved on update)
+
+The `cms/scripts/aws/` folder contains an ECS + EFS setup so the SQLite database lives on EFS and **is not lost when you update the service** (new image deployment).
+
+1. **Prerequisites:** ECR image pushed (e.g. via GitHub Actions or `./cms/scripts/deploy-aws-ecr.sh`). AWS CLI configured.
+
+2. **One-time setup:**
+   ```bash
+   export AWS_ACCOUNT_ID=123456789012
+   export SESSION_SECRET=$(openssl rand -hex 32)
+   ./cms/scripts/aws/setup-ecs-efs.sh
+   ```
+
+3. **Get the CMS URL** (after the task is running):
+   ```bash
+   ./cms/scripts/aws/get-cms-url.sh
+   ```
+   Open that URL and create the first admin.
+
+4. **Update the service** (e.g. after a new image in ECR):
+   ```bash
+   aws ecs update-service --cluster pure-cms-cluster --service pure-cms-service --force-new-deployment --region us-east-2
+   ```
+   ECS starts a new task with the latest image and attaches the **same EFS volume** at `/app/data`, so the SQLite database is preserved.
 
 ## Environment Variables
 

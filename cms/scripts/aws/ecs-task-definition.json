@@ -1,0 +1,60 @@
+{
+	"family": "pure-cms",
+	"networkMode": "awsvpc",
+	"requiresCompatibilities": ["FARGATE"],
+	"cpu": "256",
+	"memory": "512",
+	"executionRoleArn": "EXECUTION_ROLE_ARN",
+	"volumes": [
+		{
+			"name": "cms-data",
+			"efsVolumeConfiguration": {
+				"fileSystemId": "EFS_FILE_SYSTEM_ID",
+				"rootDirectory": "/",
+				"transitEncryption": "ENABLED"
+			}
+		}
+	],
+	"containerDefinitions": [
+		{
+			"name": "pure-cms",
+			"image": "ECR_IMAGE_URI",
+			"essential": true,
+			"portMappings": [
+				{
+					"containerPort": 3003,
+					"protocol": "tcp",
+					"appProtocol": "http"
+				}
+			],
+			"environment": [
+				{ "name": "NODE_ENV", "value": "production" },
+				{ "name": "PORT", "value": "3003" },
+				{ "name": "DB_PATH", "value": "/app/data/cms.db" },
+				{ "name": "SESSION_SECRET", "value": "SESSION_SECRET_PLACEHOLDER" },
+				{ "name": "CORS_ORIGINS", "value": "CORS_ORIGINS_PLACEHOLDER" }
+			],
+			"mountPoints": [
+				{
+					"sourceVolume": "cms-data",
+					"containerPath": "/app/data"
+				}
+			],
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-group": "LOG_GROUP_NAME",
+					"awslogs-region": "AWS_REGION",
+					"awslogs-stream-prefix": "ecs"
+				}
+			},
+			"healthCheck": {
+				"command": ["CMD-SHELL", "wget -q -O- http://localhost:3003/health || exit 1"],
+				"interval": 30,
+				"timeout": 5,
+				"retries": 3,
+				"startPeriod": 60
+			}
+		}
+	]
+}
