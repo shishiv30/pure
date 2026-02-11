@@ -3,6 +3,7 @@ import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import config from './server/config.js';
+import CleanupHotUpdatePlugin from './helpers/webpack-cleanup-plugin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +20,11 @@ export default (env) => {
 			publicPath: '/',
 			clean: true,
 		},
+		plugins: [
+			new CleanupHotUpdatePlugin({
+				outputPath: path.resolve(__dirname, 'dist'),
+			}),
+		],
 		devServer: {
 			static: {
 				directory: path.join(__dirname, 'dist'),

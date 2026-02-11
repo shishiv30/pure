@@ -1,6 +1,9 @@
 //change to import fro above code
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// Note: Install copy-webpack-plugin: npm install --save-dev copy-webpack-plugin
+// For webpack 5, use: import CopyPlugin from 'copy-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import { env } from 'process';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -36,10 +39,29 @@ export default () => {
 					},
 				},
 				{
+					// Output: images/[path relative to assets/images][name][ext] (e.g. images/welcome/point0.jpeg)
+					// Preserves folder structure. CDN URL mapping: helpers/imgCdn.js
 					test: /\.(svg|png|jpe?g|gif|ico|webp)$/i,
 					type: 'asset/resource',
 					generator: {
-						filename: 'img.[name][ext]',
+						filename: (pathData) => {
+							const filePath = pathData.filename;
+							const assetsImagesPath = path.resolve(__dirname, 'client/assets/images');
+							if (filePath.startsWith(assetsImagesPath)) {
+								const relativePath = path.relative(assetsImagesPath, filePath);
+								const dir = path.dirname(relativePath);
+								const name = path.basename(relativePath, path.extname(relativePath));
+								const ext = path.extname(relativePath);
+								if (dir === '.') {
+									return `images/${name}${ext}`;
+								}
+								return `images/${dir}/${name}${ext}`;
+							}
+							// For other images (e.g. imported from node_modules), use simple name
+							const name = path.basename(filePath, path.extname(filePath));
+							const ext = path.extname(filePath);
+							return `images/${name}${ext}`;
+						},
 					},
 				},
 				{
@@ -86,6 +108,18 @@ export default () => {
 				},
 			],
 		},
-		plugins: plugins,
+		plugins: [
+			...plugins,
+			// Copy all images from client/assets/images to dist/images/ preserving folder structure
+			new CopyPlugin({
+				patterns: [
+					{
+						from: path.resolve(__dirname, 'client/assets/images'),
+						to: path.resolve(__dirname, 'dist/images'),
+						noErrorOnMissing: true,
+					},
+				],
+			}),
+		],
 	};
 };

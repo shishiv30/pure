@@ -7,8 +7,10 @@ router.use((req, res, next) => {
 	next();
 });
 
-router.get('/', (req, res) => {
-	BaseController.dist(res, 'index.html');
+router.get('/', async (req, res) => {
+	const controller = new BaseController(req, res, 'index');
+	const model = await controller.get();
+	controller.toPage(model);
 });
 
 router.get(/^\/demo\/?$/, async (req, res) => {

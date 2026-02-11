@@ -11,7 +11,6 @@ export const pageConfig = {
 		},
 		{
 			name: 'index',
-			static: true,
 		},
 		{
 			name: '3d',

@@ -81,7 +81,7 @@
 	}
 }
 
-.section-photos {
+.section-points {
 	display: flex;
 	gap: var(--g4);
 	flex-direction: column;
@@ -218,4 +218,12 @@
 	.content {}
 }
 
-.section-photos {}
+.section-gallery {
+	position: relative;
+	z-index: 1;
+
+	.album {
+		--album-height: 100dvh;
+		--album-width: 100dvw;
+	}
+}

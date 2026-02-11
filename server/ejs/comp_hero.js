@@ -1,13 +1,15 @@
 import config from '../config.js';
+import { getImgCdnUrl } from '../../helpers/imgCdn.js';
 
 const APP_URL = config.appUrl || '';
+const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
 
-const COMPONENT_NAME = 'sectionHero';
-const COMPONENT_TEMPLATE = 'comp_sectionhero';
+const COMPONENT_NAME = 'hero';
+const COMPONENT_TEMPLATE = 'comp_hero';
 
-const sectionHeroData = {
+const heroData = {
 	image: {
-		src: `${APP_URL}/assets/images/welcome/point0.jpeg`,
+		src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg'),
 		alt: 'Welcome Hero',
 		loading: 'eager',
 	},
@@ -21,13 +23,13 @@ const sectionHeroData = {
 };
 
 /**
- * Create the section hero UI component config.
+ * Create the hero UI component config.
  * @returns {{ name: string, template: string, data: object }}
  */
-export function createSectionHeroComponent() {
+export function createHeroComponent() {
 	return {
 		name: COMPONENT_NAME,
 		template: COMPONENT_TEMPLATE,
-		data: sectionHeroData,
+		data: heroData,
 	};
 }

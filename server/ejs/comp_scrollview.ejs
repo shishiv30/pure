@@ -1,14 +1,16 @@
 <%_ if (scrollview) { _%>
-<section class="section large">
-	<div class="scrollview" data-role="scrollview">
-		<ul>
-			<%_ if (scrollview.links && scrollview.links.length) { _%>
-				<%_ for (var i = 0; i < scrollview.links.length; i++) { _%>
-					<%_ const link = scrollview.links[i]; _%>
-					<li><a href="<%= link.href %>"><%= link.text %> <i class="icon-arrow-right"></i></a></li>
-				<%_ } _%>
-			<%_ } _%>
-		</ul>
-	</div>
-</section>
-<%_ } _%>
+	<section class="section section-scrollview">
+		<div class="scrollview" data-role="scrollview">
+			<ul>
+				<%_ if (scrollview.links && scrollview.links.length) { _%>
+					<%_ for (var i=0; i < scrollview.links.length; i++) { _%>
+						<%_ const link=scrollview.links[i]; _%>
+							<li><a href="<%= link.href %>">
+									<%= link.text %> <i class="icon-arrow-right"></i>
+								</a></li>
+							<%_ } _%>
+								<%_ } _%>
+			</ul>
+		</div>
+	</section>
+	<%_ } _%>

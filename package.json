@@ -20,6 +20,7 @@
 		"review": "cursor-agent --force --output-format=text --print 'Review the uncommitted changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursor/rules/ and .cursor/background.json. Provide concise, actionable feedback.'",
 		"review:staged": "cursor-agent --force --output-format=text --print 'Review the staged changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursor/rules/ and .cursor/background.json. Provide concise, actionable feedback.'",
 		"clean": "rm -rf dist",
+		"clean:hot-updates": "node scripts/cleanup-hot-updates.js",
 		"prebuild": "npm run clean"
 	},
 	"repository": {
@@ -50,6 +51,7 @@
 	"devDependencies": {
 		"babel-loader": "^9.1.0",
 		"concurrently": "^9.2.0",
+		"copy-webpack-plugin": "^13.0.1",
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.7.3",
 		"file-loader": "^6.2.0",

@@ -19,4 +19,5 @@
 // }
 import geo from './geo.js';
 import demo from './demo.js';
-export default [geo, demo];
+import indexPage from './indexPage.js';
+export default [geo, demo, indexPage];

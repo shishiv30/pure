@@ -1,11 +1,13 @@
 import config from '../config.js';
+import { getImgCdnUrl } from '../../helpers/imgCdn.js';
 
 const APP_URL = config.appUrl || '';
+const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
 
-const COMPONENT_NAME = 'sectionPhotos';
-const COMPONENT_TEMPLATE = 'comp_sectionphotos';
+const COMPONENT_NAME = 'points';
+const COMPONENT_TEMPLATE = 'comp_points';
 
-const sectionPhotosData = {
+const pointsData = {
 	heading: 'Why Pure UI',
 	intro:
 		'A lightweight client-side framework built around one idea: define interface states with CSS and drive ' +
@@ -19,7 +21,7 @@ const sectionPhotosData = {
 			ctaText: 'Read the docs',
 			ctaHref: `${APP_URL}/document/`,
 			image: {
-				src: `${APP_URL}/assets/images/welcome/point1.jpeg`,
+				src: getImgCdnUrl(CDN_URL, 'welcome/point1.jpeg'),
 				alt: 'CSS-driven states',
 				loading: 'lazy',
 			},
@@ -32,7 +34,7 @@ const sectionPhotosData = {
 			ctaText: 'See examples',
 			ctaHref: `${APP_URL}/document/`,
 			image: {
-				src: `${APP_URL}/assets/images/welcome/point2.jpeg`,
+				src: getImgCdnUrl(CDN_URL, 'welcome/point2.jpeg'),
 				alt: 'JavaScript for interaction',
 				loading: 'lazy',
 			},
@@ -45,7 +47,7 @@ const sectionPhotosData = {
 			ctaText: 'Try the demo',
 			ctaHref: `${APP_URL}/demo/`,
 			image: {
-				src: `${APP_URL}/assets/images/welcome/point3.jpeg`,
+				src: getImgCdnUrl(CDN_URL, 'welcome/point3.jpeg'),
 				alt: 'Lightweight framework',
 				loading: 'lazy',
 			},
@@ -54,13 +56,13 @@ const sectionPhotosData = {
 };
 
 /**
- * Create the section photos UI component config.
+ * Create the points UI component config.
  * @returns {{ name: string, template: string, data: object }}
  */
-export function createSectionPhotosComponent() {
+export function createPointsComponent() {
 	return {
 		name: COMPONENT_NAME,
 		template: COMPONENT_TEMPLATE,
-		data: sectionPhotosData,
+		data: pointsData,
 	};
 }

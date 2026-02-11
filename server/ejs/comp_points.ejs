@@ -1,0 +1,33 @@
+<%_ if (points) { _%>
+	<section class="section-points animation">
+		<div class="fixed fixed-max-xs large">
+			<h2 class="f3 text-bold m-b-2">
+				<%= points.heading %>
+			</h2>
+			<div>
+				<%= points.intro %>
+			</div>
+		</div>
+		<ul class="fixed fixed-max-sm">
+			<%_ if (points.items && points.items.length) { _%>
+				<%_ for (var i=0; i < points.items.length; i++) { _%>
+					<%_ const item=points.items[i]; _%>
+						<li>
+							<div>
+								<h3 class="f4 text-bold">
+									<%= item.title %>
+								</h3>
+								<p>
+									<%= item.body %>
+								</p>
+								<a href="<%= item.ctaHref %>" class="btn regular">
+									<%= item.ctaText %>
+								</a>
+							</div>
+							<img src="<%= item.image.src %>" alt="<%= item.image.alt %>" loading="<%= item.image.loading %>">
+						</li>
+						<%_ } _%>
+							<%_ } _%>
+		</ul>
+	</section>
+	<%_ } _%>

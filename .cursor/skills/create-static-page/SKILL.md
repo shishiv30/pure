@@ -98,37 +98,128 @@ Update both the EJS header config and the static HTML header so navigation stays
 
 Use the same label and `.html` suffix pattern as existing items (e.g. `about.html`, `survey.html`).
 
-### #5 Build server EJS component (comp_*)
+### #5 (Optional) Create reusable components
 
-To add a reusable server-rendered component (e.g. `comp_timeline`, `comp_sectionhero`), follow the **comp_header** pattern.
+If you need reusable components for server-rendered pages, see the **create-comp** skill for:
+- Creating server EJS components (`comp_*` pattern)
+- Converting HTML to components
+- Adding and using images in components
 
-**Location:** `server/ejs/` — one `.js` (data + factory) and one `.ejs` (markup).
+**Reference**: `.cursor/skills/create-comp/SKILL.md`
 
-**1. Data file `comp_<name>.js`**
+### #6 Create server-rendered EJS page
 
-- `import config from '../config.js';` and `const APP_URL = config.appUrl || '';`
-- `COMPONENT_NAME` (camelCase, e.g. `'sectionHero'`, `'timeline'`)
-- `COMPONENT_TEMPLATE` (e.g. `'comp_sectionhero'`, `'comp_timeline'`)
-- One **data object** with all content hardcoded (no args; override via model later if needed)
-- Export **`createXComponent()`** that returns `{ name: COMPONENT_NAME, template: COMPONENT_TEMPLATE, data: yourData }`
-- Use `APP_URL` for any links or asset URLs in the data
+To create a server-rendered page (like the index page), follow this pattern:
 
-**2. Template file `comp_<name>.ejs`**
+**Step 1: Create page config**
 
-- Guard with a single main prop: `<%_ if (timeline) { _%> ... <%_ } _%>` (prop name = component name in camelCase, e.g. `timeline`, `sectionHero`)
-- Output values with `<%= timeline.heading %>`, loops with `<%_ for (var i = 0; i < timeline.entries.length; i++) { _%> ... <%_ } _%>`
-- Keep markup minimal; all copy and structure come from the `.js` data
+Create `server/configs/<pageName>.js`:
 
-**3. Using the component in a server-rendered page**
+```js
+import { createHeaderComponent } from '../ejs/comp_header.js';
+import { createFooterComponent } from '../ejs/comp_footer.js';
+// Import any components you need (see create-comp skill for component creation)
+import { createHeroComponent } from '../ejs/comp_hero.js';
 
-- In the page config (e.g. `server/configs/demo.js`): create the component and add to the model, e.g. `timelineComponent: createTimelineComponent()`
-- In the EJS view:  
-  `<%_ const timelineComponent = data.timelineComponent; _%>`  
-  `<%_ if (timelineComponent) { _%>`  
-  `<%- include(timelineComponent.template, { timeline: timelineComponent.data }) %>`  
-  `<%_ } _%>`
+export default {
+  name: '<pageName>', // Must match route name
+  seo: function () {
+    return {
+      title: 'Page Title',
+      desc: 'Page description',
+      keywords: '',
+    };
+  },
+  get: async function () {
+    // Create components
+    const headerComponent = createHeaderComponent();
+    const footerComponent = createFooterComponent();
+    const heroComponent = createHeroComponent();
 
-**Reference components:** `server/ejs/comp_header.js`, `comp_header.ejs`, `comp_sectionhero.js`, `comp_sectionphotos.ejs`, `comp_scrollview.js`, `comp_timeline.js`.
+    // Return model with components
+    return {
+      headerComponent,
+      footerComponent,
+      heroComponent,
+      // Add any other data needed
+    };
+  },
+};
+```
+
+**Note**: To create new components, see `.cursor/skills/create-comp/SKILL.md`.
+
+**Step 2: Register config**
+
+Add to `server/configs/index.js`:
+
+```js
+import <pageName> from './<pageName>.js';
+export default [geo, demo, indexPage, <pageName>];
+```
+
+**Step 3: Create EJS template**
+
+Create `server/ejs/<pageName>.ejs`:
+
+```ejs
+<%- include('html_above') %>
+
+<%_ const headerComponent = data.headerComponent; _%>
+<%_ if (headerComponent) { _%>
+  <%- include(headerComponent.template, { header: headerComponent.data }) %>
+<%_ } else { _%>
+  <%- include('comp_header') %>
+<%_ } _%>
+
+<%_ const sectionHeroComponent = data.sectionHeroComponent; _%>
+<%_ if (sectionHeroComponent) { _%>
+  <%- include(sectionHeroComponent.template, { sectionHero: sectionHeroComponent.data }) %>
+<%_ } _%>
+
+<!-- Add more sections/components here -->
+
+<%_ const footerComponent = data.footerComponent; _%>
+<%_ if (footerComponent) { _%>
+  <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+<%_ } else { _%>
+  <%- include('html_footer') %>
+<%_ } _%>
+
+<%- include('html_below') %>
+```
+
+**Step 4: Add route**
+
+In `server/routes/page.js`:
+
+```js
+router.get('/<pageName>', async (req, res) => {
+  const controller = new BaseController(req, res, '<pageName>');
+  const model = await controller.get();
+  controller.toPage(model);
+});
+```
+
+**Step 5: Update webpack config (if needed)**
+
+If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` has an entry (even if not static):
+
+```js
+{
+  name: '<pageName>', // No static: true for server-rendered pages
+},
+```
+
+**How it works:**
+
+1. Route matches → creates `BaseController` with config name
+2. Controller calls `config.get()` → returns model with components
+3. Controller adds `meta`, `seo`, `breadcrumb` to model
+4. Controller calls `toPage(model)` → renders `<pageName>.ejs` with model
+5. EJS includes components → components render their data
+
+**Example**: See `server/configs/indexPage.js` and `server/ejs/index.ejs` for the index page implementation.
 
 ## Checklist
 
@@ -138,7 +229,8 @@ To add a reusable server-rendered component (e.g. `comp_timeline`, `comp_section
 - [ ] #3 `client/pages/<name>/index.html` created with header/footer includes and full head/body.
 - [ ] #3 `client/pages/<name>/index.js` created with `main` and scss import.
 - [ ] #4 Links added in both `server/ejs/comp_header.js` and `client/components/header.html`.
-- [ ] #5 (Optional) New server EJS comp: `server/ejs/comp_<name>.js` + `comp_<name>.ejs` with data and `createXComponent()`.
+- [ ] #5 (Optional) Components created: see `.cursor/skills/create-comp/SKILL.md` for component creation workflow.
+- [ ] #6 (Optional) Server-rendered page: config created, registered, EJS template, route added.
 
 ## Reference files
 
@@ -151,4 +243,5 @@ To add a reusable server-rendered component (e.g. `comp_timeline`, `comp_section
 - Hero section (image behind, mask, centered content): `client/scss/_section.scss` (`.section-hero`)
 - Icons: `client/scss/_icon.scss` (use `icon-*` classes)
 - Welcome images: `client/assets/images/welcome/` (point0–point9)
-- Server EJS components (comp_* pattern): `server/ejs/comp_header.js`, `comp_sectionhero.js`, `comp_sectionphotos.js`, `comp_scrollview.js`, `comp_timeline.js` (+ corresponding `.ejs` templates)
+- Server EJS components: See `.cursor/skills/create-comp/SKILL.md` for component creation guide
+- Server-rendered page examples: `server/configs/indexPage.js`, `server/ejs/index.ejs`, `server/routes/page.js` (index route)

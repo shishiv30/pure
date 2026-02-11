@@ -51,6 +51,7 @@ export default {
 	name: 'album',
 	defaultOpt: {
 		images: [],
+		imagesMeta: [],
 		autoPlay: false,
 		showProcess: true,
 		showControl: true,
@@ -65,7 +66,13 @@ export default {
 			//fetch images from url
 			try {
 				const response = await fetch(opt.imagesUrl);
-				opt.images = await response.json();
+				let data = await response.json();
+				if (data.images && data.imagesMeta) {
+					opt.images = data.images;
+					opt.imagesMeta = data.imagesMeta;
+				} else if (data.images) {
+					opt.images = data.images;
+				}
 			} catch (error) {
 				console.error('Error fetching images:', error);
 				return;
@@ -76,6 +83,7 @@ export default {
 		}
 
 		opt.images = stringToObj(opt.images);
+		opt.imagesMeta = stringToObj(opt.imagesMeta || []);
 		let length = opt.images.length;
 		if (length <= 1) {
 			return;
@@ -196,6 +204,53 @@ export default {
 				}
 			}
 		}
+		function updateAlbumInfo() {
+			if (!opt.imagesMeta || opt.imagesMeta.length === 0) {
+				return;
+			}
+			let albumInfo = $el.querySelector('.album-info');
+			let albumInfoContent = albumInfo?.querySelector('.album-info-content');
+			
+			// Create structure if it doesn't exist
+			if (!albumInfo) {
+				albumInfo = document.createElement('div');
+				albumInfo.className = 'album-info';
+				albumInfoContent = document.createElement('div');
+				albumInfoContent.className = 'album-info-content';
+				
+				const labelEl = document.createElement('span');
+				labelEl.className = 'album-info-label';
+				const titleEl = document.createElement('b');
+				titleEl.className = 'album-info-title';
+				const descEl = document.createElement('p');
+				descEl.className = 'album-info-description';
+				
+				albumInfoContent.appendChild(labelEl);
+				albumInfoContent.appendChild(titleEl);
+				albumInfoContent.appendChild(descEl);
+				albumInfo.appendChild(albumInfoContent);
+				$el.appendChild(albumInfo);
+			}
+			
+			// Update content
+			const currentIndex = opt.imgIndex;
+			if (currentIndex >= 0 && currentIndex < opt.imagesMeta.length) {
+				const meta = opt.imagesMeta[currentIndex];
+				const labelEl = albumInfoContent.querySelector('.album-info-label');
+				const titleEl = albumInfoContent.querySelector('.album-info-title');
+				const descEl = albumInfoContent.querySelector('.album-info-description');
+				
+				if (labelEl) {
+					labelEl.textContent = meta.index + ' / ' + opt.imagesMeta.length;
+				}
+				if (titleEl) {
+					titleEl.textContent = meta.title;
+				}
+				if (descEl) {
+					descEl.textContent = meta.description;
+				}
+			}
+		}
 		function next() {
 			//update image
 			opt.prevIndex = opt.imgIndex;
@@ -225,6 +280,7 @@ export default {
 				opt.nextIndex,
 				length,
 			);
+			updateAlbumInfo();
 		}
 
 		function prev() {
@@ -256,106 +312,107 @@ export default {
 				opt.prevIndex,
 				length,
 			);
+			updateAlbumInfo();
 		}
 		//how to check if the device has mouse or touch pad
 		let isOnlyTouchScreen =
 			window.ontouchstart !== undefined && window.matchMedia('(hover: hover)').matches === false;
 		let onStart = isOnlyTouchScreen
 			? (e) => {
-					let touch = e.touches[0];
-					clearTimeout(timer);
-					width = $list.clientWidth;
-					touchStart = touch.clientX;
-					touchStartY = touch.clientY;
-					if (e.touches.length > 1) {
-						return;
-					}
-					reset();
-			  }
+				let touch = e.touches[0];
+				clearTimeout(timer);
+				width = $list.clientWidth;
+				touchStart = touch.clientX;
+				touchStartY = touch.clientY;
+				if (e.touches.length > 1) {
+					return;
+				}
+				reset();
+			}
 			: (e) => {
-					clearTimeout(timer);
-					width = $list.clientWidth;
-					reset();
-					touchStart = e.clientX;
-					touchStartY = e.clientY;
-			  };
+				clearTimeout(timer);
+				width = $list.clientWidth;
+				reset();
+				touchStart = e.clientX;
+				touchStartY = e.clientY;
+			};
 		let onMove = isOnlyTouchScreen
 			? (e) => {
-					if ($list.style.transition) {
-						$list.style.transition = 'none';
-					}
+				if ($list.style.transition) {
+					$list.style.transition = 'none';
+				}
 
-					cancelAnimationFrame(timer);
-					timer = requestAnimationFrame(() => {
-						let touch = e.touches[0];
-						deltaX = touch.clientX - touchStart;
-						//base on deltaX, to get a percentage of the animation
-						let percentage = (deltaX / width) * 100;
-						$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
-					});
-			  }
+				cancelAnimationFrame(timer);
+				timer = requestAnimationFrame(() => {
+					let touch = e.touches[0];
+					deltaX = touch.clientX - touchStart;
+					//base on deltaX, to get a percentage of the animation
+					let percentage = (deltaX / width) * 100;
+					$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
+				});
+			}
 			: (e) => {
-					if (!touchStart) {
-						return;
-					}
-					if ($list.style.transition) {
-						$list.style.transition = 'none';
-					}
+				if (!touchStart) {
+					return;
+				}
+				if ($list.style.transition) {
+					$list.style.transition = 'none';
+				}
 
-					cancelAnimationFrame(timer);
-					timer = requestAnimationFrame(() => {
-						deltaX = e.clientX - touchStart;
-						$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
-					});
-			  };
+				cancelAnimationFrame(timer);
+				timer = requestAnimationFrame(() => {
+					deltaX = e.clientX - touchStart;
+					$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
+				});
+			};
 		let onEnd = isOnlyTouchScreen
 			? (e) => {
-					if (!touchStart) {
-						return;
-					}
-					touchStart = null;
-					if (e.touches.length > 0) {
-						return;
-					}
-					cancelAnimationFrame(timer);
-					width = $list.clientWidth;
-					$list.style.transition = `transform ${opt.duration}s`;
+				if (!touchStart) {
+					return;
+				}
+				touchStart = null;
+				if (e.touches.length > 0) {
+					return;
+				}
+				cancelAnimationFrame(timer);
+				width = $list.clientWidth;
+				$list.style.transition = `transform ${opt.duration}s`;
 
-					if (deltaX > 0 && deltaX > opt.throttle) {
-						//snap to left with animation next
-						$list.style.transform = 'translateX(0px)';
-					} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
-						//snap to right with animation prev
-						$list.style.transform = `translateX(${width * -2}px)`;
-					} else {
-						$list.style.transform = `translateX(${width * -1}px)`;
-					}
-					timer = setTimeout(() => {
-						reset();
-					}, opt.duration * 1100);
-			  }
+				if (deltaX > 0 && deltaX > opt.throttle) {
+					//snap to left with animation next
+					$list.style.transform = 'translateX(0px)';
+				} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
+					//snap to right with animation prev
+					$list.style.transform = `translateX(${width * -2}px)`;
+				} else {
+					$list.style.transform = `translateX(${width * -1}px)`;
+				}
+				timer = setTimeout(() => {
+					reset();
+				}, opt.duration * 1100);
+			}
 			: (e) => {
-					if (!touchStart) {
-						return;
-					}
-					touchStart = null;
-					cancelAnimationFrame(timer);
-					width = $list.clientWidth;
-					$list.style.transition = `transform ${opt.duration}s`;
+				if (!touchStart) {
+					return;
+				}
+				touchStart = null;
+				cancelAnimationFrame(timer);
+				width = $list.clientWidth;
+				$list.style.transition = `transform ${opt.duration}s`;
 
-					if (deltaX > 0 && deltaX > opt.throttle) {
-						//snap to left with animation next
-						$list.style.transform = 'translateX(0px)';
-					} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
-						//snap to right with animation prev
-						$list.style.transform = `translateX(${width * -2}px)`;
-					} else {
-						$list.style.transform = `translateX(${width * -1}px)`;
-					}
-					timer = setTimeout(() => {
-						reset();
-					}, opt.duration * 1100);
-			  };
+				if (deltaX > 0 && deltaX > opt.throttle) {
+					//snap to left with animation next
+					$list.style.transform = 'translateX(0px)';
+				} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
+					//snap to right with animation prev
+					$list.style.transform = `translateX(${width * -2}px)`;
+				} else {
+					$list.style.transform = `translateX(${width * -1}px)`;
+				}
+				timer = setTimeout(() => {
+					reset();
+				}, opt.duration * 1100);
+			};
 		if (isOnlyTouchScreen) {
 			$list.addEventListener('touchstart', (e) => {
 				onStart(e);
@@ -435,6 +492,7 @@ export default {
 						length,
 					);
 					updateProcess();
+					updateAlbumInfo();
 				});
 				process.appendChild(button);
 			}
@@ -444,6 +502,7 @@ export default {
 
 		exportOb.next = next;
 		exportOb.prev = prev;
+		updateAlbumInfo();
 		return exportOb;
 	},
 };

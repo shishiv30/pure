@@ -499,6 +499,233 @@ For automated PR reviews to work, you need to:
 └── data/          # Data files
 ```
 
+## Development Guide
+
+### Creating Server EJS Components
+
+To create a reusable server-rendered component from partial HTML:
+
+**1. Extract HTML and create data file** (`server/ejs/comp_<name>.js`):
+
+```js
+import config from '../config.js';
+import { getImgCdnUrl, WELCOME_IMG } from '../../helpers/imgCdn.js';
+
+const APP_URL = config.appUrl || '';
+const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
+
+const COMPONENT_NAME = 'hero';
+const COMPONENT_TEMPLATE = 'comp_hero';
+
+const heroData = {
+  image: {
+    src: getImgCdnUrl(CDN_URL, WELCOME_IMG.point0),
+    alt: 'Welcome Hero',
+    loading: 'eager',
+  },
+  title: 'Pure UI',
+  subtitle: 'client-side rendering framework.',
+  desc: 'Description text...',
+};
+
+export function createHeroComponent() {
+  return {
+    name: COMPONENT_NAME,
+    template: COMPONENT_TEMPLATE,
+    data: heroData,
+  };
+}
+```
+
+**2. Create EJS template** (`server/ejs/comp_<name>.ejs`):
+
+```ejs
+<%_ if (hero) { _%>
+<section class="section-hero animation">
+  <div class="picture">
+    <img src="<%= hero.image.src %>" alt="<%= hero.image.alt %>">
+  </div>
+  <div class="content">
+    <h1><strong><%= hero.title %></strong></h1>
+    <p><%= hero.subtitle %></p>
+    <p class="desc"><%= hero.desc %></p>
+  </div>
+</section>
+<%_ } _%>
+```
+
+**3. Use in page config** (`server/configs/<page>.js`):
+
+```js
+import { createHeroComponent } from '../ejs/comp_hero.js';
+
+export default {
+  name: 'index',
+  get: async function () {
+    return {
+      heroComponent: createHeroComponent(),
+    };
+  },
+};
+```
+
+**4. Include in EJS view** (`server/ejs/<page>.ejs`):
+
+```ejs
+<%_ const sectionHeroComponent = data.sectionHeroComponent; _%>
+<%_ if (sectionHeroComponent) { _%>
+  <%- include(sectionHeroComponent.template, { sectionHero: sectionHeroComponent.data }) %>
+<%_ } _%>
+```
+
+**Key principles:**
+- All content hardcoded in `.js` data object
+- Template is pure markup with `<%= %>` output
+- Single prop name (camelCase matching component name)
+- Always guard with `<%_ if (propName) { _%>`
+
+**Reference:** `server/ejs/comp_header.js`, `comp_hero.js`, `comp_points.js`, `comp_timeline.js`
+
+### Adding and Using Images
+
+**1. Place images in `client/assets/images/`**
+
+Organize by folder (e.g. `welcome/`, `icons/`):
+- `client/assets/images/welcome/point0.jpeg`
+- `client/assets/images/welcome/point1.jpeg`
+
+**2. Webpack automatically copies images**
+
+All images from `client/assets/images/` are copied to `dist/images/` preserving folder structure:
+- `client/assets/images/welcome/point0.jpeg` → `dist/images/welcome/point0.jpeg`
+
+**3. Use CDN URL helper in components**
+
+```js
+import { getImgCdnUrl, WELCOME_IMG } from '../../helpers/imgCdn.js';
+import config from '../config.js';
+
+const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
+
+// Use predefined mapping
+const imageSrc = getImgCdnUrl(CDN_URL, WELCOME_IMG.point0);
+// Returns: ${CDN_URL}/images/welcome/point0.jpeg
+
+// Or use custom path
+const imageSrc = getImgCdnUrl(CDN_URL, 'custom/folder/image.png');
+// Returns: ${CDN_URL}/images/custom/folder/image.png
+```
+
+**4. Add to WELCOME_IMG mapping** (optional, in `helpers/imgCdn.js`):
+
+```js
+export const WELCOME_IMG = {
+  point0: 'welcome/point0.jpeg',
+  point1: 'welcome/point1.jpeg',
+  point4: 'welcome/point4.jpeg', // Add new entry
+};
+```
+
+**Image URL format:**
+- **Source**: `client/assets/images/welcome/point0.jpeg`
+- **Built**: `dist/images/welcome/point0.jpeg`
+- **CDN URL**: `${cdnUrl}/images/welcome/point0.jpeg`
+
+### Creating Server-Rendered EJS Pages
+
+To create a server-rendered page (like the index page):
+
+**1. Create page config** (`server/configs/<pageName>.js`):
+
+```js
+import { createHeaderComponent } from '../ejs/comp_header.js';
+import { createFooterComponent } from '../ejs/comp_footer.js';
+import { createHeroComponent } from '../ejs/comp_hero.js';
+
+export default {
+  name: '<pageName>', // Must match route name
+  seo: function () {
+    return {
+      title: 'Page Title',
+      desc: 'Page description',
+      keywords: '',
+    };
+  },
+  get: async function () {
+    const headerComponent = createHeaderComponent();
+    const footerComponent = createFooterComponent();
+    const heroComponent = createHeroComponent();
+
+    return {
+      headerComponent,
+      footerComponent,
+      heroComponent,
+    };
+  },
+};
+```
+
+**2. Register config** (`server/configs/index.js`):
+
+```js
+import <pageName> from './<pageName>.js';
+export default [geo, demo, indexPage, <pageName>];
+```
+
+**3. Create EJS template** (`server/ejs/<pageName>.ejs`):
+
+```ejs
+<%- include('html_above') %>
+
+<%_ const headerComponent = data.headerComponent; _%>
+<%_ if (headerComponent) { _%>
+  <%- include(headerComponent.template, { header: headerComponent.data }) %>
+<%_ } else { _%>
+  <%- include('comp_header') %>
+<%_ } _%>
+
+<%_ const heroComponent = data.heroComponent; _%>
+<%_ if (heroComponent) { _%>
+  <%- include(heroComponent.template, { hero: heroComponent.data }) %>
+<%_ } _%>
+
+<%_ const footerComponent = data.footerComponent; _%>
+<%_ if (footerComponent) { _%>
+  <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+<%_ } else { _%>
+  <%- include('html_footer') %>
+<%_ } _%>
+
+<%- include('html_below') %>
+```
+
+**4. Add route** (`server/routes/page.js`):
+
+```js
+router.get('/<pageName>', async (req, res) => {
+  const controller = new BaseController(req, res, '<pageName>');
+  const model = await controller.get();
+  controller.toPage(model);
+});
+```
+
+**5. Update webpack config** (`webpack.config.base.page.js`):
+
+```js
+{
+  name: '<pageName>', // No static: true for server-rendered pages
+},
+```
+
+**How it works:**
+1. Route matches → creates `BaseController` with config name
+2. Controller calls `config.get()` → returns model with components
+3. Controller adds `meta`, `seo`, `breadcrumb` to model
+4. Controller calls `toPage(model)` → renders `<pageName>.ejs` with model
+5. EJS includes components → components render their data
+
+**Example:** See `server/configs/indexPage.js` and `server/ejs/index.ejs` for the index page implementation.
+
 ## Core Concepts
 
 The framework uses a simple but powerful set of concepts:

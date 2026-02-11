@@ -1,0 +1,36 @@
+<%- include('html_above') %>
+  <%_ const headerComponent=data.headerComponent; _%>
+    <%_ if (headerComponent) { _%>
+      <%- include(headerComponent.template, { header: headerComponent.data }) %>
+        <%_ } else { _%>
+          <%- include('comp_header') %>
+            <%_ } _%>
+
+              <%_ if (data.sections && data.sections.length) { _%>
+                <%_ 
+                  // Render sections in array order: hero, scrollview, points, gallery, timeline
+                  for (var i = 0; i < data.sections.length; i++) { 
+                _%>
+                  <%_ const section = data.sections[i]; _%>
+                  <%_ if (section) { _%>
+                    <%_ 
+                      // Map component name to prop name (e.g., 'gallery' -> 'gallery', 'hero' -> 'hero')
+                      const propName = section.name;
+                      const propData = {};
+                      propData[propName] = section.data;
+                    _%>
+                    <%- include(section.template, propData) %>
+                  <%_ } _%>
+                <%_ } _%>
+              <%_ } _%>
+
+                                              <div class="scroll-loading"></div>
+
+                                              <%_ const footerComponent=data.footerComponent; _%>
+                                                <%_ if (footerComponent) { _%>
+                                                  <%- include(footerComponent.template, { footer: footerComponent.data
+                                                    }) %>
+                                                    <%_ } else { _%>
+                                                      <%- include('html_footer') %>
+                                                        <%_ } _%>
+                                                          <%- include('html_below') %>

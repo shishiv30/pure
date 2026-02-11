@@ -1,0 +1,12 @@
+<%_ if (gallery) { _%>
+	<section class="section section-gallery">
+		<div class="album" data-role="album" data-index="<%= gallery.initialIndex %>"
+			data-images='<%= JSON.stringify(gallery.images) %>' data-images-meta='<%= JSON.stringify(gallery.imagesMeta) %>'>
+			<div class="album-list">
+				<%_ if (gallery.images && gallery.images.length> 0) { _%>
+					<img src="<%= gallery.images[gallery.initialIndex] %>" loading="lazy" alt="<%= gallery.alt %>">
+					<%_ } _%>
+			</div>
+		</div>
+	</section>
+	<%_ } _%>

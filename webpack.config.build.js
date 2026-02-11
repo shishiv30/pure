@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import WebpackPwaManifest from 'webpack-pwa-manifest';
 import WorkboxPlugin from 'workbox-webpack-plugin';
+import CleanupHotUpdatePlugin from './helpers/webpack-cleanup-plugin.js';
 
 export default (env) => {
 	console.log('environment variables:', env);
@@ -32,6 +33,9 @@ export default (env) => {
 		},
 		// recordsPath: path.join(__dirname, 'records.json'),
 		plugins: [
+			new CleanupHotUpdatePlugin({
+				outputPath: path.resolve(__dirname, 'dist'),
+			}),
 			// new BundleAnalyzerPlugin(),
 			new WebpackPwaManifest({
 				name: 'CUI pure framework',
