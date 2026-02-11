@@ -3,11 +3,9 @@
 # Setup ECS Fargate + EFS for Pure CMS so the database persists across service updates.
 # Run from repo root: ./cms/scripts/aws/setup-ecs-efs.sh
 #
-# Required env vars:
-#   AWS_ACCOUNT_ID     - Your AWS account ID
-#   SESSION_SECRET     - Secret for CMS sessions (use a long random string)
-#
-# Optional env vars:
+# Optional env vars (defaults shown):
+#   AWS_ACCOUNT_ID    - Your AWS account ID (default: 178912016721)
+#   SESSION_SECRET    - Secret for signing CMS login cookies. If unset, a random one is generated.
 #   AWS_REGION        - Region (default: us-east-2)
 #   ECR_REPOSITORY    - ECR repo name (default: pure-cms)
 #   VPC_ID            - VPC to use (default: default VPC)
@@ -21,6 +19,10 @@
 
 set -e
 
+# Prevent AWS CLI from opening a pager (less) for each command
+export AWS_PAGER=""
+
+AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-178912016721}"
 AWS_REGION="${AWS_REGION:-us-east-2}"
 ECR_REPOSITORY="${ECR_REPOSITORY:-pure-cms}"
 CLUSTER_NAME="${CLUSTER_NAME:-pure-cms-cluster}"
@@ -31,14 +33,15 @@ TASK_FAMILY="pure-cms"
 EXECUTION_ROLE_NAME="ecsTaskExecutionRole-pure-cms"
 EFS_POLICY_NAME="EFSClientMount-pure-cms"
 
-if [ -z "$AWS_ACCOUNT_ID" ]; then
-	echo "Error: Set AWS_ACCOUNT_ID (e.g. export AWS_ACCOUNT_ID=123456789012)"
-	exit 1
-fi
-
+# SESSION_SECRET: used by the CMS to sign login cookies. You don't "get" it from anywhere—
+# you create it (any long random string). If unset, we generate one for you.
 if [ -z "$SESSION_SECRET" ]; then
-	echo "Error: Set SESSION_SECRET (e.g. export SESSION_SECRET=\$(openssl rand -hex 32))"
-	exit 1
+	SESSION_SECRET=$(openssl rand -hex 32 2>/dev/null || true)
+	if [ -z "$SESSION_SECRET" ]; then
+		echo "Error: Could not generate SESSION_SECRET. Set it yourself: export SESSION_SECRET=your-long-random-string"
+		exit 1
+	fi
+	echo "SESSION_SECRET not set; generated a random one (save it if you need to reuse later)."
 fi
 
 CORS_ORIGINS="${CORS_ORIGINS:-https://cms.conjee.com}"

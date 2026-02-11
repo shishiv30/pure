@@ -2,7 +2,7 @@
 # Builds on push to main: Docker image to ECR; dist/ from the image is synced to S3 if AWS_S3_CDN_BUCKET is set.
 # To enable: set AWS_ECR_ENABLED = true and add secrets. See docs/aws-ecr-setup.md.
 
-name: Build AWS ECR (prod)
+name: Build Prue Web (prod)
 
 'on':
   push:

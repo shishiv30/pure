@@ -3,6 +3,7 @@
 # Run from repo root: ./cms/scripts/aws/get-cms-url.sh
 
 set -e
+export AWS_PAGER=""
 
 AWS_REGION="${AWS_REGION:-us-east-2}"
 CLUSTER_NAME="${CLUSTER_NAME:-pure-cms-cluster}"

@@ -234,7 +234,9 @@ The `cms/scripts/aws/` folder contains an ECS + EFS setup so the SQLite database
    ```
    Open that URL and create the first admin.
 
-4. **Update the service** (e.g. after a new image in ECR):
+4. **Link to cms.conjeezou.com** (optional): Run the ALB script, then point your domain’s CNAME to the ALB DNS name. See [setup-alb-and-dns.md](scripts/aws/setup-alb-and-dns.md) and `scripts/aws/setup-alb.sh`.
+
+5. **Update the service** (e.g. after a new image in ECR):
    ```bash
    aws ecs update-service --cluster pure-cms-cluster --service pure-cms-service --force-new-deployment --region us-east-2
    ```

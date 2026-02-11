@@ -6,7 +6,7 @@
 # so that when you deploy the new image, the same volume is reused and
 # data is preserved. See docs/aws-ecr-setup.md and cms/README.md.
 
-name: Build CMS (prod)
+name: Build Pure CMS (prod)
 
 on:
   push:
