@@ -1,0 +1,24 @@
+<%_ if (timeline) { _%>
+<section class="section large">
+	<div class="fixed fixed-max-sm grid grid-xs-1 panel">
+		<h2 class="f4"><%= timeline.heading %></h2>
+		<div><%= timeline.intro %></div>
+		<ul class="section-timeline">
+			<%_ if (timeline.entries && timeline.entries.length) { _%>
+				<%_ for (var i = 0; i < timeline.entries.length; i++) { _%>
+					<%_ const entry = timeline.entries[i]; _%>
+					<%_ if (entry.type === 'title') { _%>
+						<li class="title"><b><%= entry.label %></b>
+							<div></div>
+						</li>
+					<%_ } else if (entry.type === 'desc') { _%>
+						<li class="desc"><span><%= entry.date %></span> <span><%= entry.text %></span>
+							<div></div>
+						</li>
+					<%_ } _%>
+				<%_ } _%>
+			<%_ } _%>
+		</ul>
+	</div>
+</section>
+<%_ } _%>

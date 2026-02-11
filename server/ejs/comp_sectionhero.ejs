@@ -1,0 +1,15 @@
+<%_ if (sectionHero) { _%>
+<section class="section-hero animation">
+	<div class="picture">
+		<img src="<%= sectionHero.image.src %>" alt="<%= sectionHero.image.alt %>" loading="<%= sectionHero.image.loading %>">
+	</div>
+	<div class="content">
+		<i class="icon-cui"></i>
+		<h1> <strong><%= sectionHero.title %></strong></h1>
+		<p class="f5 major"><i class="<%= sectionHero.subtitleIcon %> f3"></i>
+			<strong class="title"><%= sectionHero.subtitle %></strong>
+		</p>
+		<p class="desc"><%= sectionHero.desc %></p>
+	</div>
+</section>
+<%_ } _%>

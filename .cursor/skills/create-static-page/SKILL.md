@@ -98,6 +98,38 @@ Update both the EJS header config and the static HTML header so navigation stays
 
 Use the same label and `.html` suffix pattern as existing items (e.g. `about.html`, `survey.html`).
 
+### #5 Build server EJS component (comp_*)
+
+To add a reusable server-rendered component (e.g. `comp_timeline`, `comp_sectionhero`), follow the **comp_header** pattern.
+
+**Location:** `server/ejs/` — one `.js` (data + factory) and one `.ejs` (markup).
+
+**1. Data file `comp_<name>.js`**
+
+- `import config from '../config.js';` and `const APP_URL = config.appUrl || '';`
+- `COMPONENT_NAME` (camelCase, e.g. `'sectionHero'`, `'timeline'`)
+- `COMPONENT_TEMPLATE` (e.g. `'comp_sectionhero'`, `'comp_timeline'`)
+- One **data object** with all content hardcoded (no args; override via model later if needed)
+- Export **`createXComponent()`** that returns `{ name: COMPONENT_NAME, template: COMPONENT_TEMPLATE, data: yourData }`
+- Use `APP_URL` for any links or asset URLs in the data
+
+**2. Template file `comp_<name>.ejs`**
+
+- Guard with a single main prop: `<%_ if (timeline) { _%> ... <%_ } _%>` (prop name = component name in camelCase, e.g. `timeline`, `sectionHero`)
+- Output values with `<%= timeline.heading %>`, loops with `<%_ for (var i = 0; i < timeline.entries.length; i++) { _%> ... <%_ } _%>`
+- Keep markup minimal; all copy and structure come from the `.js` data
+
+**3. Using the component in a server-rendered page**
+
+- In the page config (e.g. `server/configs/demo.js`): create the component and add to the model, e.g. `timelineComponent: createTimelineComponent()`
+- In the EJS view:  
+  `<%_ const timelineComponent = data.timelineComponent; _%>`  
+  `<%_ if (timelineComponent) { _%>`  
+  `<%- include(timelineComponent.template, { timeline: timelineComponent.data }) %>`  
+  `<%_ } _%>`
+
+**Reference components:** `server/ejs/comp_header.js`, `comp_header.ejs`, `comp_sectionhero.js`, `comp_sectionphotos.ejs`, `comp_scrollview.js`, `comp_timeline.js`.
+
 ## Checklist
 
 - [ ] #0 Page name decided (folder name, lowercase, hyphens).
@@ -106,6 +138,7 @@ Use the same label and `.html` suffix pattern as existing items (e.g. `about.htm
 - [ ] #3 `client/pages/<name>/index.html` created with header/footer includes and full head/body.
 - [ ] #3 `client/pages/<name>/index.js` created with `main` and scss import.
 - [ ] #4 Links added in both `server/ejs/comp_header.js` and `client/components/header.html`.
+- [ ] #5 (Optional) New server EJS comp: `server/ejs/comp_<name>.js` + `comp_<name>.ejs` with data and `createXComponent()`.
 
 ## Reference files
 
@@ -118,3 +151,4 @@ Use the same label and `.html` suffix pattern as existing items (e.g. `about.htm
 - Hero section (image behind, mask, centered content): `client/scss/_section.scss` (`.section-hero`)
 - Icons: `client/scss/_icon.scss` (use `icon-*` classes)
 - Welcome images: `client/assets/images/welcome/` (point0–point9)
+- Server EJS components (comp_* pattern): `server/ejs/comp_header.js`, `comp_sectionhero.js`, `comp_sectionphotos.js`, `comp_scrollview.js`, `comp_timeline.js` (+ corresponding `.ejs` templates)
