@@ -36,15 +36,19 @@ const headerData = {
 					text: 'Survey',
 					href: `${APP_URL}/survey.html`,
 				},
+				{
+					text: 'AI Trend',
+					href: `${APP_URL}/ai-trend.html`,
+				},
 			],
 		},
 		{
-			text: 'About',
-			href: `${APP_URL}/about`,
+			text: 'Document',
+			href: `${APP_URL}/document`,
 		},
 		{
 			text: 'Contact',
-			href: `${APP_URL}/contact`,
+			href: `javascript:;`,
 		},
 	],
 };

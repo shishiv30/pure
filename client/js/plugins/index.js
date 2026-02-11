@@ -27,6 +27,7 @@ import album from './_album.js';
 // import carousel from './_carouselF.js';
 // import scrollspy from './_scrollspy.js';
 // import flow from './_flow.js';
+import scrollview from './_scrollview.js';
 
 export default {
 	collapse,
@@ -55,6 +56,7 @@ export default {
 	validate,
 	player,
 	album,
+	scrollview,
 	// view,
 	// carousel,
 	// scrollspy,

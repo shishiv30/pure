@@ -1,11 +1,15 @@
+@use './_mixins.scss' as *;
+
 .table-scroll {
 	overflow-x: auto;
 	min-height: 0.01%;
 	min-width: 0.01%;
 	@include hidden-scrollbar();
+
 	tbody {
-		> tr:nth-child(odd) {
+		>tr:nth-child(odd) {
 			background-color: var(--color-bg-l1);
+
 			td {
 				white-space: nowrap;
 			}
@@ -21,6 +25,7 @@ table {
 }
 
 table {
+
 	td,
 	th {
 		text-align: left;

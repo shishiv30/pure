@@ -174,20 +174,27 @@ body {
 
 	--color-major: hsl(var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness));
 	--color-major-l1: hsl(var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness-l1));
+	--color-major-hsl: var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness);
+	--color-major-l1-hsl: var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness-l1);
 	--color-link: var(--color-major);
 	--color-link-hover: var(--color-minor);
 
 	--color-minor: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness));
 	--color-minor-l1: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness-l1));
-
+	--color-minor-hsl: var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness);
+	--color-minor-l1-hsl: var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness-l1);
 	--color-safe: hsl(var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness));
 	--color-safe-l1: hsl(var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness-l1));
-
+	--color-safe-hsl: var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness);
+	--color-safe-l1-hsl: var(--color-safe-hue), var(--color-safe-saturation), var(--color-safe-lightness-l1);
 	--color-danger: hsl(var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness));
 	--color-danger-l1: hsl(var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness-l1));
-
+	--color-danger-hsl: var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness);
+	--color-danger-l1-hsl: var(--color-danger-hue), var(--color-danger-saturation), var(--color-danger-lightness-l1);
 	--color-tip: hsl(var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness));
 	--color-tip-l1: hsl(var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness-l1));
+	--color-tip-hsl: var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness);
+	--color-tip-l1-hsl: var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness-l1);
 
 	--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
 	--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
@@ -202,9 +209,10 @@ body {
 
 	--color-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
 	--color-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
+	--color-default-hsl: var(--color-major-hue), var(--color-glb-front-saturation), 10%;
 	--color-bg-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
 	--color-bg-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 96%);
-
+	--color-bg-default-hsl: var(--color-major-hue), var(--color-glb-front-saturation), 100%;
 
 
 	--color: var(--color-default);

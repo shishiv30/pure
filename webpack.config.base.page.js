@@ -21,6 +21,14 @@ export const pageConfig = {
 			name: 'about',
 			static: true,
 		},
+		{
+			name: 'document',
+			static: true,
+		},
+		{
+			name: 'ai-trend',
+			static: true,
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {
