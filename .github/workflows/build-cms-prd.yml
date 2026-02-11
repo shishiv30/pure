@@ -1,0 +1,82 @@
+---
+# Builds Pure CMS Docker image and pushes to ECR.
+# Runs only when there are commits that touch the cms/ folder (path filter).
+# Does not touch the database: we only build and push an image. Your AWS
+# instance must mount a persistent volume at /app/data for the SQLite DB
+# so that when you deploy the new image, the same volume is reused and
+# data is preserved. See docs/aws-ecr-setup.md and cms/README.md.
+
+name: Build CMS (prod)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cms/**'
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-2' }}
+  ECR_REPOSITORY_CMS: ${{ vars.ECR_REPOSITORY_CMS || 'pure-cms' }}
+
+jobs:
+  build-cms-to-aws-ecr:
+    runs-on: ubuntu-latest
+    if: vars.AWS_ECR_ENABLED == 'true'
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate AWS secrets
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ] || [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "::error::AWS credentials not configured."
+            echo "Add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in Settings → Secrets and variables → Actions."
+            echo "See docs/aws-ecr-setup.md for setup instructions."
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Ensure ECR repository exists (CMS)
+        run: |
+          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }} 2>/dev/null || \
+          aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }}
+
+      - name: Build and tag CMS image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_CMS }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --target production -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f cms/Dockerfile cms/
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Push CMS image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_CMS }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Summary
+        run: |
+          echo "## CMS image pushed" >> $GITHUB_STEP_SUMMARY
+          echo "- Image: \`${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY_CMS }}:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Latest: \`${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY_CMS }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Database is not modified by this workflow. Ensure your AWS instance uses a **persistent volume** for \`/app/data\` (DB_PATH) so data is preserved when you deploy the new image." >> $GITHUB_STEP_SUMMARY

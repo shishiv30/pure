@@ -1,0 +1,33 @@
+{
+	"name": "pure-cms",
+	"version": "1.0.0",
+	"description": "Content Management System for Pure UI Framework",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"dev": "npx cross-env NODE_ENV=development nodemon server.js",
+		"start": "npx cross-env NODE_ENV=production node server.js",
+		"build-docker": "docker build -t pure-cms .",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": ["cms", "content-management", "pure"],
+	"author": "conjee zou",
+	"license": "ISC",
+	"engines": {
+		"node": ">=25.6.0"
+	},
+	"dependencies": {
+		"express": "^4.18.2",
+		"express-session": "^1.18.0",
+		"bcrypt": "^5.1.1",
+		"sqlite3": "^5.1.6",
+		"dotenv": "^16.5.0",
+		"cors": "^2.8.5",
+		"compression": "^1.7.4",
+		"body-parser": "^1.20.2"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.4",
+		"cross-env": "^7.0.3"
+	}
+}

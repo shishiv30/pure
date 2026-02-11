@@ -1,0 +1,18 @@
+services:
+  pure-cms:
+    build:
+      context: .
+      target: ${DOCKER_BUILD_TARGET:-production}
+    ports:
+      - "${DOCKER_PORT:-3003}:${PORT:-3003}"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-3003}
+      - DB_PATH=${DB_PATH:-./data/cms.db}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
