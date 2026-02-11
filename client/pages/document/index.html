@@ -178,6 +178,28 @@
       </div>
     </div>
   </section>
+  <section class="section" id="tipPanel">
+    <div class="fixed fixed-max-sm grid grid-xs-3">
+      <h2 class="f3 wrap">Tips</h2>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, not enough space focus left">top left</a></div>
+      <div class="text-center"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, enough space align center">top center</a></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, not enough space focus right">top right</a></div>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, not enough space focus left">bottom left</a></div>
+      <div class="text-center"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, enough space align center">bottom center</a></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, not enough space focus right">bottom right</a></div>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link" data-trigger="click"
+          data-placement="right" data-content="show on right side">right (click)</a></div>
+      <div></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link" data-trigger="click"
+          data-placement="left" data-content="show on left side">left (click)</a></div>
+    </div>
+  </section>
   <section class="section large">
     <div class="panel fixed fixed-max-sm grid grid-xs-1">
       <h2 class="f3">Tab</h2>
@@ -290,7 +312,7 @@
         <label for="txtReq">Name (Required)</label>
         <div class="input left">
           <i class="icon-user-circle-o"></i>
-          <input id="txtReq" name="name" placeholder="name" data-role="validate" data-type="required" />
+          <input id="txtReq" name="username" placeholder="name" data-role="validate" data-type="required" />
         </div>
       </div>
       <div>
@@ -416,7 +438,7 @@
     </form>
   </section>
   <section class="section large major inline bg active">
-    <div class="fixed fixed-max-sm grid grid-xs-1 grid-sm-2">
+    <div class="fixed bg default fixed-max-sm grid grid-xs-1 grid-sm-2">
       <h2 class="f3 wrap">Textbox</h2>
       <div>
         <div class="selectbox">
@@ -434,7 +456,7 @@
         <div data-role="textbox">
           <div class="input right">
             <label for="txtReq2">normal textbox input</label>
-            <input type="email" id="txtReq2" name="name" value="" data-validate="required,email" />
+            <input type="email" id="txtReq2" name="username" value="" data-validate="required,email" />
             <a href="javascript:;" aria-label="submit" class="icon-check"></a>
           </div>
         </div>
@@ -455,7 +477,7 @@
         <div data-role="textbox">
           <div class="input large right">
             <label for="txtReq1">large textbox input</label>
-            <input type="email" id="txtReq1" name="name" value="" data-validate="required,email" />
+            <input type="email" id="txtReq1" name="username" value="" data-validate="required,email" />
             <a href="javascript:;" aria-label="submit" class="icon-check"></a>
           </div>
         </div>

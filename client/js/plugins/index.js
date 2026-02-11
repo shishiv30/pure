@@ -18,7 +18,7 @@ import lazyload from './_lazyload.js';
 import tab from './_tab.js';
 import shifter from './_shifter.js';
 import textbox from './_textbox.js';
-// import tooltip from './_tooltip.js';
+import tooltip from './_tooltip.js';
 // import transition from './_transition.js';
 import validate from './_validate.js';
 import player from './_player.js';
@@ -51,7 +51,7 @@ export default {
 	// scrollTo,
 	tab,
 	textbox,
-	// tooltip,
+	tooltip,
 	// transition,
 	validate,
 	player,

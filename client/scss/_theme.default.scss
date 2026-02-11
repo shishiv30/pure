@@ -1,66 +1,9 @@
-// very small screen / phone
-@mixin theme-dark-vars {
-	--logo-bg: url('../assets/img/logo.svg');
-	--logo: url('../assets/img/logo-bg.svg');
-	--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
-	--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
-	--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
-	--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
-	--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
-	--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
-	--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
-	--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
-	--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
-	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
-
-	//flip the lightness values for  dark mode
-	--color-glb-bg-lightness: 10%;
-	--color-glb-front-lightness: 80%;
-	--color-glb-default-lightness: 90%;
-	--color-glb-default-saturation: 100%;
-
-
-	--color: var(--color-bg-default);
-	--color-border: var(--color-default);
-	--color-bg: var(--color-default);
-	--color-hover: var(--color-bg-default);
-	--color-border-hover: var(--color-default);
-	--color-bg-hover: var(--color-default);
-	--color-l1: var(--color-dbg-default-l1);
-	--color-bg-l1: var(--color-default-l1);
-
-	--color-active: var(--color-default);
-	--color-active-bg: var(--color-bg-default);
-	--color-active-border: var(--color-bg-default);
-	--color-active-hover: var(--color-default);
-	--color-active-bg-hover: var(--color-bg-default);
-	--color-active-border-hover: var(--color-bg-default);
-	--color-disabled: var(--color-dbg-default-l1);
-
-	--color-major-lightness: var(--color-major-default-lightness-l1);
-	--color-major-lightness-l1: var(--color-major-default-lightness);
-	--color-minor-lightness: var(--color-minor-default-lightness-l1);
-	--color-minor-lightness-l1: var(--color-minor-default-lightness);
-	--color-safe-lightness: var(--color-safe-default-lightness-l1);
-	--color-safe-lightness-l1: var(--color-safe-default-lightness);
-	--color-danger-lightness: var(--color-danger-default-lightness-l1);
-	--color-danger-lightness-l1: var(--color-danger-default-lightness);
-	--color-tip-lightness: var(--color-tip-default-lightness-l1);
-	--color-tip-lightness-l1: var(--color-tip-default-lightness);
-
-	.header {
-		--header-color-active: var(--color-bg-default);
-		--header-color-active-bg: var(--color-default);
-		--header-color-active-bg-hover: var(--color-default-l1);
-	}
-}
-
 html {
 	--animation-time: 0.1s;
 	--cui-font: 'Roboto';
 	--color-glb-front-lightness: 23%;
 	--color-glb-bg-lightness: 95%;
-	--color-glb-front-saturation: 20%;
+	--color-glb-front-saturation: 5%;
 	--color-glb-bg-saturation: 100%;
 	--color-glb-default-saturation: 100%;
 	--color-glb-default-lightness: 30%;
@@ -95,7 +38,7 @@ html {
 	--color-safe-lightness-l1: var(--color-safe-default-lightness-l1);
 	--color-safe-saturation: var(--color-glb-default-saturation);
 	--color-danger-hue: 4;
-	--color-danger-default-lightness: 30%;
+	--color-danger-default-lightness: 50%;
 	--color-danger-default-lightness-l1: var(--color-glb-bg-lightness);
 	--color-danger-lightness: var(--color-danger-default-lightness);
 	--color-danger-lightness-l1: var(--color-danger-default-lightness-l1);
@@ -176,8 +119,8 @@ body {
 	--color-major-l1: hsl(var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness-l1));
 	--color-major-hsl: var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness);
 	--color-major-l1-hsl: var(--color-major-hue), var(--color-major-saturation), var(--color-major-lightness-l1);
-	--color-link: var(--color-major);
-	--color-link-hover: var(--color-minor);
+	--color-link: var(--color-minor);
+	--color-link-hover: var(--color-major);
 
 	--color-minor: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness));
 	--color-minor-l1: hsl(var(--color-minor-hue), var(--color-minor-saturation), var(--color-minor-lightness-l1));
@@ -218,7 +161,7 @@ body {
 	--color: var(--color-default);
 	--color-border: var(--color-bg-default);
 	--color-bg: var(--color-bg-default);
-	--color-hover: var(--color-default);
+	--color-hover: var(--color-default-l1);
 	--color-border-hover: var(--color-bg-default);
 	--color-bg-hover: var(--color-bg-default);
 	--color-l1: var(--color-default-l1);
@@ -253,6 +196,63 @@ body {
 	--comp-border-radius: var(--radius-1);
 	--comp-max-width: auto;
 	--comp-line-height: var(--line-height-3);
+
+
+	@mixin theme-dark-vars {
+		--logo-bg: url('../assets/img/logo.svg');
+		--logo: url('../assets/img/logo-bg.svg');
+		--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
+		--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
+		--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
+		--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
+		--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
+		--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
+		--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
+		--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
+		--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
+		--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
+
+		//flip the lightness values for  dark mode
+		--color-glb-bg-lightness: 10%;
+		--color-glb-front-lightness: 80%;
+		--color-glb-default-lightness: 90%;
+		--color-glb-default-saturation: 100%;
+
+
+		--color: var(--color-bg-default);
+		--color-border: var(--color-default);
+		--color-bg: var(--color-default);
+		--color-hover: var(--color-bg-default);
+		--color-border-hover: var(--color-default);
+		--color-bg-hover: var(--color-default);
+		--color-l1: var(--color-dbg-default-l1);
+		--color-bg-l1: var(--color-default-l1);
+
+		--color-active: var(--color-default);
+		--color-active-bg: var(--color-bg-default);
+		--color-active-border: var(--color-bg-default);
+		--color-active-hover: var(--color-default);
+		--color-active-bg-hover: var(--color-bg-default);
+		--color-active-border-hover: var(--color-bg-default);
+		--color-disabled: var(--color-dbg-default-l1);
+
+		--color-major-lightness: var(--color-major-default-lightness-l1);
+		--color-major-lightness-l1: var(--color-major-default-lightness);
+		--color-minor-lightness: var(--color-minor-default-lightness-l1);
+		--color-minor-lightness-l1: var(--color-minor-default-lightness);
+		--color-safe-lightness: var(--color-safe-default-lightness-l1);
+		--color-safe-lightness-l1: var(--color-safe-default-lightness);
+		--color-danger-lightness: var(--color-danger-default-lightness-l1);
+		--color-danger-lightness-l1: var(--color-danger-default-lightness);
+		--color-tip-lightness: var(--color-tip-default-lightness-l1);
+		--color-tip-lightness-l1: var(--color-tip-default-lightness);
+
+		.header {
+			--header-color-active: var(--color-bg-default);
+			--header-color-active-bg: var(--color-default);
+			--header-color-active-bg-hover: var(--color-default-l1);
+		}
+	}
 
 	&.theme-auto {
 		@media (prefers-color-scheme: dark) {

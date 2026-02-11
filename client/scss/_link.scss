@@ -27,14 +27,12 @@ button {
 		&,
 		&:link,
 		&:visited {
-			opacity: 0.95;
-			color: var(--color-link-default);
+			font-weight: var(--font-weight-medium);
+			color: var(--color-link);
 		}
 
 		@include hover() {
-			font-weight: var(--font-weight-medium);
-			opacity: 1;
-			color: var(--color-link-default-hover);
+			color: var(--color-link-hover);
 		}
 	}
 }
