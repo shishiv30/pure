@@ -5,7 +5,7 @@
 set -e
 export AWS_PAGER=""
 
-AWS_REGION="${AWS_REGION:-us-east-2}"
+AWS_REGION="${AWS_REGION:-us-east-1}"
 CLUSTER_NAME="${CLUSTER_NAME:-pure-cms-cluster}"
 SERVICE_NAME="${SERVICE_NAME:-pure-cms-service}"
 

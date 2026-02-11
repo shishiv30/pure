@@ -137,13 +137,13 @@ docker-compose logs -f
 1. **Set environment variables**:
 ```bash
 export AWS_ACCOUNT_ID=your-account-id
-export AWS_REGION=us-east-2
+export AWS_REGION=us-east-1
 export ECR_REPOSITORY=pure-cms
 ```
 
 2. **Create ECR repository** (if needed):
 ```bash
-aws ecr create-repository --repository-name pure-cms --region us-east-2
+aws ecr create-repository --repository-name pure-cms --region us-east-1
 ```
 
 3. **Deploy**:

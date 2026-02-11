@@ -164,13 +164,13 @@ docker build -t pure-cms .
 1. **Configure AWS credentials**:
 ```bash
 export AWS_ACCOUNT_ID=your-account-id
-export AWS_REGION=us-east-2
+export AWS_REGION=us-east-1
 export ECR_REPOSITORY=pure-cms
 ```
 
 2. **Create ECR repository** (if not exists):
 ```bash
-aws ecr create-repository --repository-name pure-cms --region us-east-2
+aws ecr create-repository --repository-name pure-cms --region us-east-1
 ```
 
 3. **Deploy**:
@@ -198,7 +198,7 @@ The workflow **Build CMS (prod)** (`.github/workflows/build-cms-prd.yml`) runs o
 - **Trigger**: Push to `main` with changes under `cms/**`
 - **Condition**: Runs only if repo variable `AWS_ECR_ENABLED` is `true` (same as main ECR workflow)
 - **Secrets**: Uses `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-- **Variables**: `AWS_REGION` (default `us-east-2`), `ECR_REPOSITORY_CMS` (default `pure-cms`)
+- **Variables**: `AWS_REGION` (default `us-east-1`), `ECR_REPOSITORY_CMS` (default `pure-cms`)
 
 After the workflow runs, pull the new image on your AWS instance and restart the container. Data is preserved as long as you use a persistent volume for the database (see below). For the IAM permissions the workflow needs (ECR only) and how to run the same build/push locally with AWS CLI, see [docs/github-actions-iam.md](docs/github-actions-iam.md).
 
@@ -238,9 +238,13 @@ The `cms/scripts/aws/` folder contains an ECS + EFS setup so the SQLite database
 
 5. **Update the service** (e.g. after a new image in ECR):
    ```bash
-   aws ecs update-service --cluster pure-cms-cluster --service pure-cms-service --force-new-deployment --region us-east-2
+   aws ecs update-service --cluster pure-cms-cluster --service pure-cms-service --force-new-deployment --region us-east-1
    ```
    ECS starts a new task with the latest image and attaches the **same EFS volume** at `/app/data`, so the SQLite database is preserved.
+
+   **Note:** GitHub Actions only builds and pushes the image; it does not deploy. Run the command above to deploy the new image. After a new task, the public IP changes—use `./cms/scripts/aws/get-cms-url.sh` or the ALB domain. See [docs/aws-console-cms.md](docs/aws-console-cms.md) for where to find the CMS in the AWS Console and troubleshooting.
+
+   **Migrating from us-east-2 to us-east-1?** All scripts and the workflow now default to us-east-1. See [docs/migrate-cms-to-us-east-1.md](docs/migrate-cms-to-us-east-1.md) for step-by-step migration and cleanup of the old region.
 
 ## Environment Variables
 

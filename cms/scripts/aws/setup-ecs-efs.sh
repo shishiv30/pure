@@ -6,7 +6,7 @@
 # Optional env vars (defaults shown):
 #   AWS_ACCOUNT_ID    - Your AWS account ID (default: 178912016721)
 #   SESSION_SECRET    - Secret for signing CMS login cookies. If unset, a random one is generated.
-#   AWS_REGION        - Region (default: us-east-2)
+#   AWS_REGION        - Region (default: us-east-1)
 #   ECR_REPOSITORY    - ECR repo name (default: pure-cms)
 #   VPC_ID            - VPC to use (default: default VPC)
 #   SUBNET_IDS        - Comma-separated subnet IDs for ECS/EFS (default: all subnets in VPC)
@@ -23,7 +23,7 @@ set -e
 export AWS_PAGER=""
 
 AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-178912016721}"
-AWS_REGION="${AWS_REGION:-us-east-2}"
+AWS_REGION="${AWS_REGION:-us-east-1}"
 ECR_REPOSITORY="${ECR_REPOSITORY:-pure-cms}"
 CLUSTER_NAME="${CLUSTER_NAME:-pure-cms-cluster}"
 SERVICE_NAME="${SERVICE_NAME:-pure-cms-service}"

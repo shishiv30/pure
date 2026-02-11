@@ -11,7 +11,7 @@ export AWS_PAGER=""
 ./scripts/aws/setup-alb.sh
 ```
 
-This creates an ALB, a target group (port 3003), an HTTP listener, and updates the ECS service so tasks register with the ALB. At the end it prints the **ALB DNS name** (e.g. `pure-cms-alb-1234567890.us-east-2.elb.amazonaws.com`).
+This creates an ALB, a target group (port 3003), an HTTP listener, and updates the ECS service so tasks register with the ALB. At the end it prints the **ALB DNS name** (e.g. `pure-cms-alb-1234567890.us-east-1.elb.amazonaws.com`).
 
 ## 2. Point your domain to the ALB
 
@@ -19,15 +19,24 @@ In the DNS provider where **conjeezou.com** is managed (Route 53, Cloudflare, et
 
 - **Type:** `CNAME` (or alias if your provider supports it, e.g. Route 53 Alias)
 - **Name:** `cms` (so the full name is `cms.conjeezou.com`)
-- **Value / Target:** the ALB DNS name from step 1 (e.g. `pure-cms-alb-1234567890.us-east-2.elb.amazonaws.com`)
+- **Value / Target:** the ALB DNS name from step 1 (e.g. `pure-cms-alb-1234567890.us-east-1.elb.amazonaws.com`)
 
 Save the record. DNS can take a few minutes to propagate.
 
 ## 3. Use HTTPS (optional)
 
-- **Request a certificate** in AWS Certificate Manager (ACM) for `cms.conjeezou.com` (or `*.conjeezou.com`) in **us-east-2**.
-- **Add an HTTPS listener** on the ALB (port 443) using that certificate, forwarding to the same target group. You can do this in the AWS Console: EC2 → Load Balancers → your `pure-cms-alb` → Listeners → Add listener (HTTPS, 443, your certificate, forward to the existing target group).
-- Optionally **redirect HTTP → HTTPS** (add/update the HTTP listener to redirect to HTTPS).
+1. **Request a certificate** in AWS Certificate Manager (ACM) for `cms.conjeezou.com` (or `*.conjeezou.com`) in **us-east-1**. Complete DNS validation so the cert shows **Issued**.
+
+2. **Add the HTTPS listener** (either script or console):
+   - **Script (recommended):** From the repo, with AWS CLI configured for the same account/region:
+     ```bash
+     export AWS_PAGER=""
+     ./cms/scripts/aws/setup-alb-https.sh
+     ```
+     This finds your ALB and ACM cert, ensures the ALB security group allows 443, and adds an HTTPS listener on port 443. If you have multiple certs or a custom domain, set `CERT_ARN=arn:aws:acm:region:account:certificate/id` or `CERT_DOMAIN=your.domain.com`.
+   - **Console:** EC2 → Load Balancers → **pure-cms-alb** → Listeners → Add listener → HTTPS, port 443, select your ACM certificate, forward to target group **pure-cms-tg**. Ensure the ALB security group allows inbound **443** from 0.0.0.0/0.
+
+3. Optionally **redirect HTTP → HTTPS**: Edit the existing HTTP (80) listener → set default action to **Redirect to** HTTPS 443 (e.g. 301).
 
 ## 4. Update CORS (if needed)
 

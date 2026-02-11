@@ -46,7 +46,7 @@ Attach a custom policy like this to the GitHub Actions IAM user (e.g. `github-ac
         "ecr:DescribeRepositories",
         "ecr:CreateRepository"
       ],
-      "Resource": "arn:aws:ecr:us-east-2:ACCOUNT_ID:repository/pure-cms"
+      "Resource": "arn:aws:ecr:us-east-1:ACCOUNT_ID:repository/pure-cms"
     }
   ]
 }
@@ -55,13 +55,13 @@ Attach a custom policy like this to the GitHub Actions IAM user (e.g. `github-ac
 To allow any repository name (e.g. if you set `ECR_REPOSITORY_CMS` to something else), use:
 
 ```text
-"Resource": "arn:aws:ecr:us-east-2:ACCOUNT_ID:repository/*"
+"Resource": "arn:aws:ecr:us-east-1:ACCOUNT_ID:repository/*"
 ```
 
 If you **do not** grant `ecr:CreateRepository`, create the ECR repository once yourself:
 
 ```bash
-aws ecr create-repository --repository-name pure-cms --region us-east-2
+aws ecr create-repository --repository-name pure-cms --region us-east-1
 ```
 
 ---
@@ -81,7 +81,7 @@ You can do the same build-and-push from your machine with the AWS CLI. No GitHub
 2. **Create the ECR repository** (if it doesn’t exist):
 
    ```bash
-   aws ecr create-repository --repository-name pure-cms --region us-east-2
+   aws ecr create-repository --repository-name pure-cms --region us-east-1
    ```
 
 3. **Build and push the CMS image** (from repo root):
@@ -98,6 +98,6 @@ You can do the same build-and-push from your machine with the AWS CLI. No GitHub
    ./scripts/deploy-aws-ecr.sh production
    ```
 
-That script builds the image, logs in to ECR, and pushes `pure-cms:production` and `pure-cms:latest`. It uses the same ECR repo and region (default `us-east-2`) as the workflow.
+That script builds the image, logs in to ECR, and pushes `pure-cms:production` and `pure-cms:latest`. It uses the same ECR repo and region (default `us-east-1`) as the workflow.
 
 **Summary:** The rights GitHub Actions needs are ECR-only (list above). You can run the same steps locally with `aws configure` and `./cms/scripts/deploy-aws-ecr.sh`.

@@ -15,7 +15,7 @@ on:
       - 'cms/**'
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-2' }}
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
   ECR_REPOSITORY_CMS: ${{ vars.ECR_REPOSITORY_CMS || 'pure-cms' }}
 
 jobs:

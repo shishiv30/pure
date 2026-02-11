@@ -10,7 +10,7 @@
 set -e
 
 ENVIRONMENT=${1:-production}
-AWS_REGION=${AWS_REGION:-us-east-2}
+AWS_REGION=${AWS_REGION:-us-east-1}
 ECR_REPOSITORY=${ECR_REPOSITORY:-pure-cms}
 AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}
 
