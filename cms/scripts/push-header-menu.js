@@ -1,13 +1,13 @@
 /**
- * Push data/links.js into CMS comp table.
+ * Push data/header.js into CMS comp table.
  * Creates or updates comp with key: header, type: json, data: <json string>.
  *
- * Run from repo root: node cms/scripts/push-header.js
+ * Run from repo root: node cms/scripts/push-header-menu.js
  *
  * Without CMS_EMAIL/CMS_PASSWORD: writes directly to CMS SQLite DB (cms/.env DB_PATH).
  * With CMS_EMAIL + CMS_PASSWORD: uses POST /api/comp (for remote CMS).
  *
- * Example (API): CMS_URL=http://localhost:3003 CMS_EMAIL=admin@example.com CMS_PASSWORD=secret node cms/scripts/push-header.js
+ * Example (API): CMS_URL=http://localhost:3003 CMS_EMAIL=admin@example.com CMS_PASSWORD=secret node cms/scripts/push-header-menu.js
  */
 
 import { createRequire } from 'module';
@@ -90,7 +90,7 @@ function pushViaDb(dataJson) {
 }
 
 async function main() {
-	const linkTable = (await import('../../data/links.js')).default;
+	const linkTable = (await import('../../data/header.js')).default;
 	const dataJson = JSON.stringify(linkTable);
 
 	if (CMS_EMAIL && CMS_PASSWORD) {
