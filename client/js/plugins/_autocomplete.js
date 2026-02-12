@@ -31,6 +31,7 @@ export default {
 				document.removeEventListener('click', _clickOutside);
 				$container.classList.remove('autocomplete-show');
 				enableScroll('autocomplete');
+				opt.selectedIndex = -1;
 			}
 		};
 		let _clickOutside = function (e) {
@@ -53,11 +54,66 @@ export default {
 			let html = '';
 			if (data && data.length > 0) {
 				opt.data = data;
+				opt.selectedIndex = -1;
 				data.forEach((item, i) => {
 					html += `<div class="suggestion-item" data-index="${i}">${item.city}, ${item.state}</div>`;
 				});
 			}
 			$suggestionList.innerHTML = html;
+		};
+		let _highlightItem = function (index) {
+			let items = $suggestionList.querySelectorAll('.suggestion-item');
+			items.forEach((item, i) => {
+				if (i === index) {
+					item.classList.add('selected');
+					item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+				} else {
+					item.classList.remove('selected');
+				}
+			});
+		};
+		let _navigateUp = function () {
+			if (!opt.data || opt.data.length === 0) return;
+			if (opt.selectedIndex === undefined || opt.selectedIndex === -1) {
+				opt.selectedIndex = opt.data.length - 1;
+			} else {
+				opt.selectedIndex = Math.max(0, opt.selectedIndex - 1);
+			}
+			_highlightItem(opt.selectedIndex);
+		};
+		let _navigateDown = function () {
+			if (!opt.data || opt.data.length === 0) return;
+			if (opt.selectedIndex === undefined || opt.selectedIndex === -1) {
+				opt.selectedIndex = 0;
+			} else {
+				opt.selectedIndex = Math.min(opt.data.length - 1, opt.selectedIndex + 1);
+			}
+			_highlightItem(opt.selectedIndex);
+		};
+		let _selectHighlighted = function () {
+			if (opt.selectedIndex !== undefined && opt.selectedIndex >= 0 && opt.data && opt.data[opt.selectedIndex]) {
+				let item = opt.data[opt.selectedIndex];
+				_selectSuggestion(item);
+				_hide();
+			}
+		};
+		let _handleKeydown = function (e) {
+			if (!$container.classList.contains('autocomplete-show')) {
+				return;
+			}
+			if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				_navigateDown();
+			} else if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				_navigateUp();
+			} else if (e.key === 'Enter') {
+				e.preventDefault();
+				_selectHighlighted();
+			} else if (e.key === 'Escape') {
+				e.preventDefault();
+				_hide();
+			}
 		};
 
 		let _getSuggestion = function () {
@@ -143,10 +199,13 @@ export default {
 			_getSuggestion();
 		});
 
+		$el.addEventListener('keydown', _handleKeydown);
+
 		$suggestionList.addEventListener('click', (e) => {
 			if (e.target.classList.contains('suggestion-item')) {
-				let index = e.target.dataset.index;
+				let index = parseInt(e.target.dataset.index, 10);
 				let item = opt.data[index];
+				opt.selectedIndex = index;
 				_selectSuggestion(item);
 				_hide();
 			}

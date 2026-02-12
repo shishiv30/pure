@@ -7,6 +7,9 @@
   background: var(--color);
 
   line-height: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include hidden-scrollbar();
   border-radius: 0 0 var(--radius-2) var(--radius-2);
 }
 
@@ -27,6 +30,10 @@
   cursor: pointer;
 
   &:hover {
+    background: var(--color-hover);
+  }
+
+  &.selected {
     background: var(--color-hover);
   }
 }
