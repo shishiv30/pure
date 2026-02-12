@@ -502,6 +502,31 @@ export default {
 			updateProcess();
 		}
 
+		// Keyboard navigation support
+		let handleKeyDown = (e) => {
+			// Only handle if album is visible and not typing in an input/textarea
+			if (
+				$el.offsetParent === null ||
+				document.activeElement.tagName === 'INPUT' ||
+				document.activeElement.tagName === 'TEXTAREA'
+			) {
+				return;
+			}
+			if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				prev();
+			} else if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				next();
+			}
+		};
+		document.addEventListener('keydown', handleKeyDown);
+
+		// Store cleanup function
+		exportOb.destroy = () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+
 		exportOb.next = next;
 		exportOb.prev = prev;
 		updateAlbumInfo();

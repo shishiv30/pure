@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pure UI 框架：自动化页面迁移与更新</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
+	<style>
+		.reveal .slides section {
+			text-align: left;
+		}
+		.reveal h1, .reveal h2, .reveal h3 {
+			color: #2c3e50;
+		}
+		.reveal code {
+			background-color: #f4f4f4;
+			padding: 2px 6px;
+			border-radius: 3px;
+		}
+		.reveal pre code {
+			background-color: #2d2d2d;
+			color: #f8f8f2;
+			padding: 15px;
+			border-radius: 5px;
+		}
+		.reveal .progress {
+			color: #3498db;
+		}
+		.reveal .controls {
+			color: #3498db;
+		}
+		.highlight {
+			color: #e74c3c;
+			font-weight: bold;
+		}
+		.checkmark {
+			color: #27ae60;
+		}
+		.cross {
+			color: #e74c3c;
+		}
+	</style>
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<!-- 标题页 -->
+			<section>
+				<h1>Pure UI 框架</h1>
+				<h2>自动化页面迁移与更新</h2>
+				<p style="margin-top: 50px; color: #7f8c8d;">
+					通过三大自动化机制实现高效迁移
+				</p>
+			</section>
+
+			<!-- 目录 -->
+			<section>
+				<h2>目录</h2>
+				<ol style="font-size: 0.9em;">
+					<li>项目概述</li>
+					<li>自动化组件创建</li>
+					<li>自动化页面创建</li>
+					<li>自动化主题切换</li>
+					<li>迁移工作流</li>
+					<li>实际案例</li>
+					<li>总结</li>
+				</ol>
+			</section>
+
+			<!-- 项目概述 -->
+			<section>
+				<section>
+					<h2>项目概述</h2>
+					<h3>Pure UI 框架</h3>
+					<ul>
+						<li><strong>轻量级客户端渲染框架</strong></li>
+						<li><strong>服务器端 EJS 组件系统</strong></li>
+						<li><strong>自动化工具链支持</strong></li>
+					</ul>
+				</section>
+				<section>
+					<h2>核心挑战</h2>
+					<ul>
+						<li>传统页面迁移：<span class="cross">手动、重复、易错</span></li>
+						<li>组件复用困难</li>
+						<li>主题切换复杂</li>
+						<li>维护成本高</li>
+					</ul>
+				</section>
+				<section>
+					<h2>解决方案</h2>
+					<p>通过<strong>三大自动化机制</strong>实现高效迁移：</p>
+					<ol>
+						<li><span class="checkmark">✅</span> <strong>自动创建组件</strong></li>
+						<li><span class="checkmark">✅</span> <strong>自动创建页面</strong></li>
+						<li><span class="checkmark">✅</span> <strong>自动切换主题</strong></li>
+					</ol>
+				</section>
+			</section>
+
+			<!-- 自动化组件创建 -->
+			<section>
+				<section>
+					<h2>自动化组件创建</h2>
+					<h3>传统方式 vs 自动化方式</h3>
+				</section>
+				<section>
+					<h3><span class="cross">❌</span> 传统方式</h3>
+					<pre><code class="html">&lt;!-- 每个页面重复编写 --&gt;
+&lt;section class="section-hero"&gt;
+  &lt;div class="picture"&gt;
+    &lt;img src="../../assets/images/welcome/point0.jpeg"&gt;
+  &lt;/div&gt;
+  &lt;div class="content"&gt;
+    &lt;h1&gt;&lt;strong&gt;Pure UI&lt;/strong&gt;&lt;/h1&gt;
+    &lt;p class="desc"&gt;Pure UI is a lightweight...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+				</section>
+				<section>
+					<h3><span class="checkmark">✅</span> 自动化方式</h3>
+					<pre><code class="javascript">// 1. 创建组件数据文件 (comp_hero.js)
+export function createHeroComponent() {
+  return {
+    name: 'hero',
+    template: 'comp_hero',
+    data: { title: 'Pure UI', desc: '...' }
+  };
+}
+
+// 2. 创建组件模板 (comp_hero.ejs)
+&lt;%_ if (hero) { _%&gt;
+&lt;section class="section-hero"&gt;
+  &lt;h1&gt;&lt;%= hero.title %&gt;&lt;/h1&gt;
+  &lt;p&gt;&lt;%= hero.desc %&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;%_ } _%&gt;
+
+// 3. 在页面中使用
+const heroComponent = createHeroComponent();</code></pre>
+				</section>
+				<section>
+					<h3>组件创建流程</h3>
+					<pre style="font-size: 0.7em;"><code>需求分析
+    ↓
+确定组件名称 (camelCase)
+    ↓
+创建数据文件 (comp_&lt;name&gt;.js)
+    ├─ 定义 COMPONENT_NAME
+    ├─ 定义 COMPONENT_TEMPLATE
+    ├─ 创建数据对象
+    └─ 导出工厂函数
+    ↓
+创建模板文件 (comp_&lt;name&gt;.ejs)
+    ├─ 条件渲染守卫
+    ├─ EJS 表达式
+    └─ 循环处理
+    ↓
+在页面配置中使用
+    └─ 导入并调用 createXComponent()</code></pre>
+				</section>
+				<section>
+					<h3>组件标准化结构</h3>
+					<pre><code class="javascript">// server/ejs/comp_hero.js
+import config from '../config.js';
+import { getImgCdnUrl } from '../../helpers/imgCdn.js';
+
+const COMPONENT_NAME = 'hero';
+const COMPONENT_TEMPLATE = 'comp_hero';
+
+const heroData = {
+  image: {
+    src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg'),
+    alt: 'Welcome Hero',
+  },
+  title: 'Pure UI',
+  subtitle: 'Client-side rendering framework',
+};
+
+export function createHeroComponent() {
+  return {
+    name: COMPONENT_NAME,
+    template: COMPONENT_TEMPLATE,
+    data: heroData,
+  };
+}</code></pre>
+				</section>
+				<section>
+					<h3>组件优势</h3>
+					<ul>
+						<li><span class="checkmark">✅</span> <strong>一次创建，多处复用</strong></li>
+						<li><span class="checkmark">✅</span> <strong>数据与视图分离</strong></li>
+						<li><span class="checkmark">✅</span> <strong>易于维护和更新</strong></li>
+						<li><span class="checkmark">✅</span> <strong>支持 CMS 动态加载</strong></li>
+						<li><span class="checkmark">✅</span> <strong>类型安全的数据结构</strong></li>
+					</ul>
+				</section>
+			</section>
+
+			<!-- 自动化页面创建 -->
+			<section>
+				<section>
+					<h2>自动化页面创建</h2>
+					<h3>页面创建流程</h3>
+				</section>
+				<section>
+					<h3>页面创建流程</h3>
+					<pre style="font-size: 0.7em;"><code>确定页面名称
+    ↓
+更新 Webpack 配置
+    └─ webpack.config.base.page.js
+    ↓
+创建页面文件结构
+    ├─ client/pages/&lt;name&gt;/index.html
+    ├─ client/pages/&lt;name&gt;/index.js
+    └─ (可选) 服务器端 EJS 模板
+    ↓
+更新导航链接
+    ├─ server/ejs/comp_header.js
+    └─ client/components/header.html
+    ↓
+页面完成 ✅</code></pre>
+				</section>
+				<section>
+					<h3>Webpack 配置自动化</h3>
+					<pre><code class="javascript">// webpack.config.base.page.js
+{
+  name: 'about',        // 自动生成 entry, template, filename
+  static: true,         // 静态页面标记
+}
+// 自动配置：
+// - entry: client/pages/about/index.js
+// - template: client/pages/about/index.html
+// - filename: about.html</code></pre>
+				</section>
+				<section>
+					<h3>页面文件结构</h3>
+					<pre><code>client/pages/about/
+├── index.html          # 页面 HTML (包含 header/footer includes)
+└── index.js            # 页面入口 (导入 main 和 scss)</code></pre>
+				</section>
+				<section>
+					<h3>服务器端页面创建</h3>
+					<pre><code class="javascript">// server/configs/aboutPage.js
+export default {
+  name: 'about',
+  seo: function() {
+    return {
+      title: 'About Us',
+      desc: 'Learn about our company',
+    };
+  },
+  get: async function() {
+    const headerComponent = createHeaderComponent();
+    const heroComponent = createHeroComponent();
+    return {
+      headerComponent,
+      heroComponent,
+    };
+  },
+};</code></pre>
+				</section>
+				<section>
+					<h3>页面创建优势</h3>
+					<ul>
+						<li><span class="checkmark">✅</span> <strong>标准化流程，减少错误</strong></li>
+						<li><span class="checkmark">✅</span> <strong>自动配置 Webpack</strong></li>
+						<li><span class="checkmark">✅</span> <strong>自动更新导航</strong></li>
+						<li><span class="checkmark">✅</span> <strong>支持静态和动态页面</strong></li>
+						<li><span class="checkmark">✅</span> <strong>快速原型开发</strong></li>
+					</ul>
+				</section>
+			</section>
+
+			<!-- 自动化主题切换 -->
+			<section>
+				<section>
+					<h2>自动化主题切换</h2>
+					<h3>主题系统架构</h3>
+				</section>
+				<section>
+					<h3>主题系统架构</h3>
+					<pre style="font-size: 0.7em;"><code>data/theme.js (全局主题)
+    ↓
+BaseController (服务器端)
+    ├─ 读取主题数据
+    ├─ 生成 CSS 变量
+    └─ 注入到 &lt;head&gt;
+    ↓
+CSS 自定义属性
+    ├─ --color-major-hue
+    ├─ --color-major-saturation
+    └─ --color-major-lightness
+    ↓
+页面自动应用主题</code></pre>
+				</section>
+				<section>
+					<h3>主题数据结构</h3>
+					<pre><code class="javascript">// data/theme.js
+export default {
+  default: {
+    '--color-major-hue': '140',           // 色相 (0-360)
+    '--color-major-saturation': '85%',    // 饱和度
+    '--color-major-lightness': '25%',     // 亮度
+    '--logo': 'url("/assets/images/logo.svg")',
+  },
+  dark: {
+    '--color-glb-bg-lightness': '75%',    // 暗色背景
+    '--color-glb-lightness': '95%',       // 暗色文字
+  },
+};</code></pre>
+				</section>
+				<section>
+					<h3>页面级主题覆盖</h3>
+					<pre><code class="javascript">// server/configs/demoPage.js
+export default {
+  name: 'demo',
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: {
+            '--color-major-hue': '200',  // 覆盖全局主题
+          },
+        },
+      },
+    };
+  },
+};</code></pre>
+				</section>
+				<section>
+					<h3>主题切换优势</h3>
+					<ul>
+						<li><span class="checkmark">✅</span> <strong>全局统一管理</strong></li>
+						<li><span class="checkmark">✅</span> <strong>页面级灵活覆盖</strong></li>
+						<li><span class="checkmark">✅</span> <strong>自动暗色模式支持</strong></li>
+						<li><span class="checkmark">✅</span> <strong>无需修改 CSS 文件</strong></li>
+						<li><span class="checkmark">✅</span> <strong>实时预览和切换</strong></li>
+					</ul>
+				</section>
+			</section>
+
+			<!-- 迁移工作流 -->
+			<section>
+				<section>
+					<h2>迁移工作流</h2>
+					<h3>完整迁移流程</h3>
+				</section>
+				<section>
+					<h3>完整迁移流程</h3>
+					<pre style="font-size: 0.65em;"><code>旧页面分析
+    ├─ 提取 HTML 结构
+    ├─ 识别动态内容
+    └─ 确定组件边界
+    ↓
+创建可复用组件
+    ├─ 使用 create-comp 技能
+    ├─ 提取数据到 comp_*.js
+    └─ 创建模板 comp_*.ejs
+    ↓
+创建新页面
+    ├─ 使用 create-static-page 技能
+    ├─ 配置 Webpack
+    └─ 更新导航链接
+    ↓
+应用主题
+    ├─ 更新 data/theme.js
+    └─ (可选) 页面级覆盖
+    ↓
+测试和优化
+    └─ 验证功能完整性
+    ↓
+迁移完成 ✅</code></pre>
+				</section>
+				<section>
+					<h3>迁移前后对比</h3>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+						<div>
+							<h4><span class="cross">❌</span> 迁移前</h4>
+							<ul style="font-size: 0.8em;">
+								<li>HTML 代码重复</li>
+								<li>样式硬编码</li>
+								<li>主题切换困难</li>
+								<li>维护成本高</li>
+							</ul>
+						</div>
+						<div>
+							<h4><span class="checkmark">✅</span> 迁移后</h4>
+							<ul style="font-size: 0.8em;">
+								<li>组件化架构</li>
+								<li>数据驱动</li>
+								<li>主题统一管理</li>
+								<li>易于维护和扩展</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+			</section>
+
+			<!-- 实际案例 -->
+			<section>
+				<section>
+					<h2>实际案例</h2>
+					<h3>案例 1：Hero 组件迁移</h3>
+				</section>
+				<section>
+					<h3>原始 HTML</h3>
+					<pre><code class="html">&lt;section class="section-hero"&gt;
+  &lt;div class="picture"&gt;
+    &lt;img src="../../assets/images/welcome/point0.jpeg"&gt;
+  &lt;/div&gt;
+  &lt;div class="content"&gt;
+    &lt;h1&gt;&lt;strong&gt;Pure UI&lt;/strong&gt;&lt;/h1&gt;
+    &lt;p&gt;Client-side rendering framework&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+				</section>
+				<section>
+					<h3>迁移为组件</h3>
+					<pre><code class="javascript">// comp_hero.js - 数据层
+const heroData = {
+  image: { src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg') },
+  title: 'Pure UI',
+  subtitle: 'Client-side rendering framework',
+};
+
+// comp_hero.ejs - 视图层
+&lt;%_ if (hero) { _%&gt;
+&lt;section class="section-hero"&gt;
+  &lt;img src="&lt;%= hero.image.src %&gt;"&gt;
+  &lt;h1&gt;&lt;%= hero.title %&gt;&lt;/h1&gt;
+  &lt;p&gt;&lt;%= hero.subtitle %&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;%_ } _%&gt;</code></pre>
+					<p><strong>优势：</strong>数据与视图分离，可在多个页面复用，易于更新和维护</p>
+				</section>
+				<section>
+					<h3>案例 2：多页面主题切换</h3>
+					<p><strong>场景：</strong>需要为不同品牌创建不同主题的页面</p>
+					<pre><code class="javascript">// 全局主题 (data/theme.js)
+export default {
+  default: { '--color-major-hue': '140' }, // 绿色主题
+};
+
+// 品牌 A 页面
+export default {
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: { '--color-major-hue': '200' }, // 蓝色主题
+        },
+      },
+    };
+  },
+};
+
+// 品牌 B 页面
+export default {
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: { '--color-major-hue': '4' }, // 红色主题
+        },
+      },
+    };
+  },
+};</code></pre>
+					<p><strong>结果：</strong>同一套组件代码，不同主题配置，快速品牌切换</p>
+				</section>
+			</section>
+
+			<!-- 总结 -->
+			<section>
+				<section>
+					<h2>总结</h2>
+					<h3>核心价值</h3>
+				</section>
+				<section>
+					<h3>1. 效率提升</h3>
+					<ul>
+						<li>组件创建时间：<span class="highlight">从 2 小时 → 10 分钟</span></li>
+						<li>页面创建时间：<span class="highlight">从 4 小时 → 30 分钟</span></li>
+						<li>主题切换时间：<span class="highlight">从 1 小时 → 5 分钟</span></li>
+					</ul>
+				</section>
+				<section>
+					<h3>2. 质量保证</h3>
+					<ul>
+						<li>标准化流程减少错误</li>
+						<li>组件复用提高一致性</li>
+						<li>自动化测试更容易</li>
+					</ul>
+				</section>
+				<section>
+					<h3>3. 可维护性</h3>
+					<ul>
+						<li>数据与视图分离</li>
+						<li>集中式主题管理</li>
+						<li>清晰的代码结构</li>
+					</ul>
+				</section>
+				<section>
+					<h3>技术亮点</h3>
+					<ul>
+						<li>🎯 <strong>组件化架构</strong>：可复用的服务器端 EJS 组件</li>
+						<li>🚀 <strong>自动化工具链</strong>：Webpack + 自定义脚本</li>
+						<li>🎨 <strong>主题系统</strong>：CSS 自定义属性 + 数据驱动</li>
+						<li>📦 <strong>标准化流程</strong>：Skill-based 开发模式</li>
+					</ul>
+				</section>
+				<section>
+					<h3>未来展望</h3>
+					<ul>
+						<li>更多自动化工具</li>
+						<li>CMS 集成增强</li>
+						<li>可视化组件编辑器</li>
+						<li>AI 辅助代码生成</li>
+					</ul>
+				</section>
+				<section>
+					<h1>谢谢！</h1>
+					<h2>Q&A</h2>
+				</section>
+			</section>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+	<script>
+		Reveal.initialize({
+			hash: true,
+			transition: 'slide',
+			backgroundTransition: 'fade',
+		});
+	</script>
+</body>
+</html>

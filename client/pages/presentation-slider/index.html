@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+
+<head>
+	<title>Pure UI Framework: Automated Page Migration & Updates</title>
+	<meta name="Description" content="Presentation about Pure UI Framework automation mechanisms" />
+	<meta name="background-color" content="#667eea" />
+	<meta name="theme-color" content="#667eea" />
+	<meta http-equiv="Cache-control" content="public" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #333;
+			overflow-x: hidden;
+		}
+
+		.slider-container {
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+			overflow: hidden;
+		}
+
+		.slider-wrapper {
+			display: flex;
+			transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			height: 100%;
+		}
+
+		.slide {
+			min-width: 100vw;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 60px;
+			overflow-y: auto;
+		}
+
+		.slide-content {
+			max-width: 1200px;
+			width: 100%;
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 20px;
+			padding: 60px;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+			backdrop-filter: blur(10px);
+		}
+
+		.slide h1 {
+			font-size: 3.5em;
+			margin-bottom: 20px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.slide h2 {
+			font-size: 2.5em;
+			margin-bottom: 30px;
+			color: #2c3e50;
+		}
+
+		.slide h3 {
+			font-size: 1.8em;
+			margin-bottom: 20px;
+			color: #34495e;
+		}
+
+		.slide h4 {
+			font-size: 1.4em;
+			margin-bottom: 15px;
+			color: #555;
+		}
+
+		.slide p {
+			font-size: 1.2em;
+			line-height: 1.8;
+			margin-bottom: 20px;
+			color: #666;
+		}
+
+		.slide ul, .slide ol {
+			font-size: 1.1em;
+			line-height: 2;
+			margin-left: 30px;
+			margin-bottom: 20px;
+		}
+
+		.slide li {
+			margin-bottom: 10px;
+		}
+
+		.slide code {
+			background: #f4f4f4;
+			padding: 3px 8px;
+			border-radius: 4px;
+			font-family: 'Courier New', monospace;
+			font-size: 0.9em;
+		}
+
+		.slide pre {
+			background: #2d2d2d;
+			color: #f8f8f2;
+			padding: 20px;
+			border-radius: 8px;
+			overflow-x: auto;
+			margin: 20px 0;
+			font-size: 0.9em;
+			line-height: 1.6;
+		}
+
+		.slide pre code {
+			background: transparent;
+			padding: 0;
+			color: inherit;
+		}
+
+		.highlight {
+			color: #e74c3c;
+			font-weight: bold;
+		}
+
+		.checkmark {
+			color: #27ae60;
+			font-weight: bold;
+		}
+
+		.cross {
+			color: #e74c3c;
+			font-weight: bold;
+		}
+
+		.grid-2 {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 30px;
+			margin: 20px 0;
+		}
+
+		.navigation {
+			position: fixed;
+			bottom: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			display: flex;
+			gap: 15px;
+			z-index: 1000;
+		}
+
+		.nav-btn {
+			background: rgba(255, 255, 255, 0.9);
+			border: none;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			cursor: pointer;
+			font-size: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			transition: all 0.3s;
+		}
+
+		.nav-btn:hover {
+			background: white;
+			transform: scale(1.1);
+			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+		}
+
+		.nav-btn:active {
+			transform: scale(0.95);
+		}
+
+		.dots {
+			position: fixed;
+			bottom: 100px;
+			left: 50%;
+			transform: translateX(-50%);
+			display: flex;
+			gap: 10px;
+			z-index: 1000;
+		}
+
+		.dot {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.5);
+			cursor: pointer;
+			transition: all 0.3s;
+		}
+
+		.dot.active {
+			background: white;
+			transform: scale(1.3);
+		}
+
+		.slide-counter {
+			position: fixed;
+			top: 30px;
+			right: 30px;
+			background: rgba(255, 255, 255, 0.9);
+			padding: 10px 20px;
+			border-radius: 25px;
+			font-size: 1em;
+			font-weight: bold;
+			color: #667eea;
+			z-index: 1000;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		}
+
+		@media (max-width: 768px) {
+			.slide {
+				padding: 30px 20px;
+			}
+
+			.slide-content {
+				padding: 30px;
+			}
+
+			.slide h1 {
+				font-size: 2em;
+			}
+
+			.slide h2 {
+				font-size: 1.8em;
+			}
+
+			.slide h3 {
+				font-size: 1.4em;
+			}
+
+			.grid-2 {
+				grid-template-columns: 1fr;
+			}
+
+			.navigation {
+				bottom: 20px;
+			}
+
+			.dots {
+				bottom: 80px;
+			}
+		}
+
+		.fade-in {
+			animation: fadeIn 0.6s ease-in;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+</head>
+
+<body id="body" class="page-presentation-slider">
+	<div class="slide-counter">
+		<span id="current-slide">1</span> / <span id="total-slides">1</span>
+	</div>
+
+	<div class="slider-container">
+		<div class="slider-wrapper" id="sliderWrapper">
+			<!-- Slide 1: Title -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h1>Pure UI Framework</h1>
+					<h2>Automated Page Migration & Updates</h2>
+					<p style="margin-top: 50px; font-size: 1.3em; color: #7f8c8d;">
+						Three automation mechanisms for efficient migration
+					</p>
+				</div>
+			</div>
+
+			<!-- Slide 2: Overview -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Project Overview</h2>
+					<h3>Pure UI Framework</h3>
+					<ul>
+						<li><strong>Lightweight client-side rendering framework</strong></li>
+						<li><strong>Server-side EJS component system</strong></li>
+						<li><strong>Automated toolchain support</strong></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 3: Challenges -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Core Challenges</h2>
+					<ul>
+						<li>Traditional page migration: <span class="cross">Manual, repetitive, error-prone</span></li>
+						<li>Component reuse difficulties</li>
+						<li>Complex theme switching</li>
+						<li>High maintenance costs</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 4: Solution -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Solution</h2>
+					<p>Efficient migration through <strong>three automation mechanisms</strong>:</p>
+					<ol style="font-size: 1.3em;">
+						<li><span class="checkmark">✅</span> <strong>Automated Component Creation</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Automated Page Creation</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Automated Theme Switching</strong></li>
+					</ol>
+				</div>
+			</div>
+
+			<!-- Slide 5: Component Creation - Traditional -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Automated Component Creation</h2>
+					<h3><span class="cross">❌</span> Traditional Approach</h3>
+					<pre><code class="html">&lt;!-- Repeated in every page --&gt;
+&lt;section class="section-hero"&gt;
+  &lt;div class="picture"&gt;
+    &lt;img src="../../assets/images/welcome/point0.jpeg"&gt;
+  &lt;/div&gt;
+  &lt;div class="content"&gt;
+    &lt;h1&gt;&lt;strong&gt;Pure UI&lt;/strong&gt;&lt;/h1&gt;
+    &lt;p class="desc"&gt;Pure UI is a lightweight...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 6: Component Creation - Automated -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Automated Component Creation</h2>
+					<h3><span class="checkmark">✅</span> Automated Approach</h3>
+					<pre><code class="javascript">// 1. Create component data file (comp_hero.js)
+export function createHeroComponent() {
+  return {
+    name: 'hero',
+    template: 'comp_hero',
+    data: { title: 'Pure UI', desc: '...' }
+  };
+}
+
+// 2. Create component template (comp_hero.ejs)
+&lt;%_ if (hero) { _%&gt;
+&lt;section class="section-hero"&gt;
+  &lt;h1&gt;&lt;%= hero.title %&gt;&lt;/h1&gt;
+  &lt;p&gt;&lt;%= hero.desc %&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;%_ } _%&gt;
+
+// 3. Use in page
+const heroComponent = createHeroComponent();</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 7: Component Workflow -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Component Creation Workflow</h2>
+					<pre style="font-size: 0.85em;"><code>Requirement Analysis
+    ↓
+Determine Component Name (camelCase)
+    ↓
+Create Data File (comp_&lt;name&gt;.js)
+    ├─ Define COMPONENT_NAME
+    ├─ Define COMPONENT_TEMPLATE
+    ├─ Create Data Object
+    └─ Export Factory Function
+    ↓
+Create Template File (comp_&lt;name&gt;.ejs)
+    ├─ Conditional Render Guard
+    ├─ EJS Expressions
+    └─ Loop Processing
+    ↓
+Use in Page Config
+    └─ Import and Call createXComponent()</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 8: Component Structure -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Standardized Component Structure</h2>
+					<pre><code class="javascript">// server/ejs/comp_hero.js
+import config from '../config.js';
+import { getImgCdnUrl } from '../../helpers/imgCdn.js';
+
+const COMPONENT_NAME = 'hero';
+const COMPONENT_TEMPLATE = 'comp_hero';
+
+const heroData = {
+  image: {
+    src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg'),
+    alt: 'Welcome Hero',
+  },
+  title: 'Pure UI',
+  subtitle: 'Client-side rendering framework',
+};
+
+export function createHeroComponent() {
+  return {
+    name: COMPONENT_NAME,
+    template: COMPONENT_TEMPLATE,
+    data: heroData,
+  };
+}</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 9: Component Benefits -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Component Benefits</h2>
+					<ul style="font-size: 1.2em;">
+						<li><span class="checkmark">✅</span> <strong>Create once, reuse everywhere</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Separation of data and view</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Easy maintenance and updates</strong></li>
+						<li><span class="checkmark">✅</span> <strong>CMS dynamic loading support</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Type-safe data structure</strong></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 10: Page Creation Workflow -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Automated Page Creation</h2>
+					<h3>Page Creation Workflow</h3>
+					<pre style="font-size: 0.85em;"><code>Determine Page Name
+    ↓
+Update Webpack Config
+    └─ webpack.config.base.page.js
+    ↓
+Create Page File Structure
+    ├─ client/pages/&lt;name&gt;/index.html
+    ├─ client/pages/&lt;name&gt;/index.js
+    └─ (Optional) Server EJS Template
+    ↓
+Update Navigation Links
+    ├─ server/ejs/comp_header.js
+    └─ client/components/header.html
+    ↓
+Page Complete ✅</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 11: Webpack Automation -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Webpack Configuration Automation</h2>
+					<pre><code class="javascript">// webpack.config.base.page.js
+{
+  name: 'about',        // Auto-generate entry, template, filename
+  static: true,         // Static page marker
+}
+// Auto-configured:
+// - entry: client/pages/about/index.js
+// - template: client/pages/about/index.html
+// - filename: about.html</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 12: Page File Structure -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Page File Structure</h2>
+					<pre><code>client/pages/about/
+├── index.html          # Page HTML (includes header/footer)
+└── index.js            # Page entry (imports main and scss)</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 13: Server-Side Page -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Server-Side Page Creation</h2>
+					<pre><code class="javascript">// server/configs/aboutPage.js
+export default {
+  name: 'about',
+  seo: function() {
+    return {
+      title: 'About Us',
+      desc: 'Learn about our company',
+    };
+  },
+  get: async function() {
+    const headerComponent = createHeaderComponent();
+    const heroComponent = createHeroComponent();
+    return {
+      headerComponent,
+      heroComponent,
+    };
+  },
+};</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 14: Page Creation Benefits -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Page Creation Benefits</h2>
+					<ul style="font-size: 1.2em;">
+						<li><span class="checkmark">✅</span> <strong>Standardized process reduces errors</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Automatic Webpack configuration</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Automatic navigation updates</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Supports static and dynamic pages</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Rapid prototyping</strong></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 15: Theme System Architecture -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Automated Theme Switching</h2>
+					<h3>Theme System Architecture</h3>
+					<pre style="font-size: 0.85em;"><code>data/theme.js (Global Theme)
+    ↓
+BaseController (Server-Side)
+    ├─ Read Theme Data
+    ├─ Generate CSS Variables
+    └─ Inject into &lt;head&gt;
+    ↓
+CSS Custom Properties
+    ├─ --color-major-hue
+    ├─ --color-major-saturation
+    └─ --color-major-lightness
+    ↓
+Page Automatically Applies Theme</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 16: Theme Data Structure -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Theme Data Structure</h2>
+					<pre><code class="javascript">// data/theme.js
+export default {
+  default: {
+    '--color-major-hue': '140',           // Hue (0-360)
+    '--color-major-saturation': '85%',    // Saturation
+    '--color-major-lightness': '25%',     // Lightness
+    '--logo': 'url("/assets/images/logo.svg")',
+  },
+  dark: {
+    '--color-glb-bg-lightness': '75%',    // Dark background
+    '--color-glb-lightness': '95%',       // Dark text
+  },
+};</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 17: Page-Level Theme Override -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Page-Level Theme Override</h2>
+					<pre><code class="javascript">// server/configs/demoPage.js
+export default {
+  name: 'demo',
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: {
+            '--color-major-hue': '200',  // Override global theme
+          },
+        },
+      },
+    };
+  },
+};</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 18: Theme Benefits -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Theme Switching Benefits</h2>
+					<ul style="font-size: 1.2em;">
+						<li><span class="checkmark">✅</span> <strong>Centralized global management</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Flexible page-level overrides</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Automatic dark mode support</strong></li>
+						<li><span class="checkmark">✅</span> <strong>No CSS file modifications needed</strong></li>
+						<li><span class="checkmark">✅</span> <strong>Real-time preview and switching</strong></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 19: Migration Workflow -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Migration Workflow</h2>
+					<h3>Complete Migration Process</h3>
+					<pre style="font-size: 0.75em;"><code>Analyze Old Page
+    ├─ Extract HTML Structure
+    ├─ Identify Dynamic Content
+    └─ Determine Component Boundaries
+    ↓
+Create Reusable Components
+    ├─ Use create-comp skill
+    ├─ Extract data to comp_*.js
+    └─ Create template comp_*.ejs
+    ↓
+Create New Page
+    ├─ Use create-static-page skill
+    ├─ Configure Webpack
+    └─ Update Navigation Links
+    ↓
+Apply Theme
+    ├─ Update data/theme.js
+    └─ (Optional) Page-level override
+    ↓
+Test and Optimize
+    └─ Verify Functionality
+    ↓
+Migration Complete ✅</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 20: Before/After Comparison -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Before & After Comparison</h2>
+					<div class="grid-2">
+						<div>
+							<h4><span class="cross">❌</span> Before Migration</h4>
+							<ul style="font-size: 1em;">
+								<li>Repeated HTML code</li>
+								<li>Hard-coded styles</li>
+								<li>Difficult theme switching</li>
+								<li>High maintenance costs</li>
+							</ul>
+						</div>
+						<div>
+							<h4><span class="checkmark">✅</span> After Migration</h4>
+							<ul style="font-size: 1em;">
+								<li>Componentized architecture</li>
+								<li>Data-driven approach</li>
+								<li>Centralized theme management</li>
+								<li>Easy maintenance and extension</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Slide 21: Case Study 1 - Hero Component -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Case Study 1: Hero Component Migration</h2>
+					<h3>Original HTML</h3>
+					<pre><code class="html">&lt;section class="section-hero"&gt;
+  &lt;div class="picture"&gt;
+    &lt;img src="../../assets/images/welcome/point0.jpeg"&gt;
+  &lt;/div&gt;
+  &lt;div class="content"&gt;
+    &lt;h1&gt;&lt;strong&gt;Pure UI&lt;/strong&gt;&lt;/h1&gt;
+    &lt;p&gt;Client-side rendering framework&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+				</div>
+			</div>
+
+			<!-- Slide 22: Case Study 1 - Migrated Component -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Case Study 1: Migrated to Component</h2>
+					<pre><code class="javascript">// comp_hero.js - Data Layer
+const heroData = {
+  image: { src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg') },
+  title: 'Pure UI',
+  subtitle: 'Client-side rendering framework',
+};
+
+// comp_hero.ejs - View Layer
+&lt;%_ if (hero) { _%&gt;
+&lt;section class="section-hero"&gt;
+  &lt;img src="&lt;%= hero.image.src %&gt;"&gt;
+  &lt;h1&gt;&lt;%= hero.title %&gt;&lt;/h1&gt;
+  &lt;p&gt;&lt;%= hero.subtitle %&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;%_ } _%&gt;</code></pre>
+					<p><strong>Benefits:</strong> Data-view separation, reusable across pages, easy updates</p>
+				</div>
+			</div>
+
+			<!-- Slide 23: Case Study 2 - Multi-Theme -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Case Study 2: Multi-Page Theme Switching</h2>
+					<p><strong>Scenario:</strong> Create pages with different themes for different brands</p>
+					<pre><code class="javascript">// Global Theme (data/theme.js)
+export default {
+  default: { '--color-major-hue': '140' }, // Green theme
+};
+
+// Brand A Page
+export default {
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: { '--color-major-hue': '200' }, // Blue theme
+        },
+      },
+    };
+  },
+};
+
+// Brand B Page
+export default {
+  get: async function() {
+    return {
+      data: {
+        theme: {
+          default: { '--color-major-hue': '4' }, // Red theme
+        },
+      },
+    };
+  },
+};</code></pre>
+					<p><strong>Result:</strong> Same component code, different theme configs, rapid brand switching</p>
+				</div>
+			</div>
+
+			<!-- Slide 24: Summary - Efficiency -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Summary</h2>
+					<h3>1. Efficiency Improvement</h3>
+					<ul style="font-size: 1.3em;">
+						<li>Component creation: <span class="highlight">2 hours → 10 minutes</span></li>
+						<li>Page creation: <span class="highlight">4 hours → 30 minutes</span></li>
+						<li>Theme switching: <span class="highlight">1 hour → 5 minutes</span></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 25: Summary - Quality -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Summary</h2>
+					<h3>2. Quality Assurance</h3>
+					<ul style="font-size: 1.2em;">
+						<li>Standardized processes reduce errors</li>
+						<li>Component reuse improves consistency</li>
+						<li>Easier automated testing</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 26: Summary - Maintainability -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Summary</h2>
+					<h3>3. Maintainability</h3>
+					<ul style="font-size: 1.2em;">
+						<li>Separation of data and view</li>
+						<li>Centralized theme management</li>
+						<li>Clear code structure</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 27: Technical Highlights -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Technical Highlights</h2>
+					<ul style="font-size: 1.2em;">
+						<li>🎯 <strong>Componentized Architecture</strong>: Reusable server-side EJS components</li>
+						<li>🚀 <strong>Automated Toolchain</strong>: Webpack + custom scripts</li>
+						<li>🎨 <strong>Theme System</strong>: CSS custom properties + data-driven</li>
+						<li>📦 <strong>Standardized Process</strong>: Skill-based development model</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 28: Future Outlook -->
+			<div class="slide">
+				<div class="slide-content fade-in">
+					<h2>Future Outlook</h2>
+					<ul style="font-size: 1.2em;">
+						<li>More automation tools</li>
+						<li>Enhanced CMS integration</li>
+						<li>Visual component editor</li>
+						<li>AI-assisted code generation</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Slide 29: Thank You -->
+			<div class="slide">
+				<div class="slide-content fade-in" style="text-align: center;">
+					<h1 style="font-size: 4em; margin-bottom: 30px;">Thank You!</h1>
+					<h2 style="font-size: 2.5em; color: #7f8c8d;">Q&A</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="navigation">
+		<button class="nav-btn" id="prevBtn" onclick="previousSlide()">‹</button>
+		<button class="nav-btn" id="nextBtn" onclick="nextSlide()">›</button>
+	</div>
+
+	<div class="dots" id="dots"></div>
+
+	<script>
+		const slides = document.querySelectorAll('.slide');
+		const sliderWrapper = document.getElementById('sliderWrapper');
+		const currentSlideSpan = document.getElementById('current-slide');
+		const totalSlidesSpan = document.getElementById('total-slides');
+		const dotsContainer = document.getElementById('dots');
+		
+		let currentSlide = 0;
+		const totalSlides = slides.length;
+
+		// Initialize dots
+		totalSlidesSpan.textContent = totalSlides;
+		slides.forEach((_, index) => {
+			const dot = document.createElement('div');
+			dot.className = 'dot' + (index === 0 ? ' active' : '');
+			dot.onclick = () => goToSlide(index);
+			dotsContainer.appendChild(dot);
+		});
+
+		function updateSlide() {
+			sliderWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+			currentSlideSpan.textContent = currentSlide + 1;
+			
+			// Update dots
+			document.querySelectorAll('.dot').forEach((dot, index) => {
+				dot.classList.toggle('active', index === currentSlide);
+			});
+
+			// Add fade-in animation to current slide content
+			slides.forEach((slide, index) => {
+				const content = slide.querySelector('.slide-content');
+				if (index === currentSlide) {
+					content.classList.add('fade-in');
+				} else {
+					content.classList.remove('fade-in');
+				}
+			});
+		}
+
+		function nextSlide() {
+			if (currentSlide < totalSlides - 1) {
+				currentSlide++;
+				updateSlide();
+			}
+		}
+
+		function previousSlide() {
+			if (currentSlide > 0) {
+				currentSlide--;
+				updateSlide();
+			}
+		}
+
+		function goToSlide(index) {
+			currentSlide = index;
+			updateSlide();
+		}
+
+		// Keyboard navigation
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+				nextSlide();
+			} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+				previousSlide();
+			}
+		});
+
+		// Touch/swipe support
+		let touchStartX = 0;
+		let touchEndX = 0;
+
+		document.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].screenX;
+		});
+
+		document.addEventListener('touchend', (e) => {
+			touchEndX = e.changedTouches[0].screenX;
+			handleSwipe();
+		});
+
+		function handleSwipe() {
+			if (touchEndX < touchStartX - 50) {
+				nextSlide();
+			}
+			if (touchEndX > touchStartX + 50) {
+				previousSlide();
+			}
+		}
+
+		// Initialize
+		updateSlide();
+	</script>
+</body>
+</html>

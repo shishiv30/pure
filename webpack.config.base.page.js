@@ -28,6 +28,14 @@ export const pageConfig = {
 			name: 'ai-trend',
 			static: true,
 		},
+		{
+			name: 'lower',
+			static: true,
+		},
+		{
+			name: 'presentation-slider',
+			static: true,
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {
