@@ -159,7 +159,7 @@ export default {
 				},
 				dark: {
 					'color-glb-bg-lightness': '8%',
-					'color-glb-front-lightness': '92%',
+					'color-glblightness': '92%',
 					'color-major-lightness': '75%',
 					'color-major-lightness-l1': '15%',
 				},

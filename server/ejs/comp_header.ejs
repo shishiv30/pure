@@ -1,49 +1,45 @@
 <%_ if (header) { _%>
-<header class="header sticky major active" data-role="header">
-	<div class="header-bar">
-		<a href="javascript:;" class="menu-img" aria-label="CUI Logo">
-		</a>
-		<div class="input right">
-			<input
-				id="<%= header.search.inputId %>"
-				placeholder="<%= header.search.placeholder %>"
-				type="text"
-				name="text"
-				data-method="<%= header.search.method %>"
-				data-role="autocomplete"
-				data-url="<%= header.search.url %>"
-				data-keys="<%= header.search.keys %>"
-				data-type="<%= header.search.type %>"
-			/>
-			<a href="javascript:;" aria-label="Do Dearch" class="btn">
-				<i class="icon-search"></i>
+	<header class="header sticky major active" data-role="header">
+		<div class="header-bar">
+			<a href="javascript:;" class="menu-img" aria-label="CUI Logo">
 			</a>
+			<div class="input right">
+				<input id="<%= header.search.inputId %>" placeholder="<%= header.search.placeholder %>" type="text" name="text"
+					data-method="<%= header.search.method %>" data-role="autocomplete" data-url="<%= header.search.url %>"
+					data-keys="<%= header.search.keys %>" data-type="<%= header.search.type %>" />
+				<a href="javascript:;" aria-label="Do Dearch" class="btn">
+					<i class="icon-search"></i>
+				</a>
+			</div>
 		</div>
-	</div>
-	<nav class="header-menu">
-		<ul class="header-menu-list">
-			<%_ if (header.menu && header.menu.length) { _%>
-				<%_ for (var i = 0; i < header.menu.length; i++) { _%>
-					<%_ const item = header.menu[i]; _%>
-					<li class="<%= item.children && item.children.length ? 'list' : '' %>">
-						<a href="<%= item.href %>"><%= item.text %></a>
-						<%_ if (item.children && item.children.length) { _%>
-							<ul>
-								<%_ for (var j = 0; j < item.children.length; j++) { _%>
-									<%_ const child = item.children[j]; _%>
-									<li>
-										<a href="<%= child.href %>"><%= child.text %></a>
-									</li>
+		<nav class="header-menu">
+			<ul class="header-menu-list">
+				<%_ if (header.menu && header.menu.length) { _%>
+					<%_ for (var i=0; i < header.menu.length; i++) { _%>
+						<%_ const item=header.menu[i]; _%>
+							<li class="<%= item.children && item.children.length ? 'list' : '' %>">
+								<a href="<%= item.href %>">
+									<%= item.text %>
+								</a>
+								<%_ if (item.children && item.children.length) { _%>
+									<ul>
+										<%_ for (var j=0; j < item.children.length; j++) { _%>
+											<%_ const child=item.children[j]; _%>
+												<li>
+													<a href="<%= child.href %>">
+														<%= child.text %>
+													</a>
+												</li>
+												<%_ } _%>
+									</ul>
+									<%_ } _%>
+							</li>
+							<%_ } _%>
 								<%_ } _%>
-							</ul>
-						<%_ } _%>
-					</li>
-				<%_ } _%>
-			<%_ } _%>
-		</ul>
-		<a href="javascript:;" aria-label="Open Menu" class="menu-icon header-switch-link">
-			<i class="icon-bars f3"></i>
-		</a>
-	</nav>
-</header>
-<%_ } _%>
+			</ul>
+			<a href="javascript:;" aria-label="Open Menu" class="menu-icon header-switch-link">
+				<i class="icon-bars f3"></i>
+			</a>
+		</nav>
+	</header>
+	<%_ } _%>

@@ -1,9 +1,9 @@
 html {
 	--animation-time: 0.1s;
 	--cui-font: 'Roboto';
-	--color-glb-front-lightness: 23%;
+	--color-glb-lightness: 23%;
 	--color-glb-bg-lightness: 95%;
-	--color-glb-front-saturation: 5%;
+	--color-glb-saturation: 5%;
 	--color-glb-bg-saturation: 100%;
 	--color-glb-default-saturation: 100%;
 	--color-glb-default-lightness: 30%;
@@ -21,31 +21,31 @@ html {
 
 	--color-major-hue: 169;
 	--color-major-default-lightness: 23%;
-	--color-major-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-major-default-lightness-l1: 95%;
 	--color-major-lightness: var(--color-major-default-lightness);
 	--color-major-lightness-l1: var(--color-major-default-lightness-l1);
 	--color-major-saturation: 76%;
 	--color-minor-hue: 185;
 	--color-minor-default-lightness: 15%;
-	--color-minor-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-minor-default-lightness-l1: 95%;
 	--color-minor-lightness: var(--color-minor-default-lightness);
 	--color-minor-lightness-l1: var(--color-minor-default-lightness-l1);
 	--color-minor-saturation: 100%;
 	--color-safe-hue: 169;
 	--color-safe-default-lightness: 30%;
-	--color-safe-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-safe-default-lightness-l1: 95%;
 	--color-safe-lightness: var(--color-safe-default-lightness);
 	--color-safe-lightness-l1: var(--color-safe-default-lightness-l1);
 	--color-safe-saturation: var(--color-glb-default-saturation);
 	--color-danger-hue: 4;
 	--color-danger-default-lightness: 50%;
-	--color-danger-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-danger-default-lightness-l1: 95%;
 	--color-danger-lightness: var(--color-danger-default-lightness);
 	--color-danger-lightness-l1: var(--color-danger-default-lightness-l1);
 	--color-danger-saturation: var(--color-glb-default-saturation);
 	--color-tip-hue: 54;
 	--color-tip-default-lightness: 30%;
-	--color-tip-default-lightness-l1: var(--color-glb-bg-lightness);
+	--color-tip-default-lightness-l1: 95%;
 	--color-tip-lightness: var(--color-tip-default-lightness);
 	--color-tip-lightness-l1: var(--color-tip-default-lightness-l1);
 	--color-tip-saturation: var(--color-glb-default-saturation);
@@ -139,23 +139,37 @@ body {
 	--color-tip-hsl: var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness);
 	--color-tip-l1-hsl: var(--color-tip-hue), var(--color-tip-saturation), var(--color-tip-lightness-l1);
 
-	--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
-	--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
-	--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
-	--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
-	--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
-	--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
-	--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
-	--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
-	--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
-	--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
+	--color-0-lightness: 100%;
+	--color-1-lightness: 90%;
+	--color-2-lightness: 80%;
+	--color-3-lightness: 70%;
+	--color-4-lightness: 60%;
+	--color-5-lightness: 50%;
+	--color-6-lightness: 40%;
+	--color-7-lightness: 30%;
+	--color-8-lightness: 20%;
+	--color-9-lightness: 10%;
+	--color-0: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-0-lightness));
+	--color-1: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-1-lightness));
+	--color-2: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-2-lightness));
+	--color-3: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-3-lightness));
+	--color-4: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-4-lightness));
+	--color-5: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-5-lightness));
+	--color-6: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-6-lightness));
+	--color-7: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-7-lightness));
+	--color-8: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-8-lightness));
+	--color-9: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-9-lightness));
 
-	--color-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
-	--color-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
-	--color-default-hsl: var(--color-major-hue), var(--color-glb-front-saturation), 10%;
-	--color-bg-default: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
-	--color-bg-default-l1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 96%);
-	--color-bg-default-hsl: var(--color-major-hue), var(--color-glb-front-saturation), 100%;
+	--color-default-lightness: 10%;
+	--color-default-l1-lightness: 50%;
+	--color-bg-default-lightness: 100%;
+	--color-bg-default-l1-lightness: 96%;
+	--color-default: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-default-lightness));
+	--color-default-l1: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-default-l1-lightness));
+	--color-default-hsl: var(--color-major-hue), var(--color-glb-saturation), var(--color-default-lightness);
+	--color-bg-default: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-lightness));
+	--color-bg-default-l1: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-l1-lightness));
+	--color-bg-default-hsl: var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-lightness);
 
 
 	--color: var(--color-default);
@@ -200,23 +214,38 @@ body {
 
 	@mixin theme-dark-vars {
 		--logo: url('../assets/img/logo-bg.svg');
-		--color-0: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 10%);
-		--color-1: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 20%);
-		--color-2: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 30%);
-		--color-3: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 40%);
-		--color-4: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 50%);
-		--color-5: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 60%);
-		--color-6: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 70%);
-		--color-7: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 80%);
-		--color-8: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 90%);
-		--color-9: hsl(var(--color-major-hue), var(--color-glb-front-saturation), 100%);
 
-		//flip the lightness values for  dark mode
-		--color-glb-bg-lightness: 10%;
-		--color-glb-front-lightness: 80%;
-		--color-glb-default-lightness: 90%;
-		--color-glb-default-saturation: 100%;
+		--color-0-lightness: 10%;
+		--color-1-lightness: 20%;
+		--color-2-lightness: 30%;
+		--color-3-lightness: 40%;
+		--color-4-lightness: 50%;
+		--color-5-lightness: 60%;
+		--color-6-lightness: 70%;
+		--color-7-lightness: 80%;
+		--color-8-lightness: 90%;
+		--color-9-lightness: 100%;
 
+		--color-default-lightness: 750%;
+		--color-default-l1-lightness: 80%;
+
+		--color-bg-default-lightness: 15%;
+		--color-bg-default-l1-lightness: 8%;
+
+		--color-major-default-lightness: 50%;
+		--color-major-default-lightness-l1: 10%;
+
+		--color-minor-default-lightness: 50%;
+		--color-minor-default-lightness-l1: 34%;
+
+		--color-safe-default-lightness: 50%;
+		--color-safe-default-lightness-l1: 34%;
+
+		--color-danger-default-lightness: 50%;
+		--color-danger-default-lightness-l1: 34%;
+
+		--color-tip-default-lightness: 50%;
+		--color-tip-default-lightness-l1: 34%;
 
 		--color: var(--color-bg-default);
 		--color-border: var(--color-default);
@@ -246,11 +275,7 @@ body {
 		--color-tip-lightness: var(--color-tip-default-lightness-l1);
 		--color-tip-lightness-l1: var(--color-tip-default-lightness);
 
-		.header {
-			--header-color-active: var(--color-bg-default);
-			--header-color-active-bg: var(--color-default);
-			--header-color-active-bg-hover: var(--color-default-l1);
-		}
+
 	}
 
 	&.theme-auto {

@@ -33,6 +33,7 @@ button {
 
 		@include hover() {
 			color: var(--color-link-hover);
+			text-decoration: underline;
 		}
 	}
 }

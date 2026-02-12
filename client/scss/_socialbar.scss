@@ -99,7 +99,7 @@ $social-list: socialbar-email $socialbar-email,
 			}
 
 			&:active {
-				box-shadow: inset 1px 3px 15px 0 hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.25);
+				box-shadow: inset 1px 3px 15px 0 hsla(var(--color-major-hue), var(--color-glbsaturation), var(--color-glblightness), 0.25);
 			}
 		}
 

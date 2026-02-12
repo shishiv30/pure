@@ -42,11 +42,11 @@
 .megalist #scrollbar {
 	position: absolute;
 	background-color: black;
-	background-color: hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.5);
+	background-color: hsla(var(--color-major-hue), var(--color-glbsaturation), var(--color-glblightness), 0.5);
 	width: 5px;
 	border-radius: var(--radius-0);
 	top: 1px;
 	right: 1px;
 	height: 25px;
-	border: 1px solid hsla(var(--color-major-hue), var(--color-glb-front-saturation), var(--color-glb-front-lightness), 0.5);
+	border: 1px solid hsla(var(--color-major-hue), var(--color-glbsaturation), var(--color-glblightness), 0.5);
 }

@@ -16,13 +16,6 @@ export default {
 		// Theme toggle handler for .menu-img
 		let $menuImg = $el.querySelector('.menu-img');
 		if ($menuImg) {
-			// Load saved theme preference
-			const savedTheme = localStorage.getItem('theme');
-			if (savedTheme === 'dark') {
-				document.body.classList.add('theme-dark');
-			} else if (savedTheme === 'light') {
-				document.body.classList.remove('theme-dark');
-			}
 			$menuImg.addEventListener('click', function (e) {
 				e.preventDefault();
 				document.body.classList.toggle('theme-dark');
