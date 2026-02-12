@@ -10,6 +10,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const queryGroupKey = ['utm', 'hack'];
 
+function getInlineCss(theme) {
+	if (!theme || typeof theme !== 'object') {
+		return '';
+	}
+	let css = '';
+	if (theme.default && typeof theme.default === 'object') {
+		css += 'body {\n';
+		for (const key in theme.default) {
+			if (theme.default.hasOwnProperty(key)) {
+				css += `  ${key}: ${theme.default[key]};\n`;
+			}
+		}
+		css += '}\n';
+	}
+	if (theme.dark && typeof theme.dark === 'object') {
+		css += 'body.theme-dark {\n';
+		for (const key in theme.dark) {
+			if (theme.dark.hasOwnProperty(key)) {
+				css += `  ${key}: ${theme.dark[key]};\n`;
+			}
+		}
+		css += '}\n';
+	}
+	return css;
+}
+
 export default class BaseController {
 	constructor(req, res, name) {
 		if (!req) {
@@ -113,8 +139,8 @@ export default class BaseController {
 			appName: serverConfig.appName,
 		};
 		// Add theme overrides if provided in model
-		if (model?.theme) {
-			meta.theme = model.theme;
+		if (model?.data?.theme) {
+			meta.inlineCss = getInlineCss(model.data.theme);
 		}
 		return meta;
 	}

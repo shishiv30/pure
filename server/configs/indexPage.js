@@ -66,7 +66,7 @@ export default {
 		const footerComponent = createFooterComponent();
 
 		const loaded = await loadPageIndexData();
-		const raw = arrayToPageData(loaded);
+		const raw = carrayToPageData(loaded);
 		const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
 		const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
 		const resolved = resolvePageData(raw, { cdnUrl, appUrl });

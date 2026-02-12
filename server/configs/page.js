@@ -129,6 +129,11 @@ export default {
 			const resolved = resolvePageData(raw, { cdnUrl, appUrl });
 			const sections = buildSections(resolved, SECTION_CREATORS);
 			return {
+				theme: {
+					default: {
+						'--color-major-hue': '200',
+					},
+				},
 				headerComponent,
 				footerComponent,
 				sections,
