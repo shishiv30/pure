@@ -98,14 +98,15 @@ export default class BaseController {
 				preload = preload.concat(pagePreload);
 			}
 		}
+		const assetName = this.config.assetName || this.config.name;
 		return {
 			uaData: this.req.uaData,
 			lang: (lang && lang[0]) || '',
 			path: this.req.path,
 			origin: origin,
 			preload: preload,
-			css: assetPath(`/${this.config.name}.min.css`),
-			js: assetPath(`/${this.config.name}.min.js`),
+			css: assetPath(`/${assetName}.min.css`),
+			js: assetPath(`/${assetName}.min.js`),
 			pageType: `page-${this.config.name}`,
 			cdnUrl: cdnBase,
 			appUrl: serverConfig.appUrl,

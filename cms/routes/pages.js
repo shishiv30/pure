@@ -4,8 +4,36 @@ import { requireAuth, requireAdmin, requireReadAccess } from '../middleware/auth
 
 const router = express.Router();
 
-// Public API: Get page content by name
-router.get('/content/:name', async (req, res) => {
+function normalizeMeta(meta) {
+	if (meta == null) return null;
+	if (typeof meta === 'object') {
+		try {
+			return JSON.stringify(meta);
+		} catch {
+			return String(meta);
+		}
+	}
+	return String(meta);
+}
+
+function normalizeType(type) {
+	if (!type) return 'html';
+	const val = String(type).toLowerCase().trim();
+	return val === 'json' ? 'json' : 'html';
+}
+
+function parseMeta(meta) {
+	if (meta == null) return null;
+	if (typeof meta !== 'string') return meta;
+	try {
+		return JSON.parse(meta);
+	} catch {
+		return meta;
+	}
+}
+
+// Shared handler for public page content by name
+async function getPageContentByName(req, res) {
 	try {
 		const pageModel = new Page(req.app.locals.db.getDb());
 		const page = await pageModel.getByName(req.params.name);
@@ -32,9 +60,9 @@ router.get('/content/:name', async (req, res) => {
 			data: {
 				name: page.name,
 				title: page.title,
-				content: page.content,
-				meta_description: page.meta_description,
-				meta_keywords: page.meta_keywords
+				data: page.data,
+				type: page.type,
+				meta: parseMeta(page.meta),
 			}
 		});
 	} catch (error) {
@@ -45,7 +73,13 @@ router.get('/content/:name', async (req, res) => {
 			data: null
 		});
 	}
-});
+}
+
+// Public API: Get page content by name (used by main server fetch)
+router.get('/content/:name', getPageContentByName);
+
+// Public API: Get page content by name (alternate path)
+router.get('/page/:name', getPageContentByName);
 
 // Alias for getPageContentByName
 router.get('/getPageContentByName', async (req, res) => {
@@ -84,9 +118,9 @@ router.get('/getPageContentByName', async (req, res) => {
 			data: {
 				name: page.name,
 				title: page.title,
-				content: page.content,
-				meta_description: page.meta_description,
-				meta_keywords: page.meta_keywords
+				data: page.data,
+				type: page.type,
+				meta: parseMeta(page.meta),
 			}
 		});
 	} catch (error) {
@@ -103,8 +137,8 @@ router.get('/getPageContentByName', async (req, res) => {
 router.get('/', requireReadAccess, async (req, res) => {
 	try {
 		const pageModel = new Page(req.app.locals.db.getDb());
-		const pages = req.session.role === 'admin' 
-			? await pageModel.getAll() 
+		const pages = req.session.role === 'admin'
+			? await pageModel.getAll()
 			: await pageModel.getPublished();
 
 		res.json({
@@ -161,7 +195,7 @@ router.get('/:id', requireReadAccess, async (req, res) => {
 
 router.post('/', requireAdmin, async (req, res) => {
 	try {
-		const { name, title, content, meta_description, meta_keywords, status } = req.body;
+		const { name, title, data, type, meta, status } = req.body;
 
 		if (!name || !title) {
 			return res.status(400).json({
@@ -175,9 +209,9 @@ router.post('/', requireAdmin, async (req, res) => {
 		const page = await pageModel.create({
 			name,
 			title,
-			content,
-			meta_description,
-			meta_keywords,
+			data,
+			type: normalizeType(type),
+			meta: normalizeMeta(meta),
 			status: status || 'draft',
 			created_by: req.session.userId
 		});
@@ -207,7 +241,13 @@ router.post('/', requireAdmin, async (req, res) => {
 router.put('/:id', requireAdmin, async (req, res) => {
 	try {
 		const pageModel = new Page(req.app.locals.db.getDb());
-		const page = await pageModel.update(req.params.id, req.body, req.session.userId);
+		const body = {
+			...req.body,
+		};
+		if (body.name !== undefined) body.name = String(body.name).trim() || undefined;
+		if (body.type !== undefined) body.type = normalizeType(body.type);
+		if (body.meta !== undefined) body.meta = normalizeMeta(body.meta);
+		const page = await pageModel.update(req.params.id, body, req.session.userId);
 
 		if (!page) {
 			return res.status(404).json({
@@ -224,6 +264,13 @@ router.put('/:id', requireAdmin, async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Update page error:', error);
+		if (error.message && error.message.includes('UNIQUE constraint')) {
+			return res.status(400).json({
+				code: 400,
+				message: 'Page name already exists',
+				data: null
+			});
+		}
 		res.status(500).json({
 			code: 500,
 			message: 'Internal server error',

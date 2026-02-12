@@ -16,6 +16,7 @@ import setupRoutes from './routes/setup.js';
 import pagesRoutes from './routes/pages.js';
 import sitemapRoutes from './routes/sitemap.js';
 import usersRoutes from './routes/users.js';
+import compRoutes from './routes/comp.js';
 
 // Load environment variables
 dotenv.config();
@@ -87,6 +88,7 @@ const db = new Database(DB_PATH);
 		app.use('/api/pages', pagesRoutes);
 		app.use('/api/sitemap', sitemapRoutes);
 		app.use('/api/users', usersRoutes);
+		app.use('/api/comp', compRoutes);
 
 		// Start server
 		app.listen(PORT, () => {

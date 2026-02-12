@@ -4,12 +4,29 @@ class Page {
 	}
 
 	async create(pageData) {
-		const { name, title, content, meta_description, meta_keywords, status = 'draft', created_by } = pageData;
+		const {
+			name,
+			title,
+			data,
+			type = 'html',
+			meta,
+			status = 'draft',
+			created_by,
+		} = pageData;
 
 		const result = await this.db.run(
-			`INSERT INTO pages (name, title, content, meta_description, meta_keywords, status, created_by, updated_by) 
+			`INSERT INTO pages (name, title, data, type, meta, status, created_by, updated_by) 
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-			[name, title, content || null, meta_description || null, meta_keywords || null, status, created_by, created_by]
+			[
+				name,
+				title,
+				data || null,
+				type,
+				meta || null,
+				status,
+				created_by,
+				created_by,
+			],
 		);
 
 		return this.getById(result.lastID);
@@ -32,25 +49,29 @@ class Page {
 	}
 
 	async update(id, pageData, updated_by) {
-		const { title, content, meta_description, meta_keywords, status } = pageData;
+		const { name, title, data, type, meta, status } = pageData;
 		const updates = [];
 		const values = [];
 
+		if (name !== undefined) {
+			updates.push('name = ?');
+			values.push(name);
+		}
 		if (title !== undefined) {
 			updates.push('title = ?');
 			values.push(title);
 		}
-		if (content !== undefined) {
-			updates.push('content = ?');
-			values.push(content);
+		if (data !== undefined) {
+			updates.push('data = ?');
+			values.push(data);
 		}
-		if (meta_description !== undefined) {
-			updates.push('meta_description = ?');
-			values.push(meta_description);
+		if (type !== undefined) {
+			updates.push('type = ?');
+			values.push(type);
 		}
-		if (meta_keywords !== undefined) {
-			updates.push('meta_keywords = ?');
-			values.push(meta_keywords);
+		if (meta !== undefined) {
+			updates.push('meta = ?');
+			values.push(meta);
 		}
 		if (status !== undefined) {
 			updates.push('status = ?');

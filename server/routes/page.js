@@ -13,6 +13,13 @@ router.get('/', async (req, res) => {
 	controller.toPage(model);
 });
 
+// Dynamic page: fetch content from CMS by key (e.g. /page/index, /page/about)
+router.get('/page/:key', async (req, res) => {
+	const controller = new BaseController(req, res, 'page');
+	const model = await controller.get();
+	controller.toPage(model);
+});
+
 router.get(/^\/demo\/?$/, async (req, res) => {
 	let controller = new BaseController(req, res, 'demo');
 	let model = await controller.get();

@@ -20,4 +20,5 @@
 import geo from './geo.js';
 import demo from './demo.js';
 import indexPage from './indexPage.js';
-export default [geo, demo, indexPage];
+import pageConfig from './page.js';
+export default [geo, demo, indexPage, pageConfig];

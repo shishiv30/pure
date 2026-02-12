@@ -1,46 +1,78 @@
 import config from '../config.js';
+import footerTable from '../../data/footer.js';
 
-const APP_URL = config.appUrl || '';
+const APP_URL = (config.appUrl || '').replace(/\/$/, '');
 const APP_NAME = process.env.APP_NAME || 'Pure';
 
 const COMPONENT_NAME = 'footer';
 const COMPONENT_TEMPLATE = 'html_footer';
 
-const footerData = {
-	contact: {
-		title: 'Contact Us',
-		email: 'info@company.com',
-		phone: '(555) 123-4567',
-		address: '123 Main St, City, State 12345',
-	},
-	social: {
-		title: 'Follow Us',
-		links: [
-			{ icon: 'facebook', ariaLabel: 'Facebook', href: '#' },
-			{ icon: 'twitter', ariaLabel: 'Twitter', href: '#' },
-			{ icon: 'linkedin', ariaLabel: 'LinkedIn', href: '#' },
-			{ icon: 'instagram', ariaLabel: 'Instagram', href: '#' },
-		],
-	},
-	menu: [
-		{ text: 'Home', href: `${APP_URL}/` },
-		{ text: 'Demo', href: `${APP_URL}/demo.html` },
-		{ text: 'About', href: `${APP_URL}/about.html` },
-		{ text: 'Contact', href: `${APP_URL}/contact.html` },
-	],
-	appName: APP_NAME,
-	year: new Date().getFullYear(),
-};
+function toHref(path) {
+	if (!path || path.startsWith('http') || path.startsWith('#')) return path || '#';
+	return `${APP_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+}
+
+function buildFooterFromTable(rows) {
+	const sorted = [...rows].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+	let contact = { title: '', email: '', phone: '', address: '' };
+	let social = { title: '', links: [] };
+	const menuItems = [];
+
+	for (const row of sorted) {
+		if (row.type === 'title') {
+			const children = sorted.filter((r) => r.parentId === row.id);
+			const hasKw = children.some((r) => r.type === 'kw');
+			const hasSocialLinks = children.some((c) => c.type === 'link' && c.icon);
+			const hasMenuLinks = children.some((c) => c.type === 'link' && !c.icon);
+			if (hasKw && children.some((r) => r.key === 'email')) {
+				contact.title = row.text || '';
+				for (const c of children) {
+					if (c.type === 'kw' && c.key) contact[c.key] = c.text || '';
+				}
+			} else if (hasSocialLinks) {
+				social.title = row.text || '';
+				social.links = children
+					.filter((c) => c.type === 'link')
+					.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+					.map((c) => ({
+						icon: c.icon,
+						ariaLabel: c.key || c.text,
+						href: toHref(c.path)
+					}));
+			} else if (hasMenuLinks && (row.text == null || row.text === '')) {
+				menuItems.push(
+					...children
+						.filter((c) => c.type === 'link')
+						.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+						.map((c) => ({ order: c.order, text: c.text || c.key, href: toHref(c.path) }))
+				);
+			}
+		}
+	}
+
+	const menu = menuItems.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map((m) => ({ text: m.text, href: m.href }));
+
+	return {
+		contact,
+		social,
+		menu,
+		appName: APP_NAME,
+		year: new Date().getFullYear()
+	};
+}
 
 /**
  * Create the footer UI component config.
+ * @param {Array|null} [footerTableOverride] - Optional footer rows (e.g. from CMS comp key footer). If null/undefined, uses data/footer.js.
  * @returns {{ name: string, template: string, data: object }}
  */
-export function createFooterComponent() {
+export function createFooterComponent(footerTableOverride) {
+	const rows = footerTableOverride != null ? footerTableOverride : footerTable;
 	return {
 		name: COMPONENT_NAME,
 		template: COMPONENT_TEMPLATE,
-		data: footerData,
+		data: Array.isArray(rows) ? buildFooterFromTable(rows) : buildFooterFromTable(footerTable),
 	};
 }
 

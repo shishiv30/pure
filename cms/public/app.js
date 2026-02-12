@@ -133,22 +133,25 @@ async function showAdminPanel() {
 	roleBadge.textContent = currentUser.role.toUpperCase();
 	roleBadge.className = `user-badge ${currentUser.role === 'admin' ? 'admin' : ''}`;
 
-	// Show users tab only for admins
+	// Show users and comp tabs only for admins
 	const usersTabButton = document.getElementById('users-tab-button');
 	const usersTabContent = document.getElementById('users-tab');
+	const compTabButton = document.getElementById('comp-tab-button');
+	const compTabContent = document.getElementById('comp-tab');
 	if (currentUser.role === 'admin') {
 		usersTabButton.classList.remove('hidden');
+		compTabButton.classList.remove('hidden');
+		loadUsers();
+		loadComp();
 	} else {
-		// Ensure users tab button and content are hidden for non-admin users
 		usersTabButton.classList.add('hidden');
 		usersTabContent.classList.add('hidden');
+		compTabButton.classList.add('hidden');
+		compTabContent.classList.add('hidden');
 	}
 
 	loadPages();
 	loadSitemap();
-	if (currentUser.role === 'admin') {
-		loadUsers();
-	}
 }
 
 async function logout() {
@@ -177,8 +180,8 @@ function clearError(elementId) {
 }
 
 function showTab(tabName, element) {
-	// Prevent non-admin users from accessing users tab
-	if (tabName === 'users' && (!currentUser || currentUser.role !== 'admin')) {
+	// Prevent non-admin users from accessing users or comp tab
+	if ((tabName === 'users' || tabName === 'comp') && (!currentUser || currentUser.role !== 'admin')) {
 		alert('Access denied. Admin privileges required.');
 		return;
 	}
@@ -198,9 +201,9 @@ function showTab(tabName, element) {
 // Format date helper
 function formatDate(dateString) {
 	const date = new Date(dateString);
-	return date.toLocaleDateString('en-US', { 
-		year: 'numeric', 
-		month: 'short', 
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
 		day: 'numeric',
 		hour: '2-digit',
 		minute: '2-digit'
@@ -222,6 +225,7 @@ async function loadPages() {
 				tr.innerHTML = `
 					<td><strong>${escapeHtml(page.name)}</strong></td>
 					<td>${escapeHtml(page.title)}</td>
+					<td><span class="badge">${escapeHtml(page.type || '')}</span></td>
 					<td><span class="${statusClass}">${page.status}</span></td>
 					<td class="text-muted">${formatDate(page.updated_at)}</td>
 					<td>
@@ -238,7 +242,7 @@ async function loadPages() {
 		} else {
 			tbody.innerHTML = `
 				<tr>
-					<td colspan="5" class="empty-state">
+					<td colspan="6" class="empty-state">
 						<div>
 							<h3>No pages yet</h3>
 							<p>Create your first page to get started</p>
@@ -252,7 +256,7 @@ async function loadPages() {
 		const tbody = document.getElementById('pages-list');
 		tbody.innerHTML = `
 			<tr>
-				<td colspan="5" class="empty-state">
+				<td colspan="6" class="empty-state">
 					<div>
 						<h3>Error loading pages</h3>
 						<p>Please refresh the page</p>
@@ -267,7 +271,7 @@ function showPageForm(pageId = null) {
 	const form = document.getElementById('page-form');
 	const title = document.getElementById('page-form-title');
 	form.classList.remove('hidden');
-	
+
 	if (pageId) {
 		title.textContent = 'Edit Page';
 		loadPage(pageId);
@@ -277,7 +281,7 @@ function showPageForm(pageId = null) {
 		document.getElementById('page-id').value = '';
 		document.getElementById('page-status').value = 'draft';
 	}
-	
+
 	// Scroll to form
 	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -295,8 +299,9 @@ async function loadPage(id) {
 		document.getElementById('page-id').value = page.id;
 		document.getElementById('page-name').value = page.name;
 		document.getElementById('page-title').value = page.title;
-		document.getElementById('page-content').value = page.content || '';
-		document.getElementById('page-meta-description').value = page.meta_description || '';
+		document.getElementById('page-type').value = page.type || 'html';
+		document.getElementById('page-data').value = page.data || '';
+		document.getElementById('page-meta').value = page.meta || '';
 		document.getElementById('page-status').value = page.status;
 	} catch (error) {
 		showError('page-error', 'Failed to load page');
@@ -310,8 +315,9 @@ document.getElementById('page-form-element').onsubmit = async (e) => {
 	const data = {
 		name: document.getElementById('page-name').value.trim(),
 		title: document.getElementById('page-title').value.trim(),
-		content: document.getElementById('page-content').value,
-		meta_description: document.getElementById('page-meta-description').value.trim(),
+		type: document.getElementById('page-type').value,
+		data: document.getElementById('page-data').value,
+		meta: document.getElementById('page-meta').value.trim(),
 		status: document.getElementById('page-status').value
 	};
 
@@ -422,7 +428,7 @@ function showSitemapForm(entryId = null) {
 	const form = document.getElementById('sitemap-form');
 	const title = document.getElementById('sitemap-form-title');
 	form.classList.remove('hidden');
-	
+
 	if (entryId) {
 		title.textContent = 'Edit Sitemap Entry';
 		loadSitemapEntry(entryId);
@@ -433,7 +439,7 @@ function showSitemapForm(entryId = null) {
 		document.getElementById('sitemap-priority').value = '0.5';
 		document.getElementById('sitemap-status').value = 'active';
 	}
-	
+
 	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -526,6 +532,158 @@ async function deleteSitemap(id) {
 	}
 }
 
+// Comp (Admin only)
+async function loadComp() {
+	try {
+		const res = await fetch(`${API_BASE}/api/comp`, { credentials: 'include' });
+		const data = await res.json();
+		const tbody = document.getElementById('comp-list');
+		tbody.innerHTML = '';
+
+		if (data.data && data.data.length > 0) {
+			data.data.forEach((row) => {
+				const tr = document.createElement('tr');
+				const dataPreview =
+					row.data && row.data.length > 80
+						? escapeHtml(row.data.substring(0, 80)) + '…'
+						: escapeHtml(row.data || '');
+				tr.innerHTML = `
+					<td><code>${escapeHtml(row.key)}</code></td>
+					<td>${escapeHtml(row.type)}</td>
+					<td class="text-muted" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${dataPreview}</td>
+					<td>
+						<div class="actions">
+							<button class="btn btn-primary btn-sm" onclick="editComp(${row.id})">Edit</button>
+							<button class="btn btn-danger btn-sm" onclick="deleteComp(${row.id})">Delete</button>
+						</div>
+					</td>
+				`;
+				tbody.appendChild(tr);
+			});
+		} else {
+			tbody.innerHTML = `
+				<tr>
+					<td colspan="4" class="empty-state">
+						<div>
+							<h3>No comp entries yet</h3>
+							<p>Add comp data (e.g. header)</p>
+						</div>
+					</td>
+				</tr>
+			`;
+		}
+	} catch (error) {
+		console.error('Failed to load comp:', error);
+	}
+}
+
+function showCompForm(id = null) {
+	const form = document.getElementById('comp-form');
+	const title = document.getElementById('comp-form-title');
+	form.classList.remove('hidden');
+	if (id) {
+		title.textContent = 'Edit Comp';
+		loadCompEntry(id);
+	} else {
+		title.textContent = 'Add Comp';
+		document.getElementById('comp-form-element').reset();
+		document.getElementById('comp-id').value = '';
+	}
+	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function hideCompForm() {
+	document.getElementById('comp-form').classList.add('hidden');
+}
+
+async function loadCompEntry(id) {
+	try {
+		const res = await fetch(`${API_BASE}/api/comp/by-id/${id}`, { credentials: 'include' });
+		const data = await res.json();
+		if (!data.data) {
+			showError('comp-error', 'Comp not found');
+			return;
+		}
+		const row = data.data;
+		document.getElementById('comp-id').value = row.id;
+		document.getElementById('comp-key').value = row.key;
+		document.getElementById('comp-type').value = row.type;
+		document.getElementById('comp-data').value = row.data || '';
+	} catch (error) {
+		showError('comp-error', 'Failed to load comp');
+	}
+}
+
+document.getElementById('comp-form-element').onsubmit = async (e) => {
+	e.preventDefault();
+	clearError('comp-error');
+	const id = document.getElementById('comp-id').value;
+	const key = document.getElementById('comp-key').value.trim();
+	const type = document.getElementById('comp-type').value.trim();
+	const dataVal = document.getElementById('comp-data').value.trim();
+
+	if (!key || !type) {
+		showError('comp-error', 'Key and type are required');
+		return;
+	}
+
+	try {
+		const url = id ? `${API_BASE}/api/comp/${id}` : `${API_BASE}/api/comp`;
+		const method = id ? 'PUT' : 'POST';
+		const body = id ? { key, type, data: dataVal } : { key, type, data: dataVal };
+		const res = await fetch(url, {
+			method,
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify(body)
+		});
+
+		let result;
+		try {
+			result = await res.json();
+		} catch (parseErr) {
+			if (res.ok) {
+				hideCompForm();
+				loadComp();
+				return;
+			}
+			showError('comp-error', 'Failed to save comp');
+			return;
+		}
+		if (res.ok) {
+			clearError('comp-error');
+			hideCompForm();
+			loadComp();
+		} else {
+			showError('comp-error', result.message || 'Failed to save comp');
+		}
+	} catch (error) {
+		showError('comp-error', 'Failed to save comp');
+	}
+};
+
+function editComp(id) {
+	showCompForm(id);
+}
+
+async function deleteComp(id) {
+	if (!confirm('Are you sure you want to delete this comp entry?')) return;
+	try {
+		const res = await fetch(`${API_BASE}/api/comp/${id}`, {
+			method: 'DELETE',
+			credentials: 'include'
+		});
+		if (res.ok) {
+			loadComp();
+		} else {
+			const result = await res.json();
+			alert(result.message || 'Failed to delete comp');
+		}
+	} catch (error) {
+		alert('Failed to delete comp');
+	}
+}
+
 // Users (Admin only)
 async function loadUsers() {
 	try {
@@ -574,9 +732,9 @@ function showUserForm(userId = null) {
 	const title = document.getElementById('user-form-title');
 	const passwordInput = document.getElementById('user-password');
 	const passwordHint = document.getElementById('password-hint');
-	
+
 	form.classList.remove('hidden');
-	
+
 	if (userId) {
 		title.textContent = 'Edit User';
 		passwordInput.required = false;
@@ -590,7 +748,7 @@ function showUserForm(userId = null) {
 		passwordHint.textContent = 'Required for new users';
 		document.getElementById('user-role-select').value = 'user';
 	}
-	
+
 	form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -619,7 +777,7 @@ document.getElementById('user-form-element').onsubmit = async (e) => {
 	clearError('user-error');
 	const id = document.getElementById('user-id').value;
 	const password = document.getElementById('user-password').value;
-	
+
 	const data = {
 		email: document.getElementById('user-email').value.trim(),
 		name: document.getElementById('user-name-input').value.trim(),

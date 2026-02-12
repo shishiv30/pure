@@ -1,0 +1,37 @@
+<%- include('html_above') %>
+<%_ const headerComponent = data.headerComponent; _%>
+<%_ if (headerComponent) { _%>
+<%- include(headerComponent.template, { header: headerComponent.data }) %>
+<%_ } else { _%>
+<%- include('comp_header') %>
+<%_ } _%>
+
+<main class="page-content" data-page-key="<%= data.pageContent ? data.pageContent.key : '' %>">
+	<%_ if (data.sections && data.sections.length) { _%>
+		<%_ for (var i = 0; i < data.sections.length; i++) { _%>
+			<%_ const section = data.sections[i]; _%>
+			<%_ if (section) { _%>
+				<%_ const propName = section.name; const propData = {}; propData[propName] = section.data; _%>
+				<%- include(section.template, propData) %>
+			<%_ } _%>
+		<%_ } _%>
+		<div class="scroll-loading"></div>
+	<%_ } else if (data.pageContent && data.pageContent.data != null) { _%>
+		<%_ if (data.pageContent.type === 'json') { _%>
+	<script type="application/json" id="page-data"><%= JSON.stringify(data.pageContent.data) %></script>
+	<div class="page-body" id="page-body"><!-- client can render from #page-data --></div>
+		<%_ } else { _%>
+	<div class="page-body"><%- data.pageContent.data %></div>
+		<%_ } _%>
+	<%_ } else { _%>
+	<div class="page-body empty">No content for this page. Add comp entry in CMS with this key.</div>
+	<%_ } _%>
+</main>
+
+<%_ const footerComponent = data.footerComponent; _%>
+<%_ if (footerComponent) { _%>
+<%- include(footerComponent.template, { footer: footerComponent.data }) %>
+<%_ } else { _%>
+<%- include('html_footer') %>
+<%_ } _%>
+<%- include('html_below') %>

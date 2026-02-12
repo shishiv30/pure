@@ -27,6 +27,7 @@ let config = {
 
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
+	cmsUrl: (process.env.CMS_URL || '').replace(/\/$/, ''),
 
 	// Build Configuration
 	webpackMode: process.env.WEBPACK_MODE || NODE_ENV,
