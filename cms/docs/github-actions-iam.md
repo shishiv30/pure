@@ -1,10 +1,15 @@
-# GitHub Actions and local AWS CLI for CMS
+# GitHub Actions and local AWS CLI (ECR)
 
-## What the CMS workflow needs (Build CMS prod)
+## Two workflows that push to ECR
 
-The workflow **Build CMS (prod)** (`.github/workflows/build-cms-prd.yml`) only builds the Docker image and pushes it to ECR. It does **not** create or update ECS, EFS, or any other resources.
+| Workflow | File | ECR repo (default) |
+|----------|------|---------------------|
+| **Build (prod)** – main app | `.github/workflows/build-prod.yml` | `pure` |
+| **Build CMS (prod)** | `.github/workflows/build-cms-prd.yml` | `pure-cms` |
 
-### Required IAM permissions (ECR only)
+The same IAM user (GitHub Actions secrets) is used for both. It must have ECR permissions for **both** repositories (or use `repository/*`).
+
+## Required IAM permissions (ECR only)
 
 The IAM user used in GitHub Actions (secrets `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`) needs:
 
@@ -12,7 +17,7 @@ The IAM user used in GitHub Actions (secrets `AWS_ACCESS_KEY_ID` / `AWS_SECRET_A
 |--------|--------|
 | `ecr:GetAuthorizationToken` | So Docker can log in to ECR (resource: `*`) |
 | `ecr:DescribeRepositories` | Check if the repo exists |
-| `ecr:CreateRepository` | Optional; only if you want the workflow to create the repo (otherwise create it manually once) |
+| `ecr:CreateRepository` | Let the workflow create the repo if missing (otherwise create `pure` and `pure-cms` manually once) |
 | `ecr:BatchCheckLayerAvailability` | Push image layers |
 | `ecr:GetDownloadUrlForLayer` | Push image layers |
 | `ecr:PutImage` | Push image manifest |
@@ -20,9 +25,11 @@ The IAM user used in GitHub Actions (secrets `AWS_ACCESS_KEY_ID` / `AWS_SECRET_A
 | `ecr:UploadLayerPart` | Push image layers |
 | `ecr:CompleteLayerUpload` | Push image layers |
 
-### Minimal policy (ECR only, CMS workflow)
+## Policy for GitHub Actions (both repos)
 
-Attach a custom policy like this to the GitHub Actions IAM user (e.g. `github-actions`). Replace `ACCOUNT_ID` and `REGION` if you want to restrict to one repo.
+Attach a custom policy like this to the IAM user (e.g. `github-actions`). Replace `ACCOUNT_ID` and `REGION` (e.g. `178912016721`, `us-east-1`).
+
+**Use `repository/*`** so both `pure` and `pure-cms` are allowed (and the workflow can create them if they don’t exist):
 
 ```json
 {
@@ -46,21 +53,34 @@ Attach a custom policy like this to the GitHub Actions IAM user (e.g. `github-ac
         "ecr:DescribeRepositories",
         "ecr:CreateRepository"
       ],
-      "Resource": "arn:aws:ecr:us-east-1:ACCOUNT_ID:repository/pure-cms"
+      "Resource": "arn:aws:ecr:REGION:ACCOUNT_ID:repository/*"
     }
   ]
 }
 ```
 
-To allow any repository name (e.g. if you set `ECR_REPOSITORY_CMS` to something else), use:
+If you prefer to limit to the two repo names only:
 
-```text
-"Resource": "arn:aws:ecr:us-east-1:ACCOUNT_ID:repository/*"
+```json
+"Resource": [
+  "arn:aws:ecr:REGION:ACCOUNT_ID:repository/pure",
+  "arn:aws:ecr:REGION:ACCOUNT_ID:repository/pure-cms"
+]
 ```
 
-If you **do not** grant `ecr:CreateRepository`, create the ECR repository once yourself:
+### If you see AccessDeniedException on CreateRepository
+
+Error: `User ... is not authorized to perform: ecr:CreateRepository on resource: ... repository/pure`.
+
+- The policy above only allowed **pure-cms**, but **build-prod.yml** uses the repo **pure**. Fix: update the IAM policy so the ECR `Resource` includes **pure** (e.g. use `repository/*` or add `repository/pure` to the list).
+- Then re-run the workflow.
+
+### If you do not grant ecr:CreateRepository
+
+Create both repos once yourself:
 
 ```bash
+aws ecr create-repository --repository-name pure --region us-east-1
 aws ecr create-repository --repository-name pure-cms --region us-east-1
 ```
 
