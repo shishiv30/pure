@@ -21,6 +21,11 @@ router.get('/page/:key', async (req, res) => {
 });
 
 
+// Redirect /demo/ to /demo/sitemap
+router.get(/^\/demo\/?$/, (req, res) => {
+	res.redirect(301, '/demo/sitemap');
+});
+
 router.get(/^\/demo\/sitemap\/?$/, async (req, res) => {
 	const controller = new BaseController(req, res, 'demo-sitemap');
 	const model = await controller.get();
@@ -48,11 +53,6 @@ router.get(/^\/demo\/sitemap\/([a-z]{2})\/([^\/]+)\/?$/, async (req, res) => {
 	controller.toPage(model);
 });
 
-router.get(/^\/demo\/?$/, async (req, res) => {
-	let controller = new BaseController(req, res, 'demo');
-	let model = await controller.get();
-	controller.toPage(model);
-});
 
 router.get(/^\/demo([\/\w\-]+)\/?$/, async (req, res) => {
 	req.query.path = req?.params[0] || '';

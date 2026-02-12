@@ -83,7 +83,9 @@ export default {
 		}
 
 		opt.images = stringToObj(opt.images);
-		opt.imagesMeta = stringToObj(opt.imagesMeta || []);
+		if (opt.imagesMeta && opt.imagesMeta.length > 0) {
+			opt.imagesMeta = stringToObj(opt.imagesMeta);
+		}
 		let length = opt.images.length;
 		if (length <= 1) {
 			return;
@@ -210,28 +212,28 @@ export default {
 			}
 			let albumInfo = $el.querySelector('.album-info');
 			let albumInfoContent = albumInfo?.querySelector('.album-info-content');
-			
+
 			// Create structure if it doesn't exist
 			if (!albumInfo) {
 				albumInfo = document.createElement('div');
 				albumInfo.className = 'album-info';
 				albumInfoContent = document.createElement('div');
 				albumInfoContent.className = 'album-info-content';
-				
+
 				const labelEl = document.createElement('span');
 				labelEl.className = 'album-info-label';
 				const titleEl = document.createElement('b');
 				titleEl.className = 'album-info-title';
 				const descEl = document.createElement('p');
 				descEl.className = 'album-info-description';
-				
+
 				albumInfoContent.appendChild(labelEl);
 				albumInfoContent.appendChild(titleEl);
 				albumInfoContent.appendChild(descEl);
 				albumInfo.appendChild(albumInfoContent);
 				$el.appendChild(albumInfo);
 			}
-			
+
 			// Update content
 			const currentIndex = opt.imgIndex;
 			if (currentIndex >= 0 && currentIndex < opt.imagesMeta.length) {
@@ -239,7 +241,7 @@ export default {
 				const labelEl = albumInfoContent.querySelector('.album-info-label');
 				const titleEl = albumInfoContent.querySelector('.album-info-title');
 				const descEl = albumInfoContent.querySelector('.album-info-description');
-				
+
 				if (labelEl) {
 					labelEl.textContent = meta.index + ' / ' + opt.imagesMeta.length;
 				}

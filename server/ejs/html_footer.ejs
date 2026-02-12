@@ -1,50 +1,69 @@
 <%_ if (footer) { _%>
-<footer class="footer">
-	<section class="section small major inline bg active">
-		<div class="fixed fixed-max-xs grid grid-xs-1">
-			<div class="footer-section">
-				<h4><%= footer.contact.title %></h4>
-				<p>Email: <%= footer.contact.email %></p>
-				<p>Phone: <%= footer.contact.phone %></p>
-				<p>Address: <%= footer.contact.address %></p>
-			</div>
-			<div class="footer-section">
-				<h4><%= footer.social.title %></h4>
-				<div class="footer-social-link">
-					<%_ if (footer.social.links && footer.social.links.length) { _%>
-						<%_ for (var i = 0; i < footer.social.links.length; i++) { _%>
-							<%_ const link = footer.social.links[i]; _%>
-							<a href="<%= link.href %>" aria-label="<%= link.ariaLabel %>">
-								<i class="icon-<%= link.icon %>"></i>
-							</a>
-						<%_ } _%>
-					<%_ } _%>
+	<footer class="footer">
+		<section class="section small major inline bg active">
+			<div class="fixed fixed-max-xs grid grid-xs-1">
+				<div class="footer-section">
+					<h4>
+						<%= footer.contact.title %>
+					</h4>
+					<p>Email: <%= footer.contact.email %>
+					</p>
+					<p>Phone: <%= footer.contact.phone %>
+					</p>
+					<p>Address: <%= footer.contact.address %>
+					</p>
+				</div>
+				<div class="footer-section">
+					<h4>
+						<%= footer.social.title %>
+					</h4>
+					<div class="footer-social-link">
+						<%_ if (footer.social.links && footer.social.links.length) { _%>
+							<%_ for (var i=0; i < footer.social.links.length; i++) { _%>
+								<%_ const link=footer.social.links[i]; _%>
+									<a href="<%= link.href %>" aria-label="<%= link.ariaLabel %>">
+										<i class="icon-<%= link.icon %>"></i>
+									</a>
+									<%_ } _%>
+										<%_ } _%>
+					</div>
+				</div>
+				<nav>
+					<ul class="flex">
+						<%_ if (footer.menu && footer.menu.length) { _%>
+							<%_ for (var j=0; j < footer.menu.length; j++) { _%>
+								<%_ const item=footer.menu[j]; _%>
+									<li>
+										<a href="<%= item.href %>">
+											<%= item.text %>
+										</a>
+									</li>
+									<%_ } _%>
+										<%_ } _%>
+					</ul>
+				</nav>
+				<div class="footer-section default bg">
+					<h4>Newsletter</h4>
+					<p>Stay updated with our latest news and updates.</p>
+					<form class="input left">
+						<input type="email" placeholder="Enter your email" required="">
+						<button type="submit" class="btn primary"><i class="icon-envelope"></i></button>
+					</form>
+				</div>
+				<div class="footer-bottom">
+					<p>&copy; <%= footer.year %>
+							<%= footer.appName %>. All rights reserved.</p>
 				</div>
 			</div>
-			<nav>
-				<ul class="flex">
-					<%_ if (footer.menu && footer.menu.length) { _%>
-						<%_ for (var j = 0; j < footer.menu.length; j++) { _%>
-							<%_ const item = footer.menu[j]; _%>
-							<li>
-								<a href="<%= item.href %>"><%= item.text %></a>
-							</li>
-						<%_ } _%>
-					<%_ } _%>
-				</ul>
-			</nav>
-			<div class="footer-bottom">
-				<p>&copy; <%= footer.year %> <%= footer.appName %>. All rights reserved.</p>
+		</section>
+		<section class="section small inline bg">
+			<div class="f6">
+				This website is for informational purposes only and does not constitute legal, financial, or investment
+				advice. The information provided is not intended to be a substitute for professional advice. Always
+				consult with a qualified professional before making any financial decisions. &copy;
+				<%= footer.year %>
+					<%= footer.appName %>. All rights reserved.
 			</div>
-		</div>
-	</section>
-	<section class="section small inline bg">
-		<div class="f6">
-			This website is for informational purposes only and does not constitute legal, financial, or investment
-			advice. The information provided is not intended to be a substitute for professional advice. Always
-			consult with a qualified professional before making any financial decisions. &copy;
-			<%= footer.year %> <%= footer.appName %>. All rights reserved.
-		</div>
-	</section>
-</footer>
-<%_ } _%>
+		</section>
+	</footer>
+	<%_ } _%>

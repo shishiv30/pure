@@ -21,10 +21,12 @@
 }
 
 .suggestion-item {
-  padding: 0 var(--g2);
+  padding: var(--g0) var(--g2);
+  cursor: pointer;
+  border-top: var(--color-hover) 1px solid;
   cursor: pointer;
 
   &:hover {
-    background: var(--color-8);
+    background: var(--color-hover);
   }
 }

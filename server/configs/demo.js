@@ -150,6 +150,20 @@ export default {
 			cdnUrl: config.cdnUrl,
 			appUrl: config.appUrl,
 			soaApiDomain: config.soaApiDomain,
+			theme: {
+				default: {
+					'color-major-hue': '200',
+					'color-major-saturation': '85%',
+					'color-major-lightness': '25%',
+					'color-major-lightness-l1': '96%',
+				},
+				dark: {
+					'color-glb-bg-lightness': '8%',
+					'color-glb-front-lightness': '92%',
+					'color-major-lightness': '75%',
+					'color-major-lightness-l1': '15%',
+				},
+			},
 		};
 
 		return model;

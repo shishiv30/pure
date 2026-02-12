@@ -19,6 +19,37 @@
           <%_if(meta.js){_%>
             <link rel="preload" href="<%=meta.js%>" as="script">
             <%_}_%>
+              <%_if(meta.theme){_%>
+                <style>
+                  <%_if(meta.theme.default) {
+                    _%>body {
+                      <%_for(var key in meta.theme.default) {
+                        _%>--<%=key%>: <%=meta.theme.default[key]%>;
+                        <%_
+                      }
+
+                      _%>
+                    }
+
+                    <%_
+                  }
+
+                  _%><%_if(meta.theme.dark) {
+                    _%>body.theme-dark {
+                      <%_for(var key in meta.theme.dark) {
+                        _%>--<%=key%>: <%=meta.theme.dark[key]%>;
+                        <%_
+                      }
+
+                      _%>
+                    }
+
+                    <%_
+                  }
+
+                  _%>
+                </style>
+                <%_}_%>
 </head>
 
 <body id="body" class="<%=meta.pageType%>">

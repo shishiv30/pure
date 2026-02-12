@@ -13,6 +13,24 @@ export default {
 		boolStatus.forEach((name) => {
 			defBool(name, $el, opt, exportObj);
 		});
+		// Theme toggle handler for .menu-img
+		let $menuImg = $el.querySelector('.menu-img');
+		if ($menuImg) {
+			// Load saved theme preference
+			const savedTheme = localStorage.getItem('theme');
+			if (savedTheme === 'dark') {
+				document.body.classList.add('theme-dark');
+			} else if (savedTheme === 'light') {
+				document.body.classList.remove('theme-dark');
+			}
+			$menuImg.addEventListener('click', function (e) {
+				e.preventDefault();
+				document.body.classList.toggle('theme-dark');
+				// Persist theme preference
+				const isDark = document.body.classList.contains('theme-dark');
+				localStorage.setItem('theme', isDark ? 'dark' : 'light');
+			});
+		}
 		let $list = $el.querySelector('.header-menu-list');
 		let $dropdown = $list.querySelectorAll('.list');
 		let $overlay = document.createElement('div');

@@ -99,7 +99,7 @@ export default class BaseController {
 			}
 		}
 		const assetName = this.config.assetName || this.config.name;
-		return {
+		let meta = {
 			uaData: this.req.uaData,
 			lang: (lang && lang[0]) || '',
 			path: this.req.path,
@@ -112,6 +112,11 @@ export default class BaseController {
 			appUrl: serverConfig.appUrl,
 			appName: serverConfig.appName,
 		};
+		// Add theme overrides if provided in model
+		if (model?.theme) {
+			meta.theme = model.theme;
+		}
+		return meta;
 	}
 	initialBreadcrumb(model) {
 		if (model?.data?.breadcrumb) {
