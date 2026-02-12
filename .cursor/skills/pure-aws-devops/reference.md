@@ -16,7 +16,7 @@ Use these when running CLI commands or checking the console.
 | SG (ECS tasks) | pure-cms-ecs-sg | 3003 |
 | SG (EFS) | pure-cms-efs-sg | NFS from ECS SG |
 | Log group | /ecs/pure-cms | |
-| App Runner | pure | qis7miipe5.us-east-1.awsapprunner.com |
+| App Runner | pure | qis7miipe5.us-east-1.awsapprunner.com. ARN for CI: `aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text`; set as repo var **APP_RUNNER_SERVICE_ARN** so Build Pure Web (prod) triggers deployment after ECR push. |
 | IAM role | ecsTaskExecutionRole-pure-cms | Account-level |
 | Route 53 zone | Z038191012SF55SAOLG35 | conjeezou.com |
 

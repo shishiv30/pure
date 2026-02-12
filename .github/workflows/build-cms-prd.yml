@@ -13,6 +13,11 @@ on:
     branches: [main]
     paths:
       - 'cms/**'
+    paths-ignore:
+      # Doc-only changes under cms/ do not trigger a build
+      - 'cms/README.md'
+      - 'cms/docs/**'
+      - 'cms/**/*.md'
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}

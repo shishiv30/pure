@@ -1,5 +1,6 @@
 ---
 # Builds on push to main: Docker image to ECR; dist/ from the image is synced to S3 if AWS_S3_CDN_BUCKET is set.
+# If vars.APP_RUNNER_SERVICE_ARN is set, triggers an App Runner deployment so the service picks up the new image.
 # To enable: set AWS_ECR_ENABLED = true and add secrets. See docs/aws-ecr-setup.md.
 
 name: Build Pure Web (prod)
@@ -82,6 +83,15 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Deploy to App Runner
+        if: vars.APP_RUNNER_SERVICE_ARN != ''
+        run: |
+          aws apprunner start-deployment \
+            --service-arn '${{ vars.APP_RUNNER_SERVICE_ARN }}' \
+            --region ${{ env.AWS_REGION }}
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
 
       - name: Sync dist to S3 (CDN bucket root)
         if: vars.AWS_S3_CDN_BUCKET != ''

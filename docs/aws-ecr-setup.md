@@ -115,12 +115,17 @@ Create a custom policy with this JSON (replace `123456789012` with your AWS acco
       "Effect": "Allow",
       "Action": ["cloudfront:CreateInvalidation", "cloudfront:GetInvalidation"],
       "Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/E3HB60PWQLPD0R"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["apprunner:StartDeployment", "apprunner:DescribeService"],
+      "Resource": "arn:aws:apprunner:REGION:ACCOUNT_ID:service/*"
     }
   ]
 }
 ```
 
-Replace `YOUR_CDN_BUCKET_NAME` with your S3 bucket name (e.g. `cdn.conjeezou.com`). For the CloudFront block, replace `ACCOUNT_ID` with your AWS account ID and `YOUR_DISTRIBUTION_ID` with your CloudFront distribution ID (AWS Console → CloudFront → your distribution → ID).
+Replace `YOUR_CDN_BUCKET_NAME` with your S3 bucket name (e.g. `cdn.conjeezou.com`). For the CloudFront block, replace `ACCOUNT_ID` with your AWS account ID and `YOUR_DISTRIBUTION_ID` with your CloudFront distribution ID (AWS Console → CloudFront → your distribution → ID). For the App Runner block (needed only if you set `APP_RUNNER_SERVICE_ARN`), replace `REGION` and `ACCOUNT_ID` with your region and account ID.
 
 If you prefer not to hardcode the distribution ID in the policy, use `"Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/*"` so the user can invalidate any distribution in the account.
 
@@ -156,6 +161,7 @@ Optional variables:
 - `ECR_REPOSITORY` — ECR repo name (e.g. `pure`). If not set, the workflow uses the GitHub repo name.
 - `AWS_S3_CDN_BUCKET` — S3 bucket name for the CDN (e.g. `cdn.conjeezou.com`). When set, the workflow syncs `dist/` to this bucket after each build.
 - `AWS_CLOUDFRONT_DISTRIBUTION_ID` — CloudFront distribution ID for the CDN bucket. When set (together with `AWS_S3_CDN_BUCKET`), the workflow creates a cache invalidation after syncing to S3 so visitors get new CSS/JS immediately instead of cached old assets. Find the ID in AWS Console → CloudFront → your distribution.
+- `APP_RUNNER_SERVICE_ARN` — Full ARN of your App Runner service (e.g. `arn:aws:apprunner:us-east-1:123456789012:service/pure/...`). When set, the workflow runs `aws apprunner start-deployment` after pushing the image so the service deploys the new ECR image. Get it with: `aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text`.
 
 ---
 
