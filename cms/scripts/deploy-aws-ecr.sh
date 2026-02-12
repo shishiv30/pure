@@ -30,7 +30,8 @@ IMAGE_TAG="${ECR_REGISTRY}/${ECR_REPOSITORY}:${ENVIRONMENT}"
 LATEST_TAG="${ECR_REGISTRY}/${ECR_REPOSITORY}:latest"
 
 echo "Building Docker image for ${ENVIRONMENT} (from $CMS_DIR)..."
-docker build --target production -t ${ECR_REPOSITORY}:${ENVIRONMENT} .
+# Fargate uses x86_64; build for linux/amd64 so the image runs on ECS
+docker build --platform linux/amd64 --target production -t ${ECR_REPOSITORY}:${ENVIRONMENT} .
 
 echo "Tagging image..."
 docker tag ${ECR_REPOSITORY}:${ENVIRONMENT} ${IMAGE_TAG}
