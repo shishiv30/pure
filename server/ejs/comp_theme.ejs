@@ -1,0 +1,22 @@
+<%_ if (theme && (theme.default || theme.dark)) { _%>
+<style type="text/css" id="inline-css">
+<%_ if (theme.default && typeof theme.default === 'object') { _%>
+body {
+<%_ for (const key in theme.default) { _%>
+<%_ if (theme.default.hasOwnProperty(key)) { _%>
+  <%= key %>: <%= theme.default[key] %>;
+<%_ } _%>
+<%_ } _%>
+}
+<%_ } _%>
+<%_ if (theme.dark && typeof theme.dark === 'object') { _%>
+body.theme-dark {
+<%_ for (const key in theme.dark) { _%>
+<%_ if (theme.dark.hasOwnProperty(key)) { _%>
+  <%= key %>: <%= theme.dark[key] %>;
+<%_ } _%>
+<%_ } _%>
+}
+<%_ } _%>
+</style>
+<%_ } _%>

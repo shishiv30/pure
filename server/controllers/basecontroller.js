@@ -2,6 +2,8 @@ import useragent from 'express-useragent';
 import config from '../configs/index.js';
 import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
+import { getThemeInlineCss } from '../ejs/comp_theme.js';
+import themeData from '../../data/theme.js';
 import fs from 'fs';
 import mime from 'mime';
 import path from 'path';
@@ -9,32 +11,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const queryGroupKey = ['utm', 'hack'];
-
-function getInlineCss(theme) {
-	if (!theme || typeof theme !== 'object') {
-		return '';
-	}
-	let css = '';
-	if (theme.default && typeof theme.default === 'object') {
-		css += 'body {\n';
-		for (const key in theme.default) {
-			if (theme.default.hasOwnProperty(key)) {
-				css += `  ${key}: ${theme.default[key]};\n`;
-			}
-		}
-		css += '}\n';
-	}
-	if (theme.dark && typeof theme.dark === 'object') {
-		css += 'body.theme-dark {\n';
-		for (const key in theme.dark) {
-			if (theme.dark.hasOwnProperty(key)) {
-				css += `  ${key}: ${theme.dark[key]};\n`;
-			}
-		}
-		css += '}\n';
-	}
-	return css;
-}
 
 export default class BaseController {
 	constructor(req, res, name) {
@@ -138,10 +114,6 @@ export default class BaseController {
 			appUrl: serverConfig.appUrl,
 			appName: serverConfig.appName,
 		};
-		// Add theme overrides if provided in model
-		if (model?.data?.theme) {
-			meta.inlineCss = getInlineCss(model.data.theme);
-		}
 		return meta;
 	}
 	initialBreadcrumb(model) {
@@ -239,6 +211,17 @@ export default class BaseController {
 		model.meta = this.initialMeta(model);
 		model.seo = this.initialSeo(model);
 		model.breadcrumb = this.initialBreadcrumb(model);
+		// Generate theme CSS and add to meta.inlineCss
+		try {
+			const themeOverride = (model.data && model.data.theme) || null;
+			const cdnUrl = model.meta.cdnUrl || '';
+			const inlineCss = getThemeInlineCss(themeOverride, cdnUrl);
+			if (inlineCss) {
+				model.meta.inlineCss = inlineCss;
+			}
+		} catch (error) {
+			console.error('Failed to generate theme CSS:', error);
+		}
 		//relative path of ejs template
 		this.res.render(`${this.config.name}.ejs`, model);
 	}

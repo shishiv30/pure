@@ -83,7 +83,7 @@ async function fetchPageByName(name) {
  * Dynamic page config: fetches content from CMS by key.
  * Route: GET /page/:key (e.g. /page/index, /page/about).
  * For key "index", fetches page "pageIndex" from CMS pages table and returns { sections }.
- * Header and footer from CMS comp (header, footer).
+ * Header and footer are loaded from local data files (data/header.js, data/footer.js).
  */
 export default {
 	name: 'page',
@@ -110,17 +110,14 @@ export default {
 			sections: null,
 		});
 
+		// Use local data files for header and footer
+		const headerComponent = createHeaderComponent();
+		const footerComponent = createFooterComponent();
+
 		if (!base) return fallback();
 
 		const pageCmsName = `page${payload.key}`.toLowerCase();
-		const [headerMenu, footerRows, pageIndexData] = await Promise.all([
-			fetchCompByKey('header'),
-			fetchCompByKey('footer'),
-			fetchPageByName(pageCmsName),
-		]);
-
-		const headerComponent = createHeaderComponent(headerMenu);
-		const footerComponent = createFooterComponent(footerRows);
+		const pageIndexData = await fetchPageByName(pageCmsName);
 
 		if (pageIndexData) {
 			const raw = arrayToPageData(pageIndexData);
@@ -129,11 +126,6 @@ export default {
 			const resolved = resolvePageData(raw, { cdnUrl, appUrl });
 			const sections = buildSections(resolved, SECTION_CREATORS);
 			return {
-				theme: {
-					default: {
-						'--color-major-hue': '200',
-					},
-				},
 				headerComponent,
 				footerComponent,
 				sections,
