@@ -28,6 +28,9 @@ const CORS_ORIGINS = process.env.CORS_ORIGINS
 	? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
 	: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
 
+// Trust first proxy (ALB) so req.protocol and req.secure are correct for cookies
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(compression());
 app.use(cors({
@@ -37,8 +40,8 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Session middleware
-setupSession(app, SESSION_SECRET);
+// Session middleware (pass DB_PATH so sessions persist in SQLite on same volume as DB)
+setupSession(app, SESSION_SECRET, DB_PATH);
 
 // Initialize database
 const db = new Database(DB_PATH);

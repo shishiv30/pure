@@ -255,6 +255,8 @@ The `cms/scripts/aws/` folder contains an ECS + EFS setup so the SQLite database
 - `DB_PATH` - Database file path (default: ./data/cms.db)
 - `CORS_ORIGINS` - Comma-separated list of allowed CORS origins
 
+Sessions are stored in SQLite (`sessions.db` next to your main DB) so they persist across restarts and across multiple ECS tasks when using the same volume (e.g. EFS at `/app/data`). The app also sets `trust proxy` so cookies work correctly behind an ALB.
+
 ## License
 
 ISC

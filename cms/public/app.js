@@ -37,6 +37,7 @@ function showSetupScreen() {
 	const form = document.getElementById('setup-form');
 	form.onsubmit = async (e) => {
 		e.preventDefault();
+		clearError('setup-error');
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData);
 
@@ -48,12 +49,26 @@ function showSetupScreen() {
 				body: JSON.stringify(data)
 			});
 
-			const result = await res.json();
+			let result;
+			try {
+				result = await res.json();
+			} catch (parseErr) {
+				if (res.ok) {
+					showError('setup-error', 'Invalid response from server');
+				} else {
+					showError('setup-error', 'Failed to create admin account');
+				}
+				return;
+			}
 			if (res.ok) {
-				currentUser = result.data.user;
-				showAdminPanel();
+				currentUser = result.data?.user;
+				if (currentUser) {
+					showAdminPanel();
+				} else {
+					showError('setup-error', 'Invalid response from server');
+				}
 			} else {
-				showError('setup-error', result.message);
+				showError('setup-error', result.message || 'Failed to create admin account');
 			}
 		} catch (error) {
 			showError('setup-error', 'Failed to create admin account');
@@ -69,6 +84,7 @@ function showLoginScreen() {
 	const form = document.getElementById('login-form');
 	form.onsubmit = async (e) => {
 		e.preventDefault();
+		clearError('login-error');
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData);
 
@@ -80,12 +96,26 @@ function showLoginScreen() {
 				body: JSON.stringify(data)
 			});
 
-			const result = await res.json();
+			let result;
+			try {
+				result = await res.json();
+			} catch (parseErr) {
+				if (res.ok) {
+					showError('login-error', 'Invalid response from server');
+				} else {
+					showError('login-error', 'Failed to login');
+				}
+				return;
+			}
 			if (res.ok) {
-				currentUser = result.data.user;
-				showAdminPanel();
+				currentUser = result.data?.user;
+				if (currentUser) {
+					showAdminPanel();
+				} else {
+					showError('login-error', 'Invalid response from server');
+				}
 			} else {
-				showError('login-error', result.message);
+				showError('login-error', result.message || 'Failed to login');
 			}
 		} catch (error) {
 			showError('login-error', 'Failed to login');
@@ -136,6 +166,14 @@ function showError(elementId, message) {
 	errorEl.textContent = message;
 	errorEl.classList.remove('hidden');
 	setTimeout(() => errorEl.classList.add('hidden'), 5000);
+}
+
+function clearError(elementId) {
+	const errorEl = document.getElementById(elementId);
+	if (errorEl) {
+		errorEl.textContent = '';
+		errorEl.classList.add('hidden');
+	}
 }
 
 function showTab(tabName, element) {
@@ -267,6 +305,7 @@ async function loadPage(id) {
 
 document.getElementById('page-form-element').onsubmit = async (e) => {
 	e.preventDefault();
+	clearError('page-error');
 	const id = document.getElementById('page-id').value;
 	const data = {
 		name: document.getElementById('page-name').value.trim(),
@@ -286,12 +325,24 @@ document.getElementById('page-form-element').onsubmit = async (e) => {
 			body: JSON.stringify(data)
 		});
 
-		const result = await res.json();
+		let result;
+		try {
+			result = await res.json();
+		} catch (parseErr) {
+			if (res.ok) {
+				hidePageForm();
+				loadPages();
+				return;
+			}
+			showError('page-error', 'Failed to save page');
+			return;
+		}
 		if (res.ok) {
+			clearError('page-error');
 			hidePageForm();
 			loadPages();
 		} else {
-			showError('page-error', result.message);
+			showError('page-error', result.message || 'Failed to save page');
 		}
 	} catch (error) {
 		showError('page-error', 'Failed to save page');
@@ -408,6 +459,7 @@ async function loadSitemapEntry(id) {
 
 document.getElementById('sitemap-form-element').onsubmit = async (e) => {
 	e.preventDefault();
+	clearError('sitemap-error');
 	const id = document.getElementById('sitemap-id').value;
 	const data = {
 		url: document.getElementById('sitemap-url').value.trim(),
@@ -426,12 +478,24 @@ document.getElementById('sitemap-form-element').onsubmit = async (e) => {
 			body: JSON.stringify(data)
 		});
 
-		const result = await res.json();
+		let result;
+		try {
+			result = await res.json();
+		} catch (parseErr) {
+			if (res.ok) {
+				hideSitemapForm();
+				loadSitemap();
+				return;
+			}
+			showError('sitemap-error', 'Failed to save sitemap entry');
+			return;
+		}
 		if (res.ok) {
+			clearError('sitemap-error');
 			hideSitemapForm();
 			loadSitemap();
 		} else {
-			showError('sitemap-error', result.message);
+			showError('sitemap-error', result.message || 'Failed to save sitemap entry');
 		}
 	} catch (error) {
 		showError('sitemap-error', 'Failed to save sitemap entry');
@@ -552,6 +616,7 @@ async function loadUser(id) {
 
 document.getElementById('user-form-element').onsubmit = async (e) => {
 	e.preventDefault();
+	clearError('user-error');
 	const id = document.getElementById('user-id').value;
 	const password = document.getElementById('user-password').value;
 	
@@ -580,12 +645,24 @@ document.getElementById('user-form-element').onsubmit = async (e) => {
 			body: JSON.stringify(data)
 		});
 
-		const result = await res.json();
+		let result;
+		try {
+			result = await res.json();
+		} catch (parseErr) {
+			if (res.ok) {
+				hideUserForm();
+				loadUsers();
+				return;
+			}
+			showError('user-error', 'Failed to save user');
+			return;
+		}
 		if (res.ok) {
+			clearError('user-error');
 			hideUserForm();
 			loadUsers();
 		} else {
-			showError('user-error', result.message);
+			showError('user-error', result.message || 'Failed to save user');
 		}
 	} catch (error) {
 		showError('user-error', 'Failed to save user');
