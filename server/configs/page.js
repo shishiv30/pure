@@ -135,17 +135,8 @@ export default {
 			};
 		} else {
 			console.error('CMS fetch page failed:', pageCmsName);
+			// Return fallback when CMS fetch fails
+			return fallback();
 		}
-
-		let pageContent = null;
-		if (pageRow && key) {
-			pageContent = { key, type: 'json', data: pageRow };
-		}
-
-		return {
-			headerComponent,
-			footerComponent,
-			pageContent,
-		};
 	},
 };
