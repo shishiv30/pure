@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 export default function setupSession(app, sessionSecret, dbPath) {
 	const isProduction = process.env.NODE_ENV === 'production';
 	// Allow explicit override via environment variable for proxy scenarios
-	const cookieSecure = process.env.SESSION_COOKIE_SECURE !== undefined
+	const forceSecure = process.env.SESSION_COOKIE_SECURE !== undefined
 		? process.env.SESSION_COOKIE_SECURE === 'true'
 		: isProduction;
 
@@ -30,32 +30,15 @@ export default function setupSession(app, sessionSecret, dbPath) {
 			store,
 			resave: false,
 			saveUninitialized: false,
-			cookie: {
-				// Set secure flag: true in production (behind HTTPS-terminating ALB)
-				// With trust proxy set, Express will correctly detect HTTPS via X-Forwarded-Proto
-				secure: cookieSecure,
+			// Use a function to dynamically set cookie secure flag based on req.secure
+			// This ensures cookies work correctly behind HTTPS-terminating ALB proxy
+			// With trust proxy set, Express detects HTTPS via X-Forwarded-Proto header
+			cookie: (req) => ({
+				secure: forceSecure ? true : (req.secure || false),
 				httpOnly: true,
 				sameSite: 'lax',
 				maxAge: 24 * 60 * 60 * 1000 // 24 hours
-			}
+			})
 		})
 	);
-
-	// Middleware to ensure session cookie secure flag is correct when behind ALB proxy
-	// This fixes cases where the cookie was set before trust proxy properly detected HTTPS
-	app.use((req, res, next) => {
-		if (req.session && req.session.cookie && isProduction) {
-			// If request is secure (via ALB X-Forwarded-Proto header) but cookie secure flag doesn't match,
-			// update it and save the session to regenerate the cookie
-			if (req.secure && !req.session.cookie.secure) {
-				req.session.cookie.secure = true;
-				req.session.save((err) => {
-					if (err) {
-						console.error('Error saving session with updated secure flag:', err);
-					}
-				});
-			}
-		}
-		next();
-	});
 }

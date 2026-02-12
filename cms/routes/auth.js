@@ -32,34 +32,19 @@ router.post('/login', async (req, res) => {
 		req.session.role = user.role;
 		req.session.name = user.name;
 
-		// Ensure cookie secure flag is set correctly for HTTPS (behind ALB proxy)
-		if (req.session.cookie && req.secure) {
-			req.session.cookie.secure = true;
-		}
-
-		// Explicitly save session to ensure cookie is set correctly
-		req.session.save((err) => {
-			if (err) {
-				console.error('Error saving session during login:', err);
-				return res.status(500).json({
-					code: 500,
-					message: 'Failed to create session',
-					data: null
-				});
-			}
-
-			res.json({
-				code: 200,
-				message: 'Login successful',
-				data: {
-					user: {
-						id: user.id,
-						email: user.email,
-						name: user.name,
-						role: user.role
-					}
+		// Session will be saved automatically by express-session
+		// Cookie secure flag is set dynamically via cookie function in session middleware
+		res.json({
+			code: 200,
+			message: 'Login successful',
+			data: {
+				user: {
+					id: user.id,
+					email: user.email,
+					name: user.name,
+					role: user.role
 				}
-			});
+			}
 		});
 	} catch (error) {
 		console.error('Login error:', error);
