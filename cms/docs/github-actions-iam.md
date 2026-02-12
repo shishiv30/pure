@@ -72,8 +72,17 @@ If you prefer to limit to the two repo names only:
 
 Error: `User ... is not authorized to perform: ecr:CreateRepository on resource: ... repository/pure`.
 
-- The policy above only allowed **pure-cms**, but **build-prod.yml** uses the repo **pure**. Fix: update the IAM policy so the ECR `Resource` includes **pure** (e.g. use `repository/*` or add `repository/pure` to the list).
-- Then re-run the workflow.
+1. **Permissions boundary** – IAM user permissions are limited by both attached policies and the **permissions boundary** (if set). If the boundary does not allow `ecr:CreateRepository`, the action is denied even if you attached **AmazonEC2ContainerRegistryPowerUser**.  
+   **Check:** IAM → Users → **github-actions** → Permissions tab → look for **Permissions boundary**. If one is set, either add `ecr:CreateRepository` (and other ECR actions) to that boundary policy, or remove the boundary for this user.
+
+2. **Scope** – If using a custom policy, ensure the ECR `Resource` includes both **pure** and **pure-cms** (or `repository/*`).
+
+3. **Workaround (no CreateRepository needed)** – Create the repo once with a principal that has permission (e.g. your admin user), then re-run the workflow. The workflow only needs the repo to exist; it will use **DescribeRepositories** and then push. From the repo root:
+   ```bash
+   aws ecr create-repository --repository-name pure --region us-east-1
+   # and if needed:
+   aws ecr create-repository --repository-name pure-cms --region us-east-1
+   ```
 
 ### If you do not grant ecr:CreateRepository
 

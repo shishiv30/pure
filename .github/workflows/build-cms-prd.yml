@@ -51,8 +51,14 @@ jobs:
 
       - name: Ensure ECR repository exists (CMS)
         run: |
-          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }} 2>/dev/null || \
-          aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }}
+          if aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }} 2>/dev/null; then
+            echo "Repository ${{ env.ECR_REPOSITORY_CMS }} exists."
+          elif aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }} 2>/dev/null; then
+            echo "Created repository ${{ env.ECR_REPOSITORY_CMS }}."
+          else
+            echo "::error::ECR repo ${{ env.ECR_REPOSITORY_CMS }} not found and create failed. Create it once: aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY_CMS }} --region ${{ env.AWS_REGION }}"
+            exit 1
+          fi
 
       - name: Build and tag CMS image
         env:
