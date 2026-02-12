@@ -1,6 +1,6 @@
 ---
 # Builds Pure CMS Docker image and pushes to ECR.
-# Runs only when there are commits that touch the cms/ folder (path filter).
+# Runs when commits touch the cms/ folder (path filter). GitHub allows only paths or paths-ignore per event, so doc-only changes under cms/ also trigger a build.
 # Does not touch the database: we only build and push an image. Your AWS
 # instance must mount a persistent volume at /app/data for the SQLite DB
 # so that when you deploy the new image, the same volume is reused and
@@ -13,11 +13,6 @@ on:
     branches: [main]
     paths:
       - 'cms/**'
-    paths-ignore:
-      # Doc-only changes under cms/ do not trigger a build
-      - 'cms/README.md'
-      - 'cms/docs/**'
-      - 'cms/**/*.md'
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}

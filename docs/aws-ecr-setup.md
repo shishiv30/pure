@@ -161,7 +161,7 @@ Optional variables:
 - `ECR_REPOSITORY` — ECR repo name (e.g. `pure`). If not set, the workflow uses the GitHub repo name.
 - `AWS_S3_CDN_BUCKET` — S3 bucket name for the CDN (e.g. `cdn.conjeezou.com`). When set, the workflow syncs `dist/` to this bucket after each build.
 - `AWS_CLOUDFRONT_DISTRIBUTION_ID` — CloudFront distribution ID for the CDN bucket. When set (together with `AWS_S3_CDN_BUCKET`), the workflow creates a cache invalidation after syncing to S3 so visitors get new CSS/JS immediately instead of cached old assets. Find the ID in AWS Console → CloudFront → your distribution.
-- `APP_RUNNER_SERVICE_ARN` — Full ARN of your App Runner service (e.g. `arn:aws:apprunner:us-east-1:123456789012:service/pure/...`). When set, the workflow runs `aws apprunner start-deployment` after pushing the image so the service deploys the new ECR image. Get it with: `aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text`.
+- `APP_RUNNER_SERVICE_ARN` — Full ARN of your App Runner service (e.g. `arn:aws:apprunner:us-east-1:123456789012:service/pure/...`). When set, the workflow runs `aws apprunner start-deployment` after pushing the image so the service deploys the new ECR image. Get it with: `aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text`. **App Runner must use the same ECR region as the workflow (us-east-1).** If the service was created with us-east-2 ECR, see **docs/apprunner-ecr-us-east-1.md** to repoint it.
 
 ---
 

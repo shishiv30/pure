@@ -11,12 +11,13 @@ Use these when running CLI commands or checking the console.
 | ALB | pure-cms-alb | DNS: pure-cms-alb-1420427632.us-east-1.elb.amazonaws.com |
 | Target group | pure-cms-tg | Port 3003 |
 | EFS | fs-06f8b66a4118ec000 | Name: pure-cms-data |
-| ECR repo | pure-cms | 178912016721.dkr.ecr.us-east-1.amazonaws.com/pure-cms |
+| ECR repo (CMS) | pure-cms | 178912016721.dkr.ecr.us-east-1.amazonaws.com/pure-cms |
+| ECR repo (main site) | pure | 178912016721.dkr.ecr.us-east-1.amazonaws.com/pure (App Runner must use this us-east-1 URI) |
 | SG (ALB) | pure-cms-alb-sg | 80, 443 |
 | SG (ECS tasks) | pure-cms-ecs-sg | 3003 |
 | SG (EFS) | pure-cms-efs-sg | NFS from ECS SG |
 | Log group | /ecs/pure-cms | |
-| App Runner | pure | qis7miipe5.us-east-1.awsapprunner.com. ARN for CI: `aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text`; set as repo var **APP_RUNNER_SERVICE_ARN** so Build Pure Web (prod) triggers deployment after ECR push. |
+| App Runner | pure | qis7miipe5.us-east-1.awsapprunner.com. Source must be **us-east-1** ECR (`...us-east-1.../pure:latest`); if it was us-east-2, see **docs/apprunner-ecr-us-east-1.md**. ARN for CI: set repo var **APP_RUNNER_SERVICE_ARN** so Build Pure Web (prod) runs `start-deployment` after ECR push. |
 | IAM role | ecsTaskExecutionRole-pure-cms | Account-level |
 | Route 53 zone | Z038191012SF55SAOLG35 | conjeezou.com |
 

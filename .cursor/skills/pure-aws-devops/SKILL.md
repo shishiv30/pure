@@ -11,7 +11,7 @@ This skill captures how the **pure** repo runs on AWS: CMS on ECS Fargate + EFS 
 
 | Purpose | Path |
 |--------|------|
-| Deploy image to ECR | `cms/scripts/deploy-aws-ecr.sh` |
+| Deploy CMS image to ECR | `cms/scripts/deploy-aws-ecr.sh` |
 | ECS + EFS one-time setup | `cms/scripts/aws/setup-ecs-efs.sh` |
 | ALB + HTTP listener | `cms/scripts/aws/setup-alb.sh` |
 | ALB HTTPS listener | `cms/scripts/aws/setup-alb-https.sh` |
@@ -19,7 +19,10 @@ This skill captures how the **pure** repo runs on AWS: CMS on ECS Fargate + EFS 
 | Migrate CMS region | `cms/docs/migrate-cms-to-us-east-1.md` |
 | ALB + DNS + HTTPS | `cms/scripts/aws/setup-alb-and-dns.md` |
 | Where to find CMS in console | `cms/docs/aws-console-cms.md` |
+| App Runner: point at us-east-1 ECR | `docs/apprunner-ecr-us-east-1.md` |
 | us-east-1 resource list | `docs/aws-us-east-1-resources.md` |
+| GitHub: Build Pure Web (prod) | `.github/workflows/build-prod.yml` (ECR + App Runner deploy) |
+| GitHub: Build Pure CMS (prod) | `.github/workflows/build-cms-prd.yml` (ECR only; roll ECS manually) |
 
 Required env for scripts: `AWS_PAGER=""`, and for ECR deploy `AWS_ACCOUNT_ID`, optionally `AWS_REGION` (default us-east-1), `SESSION_SECRET`, `CORS_ORIGINS`.
 
@@ -49,6 +52,12 @@ Target group health can show **Target.NotInUse** / "Target is in an Availability
 
 A cert in us-east-2 cannot be used by an ALB in us-east-1. Request and validate the cert in the **same region** as the ALB.
 
+### 5. App Runner source must match CI ECR region
+
+The **Build Pure Web (prod)** workflow pushes to **us-east-1** ECR. If the App Runner service was created with **us-east-2** ECR, `start-deployment` only redeploys from that source, so the service never gets the new image.
+
+- **Fix:** Update the service source to us-east-1 ECR: `aws apprunner update-service --service-arn <ARN> --source-configuration '{"ImageRepository":{...}}'`. Step-by-step: **docs/apprunner-ecr-us-east-1.md**.
+
 ---
 
 ## Common workflows
@@ -73,6 +82,12 @@ A cert in us-east-2 cannot be used by an ALB in us-east-1. Request and validate 
 1. Run `setup-alb.sh` and `setup-alb-https.sh` (or add HTTPS listener in console with ACM cert).
 2. In Route 53 (or DNS provider): CNAME **cms** → ALB DNS name (e.g. `pure-cms-alb-1420427632.us-east-1.elb.amazonaws.com`).
 3. Remove stale ACM validation CNAMEs in Route 53 if you deleted the old cert.
+
+### Deploy main site (App Runner)
+
+1. **CI (preferred):** Push to `main`; **Build Pure Web (prod)** (`.github/workflows/build-prod.yml`) builds the image, pushes to **us-east-1** ECR, and runs `aws apprunner start-deployment` when repo variable **APP_RUNNER_SERVICE_ARN** is set.
+2. **One-time:** If the service was created with **us-east-2** ECR, it will never see new images. Repoint to us-east-1: **docs/apprunner-ecr-us-east-1.md**, then run `aws apprunner start-deployment --service-arn <ARN> --region us-east-1`.
+3. **Manual deploy:** `aws apprunner start-deployment --service-arn $(aws apprunner list-services --region us-east-1 --query 'ServiceSummaryList[?ServiceName==\`pure\`].ServiceArn' --output text) --region us-east-1`.
 
 ### Link www.conjeezou.com to App Runner
 
@@ -116,8 +131,8 @@ Hosted zone ID for conjeezou.com: **Z038191012SF55SAOLG35** (confirm with `aws r
 - ALB **pure-cms-alb**, target group **pure-cms-tg**.
 - EFS name **pure-cms-data**.
 - Security groups: **pure-cms-alb-sg**, **pure-cms-ecs-sg**, **pure-cms-efs-sg**.
-- ECR repo **pure-cms**.
-- App Runner service **pure**.
+- ECR: **pure-cms** (CMS), **pure** (main site; used by App Runner).
+- App Runner service **pure** (source must be us-east-1 ECR; see docs/apprunner-ecr-us-east-1.md if it was us-east-2).
 - IAM role **ecsTaskExecutionRole-pure-cms**, inline policy **EFSClientMount-pure-cms**.
 
 For a full table with IDs and descriptions, see [reference.md](reference.md).
