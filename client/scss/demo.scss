@@ -332,3 +332,13 @@
         top: calc(var(--breadcrumb-height));
     }
 }
+
+
+.page-demo-sitemap,
+.page-demo-sitemap-state,
+.page-demo-sitemap-county,
+.page-demo-sitemap-city {
+    .menu {
+        display: none;
+    }
+}

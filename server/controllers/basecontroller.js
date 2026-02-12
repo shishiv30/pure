@@ -114,11 +114,13 @@ export default class BaseController {
 		};
 	}
 	initialBreadcrumb(model) {
-		if (model && model.data && model.data.geo) {
-			return getBreadcrumbByGeo(model.data.geo, `/${this.config.name}`);
-		} else {
-			return null;
+		if (model?.data?.breadcrumb) {
+			return model.data.breadcrumb;
 		}
+		if (model?.data?.geo) {
+			return getBreadcrumbByGeo(model.data.geo, `/${this.config.name}`);
+		}
+		return null;
 	}
 
 	initialSeo(model) {

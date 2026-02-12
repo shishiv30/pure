@@ -1,4 +1,4 @@
-import { isValidStateCode } from './stateDict.js';
+import { isValidStateCode, getAllStateCodes, getStateFullName } from './stateDict.js';
 
 export const geoType = {
 	state: 'state',
@@ -261,4 +261,121 @@ export function mapGeoPathToSOAPath(geoPath) {
 
 	const geo = getGeoByPath(geoPath);
 	return mapGeoToSOAPath(geo);
+}
+
+/**
+ * Returns all states as sitemap links (href + text) for a given base path.
+ * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @returns {{ href: string, text: string }[]}
+ */
+export function getStatesForSitemap(basePath) {
+	const codes = getAllStateCodes();
+	return codes.map((code) => ({
+		href: `${basePath}/${getStatePath(code)}`,
+		text: getStateFullName(code) || code,
+	}));
+}
+
+/**
+ * Returns all counties for a state as sitemap links.
+ * @param {string} stateCode - State code (e.g. 'CA')
+ * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {Array} countiesData - Array of county data from geo cache
+ * @returns {{ href: string, text: string }[]}
+ */
+export function getCountiesForSitemap(stateCode, basePath, countiesData) {
+	if (!stateCode || !countiesData || !Array.isArray(countiesData)) {
+		return [];
+	}
+	const path = (basePath || '').replace(/\/$/, '');
+	const stateUpper = stateCode.toUpperCase();
+	const counties = new Map();
+	countiesData
+		.filter((c) => c.state === stateUpper)
+		.forEach((c) => {
+			// Use countyCode (short name like "Los Angeles") for path generation
+			// county is full name (like "Los Angeles County") for display
+			const countyCode = c.countyCode || c.county?.replace(/\s+County$/i, '').trim();
+			const countyName = c.county || countyCode || '';
+			if (!countyName) {
+				return;
+			}
+			const href = `${path}/${getCountyPath(countyCode, stateUpper)}`;
+			if (!counties.has(href)) {
+				counties.set(href, {
+					href,
+					text: countyName,
+				});
+			}
+		});
+	return Array.from(counties.values());
+}
+
+/**
+ * Returns all cities for a county as sitemap links.
+ * @param {string} countyName - County name (e.g. 'Los Angeles')
+ * @param {string} stateCode - State code (e.g. 'CA')
+ * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {Array} citiesData - Array of city data from geo cache
+ * @returns {{ href: string, text: string }[]}
+ */
+export function getCitiesForSitemap(countyName, stateCode, basePath, citiesData) {
+	if (!countyName || !stateCode || !citiesData || !Array.isArray(citiesData)) {
+		return [];
+	}
+	const path = (basePath || '').replace(/\/$/, '');
+	const stateUpper = stateCode.toUpperCase();
+	// County name in cities data is the full name (e.g., "Los Angeles County")
+	// Match both with and without "County" suffix
+	const countyMatch1 = countyName.trim();
+	const countyMatch2 = countyName.replace(/\s+County$/i, '').trim();
+	const cities = new Map();
+	citiesData
+		.filter((c) => c.state === stateUpper && (c.county === countyMatch1 || c.county === countyMatch2))
+		.forEach((c) => {
+			if (!c.city) {
+				return;
+			}
+			const href = `${path}/${getCityPath(c.city, stateUpper)}`;
+			if (!cities.has(href)) {
+				cities.set(href, {
+					href,
+					text: c.city,
+				});
+			}
+		});
+	return Array.from(cities.values());
+}
+
+/**
+ * Returns all zipcodes for a city as sitemap links.
+ * @param {string} cityName - City name (e.g. 'Los Angeles')
+ * @param {string} stateCode - State code (e.g. 'CA')
+ * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {Array} zipcodesData - Array of zipcode data from geo cache
+ * @returns {{ href: string, text: string }[]}
+ */
+export function getZipcodesForSitemap(cityName, stateCode, basePath, zipcodesData) {
+	if (!cityName || !stateCode || !zipcodesData || !Array.isArray(zipcodesData)) {
+		return [];
+	}
+	const path = (basePath || '').replace(/\/$/, '');
+	const stateUpper = stateCode.toUpperCase();
+	const cityMatch = cityName.trim();
+	const zipcodes = new Map();
+	zipcodesData
+		.filter((z) => z.state === stateUpper && z.city === cityMatch)
+		.forEach((z) => {
+			if (!z.zipcode) {
+				return;
+			}
+			const href = `${path}/${getZipcodePath(z.zipcode, stateUpper)}`;
+			if (!zipcodes.has(href)) {
+				zipcodes.set(href, {
+					href,
+					text: z.zipcode,
+				});
+			}
+		});
+	return Array.from(zipcodes.values());
 }

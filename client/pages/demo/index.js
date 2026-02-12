@@ -26,6 +26,9 @@ let demo = {
 			//update detail content
 			console.log('updateDetail', id);
 		};
+		if (window.location.pathname.indexOf('/demo/sitemap') > -1) {
+			return;
+		}
 		let tmp = new Router([
 			{
 				reg: /^\/(demo|demo.html)$/i,
@@ -83,7 +86,7 @@ let demo = {
 			}, 1000);
 		});
 	},
-	render: function ($el, opt, exportObj) {},
+	render: function ($el, opt, exportObj) { },
 };
 
 export default (function (win) {

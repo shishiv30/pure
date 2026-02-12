@@ -20,6 +20,34 @@ router.get('/page/:key', async (req, res) => {
 	controller.toPage(model);
 });
 
+
+router.get(/^\/demo\/sitemap\/?$/, async (req, res) => {
+	const controller = new BaseController(req, res, 'demo-sitemap');
+	const model = await controller.get();
+	controller.toPage(model);
+});
+
+// State level sitemap: /demo/sitemap/{stateCode} - shows counties
+router.get(/^\/demo\/sitemap\/([a-z]{2})\/?$/, async (req, res) => {
+	const controller = new BaseController(req, res, 'demo-sitemap-state');
+	const model = await controller.get();
+	controller.toPage(model);
+});
+
+// County level sitemap: /demo/sitemap/{stateCode}/{county}_county - shows cities
+router.get(/^\/demo\/sitemap\/([a-z]{2})\/([^\/]+)_county\/?$/, async (req, res) => {
+	const controller = new BaseController(req, res, 'demo-sitemap-county');
+	const model = await controller.get();
+	controller.toPage(model);
+});
+
+// City level sitemap: /demo/sitemap/{stateCode}/{city} - shows zipcodes
+router.get(/^\/demo\/sitemap\/([a-z]{2})\/([^\/]+)\/?$/, async (req, res) => {
+	const controller = new BaseController(req, res, 'demo-sitemap-city');
+	const model = await controller.get();
+	controller.toPage(model);
+});
+
 router.get(/^\/demo\/?$/, async (req, res) => {
 	let controller = new BaseController(req, res, 'demo');
 	let model = await controller.get();

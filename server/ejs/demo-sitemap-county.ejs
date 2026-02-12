@@ -1,0 +1,25 @@
+<%- include('html_above') %>
+  <%_ const headerComponent=data.headerComponent; _%>
+    <%_ if (headerComponent) { _%>
+      <%- include(headerComponent.template, { header: headerComponent.data }) %>
+        <%_ } else { _%>
+          <%- include('comp_header') %>
+            <%_ } _%>
+              <%- include('comp_breadcrumb') %>
+
+                <section class="section">
+                  <h1 class="f3 text-bold text-center">
+                    <%= data.title || 'Counties Sitemap' %>
+                  </h1>
+                  <%_ const linksComponent=data.linksComponent; _%>
+                    <%_ if (linksComponent && linksComponent.data && linksComponent.data.length) { _%>
+                      <%- include(linksComponent.template, { links: linksComponent.data }) %>
+                        <%_ } _%>
+                </section>
+                <%_ const footerComponent=data.footerComponent; _%>
+                    <%_ if (footerComponent) { _%>
+                      <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+                        <%_ } else { _%>
+                          <%- include('html_footer') %>
+                            <%_ } _%>
+                              <%- include('html_below') %>

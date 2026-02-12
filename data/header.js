@@ -9,6 +9,7 @@ export default [
 	{ id: 4, text: 'War System', path: '/dnd.html', order: 4, parentId: 2 },
 	{ id: 5, text: 'Survey', path: '/survey.html', order: 5, parentId: 2 },
 	{ id: 6, text: 'AI Trend', path: '/ai-trend.html', order: 6, parentId: 2 },
+	{ id: 9, text: 'Sitemap', path: '/demo/sitemap', order: 7, parentId: 2 },
 	{ id: 7, text: 'Document', path: '/document', order: 7, parentId: null },
 	{ id: 8, text: 'Contact', path: 'javascript:;', order: 8, parentId: null },
 ];

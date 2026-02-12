@@ -1,5 +1,5 @@
 ---
-name: import-cms-data
+name: import-comp-cms
 description: Imports component data into the Pure CMS comp table and wires dynamic load from CMS. Use when moving comp_xxx.js data to CMS, pushing data to CMS, or making header/footer/page content load from CMS.
 ---
 

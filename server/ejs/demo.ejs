@@ -1,53 +1,50 @@
 <%- include('html_above') %>
-  <%_ const headerComponent = data.headerComponent; _%>
-  <%_ if (headerComponent) { _%>
-    <%- include(headerComponent.template, { header: headerComponent.data }) %>
-  <%_ } else { _%>
-    <%- include('comp_header') %>
-  <%_ } _%>
-  <%- include('comp_breadcrumb') %>
-  <section class="detail">
+  <%_ const headerComponent=data.headerComponent; _%>
+    <%_ if (headerComponent) { _%>
+      <%- include(headerComponent.template, { header: headerComponent.data }) %>
+        <%_ } else { _%>
+          <%- include('comp_header') %>
+            <%_ } _%>
+              <%- include('comp_breadcrumb') %>
+                <section class="detail">
+                  <div class="grid grid-xs-1">
+                    <a href="/demo/index" class="img-bg">
+                      <img src="<%=meta.origin%>/img.welcome.webp" alt="Demo" loading="lazy">
+                    </a>
+                    <h1 class="h3">Send a Page on Real Estate</h1>
+                    <div>Welcome to Demo on Real Estate, your trusted destination for buying, selling, and renting real
+                      estate. Whether you're searching for a cozy home, a luxury estate, or a prime commercial space, we
+                      offer a seamless experience with powerful search tools, high-resolution listings, and expert
+                      guidance every step of the way. Explore neighborhoods, compare prices, and connect with top-rated
+                      agents — all in one place. Start your journey to the perfect property today.</div>
+                    <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
+                        type="button">home</button> <button class="tag major active" type="button">welcome</button>
+                      <button class="tag major active" type="button">bird</button> <button class="tag major active"
+                        type="button">feed</button><button class="tag major active" type="button">landing</button>
+                      <button class="tag major active" type="button">digital</button> <button class="tag major active"
+                        type="button">AI paint</button> <button class="tag major active" type="button">nest</button>
+                    </div>
+                  </div>
+                </section>
 
-  </section>
-  <section class="detail">
-    <div class="grid grid-xs-1">
-      <a href="/demo/index" class="img-bg">
-        <img src="<%=meta.origin%>/img.welcome.webp" alt="Demo" loading="lazy">
-      </a>
-      <h1 class="h3">Send a Page on Real Estate</h1>
-      <div>Welcome to Demo on Real Estate, your trusted destination for buying, selling, and renting real
-          estate. Whether you're searching for a cozy home, a luxury estate, or a prime commercial space, we
-          offer a seamless experience with powerful search tools, high-resolution listings, and expert
-          guidance every step of the way. Explore neighborhoods, compare prices, and connect with top-rated
-          agents — all in one place. Start your journey to the perfect property today.</div>
-      <div class="filter"><span class="f7">Tag | Filter </span> <button class="tag major active"
-              type="button">home</button> <button class="tag major active" type="button">welcome</button>
-          <button class="tag major active" type="button">bird</button> <button class="tag major active"
-              type="button">feed</button><button class="tag major active" type="button">landing</button>
-          <button class="tag major active" type="button">digital</button> <button class="tag major active"
-              type="button">AI paint</button> <button class="tag major active" type="button">nest</button>
-      </div>
-    </div>
-  </section>
-
-  <%_ const articleComponent = data.articleComponent; _%>
-  <%_if(articleComponent && articleComponent.data && articleComponent.data.length){_%>
-  <section class="result">
-    <ul>
-      <%_for(var i=0; i<articleComponent.data.length; i++){_%>
-        <li class="item">
-          <%_ const article=articleComponent.data[i]; _%>
-          <%- include(articleComponent.template, {article: article}) %>
-        </li>
-      <%_}_%>
-    </ul>
-  </section>
-  <%_}_%>
-  <%- include('html_menu') %>
-  <%_ const footerComponent = data.footerComponent; _%>
-  <%_ if (footerComponent) { _%>
-    <%- include(footerComponent.template, { footer: footerComponent.data }) %>
-  <%_ } else { _%>
-    <%- include('html_footer') %>
-  <%_ } _%>
-<%- include('html_below') %>
+                <%_ const articleComponent=data.articleComponent; _%>
+                  <%_if(articleComponent && articleComponent.data && articleComponent.data.length){_%>
+                    <section class="result">
+                      <ul>
+                        <%_for(var i=0; i<articleComponent.data.length; i++){_%>
+                          <li class="item">
+                            <%_ const article=articleComponent.data[i]; _%>
+                              <%- include(articleComponent.template, {article: article}) %>
+                          </li>
+                          <%_}_%>
+                      </ul>
+                    </section>
+                    <%_}_%>
+                      <%- include('html_menu') %>
+                        <%_ const footerComponent=data.footerComponent; _%>
+                          <%_ if (footerComponent) { _%>
+                            <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+                              <%_ } else { _%>
+                                <%- include('html_footer') %>
+                                  <%_ } _%>
+                                    <%- include('html_below') %>

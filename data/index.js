@@ -229,3 +229,11 @@ export async function initialGeoData() {
 	geoDataCache = result;
 	return result;
 }
+
+/**
+ * Get cached geo data (returns null if not initialized)
+ * @returns {{ state: Array, city: Array, county: Array, neighborhood: Array, zipcode: Array }|null}
+ */
+export function getGeoData() {
+	return geoDataCache;
+}
