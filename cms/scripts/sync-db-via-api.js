@@ -5,6 +5,11 @@
  *
  * Usage: node cms/scripts/sync-db-via-api.js [CMS_URL] [CMS_EMAIL] [CMS_PASSWORD]
  * Example: node cms/scripts/sync-db-via-api.js https://cms.conjeezou.com admin@example.com password
+ *
+ * If sync reports "Created/Updated" but you don't see changes on AWS: ensure CMS_URL is your
+ * AWS CMS (e.g. https://cms.conjeezou.com), and the account is admin. If you see 401 on
+ * GET /api/pages or POST/PUT, the session cookie was not accepted (fixed by sending only
+ * the session cookie value in the Cookie header).
  */
 
 import sqlite3 from 'sqlite3';
@@ -60,57 +65,72 @@ const db = new sqlite3.Database(DB_PATH);
 const dbAll = promisify(db.all.bind(db));
 const dbGet = promisify(db.get.bind(db));
 
+// Extract session cookie for Cookie header (same as push-page.js / push-comp.js)
+function getCookie(res) {
+	const setCookie = res.headers.get('set-cookie');
+	if (!setCookie) return null;
+	// First cookie only; strip attributes (Path=, HttpOnly, etc.) so Cookie header is valid
+	return setCookie.split(',')[0].split(';')[0].trim();
+}
+
 // Login to CMS and get session cookie
 async function login() {
 	console.log(`Logging in to ${CMS_URL}...`);
 	const res = await fetch(`${CMS_URL}/api/auth/login`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		credentials: 'include',
 		body: JSON.stringify({ email: CMS_EMAIL, password: CMS_PASSWORD })
 	});
 
 	if (!res.ok) {
-		const error = await res.json();
+		const error = await res.json().catch(() => ({}));
 		throw new Error(`Login failed: ${error.message || res.statusText}`);
 	}
 
 	const data = await res.json();
 	console.log(`✓ Logged in as ${data.data.user.email}`);
-	
-	// Extract cookies from response
-	const cookies = res.headers.get('set-cookie');
-	return cookies;
+
+	const cookie = getCookie(res);
+	if (!cookie) {
+		console.warn('Warning: No Set-Cookie in login response; API requests may be rejected (401).');
+	}
+	return cookie;
+}
+
+function apiHeaders(cookie) {
+	const h = { 'Content-Type': 'application/json' };
+	if (cookie) h.Cookie = cookie;
+	return h;
 }
 
 // Sync pages
-async function syncPages(cookies) {
+async function syncPages(cookie) {
 	console.log('\nSyncing pages...');
-	
-	// Fetch existing pages from remote CMS
+
 	const listRes = await fetch(`${CMS_URL}/api/pages`, {
-		headers: {
-			'Content-Type': 'application/json',
-			'Cookie': cookies
-		},
-		credentials: 'include'
+		headers: apiHeaders(cookie)
 	});
-	
+
+	if (!listRes.ok) {
+		const err = await listRes.json().catch(() => ({}));
+		console.error(`  ✗ GET /api/pages failed: ${listRes.status} ${err.message || listRes.statusText}`);
+		return;
+	}
+
 	const listData = await listRes.json().catch(() => ({ data: [] }));
 	const existingPages = listData.data || [];
-	
+
 	const pages = await dbAll('SELECT * FROM pages ORDER BY id');
-	
+
 	for (const page of pages) {
 		try {
-			// Find existing page by name (case-insensitive)
 			const existing = existingPages.find((p) => p.name.toLowerCase() === page.name.toLowerCase());
-			
-			const url = existing 
+			const url = existing
 				? `${CMS_URL}/api/pages/${existing.id}`
 				: `${CMS_URL}/api/pages`;
 			const method = existing ? 'PUT' : 'POST';
-			
+
+			// Omit path if remote DB may not have the column yet (run POST /api/setup/migrate-pages-path once, then sync again to send path)
 			const body = {
 				name: page.name,
 				title: page.title,
@@ -119,19 +139,12 @@ async function syncPages(cookies) {
 				meta: page.meta || '',
 				status: page.status || 'published'
 			};
-			
-			// For PUT, don't include name (it's immutable)
-			if (existing && method === 'PUT') {
-				delete body.name;
-			}
-			
+			if (existing && method === 'PUT') delete body.name;
+			if (process.env.SYNC_INCLUDE_PATH === '1') body.path = page.path || undefined;
+
 			const res = await fetch(url, {
 				method,
-				headers: {
-					'Content-Type': 'application/json',
-					'Cookie': cookies
-				},
-				credentials: 'include',
+				headers: apiHeaders(cookie),
 				body: JSON.stringify(body)
 			});
 
@@ -139,7 +152,7 @@ async function syncPages(cookies) {
 				console.log(`  ✓ ${existing ? 'Updated' : 'Created'} page: ${page.name}`);
 			} else {
 				const error = await res.json().catch(() => ({ message: res.statusText }));
-				console.error(`  ✗ Failed to sync page ${page.name}: ${error.message}`);
+				console.error(`  ✗ Failed to sync page ${page.name}: ${res.status} ${error.message}`);
 			}
 		} catch (error) {
 			console.error(`  ✗ Error syncing page ${page.name}:`, error.message);
@@ -148,40 +161,32 @@ async function syncPages(cookies) {
 }
 
 // Sync sitemap
-async function syncSitemap(cookies) {
+async function syncSitemap(cookie) {
 	console.log('\nSyncing sitemap...');
-	
-	// Fetch existing sitemap entries from remote CMS
+
 	const listRes = await fetch(`${CMS_URL}/api/sitemap`, {
-		headers: {
-			'Content-Type': 'application/json',
-			'Cookie': cookies
-		},
-		credentials: 'include'
+		headers: apiHeaders(cookie)
 	});
-	
+	if (!listRes.ok) {
+		console.error(`  ✗ GET /api/sitemap failed: ${listRes.status}`);
+		return;
+	}
+
 	const listData = await listRes.json().catch(() => ({ data: [] }));
 	const existingSitemap = listData.data || [];
-	
 	const sitemap = await dbAll('SELECT * FROM sitemap ORDER BY id');
-	
+
 	for (const entry of sitemap) {
 		try {
-			// Find existing entry by URL
 			const existing = existingSitemap.find((e) => e.url === entry.url);
-			
 			const url = existing
 				? `${CMS_URL}/api/sitemap/${existing.id}`
 				: `${CMS_URL}/api/sitemap`;
 			const method = existing ? 'PUT' : 'POST';
-			
+
 			const res = await fetch(url, {
 				method,
-				headers: {
-					'Content-Type': 'application/json',
-					'Cookie': cookies
-				},
-				credentials: 'include',
+				headers: apiHeaders(cookie),
 				body: JSON.stringify({
 					url: entry.url,
 					priority: entry.priority,
@@ -194,7 +199,7 @@ async function syncSitemap(cookies) {
 				console.log(`  ✓ ${existing ? 'Updated' : 'Created'} sitemap entry: ${entry.url}`);
 			} else {
 				const error = await res.json().catch(() => ({ message: res.statusText }));
-				console.error(`  ✗ Failed to sync sitemap entry ${entry.url}: ${error.message}`);
+				console.error(`  ✗ Failed to sync sitemap entry ${entry.url}: ${res.status} ${error.message}`);
 			}
 		} catch (error) {
 			console.error(`  ✗ Error syncing sitemap entry ${entry.url}:`, error.message);
@@ -203,43 +208,33 @@ async function syncSitemap(cookies) {
 }
 
 // Sync comp
-async function syncComp(cookies) {
+async function syncComp(cookie) {
 	console.log('\nSyncing comp...');
-	
-	// Fetch existing comp entries from remote CMS
+
 	const listRes = await fetch(`${CMS_URL}/api/comp`, {
-		headers: {
-			'Content-Type': 'application/json',
-			'Cookie': cookies
-		},
-		credentials: 'include'
+		headers: apiHeaders(cookie)
 	});
-	
+	if (!listRes.ok) {
+		console.error(`  ✗ GET /api/comp failed: ${listRes.status}`);
+		return;
+	}
+
 	const listData = await listRes.json().catch(() => ({ data: [] }));
 	const existingComp = listData.data || [];
-	
 	const comp = await dbAll('SELECT * FROM comp ORDER BY id');
-	
+
 	for (const row of comp) {
 		try {
-			// Find existing comp by key
 			const existing = existingComp.find((c) => c.key === row.key);
-			
 			const url = existing
 				? `${CMS_URL}/api/comp/${existing.id}`
 				: `${CMS_URL}/api/comp`;
 			const method = existing ? 'PUT' : 'POST';
-			
-			// Ensure data is a string (it might be null or buffer)
 			const compData = row.data != null ? String(row.data) : '';
-			
+
 			const res = await fetch(url, {
 				method,
-				headers: {
-					'Content-Type': 'application/json',
-					'Cookie': cookies
-				},
-				credentials: 'include',
+				headers: apiHeaders(cookie),
 				body: JSON.stringify({
 					key: row.key,
 					type: row.type || 'json',
@@ -258,8 +253,7 @@ async function syncComp(cookies) {
 				} catch {
 					errorMessage = errorText || errorMessage;
 				}
-				console.error(`  ✗ Failed to sync comp ${row.key}: ${errorMessage}`);
-				console.error(`    Status: ${res.status}, URL: ${url}`);
+				console.error(`  ✗ Failed to sync comp ${row.key}: ${res.status} ${errorMessage}`);
 			}
 		} catch (error) {
 			console.error(`  ✗ Error syncing comp ${row.key}:`, error.message);
@@ -280,13 +274,17 @@ async function main() {
 		
 		console.log(`Local database: ${DB_PATH}`);
 		console.log(`Target CMS: ${CMS_URL}\n`);
-		
-		const cookies = await login();
-		
-		await syncPages(cookies);
-		await syncSitemap(cookies);
-		await syncComp(cookies);
-		
+
+		const cookie = await login();
+		if (!cookie) {
+			console.error('Cannot sync without session cookie. Check that the CMS returns Set-Cookie on login.');
+			process.exit(1);
+		}
+
+		await syncPages(cookie);
+		await syncSitemap(cookie);
+		await syncComp(cookie);
+
 		console.log('\n✓ Database sync complete!');
 	} catch (error) {
 		console.error('\n✗ Error:', error.message);

@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -86,6 +87,35 @@ router.post('/create-admin', async (req, res) => {
 		res.status(500).json({
 			code: 500,
 			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
+// One-time migration: add path column to pages (for DBs created before path was added)
+router.post('/migrate-pages-path', requireAdmin, async (req, res) => {
+	try {
+		const db = req.app.locals.db.getDb();
+		const columns = await db.all('PRAGMA table_info(pages)');
+		const hasPath = columns && columns.some((c) => c.name === 'path');
+		if (hasPath) {
+			return res.json({
+				code: 200,
+				message: 'Column pages.path already exists',
+				data: { migrated: false }
+			});
+		}
+		await db.run('ALTER TABLE pages ADD COLUMN path TEXT');
+		res.json({
+			code: 200,
+			message: 'Added pages.path column',
+			data: { migrated: true }
+		});
+	} catch (error) {
+		console.error('Migrate pages path error:', error);
+		res.status(500).json({
+			code: 500,
+			message: error.message || 'Internal server error',
 			data: null
 		});
 	}

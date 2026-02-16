@@ -1,5 +1,13 @@
 # Pure AWS DevOps – Reference
 
+## Sync local CMS DB to AWS
+
+- **API sync (no ECS Exec needed):** `cms/scripts/sync-db-via-api.js`. Reads local `cms/data/cms.db`, logs in to `CMS_URL` with `CMS_EMAIL`/`CMS_PASSWORD`, and POST/PUTs pages, sitemap, comp. Use `CMS_URL=https://cms.conjeezou.com` (or your ALB URL). Credentials from `.env.local` are fine; ensure `CMS_URL` points at AWS.
+- **Old schema (no `pages.path`):** Sync omits `path` by default. After deploy, call **POST** `/api/setup/migrate-pages-path` once (admin session). Then `SYNC_INCLUDE_PATH=1` and sync again to send path.
+- **Full file copy:** `cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db` overwrites EFS DB; requires ECS Exec (and thus a task role in the task definition).
+
+---
+
 ## us-east-1 resource names and IDs
 
 Use these when running CLI commands or checking the console.
