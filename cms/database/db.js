@@ -57,6 +57,7 @@ class Database {
 				CREATE TABLE IF NOT EXISTS pages_new (
 					id INTEGER PRIMARY KEY AUTOINCREMENT,
 					name TEXT UNIQUE NOT NULL,
+					path TEXT,
 					title TEXT NOT NULL,
 					data TEXT,
 					type TEXT NOT NULL DEFAULT 'html' CHECK(type IN ('json', 'html')),
@@ -76,6 +77,7 @@ class Database {
 				INSERT INTO pages_new (
 					id,
 					name,
+					path,
 					title,
 					data,
 					type,
@@ -89,6 +91,7 @@ class Database {
 				SELECT
 					id,
 					name,
+					NULL AS path,
 					title,
 					content AS data,
 					'html' AS type,
@@ -133,11 +136,12 @@ class Database {
 			)
 		`);
 
-		// Pages table
+		// Pages table (name = page key, path = page path e.g. page/index)
 		await this.db.run(`
 			CREATE TABLE IF NOT EXISTS pages (
 				id INTEGER PRIMARY KEY AUTOINCREMENT,
 				name TEXT UNIQUE NOT NULL,
+				path TEXT,
 				title TEXT NOT NULL,
 				data TEXT,
 				type TEXT NOT NULL DEFAULT 'html' CHECK(type IN ('json', 'html')),
@@ -151,7 +155,6 @@ class Database {
 				FOREIGN KEY(updated_by) REFERENCES users(id)
 			)
 		`);
-
 		await this.migratePagesTable();
 
 		// Sitemap table

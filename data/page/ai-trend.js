@@ -1,7 +1,7 @@
 /**
  * AI Trend page section data as array in render order: hero, scrollview, points, gallery, timeline.
  * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
- * Push to CMS: node cms/scripts/push-page.js ai-trend
+ * Push to CMS: node cms/scripts/push-page.js ai-trend data/page/ai-trend.js
  */
 export default [
 	// 0: hero
@@ -11,7 +11,7 @@ export default [
 			alt: 'AI Trend Hero',
 			loading: 'eager',
 		},
-		title: 'AI Trend: Shaping the Future',
+		title: 'AI Trend',
 		subtitle: 'Where intelligence meets innovation and every breakthrough rewrites what\'s possible.',
 		subtitleIcon: 'icon-bolt',
 		desc:

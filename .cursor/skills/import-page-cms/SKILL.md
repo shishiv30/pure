@@ -14,7 +14,7 @@ Use this workflow when you add a new dynamic page (served at `/page/:key`) and w
 | Route | `GET /page/:key` (e.g. `/page/index`, `/page/about`) |
 | Config | `server/configs/page.js` — fetches by key |
 | CMS page name | `page${key}`.toLowerCase() (e.g. `index` → `pageindex`) |
-| Page data file | `data/page<key>.js` — default export: array of sections in order (hero, scrollview, points, gallery, timeline) |
+| Page data file | `data/page/<name>.js` (e.g. `data/page/index.js`, `data/page/ai-trend.js` for key `ai-trend`) — default export: array of sections |
 | Header comp key | `header` — link shape: `{ id, text, path, order, parentId }`; path for page = `/page/<key>` |
 
 Main app fetches: `GET {cmsUrl}/api/pages/content/{pageName}` and `GET {cmsUrl}/api/comp/public/header`.
@@ -40,6 +40,7 @@ node cms/scripts/push-page.js <key> [dataModule] [status] [--update-header]
 ```bash
 node cms/scripts/push-page.js index
 node cms/scripts/push-page.js about data/pageabout.js published --update-header
+node cms/scripts/push-page.js ai-trend data/page/ai-trend.js published --update-header
 ```
 
 **Without script:** Use CMS API (admin auth):
@@ -59,19 +60,19 @@ If you use `--update-header`, the script:
 2. Ensures there is a link with `path: '/page/<key>'`; adds one if missing (text = page title or key, order = after existing).
 3. Writes the updated links back to the comp `header`.
 
-**Manual update:** Get header comp data (e.g. from `data/header.js` or GET comp), add or edit an entry:
+**Manual update:** Get header comp data (e.g. from `data/page/header.js` or GET comp), add or edit an entry:
 
 ```js
 { id: <unique>, text: 'Page Title', path: '/page/<key>', order: <n>, parentId: null }
 ```
 
-Then push comp: `node cms/scripts/push-comp.js header data/header.js` (after editing `data/header.js`), or POST/PUT to `/api/comp` with key `header`.
+Then push comp: `node cms/scripts/push-comp.js header data/page/header.js` (after editing `data/page/header.js`), or POST/PUT to `/api/comp` with key `header`.
 
 ---
 
 ## Checklist
 
-- [ ] Page data file exists (e.g. `data/page<key>.js`) with default export = section array.
+- [ ] Page data file exists (e.g. `data/page<key>.js` or `data/page/<name>.js`) with default export = section array.
 - [ ] Run `node cms/scripts/push-page.js <key> [status] [--update-header]`.
 - [ ] If not using `--update-header`, add `/page/<key>` to header links and push comp `header`.
 - [ ] Main app has `CMS_URL` set so it can fetch the page and header from CMS.
@@ -83,6 +84,6 @@ Then push comp: `node cms/scripts/push-comp.js header data/header.js` (after edi
 - Dynamic page route and config: `server/routes/page.js`, `server/configs/page.js`
 - Page section order and helpers: `helpers/pageData.js` (`arrayToPageData`, `PAGE_SECTIONS_ORDER`)
 - Push script: `cms/scripts/push-page.js`
-- Comp push: `cms/scripts/push-comp.js`; header data: `data/header.js`
+- Comp push: `cms/scripts/push-comp.js`; header data: `data/page/header.js`
 - CMS pages API: `cms/routes/pages.js` (POST /api/pages, PUT /api/pages/:id)
 - CMS comp API: `cms/routes/comp.js` (GET /api/comp/public/:key, POST /api/comp)

@@ -313,7 +313,7 @@ The `getThemeInlineCss()` function automatically converts `/assets/images/` to `
 ## Reference Files
 
 - **Theme CSS Generator**: `server/ejs/comp_theme.js` (contains `getThemeInlineCss()` function)
-- **Theme Data**: `data/theme.js` (local data file, same structure as `data/footer.js`)
+- **Theme Data**: `data/theme.js` (local data file, same structure as `data/page/footer.js`)
 - **Base Controller**: `server/controllers/basecontroller.js` (generates theme CSS in `toPage()` method)
 - **HTML Template**: `server/ejs/html_above.ejs` (outputs `meta.inlineCss` as inline style)
 - **Default Theme SCSS**: `client/scss/_theme.default.scss` (fallback defaults, overridden by theme.js)

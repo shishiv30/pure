@@ -1,6 +1,6 @@
 /**
- * Push index page section data (data/pageindex.js) into CMS pages table.
- * Creates or updates page with name "index", type json, data = pageindex payload.
+ * Push index page section data (data/page/index.js) into CMS pages table.
+ * Name and path come from data/page/header.js pagePath (name = key, path = value).
  * Usage: node cms/scripts/push-page-index.js [status]
  *   status: draft | published (default: published)
  *
@@ -10,6 +10,7 @@
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { pagePath } from '../../data/page/header.js';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,13 +26,14 @@ const CMS_EMAIL = process.env.CMS_EMAIL;
 const CMS_PASSWORD = process.env.CMS_PASSWORD;
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'cms.db');
 
-const PAGE_NAME = 'pageIndex';
+const PAGE_NAME = 'index';
+const PAGE_PATH_VALUE = pagePath.index;
 const PAGE_TITLE = 'Pure Home';
 const PAGE_META = {
 	title: 'Pure Home',
 	desc: 'Author: Conjee Zou, UI solution, Category: Home',
 	keywords: '',
-	path: 'page/index',
+	path: PAGE_PATH_VALUE,
 };
 const status = ['draft', 'published'].includes(process.argv[2])
 	? process.argv[2]
@@ -73,6 +75,7 @@ async function pushViaApi(dataJson) {
 
 	const body = {
 		name: PAGE_NAME,
+		path: PAGE_PATH_VALUE,
 		title: PAGE_TITLE,
 		type: 'json',
 		data: dataJson,
@@ -84,7 +87,14 @@ async function pushViaApi(dataJson) {
 		const putRes = await fetch(`${CMS_URL}/api/pages/${existing.id}`, {
 			method: 'PUT',
 			headers,
-			body: JSON.stringify({ title: body.title, data: body.data, type: body.type, meta: body.meta, status: body.status }),
+			body: JSON.stringify({
+				title: body.title,
+				path: body.path,
+				data: body.data,
+				type: body.type,
+				meta: body.meta,
+				status: body.status,
+			}),
 		});
 		const result = await putRes.json().catch(() => ({}));
 		if (!putRes.ok) {
@@ -120,16 +130,17 @@ function pushViaDb(dataJson) {
 		});
 
 		db.run(
-			`INSERT INTO pages (name, title, data, type, meta, status, created_at, updated_at)
-			 VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+			`INSERT INTO pages (name, path, title, data, type, meta, status, created_at, updated_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 			 ON CONFLICT(name) DO UPDATE SET
+			   path = excluded.path,
 			   title = excluded.title,
 			   data = excluded.data,
 			   type = excluded.type,
 			   meta = excluded.meta,
 			   status = excluded.status,
 			   updated_at = CURRENT_TIMESTAMP`,
-			[PAGE_NAME, PAGE_TITLE, dataJson, 'json', JSON.stringify(PAGE_META), status],
+			[PAGE_NAME, PAGE_PATH_VALUE, PAGE_TITLE, dataJson, 'json', JSON.stringify(PAGE_META), status],
 			(err) => {
 				db.close();
 				if (err) reject(err);
@@ -140,7 +151,7 @@ function pushViaDb(dataJson) {
 }
 
 async function main() {
-	const mod = await import('../../data/pageindex.js');
+	const mod = await import('../../data/page/index.js');
 	const payload = mod.default;
 	const dataJson = typeof payload === 'string' ? payload : JSON.stringify(payload);
 

@@ -724,7 +724,7 @@ router.get('/<pageName>', async (req, res) => {
 4. Controller calls `toPage(model)` → renders `<pageName>.ejs` with model
 5. EJS includes components → components render their data
 
-**Example:** See `server/configs/indexPage.js` and `server/ejs/index.ejs` for the index page implementation.
+**Example:** See `server/configs/page/index.js` and `server/ejs/index.ejs` for the index page implementation.
 
 ## Core Concepts
 

@@ -1,8 +1,9 @@
 /**
  * Push page data into CMS pages table and optionally update header comp with link to /page/:key.
+ * Name and path come from data/page/header.js pagePath (name = key, path = value).
  * Usage: node cms/scripts/push-page.js <key> [dataModule] [status] [--update-header]
- *   key: URL key (e.g. index, about) → CMS page name = page<key> (e.g. pageindex)
- *   dataModule: path to data module relative to repo root (default: data/page<key>.js)
+ *   key: URL key (e.g. ai-trend) → page name = key, path = pagePath[key]
+ *   dataModule: path to data module relative to repo root
  *   status: draft | published (default: published)
  *   --update-header: add/update header comp link with path /page/<key>
  *
@@ -12,6 +13,7 @@
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { pagePath } from '../../data/page/header.js';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,12 +38,12 @@ const status = ['draft', 'published'].includes(args[2]) ? args[2] : 'published';
 
 if (!key) {
 	console.error('Usage: node cms/scripts/push-page.js <key> [dataModule] [status] [--update-header]');
-	console.error('  e.g. node cms/scripts/push-page.js index');
-	console.error('  e.g. node cms/scripts/push-page.js about data/pageabout.js published --update-header');
+	console.error('  e.g. node cms/scripts/push-page.js ai-trend data/page/ai-trend.js published --update-header');
 	process.exit(1);
 }
 
-const PAGE_NAME = `page${key}`.toLowerCase();
+const PAGE_NAME = key;
+const PAGE_PATH_VALUE = pagePath[key] || `page/${key}`;
 const PAGE_PATH = `/page/${key}`;
 
 function getCookie(loginRes) {
@@ -79,10 +81,11 @@ async function pushPageViaApi(dataJson, title, meta) {
 	}
 	const listData = await listRes.json().catch(() => ({}));
 	const pages = listData.data || [];
-	const existing = pages.find((p) => p.name.toLowerCase() === PAGE_NAME);
+	const existing = pages.find((p) => p.name === PAGE_NAME);
 
 	const body = {
 		name: PAGE_NAME,
+		path: PAGE_PATH_VALUE,
 		title: title || key,
 		type: 'json',
 		data: dataJson,
@@ -96,6 +99,7 @@ async function pushPageViaApi(dataJson, title, meta) {
 			headers,
 			body: JSON.stringify({
 				title: body.title,
+				path: body.path,
 				data: body.data,
 				type: body.type,
 				meta: body.meta,
@@ -137,16 +141,17 @@ function pushPageViaDb(dataJson, title, meta) {
 		});
 
 		db.run(
-			`INSERT INTO pages (name, title, data, type, meta, status, created_at, updated_at)
-			 VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+			`INSERT INTO pages (name, path, title, data, type, meta, status, created_at, updated_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 			 ON CONFLICT(name) DO UPDATE SET
+			   path = excluded.path,
 			   title = excluded.title,
 			   data = excluded.data,
 			   type = excluded.type,
 			   meta = excluded.meta,
 			   status = excluded.status,
 			   updated_at = CURRENT_TIMESTAMP`,
-			[PAGE_NAME, title || key, dataJson, 'json', metaStr, status],
+			[PAGE_NAME, PAGE_PATH_VALUE, title || key, dataJson, 'json', metaStr, status],
 			(err) => {
 				db.close();
 				if (err) reject(err);

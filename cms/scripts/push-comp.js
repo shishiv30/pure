@@ -2,7 +2,7 @@
  * Push a data file into CMS comp table by key.
  * Usage: node cms/scripts/push-comp.js <key> [dataModule]
  *   key: comp key (e.g. header, footer)
- *   dataModule: path to data module relative to repo root (default: data/links.js for header, data/footer.js for footer)
+ *   dataModule: path to data module relative to repo root (default: data/links.js for header, data/page/footer.js for footer)
  *
  * Run from repo root. Without CMS_EMAIL/CMS_PASSWORD writes directly to CMS DB.
  */
@@ -26,12 +26,12 @@ const CMS_PASSWORD = process.env.CMS_PASSWORD;
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'cms.db');
 
 const key = process.argv[2];
-const dataModule = process.argv[3] || (key === 'footer' ? 'data/footer.js' : 'data/links.js');
+const dataModule = process.argv[3] || (key === 'footer' ? 'data/page/footer.js' : 'data/links.js');
 
 if (!key) {
 	console.error('Usage: node cms/scripts/push-comp.js <key> [dataModule]');
 	console.error('  e.g. node cms/scripts/push-comp.js footer');
-	console.error('  e.g. node cms/scripts/push-comp.js header data/links.js');
+	console.error('  e.g. node cms/scripts/push-comp.js header data/page/header.js');
 	process.exit(1);
 }
 

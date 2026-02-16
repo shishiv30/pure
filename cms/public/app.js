@@ -225,6 +225,7 @@ async function loadPages() {
 				tr.innerHTML = `
 					<td><strong>${escapeHtml(page.name)}</strong></td>
 					<td>${escapeHtml(page.title)}</td>
+					<td class="text-muted">${escapeHtml(page.path || '—')}</td>
 					<td><span class="badge">${escapeHtml(page.type || '')}</span></td>
 					<td><span class="${statusClass}">${page.status}</span></td>
 					<td class="text-muted">${formatDate(page.updated_at)}</td>
@@ -242,7 +243,7 @@ async function loadPages() {
 		} else {
 			tbody.innerHTML = `
 				<tr>
-					<td colspan="6" class="empty-state">
+					<td colspan="7" class="empty-state">
 						<div>
 							<h3>No pages yet</h3>
 							<p>Create your first page to get started</p>
@@ -256,7 +257,7 @@ async function loadPages() {
 		const tbody = document.getElementById('pages-list');
 		tbody.innerHTML = `
 			<tr>
-				<td colspan="6" class="empty-state">
+				<td colspan="7" class="empty-state">
 					<div>
 						<h3>Error loading pages</h3>
 						<p>Please refresh the page</p>

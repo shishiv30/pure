@@ -1,5 +1,5 @@
 <%_ if (points) { _%>
-	<section class="section-points animation">
+	<section class="section section-points animation">
 		<div class="fixed fixed-max-xs large">
 			<h2 class="f3 text-bold m-b-2">
 				<%= points.heading %>
@@ -20,9 +20,11 @@
 								<p>
 									<%= item.body %>
 								</p>
+								<%_ if (item.ctaText) { _%>
 								<a href="<%= item.ctaHref %>" class="btn regular">
 									<%= item.ctaText %>
 								</a>
+								<%_ } _%>
 							</div>
 							<img src="<%= item.image.src %>" alt="<%= item.image.alt %>" loading="<%= item.image.loading %>">
 						</li>

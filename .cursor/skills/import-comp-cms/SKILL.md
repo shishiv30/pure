@@ -21,7 +21,7 @@ Three-step pattern to separate component data from code, store it in the CMS com
 
 ## Step 1: Separate data from comp_xxx.js
 
-1. **Create a data file** under `data/` (e.g. `data/links.js`, `data/footer.js`).
+1. **Create a data file** under `data/` (e.g. `data/links.js`, `data/page/footer.js`).
 2. **Export a default array** of rows. Each row is a plain object; shape depends on the component (e.g. id, text, path, order, parentId for links; id, type, key, path, text, order, parentId for footer).
 3. **Update the component** (`server/ejs/comp_xxx.js`):
    - Import the data file: `import table from '../../data/<name>.js';`
@@ -30,7 +30,7 @@ Three-step pattern to separate component data from code, store it in the CMS com
 
 **Existing examples:**
 - Header: `data/links.js` (id, text, path, order, parentId) → `comp_header.js` builds `menu` from it; `createHeaderComponent(linkTableOverride)`.
-- Footer: `data/footer.js` (id, icon, key, path, text, order, parentId, type) → `comp_footer.js` builds contact/social/menu; `createFooterComponent(footerTableOverride)`.
+- Footer: `data/page/footer.js` (id, icon, key, path, text, order, parentId, type) → `comp_footer.js` builds contact/social/menu; `createFooterComponent(footerTableOverride)`.
 
 ---
 
@@ -42,7 +42,7 @@ Three-step pattern to separate component data from code, store it in the CMS com
 - **Usage:** `node cms/scripts/push-comp.js <key> [dataModule]`
 - **Examples:**
   - `node cms/scripts/push-comp.js header-menu data/links.js`
-  - `node cms/scripts/push-comp.js footer data/footer.js`
+  - `node cms/scripts/push-comp.js footer data/page/footer.js`
 - **Behavior:** Without `CMS_EMAIL`/`CMS_PASSWORD` it writes directly to the CMS SQLite DB (same DB as `DB_PATH` in cms/.env). With credentials it uses `POST /api/comp`.
 - **Run from:** repo root.
 
@@ -88,6 +88,6 @@ footerComponent: createFooterComponent(footerRowsFromCms),
 ## Reference
 
 - Comp API and push script: `cms/routes/comp.js`, `cms/scripts/push-comp.js`
-- Data and components: `data/links.js`, `data/footer.js`, `server/ejs/comp_header.js`, `server/ejs/comp_footer.js`
+- Data and components: `data/links.js`, `data/page/footer.js`, `data/page/header.js`, `server/ejs/comp_header.js`, `server/ejs/comp_footer.js`
 - Dynamic load from CMS: `server/configs/page.js` (fetches header-menu, footer, and page key)
 - CMS fetch from main app: set `serverConfig.cmsUrl` (from `CMS_URL` in env)

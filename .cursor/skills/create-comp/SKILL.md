@@ -293,5 +293,5 @@ In EJS template, loop through sections:
 - **Component examples**: `server/ejs/comp_header.js`, `comp_header.ejs`, `comp_hero.js`, `comp_hero.ejs`, `comp_points.js`, `comp_points.ejs`, `comp_gallery.js`, `comp_gallery.ejs`, `comp_scrollview.js`, `comp_scrollview.ejs`, `comp_timeline.js`, `comp_timeline.ejs`
 - **Image CDN helper**: `helpers/imgCdn.js` (`getImgCdnUrl()` function)
 - **Config**: `server/config.js` (for `appUrl`, `cdnUrl`)
-- **Page config examples**: `server/configs/indexPage.js` (shows component usage and sections array)
+- **Page config examples**: `server/configs/page/index.js` (shows component usage and sections array)
 - **EJS template examples**: `server/ejs/index.ejs` (shows component includes and section looping)

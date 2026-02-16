@@ -195,7 +195,7 @@ router.get('/:id', requireReadAccess, async (req, res) => {
 
 router.post('/', requireAdmin, async (req, res) => {
 	try {
-		const { name, title, data, type, meta, status } = req.body;
+		const { name, path, title, data, type, meta, status } = req.body;
 
 		if (!name || !title) {
 			return res.status(400).json({
@@ -208,6 +208,7 @@ router.post('/', requireAdmin, async (req, res) => {
 		const pageModel = new Page(req.app.locals.db.getDb());
 		const page = await pageModel.create({
 			name,
+			path: path || null,
 			title,
 			data,
 			type: normalizeType(type),

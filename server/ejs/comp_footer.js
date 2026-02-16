@@ -1,5 +1,5 @@
 import config from '../config.js';
-import footerTable from '../../data/footer.js';
+import footerTable from '../../data/page/footer.js';
 
 const APP_URL = (config.appUrl || '').replace(/\/$/, '');
 const APP_NAME = process.env.APP_NAME || 'Pure';
@@ -64,7 +64,7 @@ function buildFooterFromTable(rows) {
 
 /**
  * Create the footer UI component config.
- * @param {Array|null} [footerTableOverride] - Optional footer rows (e.g. from CMS comp key footer). If null/undefined, uses data/footer.js.
+ * @param {Array|null} [footerTableOverride] - Optional footer rows (e.g. from CMS comp key footer). If null/undefined, uses data/page/footer.js.
  * @returns {{ name: string, template: string, data: object }}
  */
 export function createFooterComponent(footerTableOverride) {

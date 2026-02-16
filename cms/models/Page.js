@@ -6,6 +6,7 @@ class Page {
 	async create(pageData) {
 		const {
 			name,
+			path,
 			title,
 			data,
 			type = 'html',
@@ -15,10 +16,11 @@ class Page {
 		} = pageData;
 
 		const result = await this.db.run(
-			`INSERT INTO pages (name, title, data, type, meta, status, created_by, updated_by) 
-			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO pages (name, path, title, data, type, meta, status, created_by, updated_by)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			[
 				name,
+				path || null,
 				title,
 				data || null,
 				type,
@@ -49,13 +51,17 @@ class Page {
 	}
 
 	async update(id, pageData, updated_by) {
-		const { name, title, data, type, meta, status } = pageData;
+		const { name, path, title, data, type, meta, status } = pageData;
 		const updates = [];
 		const values = [];
 
 		if (name !== undefined) {
 			updates.push('name = ?');
 			values.push(name);
+		}
+		if (path !== undefined) {
+			updates.push('path = ?');
+			values.push(path);
 		}
 		if (title !== undefined) {
 			updates.push('title = ?');

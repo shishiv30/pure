@@ -1,12 +1,13 @@
-import serverConfig from '../config.js';
-import { resolvePageData, buildSections, arrayToPageData } from '../../helpers/pageData.js';
-import { createHeaderComponent } from '../ejs/comp_header.js';
-import { createFooterComponent } from '../ejs/comp_footer.js';
-import { createHeroComponent } from '../ejs/comp_hero.js';
-import { createGalleryComponent } from '../ejs/comp_gallery.js';
-import { createPointsComponent } from '../ejs/comp_points.js';
-import { createScrollviewComponent } from '../ejs/comp_scrollview.js';
-import { createTimelineComponent } from '../ejs/comp_timeline.js';
+import serverConfig from '../../config.js';
+import { resolvePageData, buildSections, arrayToPageData } from '../../../helpers/pageData.js';
+import { createHeaderComponent } from '../../ejs/comp_header.js';
+import { createFooterComponent } from '../../ejs/comp_footer.js';
+import { createHeroComponent } from '../../ejs/comp_hero.js';
+import { createGalleryComponent } from '../../ejs/comp_gallery.js';
+import { createPointsComponent } from '../../ejs/comp_points.js';
+import { createScrollviewComponent } from '../../ejs/comp_scrollview.js';
+import { createTimelineComponent } from '../../ejs/comp_timeline.js';
+import pageIndexData from '../../../data/page/index.js';
 
 const CMS_INDEX_PAGE_NAME = 'index';
 const cmsUrl = () => (serverConfig.cmsUrl || '').replace(/\/$/, '');
@@ -20,7 +21,7 @@ const SECTION_CREATORS = {
 };
 
 /**
- * Load index page section data from CMS (page name "index") or fallback to data/pageindex.js.
+ * Load index page section data from CMS (page name "index") or fallback to data/page/index.js.
  */
 async function loadPageIndexData() {
 	const base = cmsUrl();
@@ -48,8 +49,7 @@ async function loadPageIndexData() {
 			console.error('CMS fetch index page failed:', err);
 		}
 	}
-	const mod = await import('../../data/pageindex.js');
-	return mod.default;
+	return pageIndexData;
 }
 
 export default {
@@ -66,7 +66,7 @@ export default {
 		const footerComponent = createFooterComponent();
 
 		const loaded = await loadPageIndexData();
-		const raw = carrayToPageData(loaded);
+		const raw = arrayToPageData(loaded);
 		const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
 		const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
 		const resolved = resolvePageData(raw, { cdnUrl, appUrl });

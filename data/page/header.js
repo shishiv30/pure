@@ -1,7 +1,15 @@
 /**
  * Header nav link table: id, text, path (without domain), order, parentId.
  * parentId empty/null = top-level; otherwise id of parent (e.g. Demo's children have parentId: 2).
+ *
+ * Page names and paths for the Pages table:
+ * - Key = name field in Pages table (used when fetching by name).
+ * - Value = path column (page path, e.g. page/index, page/ai-trend).
  */
+export const pagePath = {
+	index: 'page/index',
+	'ai-trend': 'page/ai-trend',
+};
 export default [
 	{ id: 1, text: 'Home', path: '/index', order: 1, parentId: null },
 	{ id: 2, text: 'Demo', path: '/demo', order: 2, parentId: null },

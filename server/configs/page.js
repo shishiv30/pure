@@ -83,7 +83,7 @@ async function fetchPageByName(name) {
  * Dynamic page config: fetches content from CMS by key.
  * Route: GET /page/:key (e.g. /page/index, /page/about).
  * For key "index", fetches page "pageIndex" from CMS pages table and returns { sections }.
- * Header and footer are loaded from local data files (data/header.js, data/footer.js).
+ * Header and footer are loaded from local data files (data/page/header.js, data/page/footer.js).
  */
 export default {
 	name: 'page',
@@ -116,7 +116,7 @@ export default {
 
 		if (!base) return fallback();
 
-		const pageCmsName = `page${payload.key}`.toLowerCase();
+		const pageCmsName = `${payload.key}`.toLowerCase();
 		const pageIndexData = await fetchPageByName(pageCmsName);
 
 		if (pageIndexData) {

@@ -1,5 +1,5 @@
 /**
- * Push data/header.js into CMS comp table.
+ * Push data/page/header.js into CMS comp table.
  * Creates or updates comp with key: header, type: json, data: <json string>.
  *
  * Run from repo root: node cms/scripts/push-header-menu.js
@@ -90,7 +90,7 @@ function pushViaDb(dataJson) {
 }
 
 async function main() {
-	const linkTable = (await import('../../data/header.js')).default;
+	const linkTable = (await import('../../data/page/header.js')).default;
 	const dataJson = JSON.stringify(linkTable);
 
 	if (CMS_EMAIL && CMS_PASSWORD) {

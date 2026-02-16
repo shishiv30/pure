@@ -1,0 +1,15 @@
+---
+description: When changing a file name or file path, update all references and document the change
+alwaysApply: true
+---
+
+# Rename or Move File / Path
+
+When changing a file name or moving a file to a new path:
+
+1. **Create** the new file at the target path (with updated content, e.g. import paths or comments that mention the path).
+2. **Find and update all references** to the old path or name (imports, requires, configs, scripts, docs, comments).
+3. **Document** the change: update READMEs, SKILLs, or in-file comments that describe the path or how to use it.
+4. **Delete** the old file only after references and docs are updated.
+
+Use project-wide search (e.g. grep for the old filename or path) to ensure no references are missed.

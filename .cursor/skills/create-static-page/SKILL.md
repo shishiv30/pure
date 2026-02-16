@@ -219,7 +219,7 @@ If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` ha
 4. Controller calls `toPage(model)` → renders `<pageName>.ejs` with model
 5. EJS includes components → components render their data
 
-**Example**: See `server/configs/indexPage.js` and `server/ejs/index.ejs` for the index page implementation.
+**Example**: See `server/configs/page/index.js` and `server/ejs/index.ejs` for the index page implementation.
 
 ## Checklist
 
@@ -244,4 +244,4 @@ If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` ha
 - Icons: `client/scss/_icon.scss` (use `icon-*` classes)
 - Welcome images: `client/assets/images/welcome/` (point0–point9)
 - Server EJS components: See `.cursor/skills/create-comp/SKILL.md` for component creation guide
-- Server-rendered page examples: `server/configs/indexPage.js`, `server/ejs/index.ejs`, `server/routes/page.js` (index route)
+- Server-rendered page examples: `server/configs/page/index.js`, `server/ejs/index.ejs`, `server/routes/page.js` (index route)
