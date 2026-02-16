@@ -300,6 +300,7 @@ async function loadPage(id) {
 		document.getElementById('page-id').value = page.id;
 		document.getElementById('page-name').value = page.name;
 		document.getElementById('page-title').value = page.title;
+		document.getElementById('page-path').value = page.path || '';
 		document.getElementById('page-type').value = page.type || 'html';
 		document.getElementById('page-data').value = page.data || '';
 		document.getElementById('page-meta').value = page.meta || '';
@@ -316,6 +317,7 @@ document.getElementById('page-form-element').onsubmit = async (e) => {
 	const data = {
 		name: document.getElementById('page-name').value.trim(),
 		title: document.getElementById('page-title').value.trim(),
+		path: document.getElementById('page-path').value.trim() || undefined,
 		type: document.getElementById('page-type').value,
 		data: document.getElementById('page-data').value,
 		meta: document.getElementById('page-meta').value.trim(),
