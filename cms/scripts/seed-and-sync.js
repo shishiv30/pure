@@ -106,8 +106,11 @@ async function seedPages() {
 				? path.join(REPO_ROOT, 'data/page/index.js')
 				: path.join(REPO_ROOT, `data/page/${key}.js`);
 		let payload;
+		let pageMeta;
 		try {
-			payload = (await import(modPath)).default;
+			const mod = await import(modPath);
+			payload = mod.default;
+			pageMeta = mod.meta;
 		} catch (err) {
 			console.warn(`  Skip page ${key}: ${err.message}`);
 			continue;
@@ -115,7 +118,10 @@ async function seedPages() {
 		const meta =
 			key === 'index'
 				? { title: 'Pure Home', desc: 'Author: Conjee Zou', path: pathVal }
-				: { path: pathVal };
+				: { path: pathVal, ...(pageMeta && typeof pageMeta === 'object' ? pageMeta : {}) };
+		if (key === 'ai-trend') {
+			meta.theme = 'theme-pink';
+		}
 		const dataJson = typeof payload === 'string' ? payload : JSON.stringify(payload);
 
 		await dbRun(
@@ -186,6 +192,16 @@ async function seedComps() {
 		[themeData]
 	);
 	console.log('  ✓ Comp: theme');
+
+	const themePinkData = JSON.stringify(
+		(await import(path.join(REPO_ROOT, 'data/theme-pink.js'))).default
+	);
+	await dbRun(
+		`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-pink', 'theme', 'json', ?, datetime('now'))
+		 ON CONFLICT(key) DO UPDATE SET type = excluded.type, format = excluded.format, data = excluded.data, updated_at = datetime('now')`,
+		[themePinkData]
+	);
+	console.log('  ✓ Comp: theme-pink');
 }
 
 // ---------- Sync to remote ----------
