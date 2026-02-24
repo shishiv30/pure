@@ -21,8 +21,11 @@ import readline from 'readline';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const repoRoot = path.resolve(__dirname, '..', '..');
 try {
-	(await import('dotenv')).default.config({ path: path.join(__dirname, '..', '..', '.env') });
+	const dotenv = (await import('dotenv')).default;
+	dotenv.config({ path: path.join(repoRoot, '.env') });
+	dotenv.config({ path: path.join(repoRoot, '.env.local') });
 } catch {
 	// dotenv optional
 }
@@ -200,13 +203,14 @@ async function syncPages(cookie) {
 		const existing = existingPages.find((p) => p.name.toLowerCase() === page.name.toLowerCase());
 		const url = existing ? `${CMS_URL}/api/pages/${existing.id}` : `${CMS_URL}/api/pages`;
 		const method = existing ? 'PUT' : 'POST';
+		// Send all fields so remote pages table matches local; use null (not undefined) so API updates the column
 		const body = {
 			name: page.name,
-			path: page.path || undefined,
-			type: page.format || 'json',
+			path: page.path ?? null,
+			type: page.type || 'page',
 			format: page.format || 'json',
-			data: page.data || '',
-			meta: page.meta || '',
+			data: page.data ?? '',
+			meta: page.meta ?? null,
 			status: page.status || 'published',
 		};
 		if (existing) delete body.name;
@@ -319,6 +323,7 @@ async function main() {
 		console.log('✓ Local DB seeded.');
 
 		if (!LOCAL_ONLY && CMS_EMAIL && CMS_PASSWORD) {
+			console.log(`\nSyncing to remote CMS: ${CMS_URL}`);
 			const cookie = await login();
 			await syncPages(cookie);
 			await syncComps(cookie);

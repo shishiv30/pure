@@ -1,6 +1,6 @@
 ---
 name: pure-aws-devops
-description: DevOps for the pure project on AWS (ECS Fargate CMS, ALB, EFS, ECR, ACM, App Runner, Route 53). Use when deploying or fixing the CMS, cleaning up a region, linking custom domains (cms or www), listing or auditing AWS resources, or debugging ALB/ECS/exec format error.
+description: DevOps for the pure project on AWS (ECS Fargate CMS, ALB, EFS, ECR, ACM, App Runner, Route 53). Use when deploying or fixing the CMS, syncing DB/data to AWS CMS, cleaning up a region, linking custom domains (cms or www), listing or auditing AWS resources, or debugging ALB/ECS/exec format error.
 ---
 
 # Pure project – AWS DevOps
@@ -79,13 +79,13 @@ The **Build Pure Web (prod)** workflow pushes to **us-east-1** ECR. If the App R
 
 ### Sync local CMS database to AWS
 
-Use **API sync** when the AWS CMS is reachable and you have an admin account. Credentials can come from `.env.local` (e.g. `CMS_EMAIL`, `CMS_PASSWORD`); point `CMS_URL` at the **AWS** CMS (e.g. `https://cms.conjeezou.com`), not localhost.
+Use **API sync** when the AWS CMS is reachable and you have an admin account. The script `cms/scripts/seed-and-sync.js` loads **`.env` then `.env.local`** (so put `CMS_URL`, `CMS_EMAIL`, `CMS_PASSWORD` in `.env.local` to avoid prompts). It seeds the local DB from data files (pages, comps, sitemap) then pushes to the remote CMS via API.
 
-1. **Run seed and sync** (from repo root):
+1. **Run seed and sync** (from repo root). To ensure you sync to **AWS** (not localhost), set `CMS_URL` explicitly:
    ```bash
-   CMS_URL=https://cms.conjeezou.com CMS_EMAIL=your@email.com CMS_PASSWORD=yourpassword node cms/scripts/seed-and-sync.js
+   CMS_URL=https://cms.conjeezou.com node cms/scripts/seed-and-sync.js
    ```
-   Or use env from `.env.local`: set `CMS_URL` to the AWS URL, then run `node cms/scripts/seed-and-sync.js`.
+   Credentials are read from `.env.local` (`CMS_EMAIL`, `CMS_PASSWORD`). The script prints `Syncing to remote CMS: <url>` so you can confirm the target.
 2. **Full DB replace (optional):** To overwrite the AWS DB file with your local `cms/data/cms.db`, use `./cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db`. This requires **ECS Exec** to be enabled on the service; enabling it requires a **task role** in the task definition (see gotcha #6). If ECS Exec is not set up, use API sync only.
 
 ### ALB returns 503 or “not working”
