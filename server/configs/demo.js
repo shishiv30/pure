@@ -9,7 +9,7 @@ import { createArticleComponent } from '../ejs/comp_article.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 
-// Reusable function for fetching properties from SOA API
+// Reusable function for fetching properties from SOA API. Returns [] on failure so callers can fall back.
 export async function fetchPropertiesFromSOA(soaPath) {
 	try {
 		if (!soaPath) {
@@ -32,7 +32,8 @@ export async function fetchPropertiesFromSOA(soaPath) {
 		}
 		return result.data.listings || [];
 	} catch (error) {
-		throw new Error('Error fetching properties:', error);
+		console.error('Error fetching properties:', error);
+		return [];
 	}
 }
 export async function fetchPropertiesImagesFromSOA(url) {
@@ -67,7 +68,8 @@ export async function fetchPropertiesImagesFromSOA(url) {
 		}
 		return images;
 	} catch (error) {
-		throw new Error('Error fetching properties:', error);
+		console.error('Error fetching property images:', error);
+		return [];
 	}
 }
 
@@ -126,16 +128,13 @@ export default {
 				geo = null;
 			}
 		}
-		//use api to fetch properties
+		//use api to fetch properties (fetchPropertiesFromSOA returns [] on failure)
 		if (geo) {
-			try {
-				let soaPath = mapGeoToSOAPath(geo);
-				let properties = await fetchPropertiesFromSOA(soaPath);
-				articles = mapPropertiesToArticles(properties);
-			} catch (error) {
-				console.error('Error fetching properties:', error);
-				articles = articlesData;
-			}
+			let soaPath = mapGeoToSOAPath(geo);
+			let properties = await fetchPropertiesFromSOA(soaPath);
+			articles = Array.isArray(properties) && properties.length > 0
+				? mapPropertiesToArticles(properties)
+				: articlesData;
 		}
 		const articleComponent = createArticleComponent(articles);
 		const headerComponent = createHeaderComponent();

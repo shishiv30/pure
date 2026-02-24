@@ -20,6 +20,7 @@ This skill captures how the **pure** repo runs on AWS: CMS on ECS Fargate + EFS 
 | ALB + DNS + HTTPS | `cms/scripts/aws/setup-alb-and-dns.md` |
 | Where to find CMS in console | `cms/docs/aws-console-cms.md` |
 | App Runner: point at us-east-1 ECR | `docs/apprunner-ecr-us-east-1.md` |
+| App Runner: CMS connection (500 on /page/*) | `docs/apprunner-cms-connection.md` |
 | us-east-1 resource list | `docs/aws-us-east-1-resources.md` |
 | GitHub: Build Pure Web (prod) | `.github/workflows/build-prod.yml` (ECR + App Runner deploy) |
 | GitHub: Build Pure CMS (prod) | `.github/workflows/build-cms-prd.yml` (ECR only; roll ECS manually) |

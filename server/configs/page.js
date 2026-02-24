@@ -10,6 +10,20 @@ import { createTimelineComponent } from '../ejs/comp_timeline.js';
 
 const cmsUrl = () => (serverConfig.cmsUrl || '').replace(/\/$/, '');
 
+/** CMS fetch timeout (ms); avoids hanging when CMS is unreachable. */
+const CMS_FETCH_TIMEOUT_MS = 10000;
+
+async function fetchWithTimeout(url) {
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), CMS_FETCH_TIMEOUT_MS);
+	try {
+		const res = await fetch(url, { signal: controller.signal });
+		return res;
+	} finally {
+		clearTimeout(timeoutId);
+	}
+}
+
 const SECTION_CREATORS = {
 	hero: createHeroComponent,
 	scrollview: createScrollviewComponent,
@@ -23,7 +37,7 @@ async function fetchCompByKey(key) {
 	const base = cmsUrl();
 	if (!base) return null;
 	try {
-		const res = await fetch(`${base}/api/comp/public/${encodeURIComponent(key)}`);
+		const res = await fetchWithTimeout(`${base}/api/comp/public/${encodeURIComponent(key)}`);
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
@@ -55,7 +69,7 @@ async function fetchPageByName(name) {
 	const base = cmsUrl();
 	if (!base || !name) return null;
 	try {
-		const res = await fetch(`${base}/api/pages/content/${encodeURIComponent(name)}`);
+		const res = await fetchWithTimeout(`${base}/api/pages/content/${encodeURIComponent(name)}`);
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
@@ -159,17 +173,21 @@ async function handlePageGet(key) {
 		return fallback();
 	}
 
-	const raw = arrayToPageData(pageData);
-	const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
-	const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
-	const resolved = resolvePageData(raw, { cdnUrl, appUrl });
-	const sections = buildSections(resolved, SECTION_CREATORS);
-
-	return {
-		headerComponent,
-		footerComponent,
-		sections,
-	};
+	try {
+		const raw = arrayToPageData(pageData);
+		const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
+		const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
+		const resolved = resolvePageData(raw, { cdnUrl, appUrl });
+		const sections = buildSections(resolved, SECTION_CREATORS);
+		return {
+			headerComponent,
+			footerComponent,
+			sections,
+		};
+	} catch (err) {
+		console.error('Failed to build page sections for:', key, err);
+		return fallback();
+	}
 }
 
 // Index page config (home route /)
@@ -191,8 +209,14 @@ export default {
 	assetName: 'index',
 	async seo(req) {
 		const key = req.params?.key || 'page';
-		const metadata = await loadPageMetadata(key);
-		return metadata.seo;
+		try {
+			const metadata = await loadPageMetadata(key);
+			return metadata?.seo || { title: `Pure - ${key}`, desc: '', keywords: '' };
+		} catch (err) {
+			console.error('Page SEO load failed:', key, err);
+			const title = key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+			return { title: `Pure - ${title}`, desc: '', keywords: '' };
+		}
 	},
 	beforeGet(req) {
 		return { key: req.params?.key };

@@ -2,12 +2,14 @@
 # Builds on push to main: Docker image to ECR; dist/ from the image is synced to S3 if AWS_S3_CDN_BUCKET is set.
 # If vars.APP_RUNNER_SERVICE_ARN is set, triggers an App Runner deployment so the service picks up the new image.
 # To enable: set AWS_ECR_ENABLED = true and add secrets. See docs/aws-ecr-setup.md.
+# You can also run this workflow manually from the Actions tab (workflow_dispatch).
 
 name: Build Pure Web (prod)
 
-'on':
+on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
@@ -23,6 +25,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check deployment config
+        run: |
+          echo "AWS_ECR_ENABLED=${{ vars.AWS_ECR_ENABLED }}"
+          echo "APP_RUNNER_SERVICE_ARN is set: ${{ vars.APP_RUNNER_SERVICE_ARN != '' }}"
+          echo "AWS_S3_CDN_BUCKET is set: ${{ vars.AWS_S3_CDN_BUCKET != '' }}"
+          if [ -z "${{ vars.APP_RUNNER_SERVICE_ARN }}" ]; then
+            echo "::warning::APP_RUNNER_SERVICE_ARN is not set. App Runner deploy will be skipped. Set it in Settings → Secrets and variables → Actions → Variables."
+          fi
 
       - name: Validate AWS secrets
         run: |
@@ -86,12 +97,17 @@ jobs:
 
       - name: Deploy to App Runner
         if: vars.APP_RUNNER_SERVICE_ARN != ''
-        run: |
-          aws apprunner start-deployment \
-            --service-arn '${{ vars.APP_RUNNER_SERVICE_ARN }}' \
-            --region ${{ env.AWS_REGION }}
+        id: apprunner-deploy
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
+          APP_RUNNER_SERVICE_ARN: ${{ vars.APP_RUNNER_SERVICE_ARN }}
+        run: |
+          echo "Starting App Runner deployment..."
+          aws apprunner start-deployment \
+            --service-arn "$APP_RUNNER_SERVICE_ARN" \
+            --region "$AWS_REGION" \
+            --output json | tee deploy-output.json
+          echo "::notice::App Runner deployment started. New instances will use the image after the deployment completes (check AWS Console → App Runner → your service)."
 
       - name: Sync dist to S3 (CDN bucket root)
         if: vars.AWS_S3_CDN_BUCKET != ''
@@ -100,7 +116,9 @@ jobs:
 
       - name: Invalidate CloudFront cache
         if: vars.AWS_S3_CDN_BUCKET != '' && vars.AWS_CLOUDFRONT_DISTRIBUTION_ID != ''
+        env:
+          CLOUDFRONT_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --distribution-id "$CLOUDFRONT_ID" \
             --paths '/*'
