@@ -10,17 +10,50 @@ import { createTimelineComponent } from '../ejs/comp_timeline.js';
 
 const cmsUrl = () => (serverConfig.cmsUrl || '').replace(/\/$/, '');
 
-/** CMS fetch timeout (ms); avoids hanging when CMS is unreachable. */
-const CMS_FETCH_TIMEOUT_MS = 10000;
-
-async function fetchWithTimeout(url) {
-	const controller = new AbortController();
-	const timeoutId = setTimeout(() => controller.abort(), CMS_FETCH_TIMEOUT_MS);
+/**
+ * Fetch all type='comp' comps from CMS in one request. Returns { header, footer, ... } keyed by comp key.
+ * @returns {Promise<{ header: object|array|null, footer: object|array|null }>}
+ */
+async function fetchPageComps() {
+	const base = cmsUrl();
+	if (!base) return { header: null, footer: null };
 	try {
-		const res = await fetch(url, { signal: controller.signal });
-		return res;
-	} finally {
-		clearTimeout(timeoutId);
+		const res = await fetch(`${base}/api/comp/public`);
+		if (!res.ok) return { header: null, footer: null };
+		const json = await res.json();
+		const data = json?.data || {};
+		return {
+			header: data.header ?? null,
+			footer: data.footer ?? null,
+		};
+	} catch (err) {
+		console.error('CMS fetch comps failed:', err);
+		return { header: null, footer: null };
+	}
+}
+
+/** Fetch one comp by key (e.g. theme). Returns parsed data or null. */
+async function fetchCompByKey(key) {
+	const base = cmsUrl();
+	if (!base || !key) return null;
+	try {
+		const res = await fetch(`${base}/api/comp/public/${encodeURIComponent(key)}`);
+		if (!res.ok) return null;
+		const json = await res.json();
+		const row = json?.data;
+		if (!row) return null;
+		let data = row.data;
+		if (typeof data === 'string') {
+			try {
+				data = JSON.parse(data);
+			} catch {
+				return null;
+			}
+		}
+		return data != null ? data : null;
+	} catch (err) {
+		console.error('CMS fetch comp failed:', key, err);
+		return null;
 	}
 }
 
@@ -32,68 +65,36 @@ const SECTION_CREATORS = {
 	timeline: createTimelineComponent,
 };
 
-
-async function fetchCompByKey(key) {
-	const base = cmsUrl();
-	if (!base) return null;
-	try {
-		const res = await fetchWithTimeout(`${base}/api/comp/public/${encodeURIComponent(key)}`);
-		if (!res.ok) return null;
-		const json = await res.json();
-		const row = json?.data;
-		if (!row) return null;
-		const raw = row.data;
-		const parsed =
-			typeof raw === 'string'
-				? (() => {
-					try {
-						return JSON.parse(raw);
-					} catch {
-						return raw;
-					}
-				})()
-				: raw;
-		return parsed;
-	} catch (err) {
-		console.error('CMS fetch comp failed:', key, err);
-		return null;
-	}
-}
-
 /**
- * Fetch published page content by name from CMS pages table.
- * @param {string} name - Page name (e.g. 'pageIndex')
- * @returns {Promise<object|null>} Parsed page data or null
+ * Fetch published page by name from CMS. Returns both content (data) and SEO (meta).
+ * @param {string} name - Page name (e.g. 'ai-trend')
+ * @returns {Promise<{ data: object, meta: object|null }|null>} data for sections, meta for seo (title, desc, keywords)
  */
 async function fetchPageByName(name) {
 	const base = cmsUrl();
 	if (!base || !name) return null;
 	try {
-		const res = await fetchWithTimeout(`${base}/api/pages/content/${encodeURIComponent(name)}`);
+		const res = await fetch(`${base}/api/pages/content/${encodeURIComponent(name)}`);
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
-		if (!row || row.data == null) return null;
-		const fmt = row.format ?? row.type;
-		if (fmt && fmt !== 'json') return null;
-		const raw = row.data;
-		const parsed =
-			typeof raw === 'string'
-				? (() => {
-					try {
-						return JSON.parse(raw);
-					} catch {
-						return null;
-					}
-				})()
-				: raw;
-		return parsed && typeof parsed === 'object' ? parsed : null;
+		if (!row) return null;
+		if(row.type && row.type !== 'json') return { data:null, meta:null };
+		try{
+			let data = row.data;
+			let meta = row.meta;
+			if(typeof data === 'string') data = JSON.parse(data);
+			if(typeof meta === 'string') meta = JSON.parse(meta);
+			return { data, meta };
+		} catch (err) {
+			console.error('Failed to parse page data or meta:', name, err);
+			return { data: null, meta: null };
+		}
 	} catch (err) {
 		console.error('CMS fetch page failed:', name, err);
-		return null;
+		return { data: null, meta: null };
 	}
 }
-
 /**
  * Dynamic page config: fetches content from CMS by key or loads from local data files.
  * Route: GET /page/:key (e.g. /page/index, /page/ai-trend).
@@ -102,55 +103,17 @@ async function fetchPageByName(name) {
  * Header and footer are loaded from local data files.
  */
 async function loadPageData(key) {
-	const base = cmsUrl();
 	const pageCmsName = `${key}`.toLowerCase();
-
-	// Try CMS first
-	if (base) {
-		try {
-			const pageData = await fetchPageByName(pageCmsName);
-			if (pageData && typeof pageData === 'object') {
-				return pageData;
-			}
-		} catch (err) {
-			console.error('CMS fetch page failed:', pageCmsName, err);
-		}
+	const result = await fetchPageByName(pageCmsName);
+	if (result?.data) {
+		return result;
 	}
-
-	// Fallback to local data file
 	try {
 		const dataModule = await import(`../../data/page/${key}.js`);
-		return dataModule.default || null;
+		return { data: dataModule.default, meta: dataModule.meta || null };
 	} catch (err) {
 		console.error('Failed to load local page data:', key, err);
 		return null;
-	}
-}
-
-async function loadPageMetadata(key) {
-	try {
-		const dataModule = await import(`../../data/page/${key}.js`);
-		return {
-			name: dataModule.name || key,
-			path: dataModule.path || `page/${key}`,
-			seo: dataModule.seo || {
-				title: `Pure - ${key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}`,
-				desc: '',
-				keywords: '',
-			},
-		};
-	} catch (err) {
-		// Fallback metadata if file doesn't exist
-		const title = key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-		return {
-			name: key,
-			path: `page/${key}`,
-			seo: {
-				title: `Pure - ${title}`,
-				desc: '',
-				keywords: '',
-			},
-		};
 	}
 }
 
@@ -159,30 +122,39 @@ async function handlePageGet(key) {
 	const fallback = () => ({
 		headerComponent: createHeaderComponent(),
 		footerComponent: createFooterComponent(),
+		theme: null,
 		pageContent: null,
 		sections: null,
 	});
 
-	// Use local data files for header and footer
-	const headerComponent = createHeaderComponent();
-	const footerComponent = createFooterComponent();
+	const base = cmsUrl();
+	const comps = base ? await fetchPageComps() : { header: null, footer: null };
+	const { header: headerData, footer: footerData } = comps;
 
-	const pageData = await loadPageData(key);
-	if (!pageData) {
+	const headerComponent = createHeaderComponent(headerData ?? undefined);
+	const footerComponent = createFooterComponent(footerData ?? undefined);
+
+	const pageResult = await loadPageData(key);
+	if (!pageResult?.data) {
 		console.error('Failed to load page data for:', key);
 		return fallback();
 	}
 
 	try {
-		const raw = arrayToPageData(pageData);
+		const raw = arrayToPageData(pageResult.data);
 		const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
 		const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
 		const resolved = resolvePageData(raw, { cdnUrl, appUrl });
 		const sections = buildSections(resolved, SECTION_CREATORS);
+		const meta = pageResult.meta ?? undefined;
+		const themeKey = typeof meta?.theme === 'string' ? meta.theme.trim() : '';
+		const theme = themeKey ? await fetchCompByKey(themeKey) : undefined;
 		return {
 			headerComponent,
 			footerComponent,
 			sections,
+			meta,
+			...(theme != null && { theme }),
 		};
 	} catch (err) {
 		console.error('Failed to build page sections for:', key, err);
@@ -190,38 +162,32 @@ async function handlePageGet(key) {
 	}
 }
 
-// Index page config (home route /)
+function seoFromModel(req, model) {
+	const m = model?.data?.meta;
+	return { title: m?.title ?? '', desc: m?.desc ?? '', keywords: m?.keywords ?? '' };
+}
+
+// Index (route /) – same logic as page, fixed key
 export const indexConfig = {
 	name: 'index',
 	assetName: 'index',
-	async seo() {
-		const metadata = await loadPageMetadata('index');
-		return metadata.seo;
+	async seo(req, model) {
+		return seoFromModel(req, model);
 	},
-	get: async function () {
-		return handlePageGet('index');
-	},
+	get: async () => handlePageGet('index'),
 };
 
 // Dynamic page config (route /page/:key)
 export default {
 	name: 'page',
 	assetName: 'index',
-	async seo(req) {
-		const key = req.params?.key || 'page';
-		try {
-			const metadata = await loadPageMetadata(key);
-			return metadata?.seo || { title: `Pure - ${key}`, desc: '', keywords: '' };
-		} catch (err) {
-			console.error('Page SEO load failed:', key, err);
-			const title = key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-			return { title: `Pure - ${title}`, desc: '', keywords: '' };
-		}
+	async seo(req, model) {
+		return seoFromModel(req, model);
 	},
 	beforeGet(req) {
 		return { key: req.params?.key };
 	},
-	get: async function (payload) {
+	get: async (payload) => {
 		if (!payload.key) return null;
 		return handlePageGet(payload.key);
 	},

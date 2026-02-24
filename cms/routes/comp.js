@@ -33,6 +33,34 @@ router.get('/public/:key', async (req, res) => {
 	}
 });
 
+// Public: get all comps where type === 'comp'. Response: { data: { [key]: parsed, ... } }
+router.get('/public', async (req, res) => {
+	try {
+		const compModel = new Comp(req.app.locals.db.getDb());
+		const rows = await compModel.getByType('comp');
+		const data = {};
+		for (const row of rows) {
+			let parsed = row.data;
+			if (typeof parsed === 'string') {
+				try {
+					parsed = JSON.parse(parsed);
+				} catch {
+					parsed = null;
+				}
+			}
+			if (row.key != null && parsed != null) data[row.key] = parsed;
+		}
+		res.json({ code: 200, message: 'Comps retrieved', data });
+	} catch (error) {
+		console.error('Get comps by type error:', error);
+		res.status(500).json({
+			code: 500,
+			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
 router.get('/', requireReadAccess, async (req, res) => {
 	try {
 		const compModel = new Comp(req.app.locals.db.getDb());

@@ -3,7 +3,7 @@ html {
 	--cui-font: 'Roboto';
 	--color-glb-lightness: 23%;
 	--color-glb-bg-lightness: 95%;
-	--color-glb-saturation: 5%;
+	--color-glb-saturation: 1%;
 	--color-glb-bg-saturation: 100%;
 	--color-glb-default-saturation: 100%;
 	--color-glb-default-lightness: 30%;
@@ -177,7 +177,7 @@ body {
 	--color-bg: var(--color-bg-default);
 	--color-hover: var(--color-default-l1);
 	--color-border-hover: var(--color-bg-default);
-	--color-bg-hover: var(--color-bg-default);
+	--color-bg-hover: var(--color-bg-default-l1);
 	--color-l1: var(--color-default-l1);
 	--color-bg-l1: var(--color-bg-default-l1);
 

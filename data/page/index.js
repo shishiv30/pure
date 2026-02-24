@@ -5,7 +5,7 @@
  */
 export const name = 'index';
 export const path = 'page/index';
-export const seo = {
+export const meta = {
 	title: 'Pure Home',
 	desc: 'Author: Conjee Zou, UI solution, Category: Home',
 	keywords: '',

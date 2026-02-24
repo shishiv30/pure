@@ -6,12 +6,12 @@ class Comp {
 	async create(compData) {
 		const { key, type, format = 'json', data } = compData;
 
-		const result = await this.db.run(
+		await this.db.run(
 			'INSERT INTO comps (key, type, format, data, updated_at) VALUES (?, ?, ?, ?, datetime("now"))',
 			[key, type, format, data]
 		);
 
-		return this.getById(result.lastID);
+		return this.getByKey(key);
 	}
 
 	async getById(id) {
@@ -22,8 +22,24 @@ class Comp {
 		return await this.db.get('SELECT * FROM comps WHERE key = ?', [key]);
 	}
 
+	/** @param {string[]} keys - e.g. ['header', 'footer', 'theme'] */
+	async getByKeys(keys) {
+		if (!keys?.length) return [];
+		const placeholders = keys.map(() => '?').join(',');
+		return await this.db.all(
+			`SELECT * FROM comps WHERE key IN (${placeholders}) ORDER BY key`,
+			keys
+		);
+	}
+
 	async getAll() {
 		return await this.db.all('SELECT * FROM comps ORDER BY key');
+	}
+
+	/** @param {string} type - e.g. 'comp' */
+	async getByType(type) {
+		if (!type) return [];
+		return await this.db.all('SELECT * FROM comps WHERE type = ? ORDER BY key', [type]);
 	}
 
 	async update(id, compData) {

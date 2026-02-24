@@ -5,7 +5,7 @@
  */
 export const name = 'ai-trend';
 export const path = 'page/ai-trend';
-export const seo = {
+export const meta = {
 	title: 'Pure - AI Trend',
 	desc: 'AI Trend: shaping the future with intelligence and innovation.',
 	keywords: 'AI, artificial intelligence, trends',
