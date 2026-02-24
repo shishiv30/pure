@@ -8,6 +8,7 @@
 		"dev": "npx cross-env NODE_ENV=development nodemon server.js",
 		"start": "npx cross-env NODE_ENV=production node server.js",
 		"setup-db": "node scripts/setup-db.js",
+		"seed-and-sync": "node scripts/seed-and-sync.js",
 		"build-docker": "docker build -t pure-cms .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},

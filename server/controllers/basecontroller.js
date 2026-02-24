@@ -126,9 +126,10 @@ export default class BaseController {
 		return null;
 	}
 
-	initialSeo(model) {
+	async initialSeo(model) {
 		if (this.config.seo) {
-			return this.config.seo(this.req, model);
+			const result = this.config.seo(this.req, model);
+			return typeof result?.then === 'function' ? await result : result;
 		}
 		return {
 			title: '',
@@ -209,7 +210,7 @@ export default class BaseController {
 			throw new Error('View Template is required');
 		}
 		model.meta = this.initialMeta(model);
-		model.seo = this.initialSeo(model);
+		model.seo = await this.initialSeo(model);
 		model.breadcrumb = this.initialBreadcrumb(model);
 		// Generate theme CSS and add to meta.inlineCss
 		try {

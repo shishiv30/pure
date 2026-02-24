@@ -15,7 +15,7 @@ Three-step pattern to separate component data from code, store it in the CMS com
 | 2 | Upload data into CMS comp table | POST API or push script |
 | 3 | Fetch from CMS and use in app | Component accepts override; page config fetches by key |
 
-**CMS comp table**: `comp` (columns: id, key, type, data). Public read: `GET /api/comp/public/:key`.
+**CMS comps table**: id, key, type, format, data. Public read: `GET /api/comp/public/:key`.
 
 ---
 
@@ -36,15 +36,11 @@ Three-step pattern to separate component data from code, store it in the CMS com
 
 ## Step 2: Upload data into CMS
 
-**Option A – Push script (recommended for repo-driven data)**
+**Option A – Seed script (recommended for repo-driven data)**
 
-- **Script:** `cms/scripts/push-comp.js`
-- **Usage:** `node cms/scripts/push-comp.js <key> [dataModule]`
-- **Examples:**
-  - `node cms/scripts/push-comp.js header-menu data/links.js`
-  - `node cms/scripts/push-comp.js footer data/page/footer.js`
-- **Behavior:** Without `CMS_EMAIL`/`CMS_PASSWORD` it writes directly to the CMS SQLite DB (same DB as `DB_PATH` in cms/.env). With credentials it uses `POST /api/comp`.
-- **Run from:** repo root.
+- **Script:** `cms/scripts/seed-and-sync.js`
+- **Usage:** `node cms/scripts/seed-and-sync.js [--local-only]`
+- **Behavior:** Seeds local DB from `data/page/header.js`, `data/page/footer.js`, `data/theme.js`. With `CMS_EMAIL`/`CMS_PASSWORD` syncs to remote via API.
 
 **Option B – POST API**
 
@@ -79,7 +75,7 @@ footerComponent: createFooterComponent(footerRowsFromCms),
 
 - [ ] Data moved to `data/<name>.js` (default export array).
 - [ ] Component builds from table and accepts optional override; fallback to local table when override is null/undefined.
-- [ ] Data pushed to CMS: `node cms/scripts/push-comp.js <key> data/<name>.js` (or POST /api/comp).
+- [ ] Data in `data/page/header.js`, `data/page/footer.js`, or `data/theme.js`; run `node cms/scripts/seed-and-sync.js` (or POST /api/comp).
 - [ ] Consumer (e.g. page config) fetches `GET /api/comp/public/<key>`, parses `data`, passes into component factory.
 - [ ] `CMS_URL` set where the main app runs so it can reach the CMS.
 
@@ -87,7 +83,7 @@ footerComponent: createFooterComponent(footerRowsFromCms),
 
 ## Reference
 
-- Comp API and push script: `cms/routes/comp.js`, `cms/scripts/push-comp.js`
+- Comp API and seed script: `cms/routes/comp.js`, `cms/scripts/seed-and-sync.js`
 - Data and components: `data/links.js`, `data/page/footer.js`, `data/page/header.js`, `server/ejs/comp_header.js`, `server/ejs/comp_footer.js`
 - Dynamic load from CMS: `server/configs/page.js` (fetches header-menu, footer, and page key)
 - CMS fetch from main app: set `serverConfig.cmsUrl` (from `CMS_URL` in env)

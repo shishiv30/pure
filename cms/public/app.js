@@ -222,11 +222,12 @@ async function loadPages() {
 			data.data.forEach(page => {
 				const tr = document.createElement('tr');
 				const statusClass = `badge badge-${page.status}`;
+				const displayName = (page.name || '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 				tr.innerHTML = `
-					<td><strong>${escapeHtml(page.name)}</strong></td>
-					<td>${escapeHtml(page.title)}</td>
+					<td><strong>${escapeHtml(displayName)}</strong><br><small class="text-muted">${escapeHtml(page.name)}</small></td>
 					<td class="text-muted">${escapeHtml(page.path || '—')}</td>
 					<td><span class="badge">${escapeHtml(page.type || '')}</span></td>
+					<td>${escapeHtml(page.format || 'json')}</td>
 					<td><span class="${statusClass}">${page.status}</span></td>
 					<td class="text-muted">${formatDate(page.updated_at)}</td>
 					<td>
@@ -299,9 +300,8 @@ async function loadPage(id) {
 
 		document.getElementById('page-id').value = page.id;
 		document.getElementById('page-name').value = page.name;
-		document.getElementById('page-title').value = page.title;
 		document.getElementById('page-path').value = page.path || '';
-		document.getElementById('page-type').value = page.type || 'html';
+		document.getElementById('page-type').value = page.format || page.type || 'json';
 		document.getElementById('page-data').value = page.data || '';
 		document.getElementById('page-meta').value = page.meta || '';
 		document.getElementById('page-status').value = page.status;
@@ -316,7 +316,6 @@ document.getElementById('page-form-element').onsubmit = async (e) => {
 	const id = document.getElementById('page-id').value;
 	const data = {
 		name: document.getElementById('page-name').value.trim(),
-		title: document.getElementById('page-title').value.trim(),
 		path: document.getElementById('page-path').value.trim() || undefined,
 		type: document.getElementById('page-type').value,
 		data: document.getElementById('page-data').value,
@@ -553,7 +552,9 @@ async function loadComp() {
 				tr.innerHTML = `
 					<td><code>${escapeHtml(row.key)}</code></td>
 					<td>${escapeHtml(row.type)}</td>
+					<td>${escapeHtml(row.format || 'json')}</td>
 					<td class="text-muted" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${dataPreview}</td>
+					<td class="text-muted">${row.updated_at ? formatDate(row.updated_at) : '—'}</td>
 					<td>
 						<div class="actions">
 							<button class="btn btn-primary btn-sm" onclick="editComp(${row.id})">Edit</button>
@@ -566,7 +567,7 @@ async function loadComp() {
 		} else {
 			tbody.innerHTML = `
 				<tr>
-					<td colspan="4" class="empty-state">
+					<td colspan="6" class="empty-state">
 						<div>
 							<h3>No comp entries yet</h3>
 							<p>Add comp data (e.g. header)</p>
@@ -611,6 +612,7 @@ async function loadCompEntry(id) {
 		document.getElementById('comp-id').value = row.id;
 		document.getElementById('comp-key').value = row.key;
 		document.getElementById('comp-type').value = row.type;
+		document.getElementById('comp-format').value = row.format || 'json';
 		document.getElementById('comp-data').value = row.data || '';
 	} catch (error) {
 		showError('comp-error', 'Failed to load comp');
@@ -623,6 +625,7 @@ document.getElementById('comp-form-element').onsubmit = async (e) => {
 	const id = document.getElementById('comp-id').value;
 	const key = document.getElementById('comp-key').value.trim();
 	const type = document.getElementById('comp-type').value.trim();
+	const format = document.getElementById('comp-format').value;
 	const dataVal = document.getElementById('comp-data').value.trim();
 
 	if (!key || !type) {
@@ -633,7 +636,7 @@ document.getElementById('comp-form-element').onsubmit = async (e) => {
 	try {
 		const url = id ? `${API_BASE}/api/comp/${id}` : `${API_BASE}/api/comp`;
 		const method = id ? 'PUT' : 'POST';
-		const body = id ? { key, type, data: dataVal } : { key, type, data: dataVal };
+		const body = id ? { key, type, format, data: dataVal } : { key, type, format, data: dataVal };
 		const res = await fetch(url, {
 			method,
 			headers: { 'Content-Type': 'application/json' },

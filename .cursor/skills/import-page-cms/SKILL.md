@@ -23,32 +23,19 @@ Main app fetches: `GET {cmsUrl}/api/pages/content/{pageName}` and `GET {cmsUrl}/
 
 ## Step 1: Post page data to CMS
 
-**Script (recommended):** `cms/scripts/push-page.js`
+**Script (recommended):** `cms/scripts/seed-and-sync.js`
+
+Seeds local DB from `data/page/*.js` (pages from `pagePath` in `data/page/header.js`) and `data/theme.js`, then syncs to remote CMS.
 
 ```bash
 # From repo root
-node cms/scripts/push-page.js <key> [dataModule] [status] [--update-header]
+node cms/scripts/seed-and-sync.js [--local-only] [CMS_URL] [CMS_EMAIL] [CMS_PASSWORD]
 ```
 
-- **key** — URL key (e.g. `index`, `about`). CMS page name becomes `page<key>` (e.g. `pageindex`).
-- **dataModule** — Optional. Path to data module relative to repo root (default: `data/page<key>.js`).
-- **status** — Optional. `draft` or `published` (default: `published`).
-- **--update-header** — If set, after pushing the page, updates the header comp so it includes a link to `/page/<key>`.
+- `--local-only` — Seed local DB only.
+- **With credentials** — Seeds local, then syncs to remote via API.
 
-**Examples:**
-
-```bash
-node cms/scripts/push-page.js index
-node cms/scripts/push-page.js about data/pageabout.js published --update-header
-node cms/scripts/push-page.js ai-trend data/page/ai-trend.js published --update-header
-```
-
-**Without script:** Use CMS API (admin auth):
-
-- `POST /api/pages` — body: `{ name, title, type: "json", data, meta, status }`.
-- Page name must be `page<key>` (lowercase). Data = JSON string of the section array.
-
-**Env:** `CMS_URL` (default `http://localhost:3003`). With `CMS_EMAIL`/`CMS_PASSWORD` the script uses the API; otherwise it writes to the CMS SQLite DB at `DB_PATH`.
+**Without script:** Use CMS API (admin auth): `POST /api/pages` — body: `{ name, title, type: "json", data, meta, status }`. Page name = key (e.g. `index`, `ai-trend`). Add page key to `pagePath` in `data/page/header.js` for seed-and-sync to include it.
 
 ---
 
@@ -60,21 +47,14 @@ If you use `--update-header`, the script:
 2. Ensures there is a link with `path: '/page/<key>'`; adds one if missing (text = page title or key, order = after existing).
 3. Writes the updated links back to the comp `header`.
 
-**Manual update:** Get header comp data (e.g. from `data/page/header.js` or GET comp), add or edit an entry:
-
-```js
-{ id: <unique>, text: 'Page Title', path: '/page/<key>', order: <n>, parentId: null }
-```
-
-Then push comp: `node cms/scripts/push-comp.js header data/page/header.js` (after editing `data/page/header.js`), or POST/PUT to `/api/comp` with key `header`.
+**Manual update:** Edit `data/page/header.js` to add a link, then run `node cms/scripts/seed-and-sync.js` to sync.
 
 ---
 
 ## Checklist
 
 - [ ] Page data file exists (e.g. `data/page<key>.js` or `data/page/<name>.js`) with default export = section array.
-- [ ] Run `node cms/scripts/push-page.js <key> [status] [--update-header]`.
-- [ ] If not using `--update-header`, add `/page/<key>` to header links and push comp `header`.
+- [ ] Add page to `pagePath` in `data/page/header.js`, add `data/page/<key>.js`, run `node cms/scripts/seed-and-sync.js`.
 - [ ] Main app has `CMS_URL` set so it can fetch the page and header from CMS.
 
 ---
@@ -83,7 +63,6 @@ Then push comp: `node cms/scripts/push-comp.js header data/page/header.js` (afte
 
 - Dynamic page route and config: `server/routes/page.js`, `server/configs/page.js`
 - Page section order and helpers: `helpers/pageData.js` (`arrayToPageData`, `PAGE_SECTIONS_ORDER`)
-- Push script: `cms/scripts/push-page.js`
-- Comp push: `cms/scripts/push-comp.js`; header data: `data/page/header.js`
+- Seed and sync: `cms/scripts/seed-and-sync.js`; header and pages: `data/page/header.js`
 - CMS pages API: `cms/routes/pages.js` (POST /api/pages, PUT /api/pages/:id)
 - CMS comp API: `cms/routes/comp.js` (GET /api/comp/public/:key, POST /api/comp)

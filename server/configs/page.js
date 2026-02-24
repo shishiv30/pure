@@ -29,9 +29,8 @@ async function fetchCompByKey(key) {
 		const row = json?.data;
 		if (!row) return null;
 		const raw = row.data;
-		const type = row.type || '';
 		const parsed =
-			type === 'json' && typeof raw === 'string'
+			typeof raw === 'string'
 				? (() => {
 					try {
 						return JSON.parse(raw);
@@ -60,7 +59,9 @@ async function fetchPageByName(name) {
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
-		if (!row || row.type !== 'json' || row.data == null) return null;
+		if (!row || row.data == null) return null;
+		const fmt = row.format ?? row.type;
+		if (fmt && fmt !== 'json') return null;
 		const raw = row.data;
 		const parsed =
 			typeof raw === 'string'
@@ -80,60 +81,124 @@ async function fetchPageByName(name) {
 }
 
 /**
- * Dynamic page config: fetches content from CMS by key.
- * Route: GET /page/:key (e.g. /page/index, /page/about).
- * For key "index", fetches page "pageIndex" from CMS pages table and returns { sections }.
- * Header and footer are loaded from local data files (data/page/header.js, data/page/footer.js).
+ * Dynamic page config: fetches content from CMS by key or loads from local data files.
+ * Route: GET /page/:key (e.g. /page/index, /page/ai-trend).
+ * Loads page metadata (name, path, seo) and section data from data/page/[key].js files.
+ * Falls back to CMS if available, otherwise uses local data files.
+ * Header and footer are loaded from local data files.
  */
+async function loadPageData(key) {
+	const base = cmsUrl();
+	const pageCmsName = `${key}`.toLowerCase();
+
+	// Try CMS first
+	if (base) {
+		try {
+			const pageData = await fetchPageByName(pageCmsName);
+			if (pageData && typeof pageData === 'object') {
+				return pageData;
+			}
+		} catch (err) {
+			console.error('CMS fetch page failed:', pageCmsName, err);
+		}
+	}
+
+	// Fallback to local data file
+	try {
+		const dataModule = await import(`../../data/page/${key}.js`);
+		return dataModule.default || null;
+	} catch (err) {
+		console.error('Failed to load local page data:', key, err);
+		return null;
+	}
+}
+
+async function loadPageMetadata(key) {
+	try {
+		const dataModule = await import(`../../data/page/${key}.js`);
+		return {
+			name: dataModule.name || key,
+			path: dataModule.path || `page/${key}`,
+			seo: dataModule.seo || {
+				title: `Pure - ${key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}`,
+				desc: '',
+				keywords: '',
+			},
+		};
+	} catch (err) {
+		// Fallback metadata if file doesn't exist
+		const title = key.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+		return {
+			name: key,
+			path: `page/${key}`,
+			seo: {
+				title: `Pure - ${title}`,
+				desc: '',
+				keywords: '',
+			},
+		};
+	}
+}
+
+// Shared page handler logic
+async function handlePageGet(key) {
+	const fallback = () => ({
+		headerComponent: createHeaderComponent(),
+		footerComponent: createFooterComponent(),
+		pageContent: null,
+		sections: null,
+	});
+
+	// Use local data files for header and footer
+	const headerComponent = createHeaderComponent();
+	const footerComponent = createFooterComponent();
+
+	const pageData = await loadPageData(key);
+	if (!pageData) {
+		console.error('Failed to load page data for:', key);
+		return fallback();
+	}
+
+	const raw = arrayToPageData(pageData);
+	const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
+	const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
+	const resolved = resolvePageData(raw, { cdnUrl, appUrl });
+	const sections = buildSections(resolved, SECTION_CREATORS);
+
+	return {
+		headerComponent,
+		footerComponent,
+		sections,
+	};
+}
+
+// Index page config (home route /)
+export const indexConfig = {
+	name: 'index',
+	assetName: 'index',
+	async seo() {
+		const metadata = await loadPageMetadata('index');
+		return metadata.seo;
+	},
+	get: async function () {
+		return handlePageGet('index');
+	},
+};
+
+// Dynamic page config (route /page/:key)
 export default {
 	name: 'page',
 	assetName: 'index',
-	seo(req) {
+	async seo(req) {
 		const key = req.params?.key || 'page';
-		return {
-			title: `Pure - ${key}`,
-			desc: '',
-			keywords: '',
-		};
+		const metadata = await loadPageMetadata(key);
+		return metadata.seo;
 	},
 	beforeGet(req) {
 		return { key: req.params?.key };
 	},
 	get: async function (payload) {
 		if (!payload.key) return null;
-		const base = cmsUrl();
-
-		const fallback = () => ({
-			headerComponent: createHeaderComponent(),
-			footerComponent: createFooterComponent(),
-			pageContent: null,
-			sections: null,
-		});
-
-		// Use local data files for header and footer
-		const headerComponent = createHeaderComponent();
-		const footerComponent = createFooterComponent();
-
-		if (!base) return fallback();
-
-		const pageCmsName = `${payload.key}`.toLowerCase();
-		const pageIndexData = await fetchPageByName(pageCmsName);
-
-		if (pageIndexData) {
-			const raw = arrayToPageData(pageIndexData);
-			const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
-			const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
-			const resolved = resolvePageData(raw, { cdnUrl, appUrl });
-			const sections = buildSections(resolved, SECTION_CREATORS);
-			return {
-				headerComponent,
-				footerComponent,
-				sections,
-			};
-		} else {
-			console.error('CMS fetch page failed:', pageCmsName);
-			// Return fallback when CMS fetch fails
-			return fallback();
-		}
+		return handlePageGet(payload.key);
 	},
 };

@@ -26,6 +26,7 @@ export default function setupSession(app, sessionSecret, dbPath) {
 
 	app.use(
 		session({
+			name: 'cms.sid',
 			secret: sessionSecret,
 			store,
 			resave: false,
@@ -37,7 +38,7 @@ export default function setupSession(app, sessionSecret, dbPath) {
 				secure: forceSecure ? true : (req.secure || false),
 				httpOnly: true,
 				sameSite: 'lax',
-				maxAge: 24 * 60 * 60 * 1000 // 24 hours
+				maxAge: 5 * 60 * 1000 // 5 minutes
 			})
 		})
 	);

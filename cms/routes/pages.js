@@ -16,10 +16,10 @@ function normalizeMeta(meta) {
 	return String(meta);
 }
 
-function normalizeType(type) {
-	if (!type) return 'html';
-	const val = String(type).toLowerCase().trim();
-	return val === 'json' ? 'json' : 'html';
+function normalizeFormat(format) {
+	if (!format) return 'json';
+	const val = String(format).toLowerCase().trim();
+	return val === 'html' ? 'html' : 'json';
 }
 
 function parseMeta(meta) {
@@ -59,9 +59,8 @@ async function getPageContentByName(req, res) {
 			message: 'Page content retrieved',
 			data: {
 				name: page.name,
-				title: page.title,
 				data: page.data,
-				type: page.type,
+				type: page.format || page.type,
 				meta: parseMeta(page.meta),
 			}
 		});
@@ -117,9 +116,8 @@ router.get('/getPageContentByName', async (req, res) => {
 			message: 'Page content retrieved',
 			data: {
 				name: page.name,
-				title: page.title,
 				data: page.data,
-				type: page.type,
+				type: page.format || page.type,
 				meta: parseMeta(page.meta),
 			}
 		});
@@ -195,12 +193,13 @@ router.get('/:id', requireReadAccess, async (req, res) => {
 
 router.post('/', requireAdmin, async (req, res) => {
 	try {
-		const { name, path, title, data, type, meta, status } = req.body;
+		const { name, path, data, type, format, meta, status } = req.body;
+		const fmt = format ?? type;
 
-		if (!name || !title) {
+		if (!name) {
 			return res.status(400).json({
 				code: 400,
-				message: 'Name and title are required',
+				message: 'Name is required',
 				data: null
 			});
 		}
@@ -209,9 +208,8 @@ router.post('/', requireAdmin, async (req, res) => {
 		const page = await pageModel.create({
 			name,
 			path: path || null,
-			title,
 			data,
-			type: normalizeType(type),
+			format: normalizeFormat(fmt),
 			meta: normalizeMeta(meta),
 			status: status || 'draft',
 			created_by: req.session.userId
@@ -246,7 +244,8 @@ router.put('/:id', requireAdmin, async (req, res) => {
 			...req.body,
 		};
 		if (body.name !== undefined) body.name = String(body.name).trim() || undefined;
-		if (body.type !== undefined) body.type = normalizeType(body.type);
+		if (body.format !== undefined) body.format = normalizeFormat(body.format);
+		else if (body.type !== undefined) body.format = normalizeFormat(body.type);
 		if (body.meta !== undefined) body.meta = normalizeMeta(body.meta);
 		const page = await pageModel.update(req.params.id, body, req.session.userId);
 

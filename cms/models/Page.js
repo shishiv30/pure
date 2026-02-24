@@ -7,23 +7,21 @@ class Page {
 		const {
 			name,
 			path,
-			title,
 			data,
-			type = 'html',
+			format = 'json',
 			meta,
 			status = 'draft',
 			created_by,
 		} = pageData;
 
 		const result = await this.db.run(
-			`INSERT INTO pages (name, path, title, data, type, meta, status, created_by, updated_by)
-			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO pages (name, path, data, type, format, meta, status, created_by, updated_by)
+			 VALUES (?, ?, ?, 'page', ?, ?, ?, ?, ?)`,
 			[
 				name,
 				path || null,
-				title,
 				data || null,
-				type,
+				format,
 				meta || null,
 				status,
 				created_by,
@@ -51,7 +49,7 @@ class Page {
 	}
 
 	async update(id, pageData, updated_by) {
-		const { name, path, title, data, type, meta, status } = pageData;
+		const { name, path, data, format, meta, status } = pageData;
 		const updates = [];
 		const values = [];
 
@@ -63,17 +61,13 @@ class Page {
 			updates.push('path = ?');
 			values.push(path);
 		}
-		if (title !== undefined) {
-			updates.push('title = ?');
-			values.push(title);
-		}
 		if (data !== undefined) {
 			updates.push('data = ?');
 			values.push(data);
 		}
-		if (type !== undefined) {
-			updates.push('type = ?');
-			values.push(type);
+		if (format !== undefined) {
+			updates.push('format = ?');
+			values.push(format);
 		}
 		if (meta !== undefined) {
 			updates.push('meta = ?');

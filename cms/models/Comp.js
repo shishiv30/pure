@@ -4,30 +4,30 @@ class Comp {
 	}
 
 	async create(compData) {
-		const { key, type, data } = compData;
+		const { key, type, format = 'json', data } = compData;
 
 		const result = await this.db.run(
-			'INSERT INTO comp (key, type, data) VALUES (?, ?, ?)',
-			[key, type, data]
+			'INSERT INTO comps (key, type, format, data, updated_at) VALUES (?, ?, ?, ?, datetime("now"))',
+			[key, type, format, data]
 		);
 
 		return this.getById(result.lastID);
 	}
 
 	async getById(id) {
-		return await this.db.get('SELECT * FROM comp WHERE id = ?', [id]);
+		return await this.db.get('SELECT * FROM comps WHERE id = ?', [id]);
 	}
 
 	async getByKey(key) {
-		return await this.db.get('SELECT * FROM comp WHERE key = ?', [key]);
+		return await this.db.get('SELECT * FROM comps WHERE key = ?', [key]);
 	}
 
 	async getAll() {
-		return await this.db.all('SELECT * FROM comp ORDER BY key');
+		return await this.db.all('SELECT * FROM comps ORDER BY key');
 	}
 
 	async update(id, compData) {
-		const { key, type, data } = compData;
+		const { key, type, format, data } = compData;
 		const updates = [];
 		const values = [];
 
@@ -39,6 +39,10 @@ class Comp {
 			updates.push('type = ?');
 			values.push(type);
 		}
+		if (format !== undefined) {
+			updates.push('format = ?');
+			values.push(format);
+		}
 		if (data !== undefined) {
 			updates.push('data = ?');
 			values.push(data);
@@ -48,29 +52,29 @@ class Comp {
 			return this.getById(id);
 		}
 
+		updates.push('updated_at = CURRENT_TIMESTAMP');
 		values.push(id);
-		await this.db.run(`UPDATE comp SET ${updates.join(', ')} WHERE id = ?`, values);
+		await this.db.run(`UPDATE comps SET ${updates.join(', ')} WHERE id = ?`, values);
 		return this.getById(id);
 	}
 
 	async upsertByKey(key, compData) {
 		const existing = await this.getByKey(key);
-		const { type, data } = compData;
+		const { type, format = 'json', data } = compData;
 
 		if (existing) {
-			await this.db.run('UPDATE comp SET type = ?, data = ? WHERE key = ?', [
-				type,
-				data,
-				key
-			]);
+			await this.db.run(
+				'UPDATE comps SET type = ?, format = ?, data = ?, updated_at = CURRENT_TIMESTAMP WHERE key = ?',
+				[type, format, data, key]
+			);
 			return this.getByKey(key);
 		}
 
-		return this.create({ key, type, data });
+		return this.create({ key, type, format, data });
 	}
 
 	async delete(id) {
-		await this.db.run('DELETE FROM comp WHERE id = ?', [id]);
+		await this.db.run('DELETE FROM comps WHERE id = ?', [id]);
 	}
 }
 

@@ -10,20 +10,14 @@ router.use((req, res, next) => {
 router.get('/', async (req, res) => {
 	const controller = new BaseController(req, res, 'index');
 	const model = await controller.get();
-	controller.toPage(model);
+	await controller.toPage(model);
 });
 
-router.get('/page/ai-trend', async (req, res) => {
-	const controller = new BaseController(req, res, 'ai-trend');
-	const model = await controller.get();
-	controller.toPage(model);
-});
-
-// Dynamic page: fetch content from CMS by key (e.g. /page/index, /page/about)
+// Dynamic page: fetch content from CMS by key (e.g. /page/index, /page/ai-trend, /page/about)
 router.get('/page/:key', async (req, res) => {
 	const controller = new BaseController(req, res, 'page');
 	const model = await controller.get();
-	controller.toPage(model);
+	await controller.toPage(model);
 });
 
 

@@ -1,8 +1,16 @@
 /**
  * Index page section data as array in render order: hero, scrollview, points, gallery, timeline.
  * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
- * Push to CMS: node cms/scripts/push-page-index.js
+ * Seed to CMS: node cms/scripts/seed-and-sync.js
  */
+export const name = 'index';
+export const path = 'page/index';
+export const seo = {
+	title: 'Pure Home',
+	desc: 'Author: Conjee Zou, UI solution, Category: Home',
+	keywords: '',
+};
+
 export default [
 	// 0: hero
 	{

@@ -1,8 +1,16 @@
 /**
  * AI Trend page section data as array in render order: hero, scrollview, points, gallery, timeline.
  * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
- * Push to CMS: node cms/scripts/push-page.js ai-trend data/page/ai-trend.js
+ * Seed to CMS: node cms/scripts/seed-and-sync.js (add key to pagePath in header.js)
  */
+export const name = 'ai-trend';
+export const path = 'page/ai-trend';
+export const seo = {
+	title: 'Pure - AI Trend',
+	desc: 'AI Trend: shaping the future with intelligence and innovation.',
+	keywords: 'AI, artificial intelligence, trends',
+};
+
 export default [
 	// 0: hero
 	{

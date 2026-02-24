@@ -530,7 +530,7 @@
 			<div class="tabs">
 				<button class="tab active" onclick="showTab('pages', this)">📄 Pages</button>
 				<button class="tab" onclick="showTab('sitemap', this)">🗺️ Sitemap</button>
-				<button id="comp-tab-button" class="tab hidden" onclick="showTab('comp', this)">🧩 Comp</button>
+				<button id="comp-tab-button" class="tab hidden" onclick="showTab('comp', this)">🧩 Comps</button>
 				<button id="users-tab-button" class="tab hidden" onclick="showTab('users', this)">👥 Users</button>
 			</div>
 
@@ -550,11 +550,7 @@
 							<div class="form-group">
 								<label>Page Name (URL Slug)</label>
 								<input type="text" id="page-name" required placeholder="about-us">
-								<small class="text-muted">Used in URL: /api/pages/getPageContentByName?name=about-us</small>
-							</div>
-							<div class="form-group">
-								<label>Page Title</label>
-								<input type="text" id="page-title" required placeholder="About Us">
+								<small class="text-muted">Used in URL: /page/:name. Display label is derived from name (e.g. ai-trend → AI Trend).</small>
 							</div>
 							<div class="form-group">
 								<label>Path</label>
@@ -597,9 +593,9 @@
 							<thead>
 								<tr>
 									<th>Name</th>
-									<th>Title</th>
 									<th>Path</th>
 									<th>Type</th>
+									<th>Format</th>
 									<th>Status</th>
 									<th>Updated</th>
 									<th>Actions</th>
@@ -711,7 +707,18 @@
 							</div>
 							<div class="form-group">
 								<label>Type</label>
-								<input type="text" id="comp-type" required placeholder="json">
+								<select id="comp-type" required>
+									<option value="comp">comp (Default Component)</option>
+									<option value="page">page (Default Page)</option>
+									<option value="theme">theme (Default Theme)</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Format</label>
+								<select id="comp-format">
+									<option value="json">json</option>
+									<option value="html">html</option>
+								</select>
 							</div>
 							<div class="form-group">
 								<label>Data (JSON string)</label>
@@ -729,13 +736,15 @@
 								<tr>
 									<th>Key</th>
 									<th>Type</th>
+									<th>Format</th>
 									<th>Data (preview)</th>
+									<th>Updated</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody id="comp-list">
 								<tr>
-									<td colspan="4" class="empty-state">
+									<td colspan="6" class="empty-state">
 										<div>
 											<h3>No comp entries yet</h3>
 											<p>Add comp data (e.g. header)</p>

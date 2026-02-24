@@ -75,7 +75,9 @@ cp .env.example .env
 npm run dev
 ```
 
-5. **Create admin user** (first time only):
+5. **Seed database from data files** (optional): `node cms/scripts/seed-and-sync.js --local-only` from repo root. With `CMS_EMAIL`/`CMS_PASSWORD` it also syncs to remote CMS.
+
+6. **Create admin user** (first time only):
 ```bash
 curl -X POST http://localhost:3003/api/setup/create-admin \
   -H "Content-Type: application/json" \

@@ -111,7 +111,7 @@ router.get('/:key', requireReadAccess, async (req, res) => {
 
 router.post('/', requireAdmin, async (req, res) => {
 	try {
-		const { key, type, data } = req.body;
+		const { key, type, format, data } = req.body;
 
 		if (!key || type == null || data == null) {
 			return res.status(400).json({
@@ -123,7 +123,12 @@ router.post('/', requireAdmin, async (req, res) => {
 
 		const compModel = new Comp(req.app.locals.db.getDb());
 		const existing = await compModel.getByKey(key);
-		const payload = { key, type, data: typeof data === 'string' ? data : JSON.stringify(data) };
+		const payload = {
+			key,
+			type,
+			format: format ?? 'json',
+			data: typeof data === 'string' ? data : JSON.stringify(data)
+		};
 
 		const row = existing
 			? await compModel.update(existing.id, payload)
@@ -146,7 +151,7 @@ router.post('/', requireAdmin, async (req, res) => {
 
 router.put('/:id', requireAdmin, async (req, res) => {
 	try {
-		const { key, type, data } = req.body;
+		const { key, type, format, data } = req.body;
 		const compModel = new Comp(req.app.locals.db.getDb());
 		const existing = await compModel.getById(req.params.id);
 
@@ -161,6 +166,7 @@ router.put('/:id', requireAdmin, async (req, res) => {
 		const payload = {};
 		if (key !== undefined) payload.key = key;
 		if (type !== undefined) payload.type = type;
+		if (format !== undefined) payload.format = format;
 		if (data !== undefined) payload.data = typeof data === 'string' ? data : JSON.stringify(data);
 
 		const row = await compModel.update(req.params.id, payload);

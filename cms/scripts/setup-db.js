@@ -84,7 +84,7 @@ async function main() {
 		await db.init();
 		console.log('Database initialized successfully.');
 		console.log('DB path:', dbFile);
-		console.log('Tables: users, pages, sitemap');
+		console.log('Tables: users, pages, sitemap, comps');
 	} catch (err) {
 		console.error('Database initialization failed:', err.message);
 		process.exit(1);

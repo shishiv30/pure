@@ -2,8 +2,7 @@
 
 ## Sync local CMS DB to AWS
 
-- **API sync (no ECS Exec needed):** `cms/scripts/sync-db-via-api.js`. Reads local `cms/data/cms.db`, logs in to `CMS_URL` with `CMS_EMAIL`/`CMS_PASSWORD`, and POST/PUTs pages, sitemap, comp. Use `CMS_URL=https://cms.conjeezou.com` (or your ALB URL). Credentials from `.env.local` are fine; ensure `CMS_URL` points at AWS.
-- **Old schema (no `pages.path`):** Sync omits `path` by default. After deploy, call **POST** `/api/setup/migrate-pages-path` once (admin session). Then `SYNC_INCLUDE_PATH=1` and sync again to send path.
+- **API sync (no ECS Exec needed):** `cms/scripts/seed-and-sync.js`. Seeds local DB from `data/page/*.js` and `data/theme.js`, then syncs to `CMS_URL` via API. Use `CMS_URL=https://cms.conjeezou.com` (or your ALB URL). Requires `CMS_EMAIL`/`CMS_PASSWORD`.
 - **Full file copy:** `cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db` overwrites EFS DB; requires ECS Exec (and thus a task role in the task definition).
 
 ---

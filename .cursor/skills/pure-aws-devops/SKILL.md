@@ -23,7 +23,7 @@ This skill captures how the **pure** repo runs on AWS: CMS on ECS Fargate + EFS 
 | us-east-1 resource list | `docs/aws-us-east-1-resources.md` |
 | GitHub: Build Pure Web (prod) | `.github/workflows/build-prod.yml` (ECR + App Runner deploy) |
 | GitHub: Build Pure CMS (prod) | `.github/workflows/build-cms-prd.yml` (ECR only; roll ECS manually) |
-| Sync local DB to AWS (API) | `cms/scripts/sync-db-via-api.js` |
+| Sync local DB to AWS (API) | `cms/scripts/seed-and-sync.js` |
 | Copy local DB file to EFS | `cms/scripts/aws/sync-db-to-aws.sh` (requires ECS Exec; see below) |
 
 Required env for scripts: `AWS_PAGER=""`, and for ECR deploy `AWS_ACCOUNT_ID`, optionally `AWS_REGION` (default us-east-1), `SESSION_SECRET`, `CORS_ORIGINS`.
@@ -64,7 +64,7 @@ The **Build Pure Web (prod)** workflow pushes to **us-east-1** ECR. If the App R
 
 `aws ecs update-service ... --enable-execute-command` fails with "a valid taskRoleArn is not being used" if the task definition has no **task role** (only the execution role). ECS Exec needs a task role for the session.
 
-- **Fix:** Add a task role to the task definition (e.g. create an IAM role that tasks can assume, add `taskRoleArn` to the task definition), register the new revision, update the service to use it, then run `--enable-execute-command`. Until then, use **API sync** (`sync-db-via-api.js`) instead of file copy (`sync-db-to-aws.sh`).
+- **Fix:** Add a task role to the task definition (e.g. create an IAM role that tasks can assume, add `taskRoleArn` to the task definition), register the new revision, update the service to use it, then run `--enable-execute-command`. Until then, use **API sync** (`seed-and-sync.js`) instead of file copy (`sync-db-to-aws.sh`).
 
 ---
 
@@ -80,17 +80,12 @@ The **Build Pure Web (prod)** workflow pushes to **us-east-1** ECR. If the App R
 
 Use **API sync** when the AWS CMS is reachable and you have an admin account. Credentials can come from `.env.local` (e.g. `CMS_EMAIL`, `CMS_PASSWORD`); point `CMS_URL` at the **AWS** CMS (e.g. `https://cms.conjeezou.com`), not localhost.
 
-1. **Ensure local DB is up to date** (optional): `node cms/scripts/migrate-pages-add-path.js` (adds `path` column if missing and pushes from `data/page/`).
-2. **Run sync** (from repo root):
+1. **Run seed and sync** (from repo root):
    ```bash
-   CMS_URL=https://cms.conjeezou.com CMS_EMAIL=your@email.com CMS_PASSWORD=yourpassword node cms/scripts/sync-db-via-api.js
+   CMS_URL=https://cms.conjeezou.com CMS_EMAIL=your@email.com CMS_PASSWORD=yourpassword node cms/scripts/seed-and-sync.js
    ```
-   Or use env from `.env.local`: set `CMS_URL` to the AWS URL, then run `node cms/scripts/sync-db-via-api.js` (script will use `CMS_EMAIL`/`CMS_PASSWORD` from env).
-3. **If AWS DB has old schema (no `pages.path` column):** Sync omits `path` by default so the API does not 500. After deploying a CMS image that includes the migration route, call once as admin: **POST** `https://cms.conjeezou.com/api/setup/migrate-pages-path` (with session cookie). Then optionally run sync again with **path** included:
-   ```bash
-   SYNC_INCLUDE_PATH=1 CMS_URL=https://cms.conjeezou.com CMS_EMAIL=... CMS_PASSWORD=... node cms/scripts/sync-db-via-api.js
-   ```
-4. **Full DB replace (optional):** To overwrite the AWS DB file with your local `cms/data/cms.db`, use `./cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db`. This requires **ECS Exec** to be enabled on the service; enabling it requires a **task role** in the task definition (see gotcha #6). If ECS Exec is not set up, use API sync only.
+   Or use env from `.env.local`: set `CMS_URL` to the AWS URL, then run `node cms/scripts/seed-and-sync.js`.
+2. **Full DB replace (optional):** To overwrite the AWS DB file with your local `cms/data/cms.db`, use `./cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db`. This requires **ECS Exec** to be enabled on the service; enabling it requires a **task role** in the task definition (see gotcha #6). If ECS Exec is not set up, use API sync only.
 
 ### ALB returns 503 or “not working”
 
