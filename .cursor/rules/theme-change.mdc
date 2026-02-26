@@ -1,0 +1,79 @@
+---
+description: How theme changes work - theme data files only, then apply in the right place
+alwaysApply: true
+---
+
+# Theme Changes
+
+When the user asks to **change theme**, **add a theme**, or **apply a theme**:
+
+1. **Solution is always**: create or edit a **theme data file** in `data/`, then **apply** it where needed.
+2. **Do not** implement theme logic elsewhere (e.g. ad-hoc CSS or inline theme objects in random files). Use the standard pattern below.
+
+## Theme file pattern
+
+- **Location**: `data/theme.js` (default) or `data/theme-<name>.js` (e.g. `data/theme-pink.js`).
+- **Shape**: One default export with exactly two keys, `default` and `dark`, each an object of CSS custom properties (e.g. `'--color-major-hue': '330'`).
+- **Reference**: Copy structure from `data/theme.js` or `data/theme-pink.js`; keep the same variable names and add `default` + `dark` blocks with the same semantics (light vs dark mode).
+
+## Theme naming rule (comps table)
+
+When storing a theme in the CMS **comps** table:
+
+- **key**: must be `theme-<name>` (e.g. `theme-pink`, `theme-blue`). File in repo: `data/theme-<name>.js`.
+- **type**: must be `"theme"`.
+
+Use this for every theme comp so the app can find and apply themes consistently.
+
+**When updating (e.g. rename "blue" to "theme-blue"):** Check if comp exists (e.g. key `blue`). If yes → update that record to key `theme-blue`, type `theme`. If no → create comp `theme-blue` from `data/theme-blue.js`. Then update references (e.g. set page `meta.theme = 'theme-blue'` for the index page). See cms-manager skill.
+
+Example pattern (new theme file):
+
+```javascript
+/**
+ * <Name> theme (hue …), logo.svg / logo-bg.svg.
+ * Seeded as comp key "theme-<name>"; reference from page meta.theme to apply.
+ */
+export default {
+  default: {
+    '--color-major-hue': '…',
+    '--color-major-saturation': '85%',
+    '--color-major-lightness': '25%',
+    '--color-major-lightness-l1': '96%',
+    '--logo': 'url("/assets/images/…")',
+    '--logo-bg': 'url("/assets/images/…")',
+    '--logo-size': '…',
+  },
+  dark: {
+    '--color-glb-bg-lightness': '75%',
+    '--color-glb-bg-l1-lightness': '55%',
+    '--color-glb-lightness': '95%',
+    '--color-glb-l1-lightness': '100%',
+    '--color-major-lightness': '75%',
+    '--color-major-lightness-l1': '15%',
+    '--logo': '…',
+    '--logo-bg': '…',
+  },
+};
+```
+
+## Where themes live at runtime
+
+- **Comps table**: Theme configs are stored in the CMS DB `comps` table (key e.g. `theme`, `theme-pink`; type `theme`; data = JSON of the theme object).
+- **Page theme**: A page uses a theme by having **pages.meta** (JSON string) include `"theme": "<comp-key>"`, e.g. `{"title":"Pure Home","desc":"...","path":"page/index","theme":"theme-pink"}`. The app loads the theme comp by that key and applies it.
+
+## Applying changes to the DB (no full sync; no MCP required)
+
+**Prefer the CMS REST API** so the DB is updated without running `seed-and-sync.js` (which overwrites the whole DB). See **`cms/API.md`** for the full list.
+
+- **Update page meta** (e.g. set theme for a page): `PUT /api/pages/by-name/<pageName>` with body `{ "meta": { "theme": "theme-pink", ... } }`. Requires admin auth.
+- **Add or update a theme in comps**: Create or edit `data/theme-<name>.js`, then `POST /api/comp` with `{ "key": "theme-<name>", "type": "theme", "format": "json", "data": <themeObject> }`. Upsert by key; no seed script needed.
+- **Delete a theme comp**: `DELETE /api/comp/by-key/theme-<name>`.
+
+The AI (or any client) can call these APIs with the CMS base URL and session cookie after login. **MCP is optional**: an MCP server could wrap these in tools (e.g. “update page meta”, “add theme comp”), but the CMS already provides the APIs; MCP is not required to apply changes.
+
+## Applying a theme (logical steps)
+
+- **Global default**: Comp key `theme` (from `data/theme.js`); used when a page has no meta.theme. Push via `POST /api/comp` or run seed script once.
+- **Named theme**: Add `data/theme-<name>.js`, then push to CMS with `POST /api/comp` (key `theme-<name>`, type `theme`, data = theme object). Set which page uses it with `PUT /api/pages/by-name/<pageName>` and body `{ "meta": { "theme": "theme-<name>" } }`.
+- **Per-page override (inline)**: Page config can return `model.data.theme` as the theme object (same shape); that overrides the comp theme for that page only.

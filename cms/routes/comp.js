@@ -214,6 +214,36 @@ router.put('/:id', requireAdmin, async (req, res) => {
 	}
 });
 
+router.delete('/by-key/:key', requireAdmin, async (req, res) => {
+	try {
+		const compModel = new Comp(req.app.locals.db.getDb());
+		const existing = await compModel.getByKey(req.params.key);
+
+		if (!existing) {
+			return res.status(404).json({
+				code: 404,
+				message: 'Comp not found',
+				data: null
+			});
+		}
+
+		await compModel.delete(existing.id);
+
+		res.json({
+			code: 200,
+			message: 'Comp deleted',
+			data: null
+		});
+	} catch (error) {
+		console.error('Delete comp by key error:', error);
+		res.status(500).json({
+			code: 500,
+			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
 router.delete('/:id', requireAdmin, async (req, res) => {
 	try {
 		const compModel = new Comp(req.app.locals.db.getDb());

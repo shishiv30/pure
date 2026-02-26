@@ -9,6 +9,7 @@
 export const pagePath = {
 	index: 'page/index',
 	'ai-trend': 'page/ai-trend',
+	human: 'page/human',
 };
 export default [
 	{ id: 1, text: 'Home', path: '/index', order: 1, parentId: null },
@@ -17,8 +18,9 @@ export default [
 	{ id: 4, text: 'ppt', path: 'presentation-slider.html', order: 4, parentId: 2 },
 	{ id: 5, text: 'Survey', path: '/survey.html', order: 5, parentId: 2 },
 	{ id: 6, text: 'AI Trend', path: '/page/ai-trend', order: 6, parentId: 2 },
-	{ id: 10, text: 'Lower', path: '/lower.html', order: 7, parentId: 2 },
-	{ id: 9, text: 'Sitemap', path: '/demo/sitemap', order: 7, parentId: 2 },
+	{ id: 11, text: 'Human Evolution', path: '/page/human', order: 7, parentId: 2 },
+	{ id: 10, text: 'Lower', path: '/lower.html', order: 8, parentId: 2 },
+	{ id: 9, text: 'Sitemap', path: '/demo/sitemap', order: 8, parentId: 2 },
 	{ id: 7, text: 'Document', path: '/document', order: 7, parentId: null },
 	{ id: 8, text: 'Contact', path: 'javascript:;', order: 8, parentId: null },
 ];

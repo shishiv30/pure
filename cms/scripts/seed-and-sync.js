@@ -117,7 +117,7 @@ async function seedPages() {
 		}
 		const meta =
 			key === 'index'
-				? { title: 'Pure Home', desc: 'Author: Conjee Zou', path: pathVal }
+				? { title: 'Pure Home', desc: 'Author: Conjee Zou', path: pathVal, theme: 'theme-blue' }
 				: { path: pathVal, ...(pageMeta && typeof pageMeta === 'object' ? pageMeta : {}) };
 		if (key === 'ai-trend') {
 			meta.theme = 'theme-pink';
@@ -202,6 +202,70 @@ async function seedComps() {
 		[themePinkData]
 	);
 	console.log('  ✓ Comp: theme-pink');
+
+	// Theme "blue" → "theme-blue": if existing comp "blue", update it; else create theme-blue
+	const compBlue = await dbAll(`SELECT id, key, data FROM comps WHERE key = 'blue' LIMIT 1`);
+	if (compBlue.length) {
+		await dbRun(
+			`UPDATE comps SET key = 'theme-blue', type = 'theme' WHERE key = 'blue'`
+		);
+		console.log('  ✓ Comp: blue → theme-blue (updated existing)');
+	} else {
+		const themeBlueData = JSON.stringify(
+			(await import(path.join(REPO_ROOT, 'data/theme-blue.js'))).default
+		);
+		await dbRun(
+			`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-blue', 'theme', 'json', ?, datetime('now'))
+			 ON CONFLICT(key) DO UPDATE SET type = excluded.type, format = excluded.format, data = excluded.data, updated_at = datetime('now')`,
+			[themeBlueData]
+		);
+		console.log('  ✓ Comp: theme-blue (created)');
+	}
+
+	// Update references: index page meta.theme = 'theme-blue'
+	const indexPage = await dbAll(`SELECT id, meta FROM pages WHERE name = 'index' LIMIT 1`);
+	if (indexPage.length) {
+		const meta = indexPage[0].meta;
+		let metaObj = typeof meta === 'string' ? (() => { try { return JSON.parse(meta); } catch { return {}; } })() : (meta || {});
+		metaObj.theme = 'theme-blue';
+		await dbRun(
+			`UPDATE pages SET meta = ? WHERE name = 'index'`,
+			[JSON.stringify(metaObj)]
+		);
+		console.log('  ✓ Page index: meta.theme = theme-blue (updated)');
+	}
+
+	// Theme "yellow" → "theme-yellow": if existing comp "yellow", update it; else create theme-yellow
+	const compYellow = await dbAll(`SELECT id, key, data FROM comps WHERE key = 'yellow' LIMIT 1`);
+	if (compYellow.length) {
+		await dbRun(
+			`UPDATE comps SET key = 'theme-yellow', type = 'theme' WHERE key = 'yellow'`
+		);
+		console.log('  ✓ Comp: yellow → theme-yellow (updated existing)');
+	} else {
+		const themeYellowData = JSON.stringify(
+			(await import(path.join(REPO_ROOT, 'data/theme-yellow.js'))).default
+		);
+		await dbRun(
+			`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-yellow', 'theme', 'json', ?, datetime('now'))
+			 ON CONFLICT(key) DO UPDATE SET type = excluded.type, format = excluded.format, data = excluded.data, updated_at = datetime('now')`,
+			[themeYellowData]
+		);
+		console.log('  ✓ Comp: theme-yellow (created)');
+	}
+
+	// Update references: human page meta.theme = 'theme-yellow'
+	const humanPage = await dbAll(`SELECT id, meta FROM pages WHERE name = 'human' LIMIT 1`);
+	if (humanPage.length) {
+		const meta = humanPage[0].meta;
+		let metaObj = typeof meta === 'string' ? (() => { try { return JSON.parse(meta); } catch { return {}; } })() : (meta || {});
+		metaObj.theme = 'theme-yellow';
+		await dbRun(
+			`UPDATE pages SET meta = ? WHERE name = 'human'`,
+			[JSON.stringify(metaObj)]
+		);
+		console.log('  ✓ Page human: meta.theme = theme-yellow (updated)');
+	}
 }
 
 // ---------- Sync to remote ----------

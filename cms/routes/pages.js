@@ -191,6 +191,50 @@ router.get('/:id', requireReadAccess, async (req, res) => {
 	}
 });
 
+// Partial update by page name (e.g. update only meta or data without full sync)
+router.put('/by-name/:name', requireAdmin, async (req, res) => {
+	try {
+		const pageModel = new Page(req.app.locals.db.getDb());
+		const page = await pageModel.getByName(req.params.name);
+
+		if (!page) {
+			return res.status(404).json({
+				code: 404,
+				message: 'Page not found',
+				data: null
+			});
+		}
+
+		const body = { ...req.body };
+		if (body.name !== undefined) body.name = String(body.name).trim() || undefined;
+		if (body.format !== undefined) body.format = normalizeFormat(body.format);
+		else if (body.type !== undefined) body.format = normalizeFormat(body.type);
+		if (body.meta !== undefined) body.meta = normalizeMeta(body.meta);
+
+		const updated = await pageModel.update(page.id, body, req.session.userId);
+
+		res.json({
+			code: 200,
+			message: 'Page updated successfully',
+			data: updated
+		});
+	} catch (error) {
+		console.error('Update page by name error:', error);
+		if (error.message && error.message.includes('UNIQUE constraint')) {
+			return res.status(400).json({
+				code: 400,
+				message: 'Page name already exists',
+				data: null
+			});
+		}
+		res.status(500).json({
+			code: 500,
+			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
 router.post('/', requireAdmin, async (req, res) => {
 	try {
 		const { name, path, data, type, format, meta, status } = req.body;
