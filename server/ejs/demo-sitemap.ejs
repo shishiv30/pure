@@ -1,7 +1,7 @@
 <%- include('html_above') %>
   <%_ const headerComponent=data.headerComponent; _%>
     <%_ if (headerComponent) { _%>
-      <%- include(headerComponent.template, { header: headerComponent.data }) %>
+      <%- include(headerComponent.template, { header: headerComponent.data, getHref, getSrc }) %>
         <%_ } else { _%>
           <%- include('comp_header') %>
             <%_ } _%>
@@ -13,12 +13,12 @@
                   </h1>
                   <%_ const linksComponent=data.linksComponent; _%>
                     <%_ if (linksComponent && linksComponent.data && linksComponent.data.length) { _%>
-                      <%- include(linksComponent.template, { links: linksComponent.data }) %>
+                      <%- include(linksComponent.template, { links: linksComponent.data, getHref, getSrc }) %>
                         <%_ } _%>
                 </section>
                 <%_ const footerComponent=data.footerComponent; _%>
                   <%_ if (footerComponent) { _%>
-                    <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+                    <%- include(footerComponent.template, { footer: footerComponent.data, getHref, getSrc }) %>
                       <%_ } else { _%>
                         <%- include('html_footer') %>
                           <%_ } _%>

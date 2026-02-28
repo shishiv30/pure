@@ -1,24 +1,14 @@
 import serverConfig from '../config.js';
-import { resolvePageData, buildSections, arrayToPageData } from '../../helpers/pageData.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
-import { createHeroComponent } from '../ejs/comp_hero.js';
-import { createGalleryComponent } from '../ejs/comp_gallery.js';
-import { createPointsComponent } from '../ejs/comp_points.js';
-import { createScrollviewComponent } from '../ejs/comp_scrollview.js';
-import { createTimelineComponent } from '../ejs/comp_timeline.js';
-
-const cmsUrl = () => (serverConfig.cmsUrl || '').replace(/\/$/, '');
 
 /**
  * Fetch all type='comp' comps from CMS in one request. Returns { header, footer, ... } keyed by comp key.
  * @returns {Promise<{ header: object|array|null, footer: object|array|null }>}
  */
 async function fetchPageComps() {
-	const base = cmsUrl();
-	if (!base) return { header: null, footer: null };
 	try {
-		const res = await fetch(`${base}/api/comp/public`);
+		const res = await fetch(`${serverConfig.cmsUrl}/api/comp/public`);
 		if (!res.ok) return { header: null, footer: null };
 		const json = await res.json();
 		const data = json?.data || {};
@@ -34,10 +24,8 @@ async function fetchPageComps() {
 
 /** Fetch one comp by key (e.g. theme). Returns parsed data or null. */
 async function fetchCompByKey(key) {
-	const base = cmsUrl();
-	if (!base || !key) return null;
 	try {
-		const res = await fetch(`${base}/api/comp/public/${encodeURIComponent(key)}`);
+		const res = await fetch(`${serverConfig.cmsUrl}/api/comp/public/${encodeURIComponent(key)}`);
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
@@ -57,13 +45,7 @@ async function fetchCompByKey(key) {
 	}
 }
 
-const SECTION_CREATORS = {
-	hero: createHeroComponent,
-	scrollview: createScrollviewComponent,
-	points: createPointsComponent,
-	gallery: createGalleryComponent,
-	timeline: createTimelineComponent,
-};
+
 
 /**
  * Fetch published page by name from CMS. Returns both content (data) and SEO (meta).
@@ -71,10 +53,8 @@ const SECTION_CREATORS = {
  * @returns {Promise<{ data: object, meta: object|null }|null>} data for sections, meta for seo (title, desc, keywords)
  */
 async function fetchPageByName(name) {
-	const base = cmsUrl();
-	if (!base || !name) return null;
 	try {
-		const res = await fetch(`${base}/api/pages/content/${encodeURIComponent(name)}`);
+		const res = await fetch(`${serverConfig.cmsUrl}/api/pages/content/${encodeURIComponent(name)}`);
 		if (!res.ok) return null;
 		const json = await res.json();
 		const row = json?.data;
@@ -127,8 +107,7 @@ async function handlePageGet(key) {
 		sections: null,
 	});
 
-	const base = cmsUrl();
-	const comps = base ? await fetchPageComps() : { header: null, footer: null };
+	const comps = await fetchPageComps();
 	const { header: headerData, footer: footerData } = comps;
 
 	const headerComponent = createHeaderComponent(headerData ?? undefined);
@@ -141,11 +120,7 @@ async function handlePageGet(key) {
 	}
 
 	try {
-		const raw = arrayToPageData(pageResult.data);
-		const cdnUrl = (serverConfig.cdnUrl || '').replace(/\/$/, '');
-		const appUrl = (serverConfig.appUrl || '').replace(/\/$/, '');
-		const resolved = resolvePageData(raw, { cdnUrl, appUrl });
-		const sections = buildSections(resolved, SECTION_CREATORS);
+		const sections = pageResult.data;
 		const meta = pageResult.meta ?? undefined;
 		const themeKey = typeof meta?.theme === 'string' ? meta.theme.trim() : '';
 		const theme = themeKey ? await fetchCompByKey(themeKey) : undefined;
@@ -185,7 +160,7 @@ export default {
 		return seoFromModel(req, model);
 	},
 	beforeGet(req) {
-		return { key: req.params?.key };
+		return { key: req.params?.key||'index' };
 	},
 	get: async (payload) => {
 		if (!payload.key) return null;

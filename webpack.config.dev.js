@@ -41,9 +41,9 @@ export default (env) => {
 			client: {
 				logging: 'error',
 			},
-			proxy: [
-				{
-					context: (pathname) => {
+					proxy: [
+						{
+							context: (pathname) => {
 						// Proxy everything except files with extensions
 						const hasExtension = /\.[a-zA-Z0-9]+$/.test(pathname);
 						const isWebpackAsset =
@@ -53,7 +53,7 @@ export default (env) => {
 						return !hasExtension && !isWebpackAsset;
 					},
 					logLevel: 'error',
-					target: config.appUrl,
+					target: config.appHost,
 					changeOrigin: true,
 				},
 			],

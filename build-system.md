@@ -124,7 +124,7 @@ npm run deploy-gh
 - Uses local development server
 
 ### Production
-- `serverConfig.cdnUrl` - CDN URL for assets
+- `serverConfig.cdnHost` - CDN host for assets
 - GitHub Pages URL: `https://shishiv30.github.io/pure/`
 
 ## Build Process Flow

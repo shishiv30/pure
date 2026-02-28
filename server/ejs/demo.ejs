@@ -1,7 +1,7 @@
 <%- include('html_above') %>
   <%_ const headerComponent=data.headerComponent; _%>
     <%_ if (headerComponent) { _%>
-      <%- include(headerComponent.template, { header: headerComponent.data }) %>
+      <%- include(headerComponent.template, { header: headerComponent.data, getHref, getSrc }) %>
         <%_ } else { _%>
           <%- include('comp_header') %>
             <%_ } _%>
@@ -34,7 +34,7 @@
                         <%_for(var i=0; i<articleComponent.data.length; i++){_%>
                           <li class="item">
                             <%_ const article=articleComponent.data[i]; _%>
-                              <%- include(articleComponent.template, {article: article}) %>
+                              <%- include(articleComponent.template, { article, getHref, getSrc }) %>
                           </li>
                           <%_}_%>
                       </ul>
@@ -43,7 +43,7 @@
                       <%- include('html_menu') %>
                         <%_ const footerComponent=data.footerComponent; _%>
                           <%_ if (footerComponent) { _%>
-                            <%- include(footerComponent.template, { footer: footerComponent.data }) %>
+                            <%- include(footerComponent.template, { footer: footerComponent.data, getHref, getSrc }) %>
                               <%_ } else { _%>
                                 <%- include('html_footer') %>
                                   <%_ } _%>

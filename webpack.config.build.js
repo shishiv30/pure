@@ -13,11 +13,10 @@ import CleanupHotUpdatePlugin from './helpers/webpack-cleanup-plugin.js';
 
 export default (env) => {
 	console.log('environment variables:', env);
-	// Use relative path when no explicit CDN so assets are same-origin (avoids CORS on Docker/local)
-	const publicPath =
-		config.cdnUrl && config.cdnUrl !== config.appUrl
-			? `${String(config.cdnUrl).replace(/\/$/, '')}/`
-			: '/';
+	// Use relative path when no explicit CDN host so assets are same-origin (avoids CORS on Docker/local)
+	const publicPath = config.cdnHost && config.cdnHost !== config.appHost
+		? `${String(config.cdnHost)}/`
+		: '/';
 	return merge(baseConfig(env), {
 		mode: config.webpackMode,
 		devtool: config.webpackDevtool,

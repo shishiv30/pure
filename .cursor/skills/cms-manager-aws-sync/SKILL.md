@@ -15,11 +15,11 @@ Push **local CMS data** (pages, comps) to the **AWS-hosted CMS** so the main sit
 ## Command (from repo root)
 
 ```bash
-CMS_URL=https://cms.conjeezou.com node cms/scripts/seed-and-sync.js
+CMS_HOST=https://cms.conjeezou.com node cms/scripts/seed-and-sync.js
 ```
 
 - **Script:** `cms/scripts/seed-and-sync.js`
-- **Env:** `.env` then `.env.local`. Set `CMS_URL`, `CMS_EMAIL`, `CMS_PASSWORD` (e.g. in `.env.local`). Without `--local-only`, script syncs to `CMS_URL` after seeding.
+- **Env:** `.env` then `.env.local`. Set `CMS_HOST`, `CMS_EMAIL`, `CMS_PASSWORD` (e.g. in `.env.local`). Without `--local-only`, script syncs to `CMS_HOST` after seeding.
 - **Local only:** `node cms/scripts/seed-and-sync.js --local-only` — no sync to AWS.
 
 ## Optional: full DB copy to EFS

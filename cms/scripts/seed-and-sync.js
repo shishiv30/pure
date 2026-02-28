@@ -3,9 +3,9 @@
  * Seed local CMS database from data files and sync to remote CMS.
  * Replaces server-side DB with local DB (pages, comps, sitemap).
  *
- * Usage: node cms/scripts/seed-and-sync.js [--local-only] [CMS_URL] [CMS_EMAIL] [CMS_PASSWORD]
+ * Usage: node cms/scripts/seed-and-sync.js [--local-only] [CMS_HOST] [CMS_EMAIL] [CMS_PASSWORD]
  *   --local-only: seed local DB only, do not sync to remote
- *   CMS_URL: target CMS (default: from env or https://cms.conjeezou.com)
+ *   CMS_HOST: target CMS (default: from env or https://cms.conjeezou.com)
  *   With CMS_EMAIL/CMS_PASSWORD: seeds local DB, then syncs to remote via API
  *
  * Run from repo root.
@@ -32,7 +32,7 @@ try {
 
 const args = process.argv.slice(2).filter((a) => a !== '--local-only');
 const LOCAL_ONLY = process.argv.includes('--local-only');
-const CMS_URL = (process.env.CMS_URL || args[0] || 'https://cms.conjeezou.com').replace(/\/$/, '');
+const CMS_HOST = (process.env.CMS_HOST || args[0] || 'https://cms.conjeezou.com').replace(/\/$/, '');
 let CMS_EMAIL = process.env.CMS_EMAIL || args[1];
 let CMS_PASSWORD = process.env.CMS_PASSWORD || args[2];
 
@@ -70,7 +70,7 @@ function getCookie(res) {
 }
 
 async function login() {
-	const res = await fetch(`${CMS_URL}/api/auth/login`, {
+	const res = await fetch(`${CMS_HOST}/api/auth/login`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email: CMS_EMAIL, password: CMS_PASSWORD }),
@@ -271,7 +271,7 @@ async function seedComps() {
 // ---------- Sync to remote ----------
 async function syncPages(cookie) {
 	console.log('\nSyncing pages...');
-	const listRes = await fetch(`${CMS_URL}/api/pages`, { headers: apiHeaders(cookie) });
+	const listRes = await fetch(`${CMS_HOST}/api/pages`, { headers: apiHeaders(cookie) });
 	if (!listRes.ok) {
 		console.error(`  ✗ GET /api/pages failed: ${listRes.status}`);
 		return;
@@ -281,7 +281,7 @@ async function syncPages(cookie) {
 
 	for (const page of pages) {
 		const existing = existingPages.find((p) => p.name.toLowerCase() === page.name.toLowerCase());
-		const url = existing ? `${CMS_URL}/api/pages/${existing.id}` : `${CMS_URL}/api/pages`;
+		const url = existing ? `${CMS_HOST}/api/pages/${existing.id}` : `${CMS_HOST}/api/pages`;
 		const method = existing ? 'PUT' : 'POST';
 		// Send all fields so remote pages table matches local; use null (not undefined) so API updates the column
 		const body = {
@@ -311,7 +311,7 @@ async function syncPages(cookie) {
 
 async function syncComps(cookie) {
 	console.log('\nSyncing comps...');
-	const listRes = await fetch(`${CMS_URL}/api/comp`, { headers: apiHeaders(cookie) });
+	const listRes = await fetch(`${CMS_HOST}/api/comp`, { headers: apiHeaders(cookie) });
 	if (!listRes.ok) {
 		console.error(`  ✗ GET /api/comp failed: ${listRes.status}`);
 		return;
@@ -321,7 +321,7 @@ async function syncComps(cookie) {
 
 	for (const row of comps) {
 		const existing = existingComp.find((c) => c.key === row.key);
-		const url = existing ? `${CMS_URL}/api/comp/${existing.id}` : `${CMS_URL}/api/comp`;
+		const url = existing ? `${CMS_HOST}/api/comp/${existing.id}` : `${CMS_HOST}/api/comp`;
 		const method = existing ? 'PUT' : 'POST';
 		const res = await fetch(url, {
 			method,
@@ -344,7 +344,7 @@ async function syncComps(cookie) {
 
 async function syncSitemap(cookie) {
 	console.log('\nSyncing sitemap...');
-	const listRes = await fetch(`${CMS_URL}/api/sitemap`, { headers: apiHeaders(cookie) });
+	const listRes = await fetch(`${CMS_HOST}/api/sitemap`, { headers: apiHeaders(cookie) });
 	if (!listRes.ok) {
 		console.error(`  ✗ GET /api/sitemap failed: ${listRes.status}`);
 		return;
@@ -355,8 +355,8 @@ async function syncSitemap(cookie) {
 	for (const entry of sitemap) {
 		const existing = existingSitemap.find((e) => e.url === entry.url);
 		const url = existing
-			? `${CMS_URL}/api/sitemap/${existing.id}`
-			: `${CMS_URL}/api/sitemap`;
+			? `${CMS_HOST}/api/sitemap/${existing.id}`
+			: `${CMS_HOST}/api/sitemap`;
 		const method = existing ? 'PUT' : 'POST';
 		const res = await fetch(url, {
 			method,
@@ -380,7 +380,7 @@ async function syncSitemap(cookie) {
 async function main() {
 	try {
 		if (!LOCAL_ONLY && (!CMS_EMAIL || !CMS_PASSWORD)) {
-			console.log(`Target CMS: ${CMS_URL}`);
+			console.log(`Target CMS: ${CMS_HOST}`);
 			await getCredentials();
 			console.log('');
 		}
@@ -403,7 +403,7 @@ async function main() {
 		console.log('✓ Local DB seeded.');
 
 		if (!LOCAL_ONLY && CMS_EMAIL && CMS_PASSWORD) {
-			console.log(`\nSyncing to remote CMS: ${CMS_URL}`);
+			console.log(`\nSyncing to remote CMS: ${CMS_HOST}`);
 			const cookie = await login();
 			await syncPages(cookie);
 			await syncComps(cookie);

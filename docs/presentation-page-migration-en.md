@@ -107,15 +107,15 @@ Use in Page Config
 import config from '../config.js';
 import { getImgCdnUrl } from '../../helpers/imgCdn.js';
 
-const APP_URL = config.appUrl || '';
-const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
+const APP_HOST = config.appHost || '';
+const CDN_HOST = config.cdnHost || '';
 
 const COMPONENT_NAME = 'hero';
 const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
     alt: 'Welcome Hero',
     loading: 'eager',
   },
@@ -368,7 +368,7 @@ Migration Complete ✅
 ```js
 // comp_hero.js - Data Layer
 const heroData = {
-  image: { src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg') },
+  image: { src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg') },
   title: 'Pure UI',
   subtitle: 'Client-side rendering framework',
 };

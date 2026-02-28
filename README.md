@@ -367,7 +367,7 @@ From repo root you can also build only (no run): `docker compose build`, or `doc
 |-----|------|----------|
 | **dev** | `.env` | Local and Docker dev (`build-docker:dev`). |
 | **stage** | `.env.stage` | GitHub Pages: `npm run deploy-gh` (builds with `.env.stage` and publishes to gh-pages). Auto-runs on merge to main. |
-| **production** | `.env.production` | AWS (Docker): `build-docker:prod` or CI. CDN_URL empty = same-origin. No AWS deploy script yet. |
+| **production** | `.env.production` | AWS (Docker): `build-docker:prod` or CI. CDN_HOST empty = same-origin. No AWS deploy script yet. |
 
 ### Docker Quick Start
 Simple Docker setup:
@@ -481,7 +481,7 @@ For automated PR reviews to work, you need to:
 ## Deployment
 
 - **Stage (GitHub Pages):** `npm run build:stage` then `npm run deploy-gh` — or use the workflow that runs on merge to main. Publishes `dist` to `gh-pages`.
-- **Production (AWS):** No deploy script yet. Use the Docker image from `build-docker:prod` or CI; `.env.production` has CDN_URL empty for same-origin.
+- **Production (AWS):** No deploy script yet. Use the Docker image from `build-docker:prod` or CI; `.env.production` has CDN_HOST empty for same-origin.
 
 ## Project Structure
 
@@ -511,15 +511,15 @@ To create a reusable server-rendered component from partial HTML:
 import config from '../config.js';
 import { getImgCdnUrl, WELCOME_IMG } from '../../helpers/imgCdn.js';
 
-const APP_URL = config.appUrl || '';
-const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
+const APP_HOST = config.appHost || '';
+const CDN_HOST = config.cdnHost || '';
 
 const COMPONENT_NAME = 'hero';
 const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_URL, WELCOME_IMG.point0),
+    src: getImgCdnUrl(CDN_HOST, WELCOME_IMG.point0),
     alt: 'Welcome Hero',
     loading: 'eager',
   },
@@ -605,15 +605,15 @@ All images from `client/assets/images/` are copied to `dist/images/` preserving 
 import { getImgCdnUrl, WELCOME_IMG } from '../../helpers/imgCdn.js';
 import config from '../config.js';
 
-const CDN_URL = (config.cdnUrl || '').replace(/\/$/, '');
+const CDN_HOST = config.cdnHost || '';
 
 // Use predefined mapping
-const imageSrc = getImgCdnUrl(CDN_URL, WELCOME_IMG.point0);
-// Returns: ${CDN_URL}/images/welcome/point0.jpeg
+const imageSrc = getImgCdnUrl(CDN_HOST, WELCOME_IMG.point0);
+// Returns: ${CDN_HOST}/images/welcome/point0.jpeg
 
 // Or use custom path
-const imageSrc = getImgCdnUrl(CDN_URL, 'custom/folder/image.png');
-// Returns: ${CDN_URL}/images/custom/folder/image.png
+const imageSrc = getImgCdnUrl(CDN_HOST, 'custom/folder/image.png');
+// Returns: ${CDN_HOST}/images/custom/folder/image.png
 ```
 
 **4. Add to WELCOME_IMG mapping** (optional, in `helpers/imgCdn.js`):
@@ -629,7 +629,7 @@ export const WELCOME_IMG = {
 **Image URL format:**
 - **Source**: `client/assets/images/welcome/point0.jpeg`
 - **Built**: `dist/images/welcome/point0.jpeg`
-- **CDN URL**: `${cdnUrl}/images/welcome/point0.jpeg`
+- **CDN URL**: `${cdnHost}/images/welcome/point0.jpeg`
 
 ### Creating Server-Rendered EJS Pages
 

@@ -2,7 +2,7 @@ import config from '../config.js';
 
 const COMPONENT_NAME = 'links';
 const COMPONENT_TEMPLATE = 'comp_links';
-const APP_URL = (config.appUrl || '').replace(/\/$/, '');
+const APP_HOST = config.appHost || '';
 
 /**
  * Create the links UI component (responsive grid of links).
@@ -20,8 +20,8 @@ export function createLinksComponent(links) {
 		if (href.startsWith('http') || href.startsWith('javascript') || href === '#' || href === '') {
 			return link;
 		}
-		// Prepend appUrl to relative paths
-		link.href = `${APP_URL}${href}`;
+		// Prepend app host to relative paths
+		link.href = `${APP_HOST}${href}`;
 		return link;
 	});
 

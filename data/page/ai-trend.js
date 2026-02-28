@@ -1,3 +1,4 @@
+import { template } from './comp_template.js';
 /**
  * AI Trend page section data as array in render order: hero, scrollview, points, gallery, timeline.
  * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
@@ -14,6 +15,7 @@ export const meta = {
 export default [
 	// 0: hero
 	{
+		template: template.hero,
 		image: {
 			src: 'welcome/point0.jpeg',
 			alt: 'AI Trend Hero',
@@ -31,6 +33,7 @@ export default [
 	null,
 	// 2: points
 	{
+		template: template.points,
 		heading: 'Why AI Trend Matters',
 		intro:
 			'From research labs to production systems, AI is the defining technology of the decade. These pillars ' +
@@ -84,6 +87,7 @@ export default [
 	null,
 	// 4: timeline
 	{
+		template: template.timeline,
 		heading: 'Milestones in AI',
 		intro: 'Key moments that shaped the evolution of artificial intelligence.',
 		entries: [

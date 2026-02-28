@@ -9,7 +9,7 @@ router.use((req, res, next) => {
 
 router.get('/', async (req, res) => {
 	try {
-		const controller = new BaseController(req, res, 'index');
+		const controller = new BaseController(req, res, 'page');
 		const model = await controller.get();
 		if (model && model.code === 500) {
 			console.error('Index page get failed:', model.error);

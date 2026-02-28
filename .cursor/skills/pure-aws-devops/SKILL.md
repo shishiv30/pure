@@ -79,11 +79,11 @@ The **Build Pure Web (prod)** workflow pushes to **us-east-1** ECR. If the App R
 
 ### Sync local CMS database to AWS
 
-Use **API sync** when the AWS CMS is reachable and you have an admin account. The script `cms/scripts/seed-and-sync.js` loads **`.env` then `.env.local`** (so put `CMS_URL`, `CMS_EMAIL`, `CMS_PASSWORD` in `.env.local` to avoid prompts). It seeds the local DB from data files (pages, comps, sitemap) then pushes to the remote CMS via API.
+Use **API sync** when the AWS CMS is reachable and you have an admin account. The script `cms/scripts/seed-and-sync.js` loads **`.env` then `.env.local`** (so put `CMS_HOST`, `CMS_EMAIL`, `CMS_PASSWORD` in `.env.local` to avoid prompts). It seeds the local DB from data files (pages, comps, sitemap) then pushes to the remote CMS via API.
 
-1. **Run seed and sync** (from repo root). To ensure you sync to **AWS** (not localhost), set `CMS_URL` explicitly:
+1. **Run seed and sync** (from repo root). To ensure you sync to **AWS** (not localhost), set `CMS_HOST` explicitly:
    ```bash
-   CMS_URL=https://cms.conjeezou.com node cms/scripts/seed-and-sync.js
+   CMS_HOST=https://cms.conjeezou.com node cms/scripts/seed-and-sync.js
    ```
    Credentials are read from `.env.local` (`CMS_EMAIL`, `CMS_PASSWORD`). The script prints `Syncing to remote CMS: <url>` so you can confirm the target.
 2. **Full DB replace (optional):** To overwrite the AWS DB file with your local `cms/data/cms.db`, use `./cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db`. This requires **ECS Exec** to be enabled on the service; enabling it requires a **task role** in the task definition (see gotcha #6). If ECS Exec is not set up, use API sync only.

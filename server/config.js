@@ -27,7 +27,7 @@ let config = {
 
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
-	cmsUrl: (process.env.CMS_URL || '').replace(/\/$/, ''),
+	cmsUrl: (process.env.CMS_HOST || '').replace(/\/$/, ''),
 
 	// Build Configuration
 	webpackMode: process.env.WEBPACK_MODE || NODE_ENV,
@@ -39,9 +39,13 @@ let config = {
 	// App
 	appName: process.env.APP_NAME || 'Pure',
 
-	// CDN Configuration
-	cdnUrl: process.env.CDN_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,
-	appUrl: process.env.APP_URL || `http://${process.env.DOMAIN}:${process.env.PORT}`,
+	// Host Configuration (Docker dev: use DOCKER_PORT so CDN is http://localhost:3002)
+	cdnHost:
+		process.env.CDN_HOST ||
+		(process.env.DOCKER_PORT && NODE_ENV === 'development'
+			? `http://${process.env.DOMAIN || 'localhost'}:${process.env.DOCKER_PORT}`
+			: `http://${process.env.DOMAIN}:${process.env.PORT}`),
+	appHost: process.env.APP_HOST || `http://${process.env.DOMAIN}:${process.env.PORT}`,
 	webpackDevServerUrl: `http://${process.env.WEBPACK_DEV_SERVER_HOST}:${process.env.WEBPACK_DEV_SERVER_PORT}`,
 
 	// Development Configuration
@@ -65,7 +69,7 @@ let config = {
 
 // Derived URLs
 config.corsOrigins = [
-	config.appUrl,
+	config.appHost,
 	config.webpackDevServerUrl,
 	...(config.dockerPort ? [`http://${config.domain}:${config.dockerPort}`] : []),
 ];

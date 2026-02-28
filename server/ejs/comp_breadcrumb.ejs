@@ -8,7 +8,7 @@
               <%= breadcrumb.links[i].text %>
             </span>
             <%_} else {_%>
-              <a href="<%= breadcrumb.links[i].href %>">
+              <a href="<%= getHref(breadcrumb.links[i]) %>">
                 <%= breadcrumb.links[i].text %>
               </a>
               <%_}_%>

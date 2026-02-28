@@ -1,7 +1,7 @@
 import config from '../config.js';
 import footerTable from '../../data/page/footer.js';
 
-const APP_URL = (config.appUrl || '').replace(/\/$/, '');
+const APP_HOST = config.appHost || '';
 const APP_NAME = process.env.APP_NAME || 'Pure';
 
 const COMPONENT_NAME = 'footer';
@@ -9,7 +9,7 @@ const COMPONENT_TEMPLATE = 'html_footer';
 
 function toHref(path) {
 	if (!path || path.startsWith('http') || path.startsWith('#')) return path || '#';
-	return `${APP_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+		return `${APP_HOST}${path.startsWith('/') ? '' : '/'}${path}`;
 }
 
 function buildFooterFromTable(rows) {

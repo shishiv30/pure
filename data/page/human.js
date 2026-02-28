@@ -1,3 +1,4 @@
+import { template } from './comp_template.js';
 /**
  * Human evolution page: introduce, types, behavior, body, geo, dna, evolution history.
  * Path: page/human. Theme: theme-yellow. Seed: node cms/scripts/seed-and-sync.js
@@ -14,6 +15,7 @@ export const meta = {
 export default [
 	// 0: hero — human introduce
 	{
+		template: template.hero,
 		image: {
 			src: 'welcome/point0.jpeg',
 			alt: 'Human Evolution',
@@ -30,6 +32,7 @@ export default [
 	null,
 	// 2: points — human types, behavior, body, geo info, dna
 	{
+		template: template.points,
 		heading: 'Dimensions of Humanity',
 		intro: 'Key facets that define and describe our species:',
 		items: [
@@ -64,6 +67,7 @@ export default [
 	null,
 	// 4: timeline — human evolution history
 	{
+		template: template.timeline,
 		heading: 'Human evolution history',
 		intro: 'Major milestones in the evolution of the human lineage.',
 		entries: [

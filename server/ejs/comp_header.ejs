@@ -18,7 +18,7 @@
 					<%_ for (var i=0; i < header.menu.length; i++) { _%>
 						<%_ const item=header.menu[i]; _%>
 							<li class="<%= item.children && item.children.length ? 'list' : '' %>">
-								<a href="<%= item.href %>">
+								<a href="<%= getHref(item) %>">
 									<%= item.text %>
 								</a>
 								<%_ if (item.children && item.children.length) { _%>
@@ -26,7 +26,7 @@
 										<%_ for (var j=0; j < item.children.length; j++) { _%>
 											<%_ const child=item.children[j]; _%>
 												<li>
-													<a href="<%= child.href %>">
+													<a href="<%= getHref(child) %>">
 														<%= child.text %>
 													</a>
 												</li>

@@ -39,10 +39,10 @@ app.use(express.static('dist'));
 // Initialize geo data and start server
 (async () => {
 	await geo(app);
-	app.listen(config.port, function () {
-		console.log(`Example app listening on port ${config.appUrl}`);
-		console.log(`API docs available at ${config.appUrl}/api-docs`);
-		console.log(`Demo docs available at state like ${config.appUrl}/demo/tx`);
-		console.log(`About page available at ${config.appUrl}/about`);
-	});
+		app.listen(config.port, function () {
+			console.log(`Example app listening on host ${config.appHost}`);
+			console.log(`API docs available at ${config.appHost}/api-docs`);
+			console.log(`Demo docs available at state like ${config.appHost}/demo/tx`);
+			console.log(`About page available at ${config.appHost}/about`);
+		});
 })();

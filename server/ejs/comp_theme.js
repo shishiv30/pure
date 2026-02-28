@@ -4,20 +4,20 @@ import themeData from '../../data/theme.js';
 /**
  * Generate inline CSS from theme data.
  * @param {object|null} [themeOverride] - Optional theme object. If null/undefined, uses data/theme.js.
- * @param {string} [cdnUrl] - Optional CDN URL to prepend to image paths.
+ * @param {string} [cdnHost] - Optional CDN host to prepend to image paths.
  * @returns {string} CSS string
  */
-export function getThemeInlineCss(themeOverride, cdnUrl = '') {
+export function getThemeInlineCss(themeOverride, cdnHost = '') {
 	const theme = themeOverride || themeData;
 	if (!theme || typeof theme !== 'object') {
 		return '';
 	}
 	
-	// Helper function to process CSS values and replace image paths with cdnUrl
+	// Helper function to process CSS values and replace image paths with cdnHost
 	const processValue = (value) => {
 		if (typeof value === 'string' && value.includes('/assets/images/')) {
-			// Replace /assets/images/ with cdnUrl + /images/
-			const cdnBase = cdnUrl ? cdnUrl.replace(/\/$/, '') : '';
+			// Replace /assets/images/ with cdnHost + /images/
+			const cdnBase = cdnHost || '';
 			return value.replace('/assets/images/', cdnBase ? `${cdnBase}/images/` : '/images/');
 		}
 		return value;

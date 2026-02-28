@@ -21,7 +21,7 @@
 						<%_ if (footer.social.links && footer.social.links.length) { _%>
 							<%_ for (var i=0; i < footer.social.links.length; i++) { _%>
 								<%_ const link=footer.social.links[i]; _%>
-									<a href="<%= link.href %>" aria-label="<%= link.ariaLabel %>">
+									<a href="<%= getHref(link) %>" aria-label="<%= link.ariaLabel %>">
 										<i class="icon-<%= link.icon %>"></i>
 									</a>
 									<%_ } _%>
@@ -34,7 +34,7 @@
 							<%_ for (var j=0; j < footer.menu.length; j++) { _%>
 								<%_ const item=footer.menu[j]; _%>
 									<li>
-										<a href="<%= item.href %>">
+										<a href="<%= getHref(item) %>">
 											<%= item.text %>
 										</a>
 									</li>

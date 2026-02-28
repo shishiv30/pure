@@ -9,7 +9,7 @@ Guide for **reading** data from the Pure CMS API. Use when integrating CMS conte
 
 ## Base URL
 
-- **Development**: `http://localhost:3003` (or `CMS_URL` from env)
+- **Development**: `http://localhost:3003` (or `CMS_HOST` from env)
 - **Production**: configured CMS domain
 
 ## Public (no auth)

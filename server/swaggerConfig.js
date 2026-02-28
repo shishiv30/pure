@@ -11,7 +11,7 @@ const options = {
 		},
 		servers: [
 			{
-				url: `${config.appUrl}/api`, // Dynamic URL based on config
+				url: `${config.appHost}/api`, // Dynamic URL based on config
 			},
 		],
 	},

@@ -146,8 +146,8 @@ export default {
 			articleComponent: articleComponent,
 			headerComponent: headerComponent,
 			footerComponent: footerComponent,
-			cdnUrl: config.cdnUrl,
-			appUrl: config.appUrl,
+			cdnHost: config.cdnHost,
+			appHost: config.appHost,
 			soaApiDomain: config.soaApiDomain,
 		};
 

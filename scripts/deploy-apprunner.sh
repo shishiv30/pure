@@ -54,10 +54,10 @@ aws apprunner update-service --service-arn "$APP_ARN" --region "$AWS_REGION" \
 			\"ImageRepositoryType\": \"ECR\",
 			\"ImageConfiguration\": {
 				\"RuntimeEnvironmentVariables\": {
-					\"APP_URL\": \"https://www.conjeezou.com\",
-					\"CDN_URL\": \"https://cdn.conjeezou.com\",
+					\"APP_HOST\": \"https://www.conjeezou.com\",
+					\"CDN_HOST\": \"https://cdn.conjeezou.com\",
 					\"SOA_API_DOMAIN\": \"https://www.movoto.com\",
-					\"CMS_URL\": \"https://cms.conjeezou.com\"
+					\"CMS_HOST\": \"https://cms.conjeezou.com\"
 				}
 			}
 		}

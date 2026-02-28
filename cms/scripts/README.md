@@ -21,7 +21,7 @@ Replaces the server DB with local content (pages, comps, sitemap).
 
 ```bash
 # From repo root
-node cms/scripts/seed-and-sync.js [--local-only] [CMS_URL] [CMS_EMAIL] [CMS_PASSWORD]
+node cms/scripts/seed-and-sync.js [--local-only] [CMS_HOST] [CMS_EMAIL] [CMS_PASSWORD]
 ```
 
 - `--local-only` — Seed local DB only, do not sync to remote.

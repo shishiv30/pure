@@ -28,7 +28,9 @@ if [[ "$NODE_ENV" = "production" ]]; then
 elif [[ "$NODE_ENV" = "stage" ]]; then
 	load_env_file "$SCRIPT_DIR/.env.stage"
 else
-	load_env_file "$SCRIPT_DIR/.env"
+	# build-docker:dev: base from .env.stage then .env.local overrides
+	load_env_file "$SCRIPT_DIR/.env.stage"
+	NODE_ENV=development
 fi
 load_env_file "$SCRIPT_DIR/.env.local"
 
@@ -40,7 +42,9 @@ SOA_API_DOMAIN=${SOA_API_DOMAIN:-}
 DOCKER_PORT=${DOCKER_PORT:-3002}
 DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-$([ "$NODE_ENV" = "development" ] && echo "development" || echo "production")}
 # stage and production both use production Docker target
-CDN_URL=${CDN_URL:-"http://${DOMAIN}:${DOCKER_PORT}"}
+CDN_HOST=${CDN_HOST:-"http://${DOMAIN}:${DOCKER_PORT}"}
+# build-docker:dev: force CDN_HOST to host port so container uses http://localhost:3002 (not PORT 3000)
+[[ "$NODE_ENV" = "development" ]] && CDN_HOST="http://localhost:${DOCKER_PORT}"
 
 echo "🚀 Starting Pure UI Docker Container"
 echo "📡 Environment: $NODE_ENV"
@@ -49,8 +53,8 @@ echo "📡 Docker Port: $DOCKER_PORT"
 echo "🔧 Server Port: $PORT"
 echo "🌐 Domain: $DOMAIN"
 echo "🔗 SOA API: $SOA_API_DOMAIN"
-if [ -n "$CDN_URL" ]; then
-    echo "☁️  CDN URL: $CDN_URL"
+if [ -n "$CDN_HOST" ]; then
+    echo "☁️  CDN URL: $CDN_HOST"
 fi
 echo ""
 
@@ -58,7 +62,7 @@ echo ""
 export NODE_ENV
 export PORT
 export DOCKER_PORT
-export CDN_URL
+export CDN_HOST
 export DOCKER_BUILD_TARGET
 
 # Stop existing containers and remove the previous image so only one image exists
@@ -76,8 +80,8 @@ fi
 # Prune dangling images so only the current pure image remains
 docker image prune -f 2>/dev/null || true
 
-# Start with docker compose, passing environment variables
-docker compose up -d
+# Start with docker compose; pass CDN_HOST so compose substitution uses script value (not project .env)
+CDN_HOST="$CDN_HOST" docker compose up -d
 
 echo ""
 echo "✅ Container started successfully!"
@@ -101,7 +105,7 @@ echo "  # This will use production config and map to port 8080"
 echo ""
 echo "💡 To avoid conflicts with local development:"
 echo "  - Local dev (npm run dev): uses localhost:3000"
-echo "  - Docker: uses localhost:3002 (mapped from internal port 3001)"
-echo "  - CDN_URL: automatically set to localhost:3002 for Docker"
+echo "  - Docker: uses localhost:3002 (mapped from internal port 3000)"
+echo "  - CDN_HOST: automatically set to localhost:3002 for Docker"
 echo ""
 echo "📝 Config loaded from: .env / .env.stage / .env.production (by NODE_ENV), then .env.local (overrides)"

@@ -3,17 +3,17 @@
  * Images are copied to dist/images/ preserving folder structure from client/assets/images.
  * webpack.config.base.js: images/[path relative to assets/images][name][ext]
  * So e.g. client/assets/images/welcome/point0.jpeg → dist/images/welcome/point0.jpeg
- * Usage: ${cdnUrl}/images/welcome/point0.jpeg
+ * Usage: ${cdnHost}/images/welcome/point0.jpeg
  */
 
 /**
- * Build CDN URL for an image from its path relative to client/assets/images.
- * @param {string} cdnUrl - Base URL (e.g. config.cdnUrl), no trailing slash
+ * Build CDN host URL for an image from its path relative to client/assets/images.
+ * @param {string} cdnHost - Base host (e.g. config.cdnHost)
  * @param {string} imagePath - Path relative to assets/images (e.g. 'welcome/point0.jpeg' or 'point0.jpeg')
- * @returns {string} Full URL, e.g. `${cdnUrl}/images/welcome/point0.jpeg`
+ * @returns {string} Full URL, e.g. `${cdnHost}/images/welcome/point0.jpeg`
  */
-export function getImgCdnUrl(cdnUrl, imagePath) {
-	const base = (cdnUrl || '').replace(/\/$/, '');
+export function getImgCdnUrl(cdnHost, imagePath) {
+	const base = cdnHost || '';
 	const cleanPath = imagePath.replace(/^\//, ''); // Remove leading slash if present
 	return `${base}/images/${cleanPath}`;
 }

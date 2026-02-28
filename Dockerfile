@@ -14,7 +14,9 @@ RUN npm ci
 # Copy source code (including .env file)
 COPY . .
 
-EXPOSE 3000 8080
+# Container port (passed at build via docker-compose build args from env)
+ARG PORT
+EXPOSE ${PORT}
 
 # Development: build and run dev server
 FROM base AS development

@@ -563,8 +563,8 @@
     },
     "environment_variables": {
       "development": ".env (and .env.local overrides)",
-      "stage": ".env.stage (CDN_URL for GitHub Pages)",
-      "production": ".env.production (CDN_URL empty for AWS same-origin or set AWS/CloudFront URL)"
+      "stage": ".env.stage (CDN_HOST for GitHub Pages)",
+      "production": ".env.production (CDN_HOST empty for AWS same-origin or set AWS/CloudFront URL)"
     },
     "build_process": {
       "flow": [

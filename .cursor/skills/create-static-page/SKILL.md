@@ -89,7 +89,7 @@ Update both the EJS header config and the static HTML header so navigation stays
 ```js
 {
 	text: 'Page Label',
-	href: `${APP_URL}/<name>.html`,
+	href: `${APP_HOST}/<name>.html`,
 },
 ```
 

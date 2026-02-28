@@ -4,15 +4,17 @@ services:
     build:
       context: .
       target: ${DOCKER_BUILD_TARGET:-production}
+      args:
+        PORT: ${PORT:-3000}
     ports:
-      - "${DOCKER_PORT}:${PORT}"
+      - "${DOCKER_PORT:-3002}:${PORT:-3000}"
     env_file:
       - .env
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
       - DOCKER_PORT=${DOCKER_PORT}
-      - CDN_URL=${CDN_URL}
+      - CDN_HOST=${CDN_HOST}
     volumes:
       - ./dist:/app/dist
     restart: unless-stopped

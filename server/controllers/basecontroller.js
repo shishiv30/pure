@@ -3,6 +3,7 @@ import config from '../configs/index.js';
 import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
+import { getHref, getSrc } from '../../helpers/ejsUrlHelpers.js';
 import themeData from '../../data/theme.js';
 import fs from 'fs';
 import mime from 'mime';
@@ -81,12 +82,10 @@ export default class BaseController {
 	}
 	initialMeta(model) {
 		//get lang from this.req.headers['accept-language'] with format like en-US
+		let originMeta = model?.data?.meta || {};
 		let lang = this.req.acceptsLanguages();
 		let origin = this.req.headers.origin || `${this.req.protocol}://${this.req.get('host')}`;
-		// Use CDN URL if configured, otherwise use relative paths
-		const cdnBase = serverConfig.cdnUrl && serverConfig.cdnUrl !== serverConfig.appUrl
-			? `${serverConfig.cdnUrl.replace(/\/$/, '')}`
-			: '';
+		const cdnBase = serverConfig.cdnHost || '';
 		const assetPath = (path) => cdnBase ? `${cdnBase}${path}` : path;
 		let preload = [
 			{
@@ -102,6 +101,7 @@ export default class BaseController {
 		}
 		const assetName = this.config.assetName || this.config.name;
 		let meta = {
+			...originMeta,
 			uaData: this.req.uaData,
 			lang: (lang && lang[0]) || '',
 			path: this.req.path,
@@ -110,8 +110,8 @@ export default class BaseController {
 			css: assetPath(`/${assetName}.min.css`),
 			js: assetPath(`/${assetName}.min.js`),
 			pageType: `page-${this.config.name}`,
-			cdnUrl: cdnBase,
-			appUrl: serverConfig.appUrl,
+			cdnHost: cdnBase,
+			appHost: serverConfig.appHost,
 			appName: serverConfig.appName,
 		};
 		return meta;
@@ -196,12 +196,13 @@ export default class BaseController {
 		}
 	}
 
-	async toData(result) {
-		let code = result.code || 200;
+	async toData(model) {
+		let code = model.code || 200;
+		model.data.meta = this.initialMeta(model);
 		this.res.status(code).json({
 			code: code,
-			data: result.data,
-			error: result.error,
+			data: model.data,
+			error: model.error,
 			cost: new Date() - this.date,
 		});
 	}
@@ -209,20 +210,24 @@ export default class BaseController {
 		if (!this.config.name) {
 			throw new Error('View Template is required');
 		}
-		model.meta = this.initialMeta(model);
+		model.data.meta = model.meta = this.initialMeta(model);
 		model.seo = await this.initialSeo(model);
 		model.breadcrumb = this.initialBreadcrumb(model);
 		// Generate theme CSS and add to meta.inlineCss
 		try {
 			const themeOverride = (model.data && model.data.theme) || null;
-			const cdnUrl = model.meta.cdnUrl || '';
-			const inlineCss = getThemeInlineCss(themeOverride, cdnUrl);
+			const cdnHost = model.meta.cdnHost || '';
+			const inlineCss = getThemeInlineCss(themeOverride, cdnHost);
 			if (inlineCss) {
 				model.meta.inlineCss = inlineCss;
 			}
 		} catch (error) {
 			console.error('Failed to generate theme CSS:', error);
 		}
+		model.appHost = model.meta?.appHost || '';
+		model.cdnHost = model.meta?.cdnHost || '';
+		model.getHref = (item) => getHref(item, model.appHost);
+		model.getSrc = (img) => getSrc(img, model.cdnHost);
 		//relative path of ejs template
 		this.res.render(`${this.config.name}.ejs`, model);
 	}

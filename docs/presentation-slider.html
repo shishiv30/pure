@@ -405,7 +405,7 @@ const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
     alt: 'Welcome Hero',
   },
   title: 'Pure UI',
@@ -682,7 +682,7 @@ Migration Complete ✅</code></pre>
 					<h2>Case Study 1: Migrated to Component</h2>
 					<pre><code class="javascript">// comp_hero.js - Data Layer
 const heroData = {
-  image: { src: getImgCdnUrl(CDN_URL, 'welcome/point0.jpeg') },
+  image: { src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg') },
   title: 'Pure UI',
   subtitle: 'Client-side rendering framework',
 };

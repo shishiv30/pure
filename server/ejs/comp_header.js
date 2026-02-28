@@ -2,7 +2,7 @@ import config from '../config.js';
 import headerTable from '../../data/page/header.js';
 
 const linkTable = headerTable;
-const APP_URL = config.appUrl || '';
+const APP_HOST = config.appHost || '';
 
 const COMPONENT_NAME = 'header';
 const COMPONENT_TEMPLATE = 'comp_header';
@@ -10,7 +10,7 @@ const COMPONENT_TEMPLATE = 'comp_header';
 function toHref(path) {
 	return path.startsWith('javascript') || path === '#' || path === ''
 		? (path || 'javascript:;')
-		: `${APP_URL.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
+		: `${APP_HOST}${path.startsWith('/') ? '' : '/'}${path}`;
 }
 
 function buildMenuFromLinks(links) {
@@ -39,7 +39,7 @@ function getHeaderData(linkTableOverride) {
 			inputId: 'headerInput',
 			placeholder: 'Search for ...',
 			method: 'GET',
-			url: `${APP_URL}/api/geo`,
+			url: `${APP_HOST}/api/geo`,
 			keys: 'type',
 			type: 'city',
 		},
