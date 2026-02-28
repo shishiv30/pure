@@ -1,9 +1,9 @@
 import config from '../config.js';
-import themeData from '../../data/theme.js';
+import themeData from '../../data/comps/theme.js';
 
 /**
  * Generate inline CSS from theme data.
- * @param {object|null} [themeOverride] - Optional theme object. If null/undefined, uses data/theme.js.
+ * @param {object|null} [themeOverride] - Optional theme object. If null/undefined, uses data/comps/theme.js.
  * @param {string} [cdnHost] - Optional CDN host to prepend to image paths.
  * @returns {string} CSS string
  */

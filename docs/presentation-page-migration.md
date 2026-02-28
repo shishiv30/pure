@@ -220,7 +220,7 @@ export default {
 ### 主题系统架构
 
 ```
-data/theme.js (全局主题)
+data/comps/theme.js (全局主题)
     ↓
 BaseController (服务器端)
     ├─ 读取主题数据
@@ -238,7 +238,7 @@ CSS 自定义属性
 ### 主题数据结构
 
 ```js
-// data/theme.js
+// data/comps/theme.js
 export default {
   default: {
     '--color-major-hue': '140',           // 色相 (0-360)
@@ -304,7 +304,7 @@ export default {
     └─ 更新导航链接
     ↓
 应用主题
-    ├─ 更新 data/theme.js
+    ├─ 更新 data/comps/theme.js
     └─ (可选) 页面级覆盖
     ↓
 测试和优化
@@ -376,7 +376,7 @@ const heroData = {
 
 **解决方案：**
 ```js
-// 全局主题 (data/theme.js)
+// 全局主题 (data/comps/theme.js)
 export default {
   default: { '--color-major-hue': '140' }, // 绿色主题
 };

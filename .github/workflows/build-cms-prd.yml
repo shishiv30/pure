@@ -1,6 +1,7 @@
 ---
 # Builds Pure CMS Docker image and pushes to ECR.
-# Runs when commits touch the cms/ folder (path filter). GitHub allows only paths or paths-ignore per event, so doc-only changes under cms/ also trigger a build.
+# DISABLED for automatic deploy: trigger is workflow_dispatch only (no push).
+# To run: GitHub Actions → "Build Pure CMS (prod)" → Run workflow.
 # Does not touch the database: we only build and push an image. Your AWS
 # instance must mount a persistent volume at /app/data for the SQLite DB
 # so that when you deploy the new image, the same volume is reused and
@@ -9,10 +10,12 @@
 name: Build Pure CMS (prod)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'cms/**'
+  workflow_dispatch:
+  # push deploy disabled for static-site direction:
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'cms/**'
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}

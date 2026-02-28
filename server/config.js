@@ -28,6 +28,8 @@ let config = {
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
 	cmsUrl: (process.env.CMS_HOST || '').replace(/\/$/, ''),
+	/** Set by cmsData utility: true = use CMS API, false = use local data/ only. Undefined until first use. */
+	cmsHealth: undefined,
 
 	// Build Configuration
 	webpackMode: process.env.WEBPACK_MODE || NODE_ENV,

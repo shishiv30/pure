@@ -7,6 +7,7 @@ import geo from './middleware/geo.js';
 import config from './config.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { useCms } from './utils/cmsData.js';
 import cors from 'cors';
 
 import swaggerUi from 'swagger-ui-express';
@@ -35,6 +36,15 @@ app.use(cors({ origin: config.corsOrigins }));
 app.use('/', pageRouter);
 app.use('/api', apiRouter);
 app.use(express.static('dist'));
+
+(async () => {
+	config.cmsHealth = await useCms();
+	if (!config.cmsHealth) {
+		console.error('CMS is not healthy, use local data only');
+	} else {
+		console.log('CMS is healthy, use CMS data');
+	}
+})();
 
 // Initialize geo data and start server
 (async () => {

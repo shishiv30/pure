@@ -536,7 +536,7 @@ export default {
 				<div class="slide-content fade-in">
 					<h2>Automated Theme Switching</h2>
 					<h3>Theme System Architecture</h3>
-					<pre style="font-size: 0.85em;"><code>data/theme.js (Global Theme)
+					<pre style="font-size: 0.85em;"><code>data/comps/theme.js (Global Theme)
     ↓
 BaseController (Server-Side)
     ├─ Read Theme Data
@@ -556,7 +556,7 @@ Page Automatically Applies Theme</code></pre>
 			<div class="slide">
 				<div class="slide-content fade-in">
 					<h2>Theme Data Structure</h2>
-					<pre><code class="javascript">// data/theme.js
+					<pre><code class="javascript">// data/comps/theme.js
 export default {
   default: {
     '--color-major-hue': '140',           // Hue (0-360)
@@ -629,7 +629,7 @@ Create New Page
     └─ Update Navigation Links
     ↓
 Apply Theme
-    ├─ Update data/theme.js
+    ├─ Update data/comps/theme.js
     └─ (Optional) Page-level override
     ↓
 Test and Optimize
@@ -711,7 +711,7 @@ const heroData = {
 				<div class="slide-content fade-in">
 					<h2>Case Study 2: Multi-Page Theme Switching</h2>
 					<p><strong>Scenario:</strong> Create pages with different themes for different brands</p>
-					<pre><code class="javascript">// Global Theme (data/theme.js)
+					<pre><code class="javascript">// Global Theme (data/comps/theme.js)
 export default {
   default: { '--color-major-hue': '140' }, // Green theme
 };

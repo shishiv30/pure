@@ -1,5 +1,5 @@
 import config from '../config.js';
-import headerTable from '../../data/page/header.js';
+import headerTable from '../../data/comps/header.js';
 
 const linkTable = headerTable;
 const APP_HOST = config.appHost || '';

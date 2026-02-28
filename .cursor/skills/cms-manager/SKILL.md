@@ -30,11 +30,11 @@ Manage **pages** and **comps** via CMS REST API (no full DB overwrite). Admin en
 - Comp upsert: `POST /api/comp` body `{ key, type, format: "json", data }`.
 - Comp delete: `DELETE /api/comp/by-key/<key>`.
 
-Theme comps: **key** = `theme-<name>` (e.g. `theme-pink`), **type** = `"theme"`. Theme file shape: default export `{ default: { ...vars }, dark: { ...vars } }`. Copy from `data/theme.js` or `data/theme-pink.js`; rule: `.cursor/rules/theme-change.mdc`.
+Theme comps: **key** = `theme-<name>` (e.g. `theme-pink`), **type** = `"theme"`. Theme file shape: default export `{ default: { ...vars }, dark: { ...vars } }`. Copy from `data/comps/theme.js` or `data/comps/theme-pink.js`; rule: `.cursor/rules/theme-change.mdc`.
 
 ## References
 
 - **`cms/API.md`** — full endpoints and examples.
 - **`.cursor/rules/theme-change.mdc`** — theme file pattern and applying to DB.
-- **`data/theme.js`**, **`data/theme-pink.js`** — theme shape.
+- **`data/comps/theme.js`**, **`data/comps/theme-pink.js`** — theme shape.
 - **`data/page/ai-trend.js`**, **`helpers/pageData.js`** — page section data shape.

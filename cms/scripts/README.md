@@ -28,7 +28,7 @@ node cms/scripts/seed-and-sync.js [--local-only] [CMS_HOST] [CMS_EMAIL] [CMS_PAS
 - **With credentials** — Seeds local DB, then syncs to remote via API.
 - **Without credentials** — Seeds local DB only.
 
-**Data sources:** `data/page/header.js` (pagePath), `data/page/*.js`, `data/theme.js`
+**Data sources:** `data/comps/header.js` (pagePath), `data/page/*.js`, `data/comps/theme.js`
 
 ## AWS / deployment
 

@@ -61,6 +61,90 @@ router.get('/public', async (req, res) => {
 	}
 });
 
+// Public: get comps by type (e.g. 'comp', 'theme'). Response: { data: { [key]: parsed, ... } }
+router.get('/public/type/:type', async (req, res) => {
+	try {
+		const compModel = new Comp(req.app.locals.db.getDb());
+		const rows = await compModel.getByType(req.params.type);
+		const data = {};
+		for (const row of rows) {
+			let parsed = row.data;
+			if (typeof parsed === 'string') {
+				try {
+					parsed = JSON.parse(parsed);
+				} catch {
+					parsed = null;
+				}
+			}
+			if (row.key != null && parsed != null) data[row.key] = parsed;
+		}
+		res.json({ code: 200, message: 'Comps retrieved', data });
+	} catch (error) {
+		console.error('Get comps by type error:', error);
+		res.status(500).json({
+			code: 500,
+			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
+// Public: get multiple comps by keys in one call.
+// Path example: /api/comp/public/keys/[header,footer,theme-pink]
+// Response: { data: { header: {...}, footer: {...}, 'theme-pink': {...} } }
+router.get('/public/keys/:keys', async (req, res) => {
+	try {
+		const raw = req.params.keys || '';
+		let decoded = raw;
+		try {
+			decoded = decodeURIComponent(raw);
+		} catch {
+			// ignore decode errors; treat as plain string
+		}
+
+		let list = decoded.trim();
+		if (list.startsWith('[') && list.endsWith(']')) {
+			list = list.slice(1, -1);
+		}
+
+		const keys = list
+			.split(',')
+			.map((k) => k.trim())
+			.filter((k) => k.length > 0);
+
+		if (!keys.length) {
+			return res.status(400).json({
+				code: 400,
+				message: 'At least one key is required',
+				data: null
+			});
+		}
+
+		const compModel = new Comp(req.app.locals.db.getDb());
+		const rows = await compModel.getByKeys(keys);
+		const data = {};
+		for (const row of rows) {
+			let parsed = row.data;
+			if (typeof parsed === 'string') {
+				try {
+					parsed = JSON.parse(parsed);
+				} catch {
+					parsed = null;
+				}
+			}
+			if (row.key != null && parsed != null) data[row.key] = parsed;
+		}
+		res.json({ code: 200, message: 'Comps retrieved', data });
+	} catch (error) {
+		console.error('Get comps by keys error:', error);
+		res.status(500).json({
+			code: 500,
+			message: 'Internal server error',
+			data: null
+		});
+	}
+});
+
 router.get('/', requireReadAccess, async (req, res) => {
 	try {
 		const compModel = new Comp(req.app.locals.db.getDb());

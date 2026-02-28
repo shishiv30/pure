@@ -4,7 +4,7 @@ import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
 import { getHref, getSrc } from '../../helpers/ejsUrlHelpers.js';
-import themeData from '../../data/theme.js';
+import themeData from '../../data/comps/theme.js';
 import fs from 'fs';
 import mime from 'mime';
 import path from 'path';

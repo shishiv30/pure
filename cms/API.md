@@ -57,6 +57,9 @@ Content-Type: application/json
 | GET | `/api/comp` | List all comps (auth required) |
 | GET | `/api/comp/:key` | Get comp by key (auth required) |
 | GET | `/api/comp/public/:key` | Get comp by key (no auth) |
+| GET | `/api/comp/public` | Get all comps of type `comp` (no auth) |
+| GET | `/api/comp/public/type/:type` | Get all comps of a given type (no auth) |
+| GET | `/api/comp/public/keys/[k1,k2,...]` | Get multiple comps by key list (no auth) |
 | **POST** | **`/api/comp`** | **Create or update comp by key** (upsert: if key exists, update; else create) |
 | PUT | `/api/comp/:id` | Partial update by id |
 | **DELETE** | **`/api/comp/by-key/:key`** | Delete comp by key |
@@ -88,7 +91,7 @@ Content-Type: application/json
 }
 ```
 
-Same shape as `data/theme-pink.js` default export. Use this to push a new theme or update an existing one **without** running full seed-and-sync.
+Same shape as `data/comps/theme-pink.js` default export. Use this to push a new theme or update an existing one **without** running full seed-and-sync.
 
 ### Delete a theme comp
 

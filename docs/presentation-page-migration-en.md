@@ -232,7 +232,7 @@ export default {
 ### Theme System Architecture
 
 ```
-data/theme.js (Global Theme)
+data/comps/theme.js (Global Theme)
     ↓
 BaseController (Server-Side)
     ├─ Read Theme Data
@@ -250,7 +250,7 @@ Page Automatically Applies Theme
 ### Theme Data Structure
 
 ```js
-// data/theme.js
+// data/comps/theme.js
 export default {
   default: {
     '--color-major-hue': '140',           // Hue (0-360)
@@ -322,7 +322,7 @@ Create New Page
     └─ Update Navigation Links
     ↓
 Apply Theme
-    ├─ Update data/theme.js
+    ├─ Update data/comps/theme.js
     └─ (Optional) Page-level override
     ↓
 Test and Optimize
@@ -394,7 +394,7 @@ const heroData = {
 
 **Solution:**
 ```js
-// Global Theme (data/theme.js)
+// Global Theme (data/comps/theme.js)
 export default {
   default: { '--color-major-hue': '140' }, // Green theme
 };

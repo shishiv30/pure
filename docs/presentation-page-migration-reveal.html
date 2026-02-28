@@ -281,7 +281,7 @@ export default {
 				</section>
 				<section>
 					<h3>主题系统架构</h3>
-					<pre style="font-size: 0.7em;"><code>data/theme.js (全局主题)
+					<pre style="font-size: 0.7em;"><code>data/comps/theme.js (全局主题)
     ↓
 BaseController (服务器端)
     ├─ 读取主题数据
@@ -297,7 +297,7 @@ CSS 自定义属性
 				</section>
 				<section>
 					<h3>主题数据结构</h3>
-					<pre><code class="javascript">// data/theme.js
+					<pre><code class="javascript">// data/comps/theme.js
 export default {
   default: {
     '--color-major-hue': '140',           // 色相 (0-360)
@@ -365,7 +365,7 @@ export default {
     └─ 更新导航链接
     ↓
 应用主题
-    ├─ 更新 data/theme.js
+    ├─ 更新 data/comps/theme.js
     └─ (可选) 页面级覆盖
     ↓
 测试和优化
@@ -438,7 +438,7 @@ const heroData = {
 				<section>
 					<h3>案例 2：多页面主题切换</h3>
 					<p><strong>场景：</strong>需要为不同品牌创建不同主题的页面</p>
-					<pre><code class="javascript">// 全局主题 (data/theme.js)
+					<pre><code class="javascript">// 全局主题 (data/comps/theme.js)
 export default {
   default: { '--color-major-hue': '140' }, // 绿色主题
 };

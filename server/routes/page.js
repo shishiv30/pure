@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// Dynamic page: fetch content from CMS by key (e.g. /page/index, /page/ai-trend, /page/about)
+// Dynamic page: :key drives data source. In production uses data/page/{key}.js only; else CMS then data/page/{key}.js
 router.get('/page/:key', async (req, res) => {
 	try {
 		const controller = new BaseController(req, res, 'page');

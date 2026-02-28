@@ -195,9 +195,9 @@ docker run -d \
 
 ### GitHub Actions (build-cms-prd)
 
-The workflow **Build CMS (prod)** (`.github/workflows/build-cms-prd.yml`) runs only when commits touch the **cms/** folder. It builds the CMS Docker image and pushes it to ECR; it does not run or restart any container on AWS.
+The workflow **Build CMS (prod)** (`.github/workflows/build-cms-prd.yml`) builds the CMS Docker image and pushes it to ECR. **Automatic deploy is disabled** (static-site direction); it runs only when triggered manually.
 
-- **Trigger**: Push to `main` with changes under `cms/**`
+- **Trigger**: Manual only — GitHub Actions → "Build Pure CMS (prod)" → Run workflow (no push trigger)
 - **Condition**: Runs only if repo variable `AWS_ECR_ENABLED` is `true` (same as main ECR workflow)
 - **Secrets**: Uses `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
 - **Variables**: `AWS_REGION` (default `us-east-1`), `ECR_REPOSITORY_CMS` (default `pure-cms`)

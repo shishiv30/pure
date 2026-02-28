@@ -10,7 +10,7 @@ Follow this workflow to create reusable server-rendered components (e.g. `comp_h
 There are now **two patterns**:
 
 - **Pattern A – Global components** (header/footer, special widgets): `.js` data/factory file **plus** `.ejs` template.
-- **Pattern B – Page sections** (hero, scrollview, points, gallery, timeline): **EJS-only** templates driven by **page data** (`data/page/*.js` and CMS), mapped via `data/page/comp_template.js`.
+- **Pattern B – Page sections** (hero, scrollview, points, gallery, timeline): **EJS-only** templates driven by **page data** (`data/page/*.js` and CMS), mapped via `data/comps/comp_template.js`.
 
 ## Workflow
 
@@ -140,12 +140,12 @@ export function createHeroComponent() {
 Use this when you are building **page sections** for the dynamic page system (hero, scrollview, points, gallery, timeline, or new sections).
 
 - Section data lives in `data/page/<page>.js` (and in the CMS `pages.data` JSON).
-- Each section object has a `template` key (e.g. `'comp_hero'`) that maps via `data/page/comp_template.js`.
+- Each section object has a `template` key (e.g. `'comp_hero'`) that maps via `data/comps/comp_template.js`.
 - `server/ejs/page.ejs` includes the template with a **`section`** variable and helpers `{ section, getHref, getSrc }`.
 
 ### #2B Register template name
 
-- **File**: `data/page/comp_template.js`
+- **File**: `data/comps/comp_template.js`
 - Add a key → template name mapping:
 
 ```js
@@ -391,7 +391,7 @@ In `page.ejs`, sections are rendered like this:
   - `COMPONENT_NAME` and `COMPONENT_TEMPLATE` constants
   - Data object with all content
   - `createXComponent()` factory function
-- [ ] #2B (Page section) `data/page/comp_template.js` updated with new mapping
+- [ ] #2B (Page section) `data/comps/comp_template.js` updated with new mapping
 - [ ] #3A/3B `server/ejs/comp_<name>.ejs` created with:
   - Guard `<%_ if (section) { _%>` (for page sections) or `<%_ if (<propName>) { _%>` (for global comps)
   - EJS expressions for dynamic values
@@ -404,7 +404,7 @@ In `page.ejs`, sections are rendered like this:
 
 - **Global component examples**: `server/ejs/comp_header.js`, `server/ejs/comp_header.ejs`, `server/ejs/comp_footer.js`, `server/ejs/comp_footer.ejs`
 - **Page section templates**: `server/ejs/comp_hero.ejs`, `comp_scrollview.ejs`, `comp_points.ejs`, `comp_gallery.ejs`, `comp_timeline.ejs`
-- **Section → template mapping**: `data/page/comp_template.js`
+- **Section → template mapping**: `data/comps/comp_template.js`
 - **Page data examples**: `data/page/index.js`, `data/page/ai-trend.js`, `data/page/human.js`
 - **Dynamic page config**: `server/configs/page.js`
 - **Dynamic page view**: `server/ejs/page.ejs` (shows section looping and template includes)

@@ -9,7 +9,7 @@
  *   With CMS_EMAIL/CMS_PASSWORD: seeds local DB, then syncs to remote via API
  *
  * Run from repo root.
- * Data sources: data/page/header.js (pagePath), data/page/*.js, data/theme.js
+ * Data sources: data/comps/header.js (pagePath), data/page/*.js, data/comps/theme.js
  */
 
 import sqlite3 from 'sqlite3';
@@ -94,7 +94,7 @@ function apiHeaders(cookie) {
 async function seedPages() {
 	let pagePath;
 	try {
-		({ pagePath } = await import(path.join(REPO_ROOT, 'data/page/header.js')));
+		({ pagePath } = await import(path.join(REPO_ROOT, 'data/comps/header.js')));
 	} catch {
 		pagePath = null;
 	}
@@ -161,8 +161,8 @@ function ensureHeaderLinks(links, pagePathMap) {
 }
 
 async function seedComps() {
-	const { pagePath } = await import(path.join(REPO_ROOT, 'data/page/header.js'));
-	const headerLinks = (await import(path.join(REPO_ROOT, 'data/page/header.js'))).default;
+	const { pagePath } = await import(path.join(REPO_ROOT, 'data/comps/header.js'));
+	const headerLinks = (await import(path.join(REPO_ROOT, 'data/comps/header.js'))).default;
 	const links = ensureHeaderLinks(headerLinks, pagePath);
 	const headerData = JSON.stringify(links);
 
@@ -174,7 +174,7 @@ async function seedComps() {
 	console.log('  ✓ Comp: header');
 
 	const footerData = JSON.stringify(
-		(await import(path.join(REPO_ROOT, 'data/page/footer.js'))).default
+		(await import(path.join(REPO_ROOT, 'data/comps/footer.js'))).default
 	);
 	await dbRun(
 		`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('footer', 'comp', 'json', ?, datetime('now'))
@@ -184,7 +184,7 @@ async function seedComps() {
 	console.log('  ✓ Comp: footer');
 
 	const themeData = JSON.stringify(
-		(await import(path.join(REPO_ROOT, 'data/theme.js'))).default
+		(await import(path.join(REPO_ROOT, 'data/comps/theme.js'))).default
 	);
 	await dbRun(
 		`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme', 'theme', 'json', ?, datetime('now'))
@@ -194,7 +194,7 @@ async function seedComps() {
 	console.log('  ✓ Comp: theme');
 
 	const themePinkData = JSON.stringify(
-		(await import(path.join(REPO_ROOT, 'data/theme-pink.js'))).default
+		(await import(path.join(REPO_ROOT, 'data/comps/theme-pink.js'))).default
 	);
 	await dbRun(
 		`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-pink', 'theme', 'json', ?, datetime('now'))
@@ -212,7 +212,7 @@ async function seedComps() {
 		console.log('  ✓ Comp: blue → theme-blue (updated existing)');
 	} else {
 		const themeBlueData = JSON.stringify(
-			(await import(path.join(REPO_ROOT, 'data/theme-blue.js'))).default
+			(await import(path.join(REPO_ROOT, 'data/comps/theme-blue.js'))).default
 		);
 		await dbRun(
 			`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-blue', 'theme', 'json', ?, datetime('now'))
@@ -244,7 +244,7 @@ async function seedComps() {
 		console.log('  ✓ Comp: yellow → theme-yellow (updated existing)');
 	} else {
 		const themeYellowData = JSON.stringify(
-			(await import(path.join(REPO_ROOT, 'data/theme-yellow.js'))).default
+			(await import(path.join(REPO_ROOT, 'data/comps/theme-yellow.js'))).default
 		);
 		await dbRun(
 			`INSERT INTO comps (key, type, format, data, updated_at) VALUES ('theme-yellow', 'theme', 'json', ?, datetime('now'))

@@ -2,7 +2,7 @@
 
 ## Sync local CMS DB to AWS
 
-- **API sync (no ECS Exec needed):** `cms/scripts/seed-and-sync.js`. Seeds local DB from `data/page/*.js` and `data/theme.js`, then syncs to `CMS_HOST` via API. Use `CMS_HOST=https://cms.conjeezou.com` (or your ALB URL). Requires `CMS_EMAIL`/`CMS_PASSWORD`.
+- **API sync (no ECS Exec needed):** `cms/scripts/seed-and-sync.js`. Seeds local DB from `data/page/*.js` and `data/comps/theme.js`, then syncs to `CMS_HOST` via API. Use `CMS_HOST=https://cms.conjeezou.com` (or your ALB URL). Requires `CMS_EMAIL`/`CMS_PASSWORD`.
 - **Full file copy:** `cms/scripts/aws/sync-db-to-aws.sh cms/data/cms.db` overwrites EFS DB; requires ECS Exec (and thus a task role in the task definition).
 
 ---

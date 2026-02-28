@@ -1,4 +1,4 @@
-import { template } from './comp_template.js';
+import { template } from '../comps/comp_template.js';
 /**
  * Human evolution page: introduce, types, behavior, body, geo, dna, evolution history.
  * Path: page/human. Theme: theme-yellow. Seed: node cms/scripts/seed-and-sync.js

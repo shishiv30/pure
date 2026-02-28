@@ -1,4 +1,4 @@
-import { template } from './comp_template.js';
+import { template } from '../comps/comp_template.js';
 /**
  * AI Trend page section data as array in render order: hero, scrollview, points, gallery, timeline.
  * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
