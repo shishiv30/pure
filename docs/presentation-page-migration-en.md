@@ -115,7 +115,7 @@ const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg'),
     alt: 'Welcome Hero',
     loading: 'eager',
   },
@@ -368,7 +368,7 @@ Migration Complete ✅
 ```js
 // comp_hero.js - Data Layer
 const heroData = {
-  image: { src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg') },
+  image: { src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg') },
   title: 'Pure UI',
   subtitle: 'Client-side rendering framework',
 };

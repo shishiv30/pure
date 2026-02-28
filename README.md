@@ -611,8 +611,8 @@ const CDN_HOST = config.cdnHost || '';
 const imageSrc = getImgCdnUrl(CDN_HOST, WELCOME_IMG.point0);
 // Returns: ${CDN_HOST}/images/welcome/point0.jpeg
 
-// Or use custom path
-const imageSrc = getImgCdnUrl(CDN_HOST, 'custom/folder/image.png');
+// Or use custom path (path must start with "/")
+const imageSrc = getImgCdnUrl(CDN_HOST, '/custom/folder/image.png');
 // Returns: ${CDN_HOST}/images/custom/folder/image.png
 ```
 
@@ -620,8 +620,8 @@ const imageSrc = getImgCdnUrl(CDN_HOST, 'custom/folder/image.png');
 
 ```js
 export const WELCOME_IMG = {
-  point0: 'welcome/point0.jpeg',
-  point1: 'welcome/point1.jpeg',
+  point0: '/welcome/point0.jpeg',
+  point1: '/welcome/point1.jpeg',
   point4: 'welcome/point4.jpeg', // Add new entry
 };
 ```

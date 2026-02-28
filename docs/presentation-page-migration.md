@@ -112,7 +112,7 @@ const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg'),
     alt: 'Welcome Hero',
   },
   title: 'Pure UI',
@@ -350,7 +350,7 @@ export default {
 ```js
 // comp_hero.js - 数据层
 const heroData = {
-  image: { src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg') },
+  image: { src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg') },
   title: 'Pure UI',
   subtitle: 'Client-side rendering framework',
 };

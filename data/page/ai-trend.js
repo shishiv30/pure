@@ -17,7 +17,7 @@ export default [
 	{
 		template: template.hero,
 		image: {
-			src: 'welcome/point0.jpeg',
+			path: '/welcome/point0.jpeg',
 			alt: 'AI Trend Hero',
 			loading: 'eager',
 		},
@@ -44,42 +44,42 @@ export default [
 				body:
 					'LLMs, image and video generation, and multimodal models are reshaping content creation, search, ' +
 					'and human–machine interaction at unprecedented scale.',
-				image: { src: 'welcome/point1.jpeg', alt: 'Generative AI', loading: 'lazy' },
+				image: { path: '/welcome/point1.jpeg', alt: 'Generative AI', loading: 'lazy' },
 			},
 			{
 				title: 'Automation & Efficiency',
 				body:
 					'AI-driven automation is optimizing supply chains, customer service, and decision-making across ' +
 					'every sector, from healthcare to finance.',
-				image: { src: 'welcome/point2.jpeg', alt: 'Automation & Efficiency', loading: 'lazy' },
+				image: { path: '/welcome/point2.jpeg', alt: 'Automation & Efficiency', loading: 'lazy' },
 			},
 			{
 				title: 'Ethics & Governance',
 				body:
 					'Bias, transparency, privacy, and safety are driving new frameworks and regulations as AI becomes ' +
 					'embedded in critical systems.',
-				image: { src: 'welcome/point3.jpeg', alt: 'Ethics & Governance', loading: 'lazy' },
+				image: { path: '/welcome/point3.jpeg', alt: 'Ethics & Governance', loading: 'lazy' },
 			},
 			{
 				title: 'Edge & Real-Time',
 				body:
 					'On-device and edge AI enable low-latency, privacy-preserving applications from smartphones to ' +
 					'industrial IoT.',
-				image: { src: 'welcome/point4.jpeg', alt: 'Edge & Real-Time', loading: 'lazy' },
+				image: { path: '/welcome/point4.jpeg', alt: 'Edge & Real-Time', loading: 'lazy' },
 			},
 			{
 				title: 'Research & Open Source',
 				body:
 					'Open models, datasets, and tools are accelerating adoption and leveling the playing field for ' +
 					'developers and organizations worldwide.',
-				image: { src: 'welcome/point5.jpeg', alt: 'Research & Open Source', loading: 'lazy' },
+				image: { path: '/welcome/point5.jpeg', alt: 'Research & Open Source', loading: 'lazy' },
 			},
 			{
 				title: 'Careers & Skills',
 				body:
 					'AI literacy and ML engineering skills are in high demand; understanding trends helps you stay ' +
 					'relevant and build the future.',
-				image: { src: 'welcome/point6.jpeg', alt: 'Careers & Skills', loading: 'lazy' },
+				image: { path: '/welcome/point6.jpeg', alt: 'Careers & Skills', loading: 'lazy' },
 			},
 		],
 	},

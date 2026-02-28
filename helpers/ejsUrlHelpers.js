@@ -7,8 +7,9 @@
  * - href: full URL with domain for <a> links (e.g. https://example.com/demo/ny). Built at render
  *         from appHost + path. Use getHref(item) to resolve.
  * - src:  full URL with domain for <img> (e.g. https://cdn.example.com/images/welcome/point0.jpeg).
- *         Built at render from cdnHost + /images + path. Use getSrc(img) to resolve.
+ *         Built at render via getImgCdnUrl(cdnHost, path). Use getSrc(img) to resolve.
  */
+import { getImgCdnUrl } from './imgCdn.js';
 
 /**
  * Build href for <a> from link/item. Uses href if present, else appHost + path/ctaPath.
@@ -25,14 +26,15 @@ export function getHref(item, appHost = '') {
 
 /**
  * Build src for <img> from image object or pre-built URL string.
- * Uses src if present, else cdnHost + /images + path.
+ * Uses src if present, else getImgCdnUrl(cdnHost, path).
  * @param {object|string} img - { src?, path? } or full URL string
  * @param {string} cdnHost - Base CDN host (no trailing slash)
  * @returns {string}
  */
 export function getSrc(img, cdnHost = '') {
-	if(img == null) return '';
-	if(img.src) return img.src;
-	if(img.path) return `${cdnHost}/images/${img.path}`;
+	if (img == null) return '';
+	if (typeof img === 'string') return img;
+	if (img.src) return img.src;
+	if (img.path) return getImgCdnUrl(cdnHost, img.path);
 	return '';
 }

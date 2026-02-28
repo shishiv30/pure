@@ -78,7 +78,7 @@ const COMPONENT_TEMPLATE = 'comp_hero';
 
 const heroData = {
   image: {
-    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg'),
     alt: 'Welcome Hero',
     loading: 'eager',
   },
@@ -264,7 +264,7 @@ Take the HTML block you want to componentize. For example:
 
 Extract all dynamic values (text, links, image paths, etc.) into the data object:
 - Text content → strings in data
-- Image paths → use `getImgCdnUrl(CDN_HOST, 'path/to/image.jpeg')`
+- Image paths → use `getImgCdnUrl(CDN_HOST, '/path/to/image.jpeg')` (path must start with "/")
 - Links → use `APP_HOST` for internal links
 - Lists/arrays → arrays in data
 
@@ -300,7 +300,7 @@ import config from '../config.js';
 const CDN_HOST = config.cdnHost || '';
 
 // Use custom path relative to assets/images
-const imageSrc = getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg');
+const imageSrc = getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg');
 // Returns: ${CDN_HOST}/images/welcome/point0.jpeg
 ```
 
@@ -309,7 +309,7 @@ const imageSrc = getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg');
 ```js
 const componentData = {
   image: {
-    src: getImgCdnUrl(CDN_HOST, 'welcome/point0.jpeg'),
+    src: getImgCdnUrl(CDN_HOST, '/welcome/point0.jpeg'),
     alt: 'Description',
     loading: 'lazy',
   },

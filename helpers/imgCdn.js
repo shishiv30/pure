@@ -9,19 +9,21 @@
 /**
  * Build CDN host URL for an image from its path relative to client/assets/images.
  * @param {string} cdnHost - Base host (e.g. config.cdnHost)
- * @param {string} imagePath - Path relative to assets/images (e.g. 'welcome/point0.jpeg' or 'point0.jpeg')
+ * @param {string} imagePath - Path starting with "/" (e.g. '/welcome/point0.jpeg'); leading slash is stripped when building URL
  * @returns {string} Full URL, e.g. `${cdnHost}/images/welcome/point0.jpeg`
  */
 export function getImgCdnUrl(cdnHost, imagePath) {
-	const base = cdnHost || '';
-	const cleanPath = imagePath.replace(/^\//, ''); // Remove leading slash if present
-	return `${base}/images/${cleanPath}`;
+	const base = cdnHost ? `${cdnHost}/images` : '/images';
+	if(!imagePath.startsWith('/')) {
+		imagePath = `/${imagePath}`;
+	}
+	return imagePath ? `${base}${imagePath}` : '';
 }
 
-/** Known welcome images: basename → full path relative to assets/images (used by EJS comps) */
+/** Known welcome images: basename → path starting with "/" (used by EJS comps and callers of getImgCdnUrl) */
 export const WELCOME_IMG = {
-	point0: 'welcome/point0.jpeg',
-	point1: 'welcome/point1.jpeg',
-	point2: 'welcome/point2.jpeg',
-	point3: 'welcome/point3.jpeg',
+	point0: '/welcome/point0.jpeg',
+	point1: '/welcome/point1.jpeg',
+	point2: '/welcome/point2.jpeg',
+	point3: '/welcome/point3.jpeg',
 };

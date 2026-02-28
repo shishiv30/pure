@@ -9,7 +9,7 @@ export const meta = {
 	title: 'Human Evolution | Pure',
 	desc: 'Explore human introduction, types, behavior, body, geography, DNA, and evolution history.',
 	keywords: 'human evolution, human types, human behavior, human body, human geography, human DNA, evolution history',
-	theme: 'theme-yellow',
+	theme: 'theme-pink',
 };
 
 export default [
@@ -17,7 +17,7 @@ export default [
 	{
 		template: template.hero,
 		image: {
-			src: 'welcome/point0.jpeg',
+			path: '/welcome/point0.jpeg',
 			alt: 'Human Evolution',
 			loading: 'eager',
 		},
@@ -39,27 +39,27 @@ export default [
 			{
 				title: 'Human types',
 				body: 'Diversity of human populations and classifications across history and geography.',
-				image: { src: 'welcome/point1.jpeg', alt: 'Human types', loading: 'lazy' },
+				image: { path: '/welcome/point1.jpeg', alt: 'Human types', loading: 'lazy' },
 			},
 			{
 				title: 'Human behavior',
 				body: 'Patterns of behavior, culture, society, and cognition that characterize humans.',
-				image: { src: 'welcome/point2.jpeg', alt: 'Human behavior', loading: 'lazy' },
+				image: { path: '/welcome/point2.jpeg', alt: 'Human behavior', loading: 'lazy' },
 			},
 			{
 				title: 'Human body',
 				body: 'Anatomy, physiology, and the biological systems that make up the human body.',
-				image: { src: 'welcome/point3.jpeg', alt: 'Human body', loading: 'lazy' },
+				image: { path: '/welcome/point3.jpeg', alt: 'Human body', loading: 'lazy' },
 			},
 			{
 				title: 'Human geo info',
 				body: 'Where humans live: distribution, migration, and adaptation to environments.',
-				image: { src: 'welcome/point4.jpeg', alt: 'Human geography', loading: 'lazy' },
+				image: { path: '/welcome/point4.jpeg', alt: 'Human geography', loading: 'lazy' },
 			},
 			{
 				title: 'Human DNA',
 				body: 'Genetics, heredity, and how DNA tells the story of human ancestry and variation.',
-				image: { src: 'welcome/point5.jpeg', alt: 'Human DNA', loading: 'lazy' },
+				image: { path: '/welcome/point5.jpeg', alt: 'Human DNA', loading: 'lazy' },
 			},
 		],
 	},
