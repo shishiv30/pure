@@ -4,6 +4,8 @@ import BaseController from '../controllers/basecontroller.js';
 import { fetchPropertiesFromSOA, fetchPropertiesImagesFromSOA } from '../configs/demo.js';
 import { mapGeoPathToSOAPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
+import config from '../config.js';
+import articlesData from '../../data/mock/articles.js';
 
 /**
  * @swagger
@@ -197,12 +199,15 @@ router.get('/geo', async (req, res) => {
  */
 router.get('/properties/:path(*)', async (req, res) => {
 	try {
+		if (!config.cmsHealth) {
+			res.json(articlesData);
+			return;
+		}
 		const { path } = req.params;
 		let soaPath = mapGeoPathToSOAPath(path);
-		// Fetch properties using reusable function
 		const properties = await fetchPropertiesFromSOA(soaPath);
 		const articles = mapPropertiesToArticles(properties);
-		res.json(articles);
+		res.json(Array.isArray(properties) && properties.length > 0 ? articles : articlesData);
 	} catch (error) {
 		console.error('Error fetching properties:', error);
 		res.status(500).json({ error: 'Internal server error' });
@@ -247,6 +252,10 @@ router.get('/properties-images/:url(*)', async (req, res) => {
 		const { url } = req.params;
 		if (!url) {
 			throw new Error('Url is required');
+		}
+		if (!config.cmsHealth) {
+			res.json([]);
+			return;
 		}
 		const imageUrls = await fetchPropertiesImagesFromSOA(url);
 		res.json(imageUrls);

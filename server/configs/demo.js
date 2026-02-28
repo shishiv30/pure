@@ -128,13 +128,15 @@ export default {
 				geo = null;
 			}
 		}
-		//use api to fetch properties (fetchPropertiesFromSOA returns [] on failure)
-		if (geo) {
+		// Use SOA only when CMS is healthy; otherwise use local articlesData
+		if (geo && config.cmsHealth) {
 			let soaPath = mapGeoToSOAPath(geo);
 			let properties = await fetchPropertiesFromSOA(soaPath);
 			articles = Array.isArray(properties) && properties.length > 0
 				? mapPropertiesToArticles(properties)
 				: articlesData;
+		} else if (geo) {
+			articles = articlesData;
 		}
 		const articleComponent = createArticleComponent(articles);
 		const headerComponent = createHeaderComponent();

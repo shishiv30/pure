@@ -37,6 +37,7 @@ app.use('/', pageRouter);
 app.use('/api', apiRouter);
 app.use(express.static('dist'));
 
+// Set CMS health before starting server so routes use local vs CMS consistently
 (async () => {
 	config.cmsHealth = await useCms();
 	if (!config.cmsHealth) {
@@ -44,15 +45,11 @@ app.use(express.static('dist'));
 	} else {
 		console.log('CMS is healthy, use CMS data');
 	}
-})();
-
-// Initialize geo data and start server
-(async () => {
 	await geo(app);
-		app.listen(config.port, function () {
-			console.log(`Example app listening on host ${config.appHost}`);
-			console.log(`API docs available at ${config.appHost}/api-docs`);
-			console.log(`Demo docs available at state like ${config.appHost}/demo/tx`);
-			console.log(`About page available at ${config.appHost}/about`);
-		});
+	app.listen(config.port, function () {
+		console.log(`Example app listening on host ${config.appHost}`);
+		console.log(`API docs available at ${config.appHost}/api-docs`);
+		console.log(`Demo docs available at state like ${config.appHost}/demo/tx`);
+		console.log(`About page available at ${config.appHost}/about`);
+	});
 })();
