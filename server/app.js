@@ -1,7 +1,6 @@
 import express from 'express';
 import compression from 'compression';
-import pageRouter from './routes/page.js';
-import apiRouter from './routes/api.js';
+import router from './routes/index.js';
 import session from './middleware/session.js';
 import geo from './middleware/geo.js';
 import config from './config.js';
@@ -33,8 +32,7 @@ app.use((req, res, next) => {
 
 /* routes */
 app.use(cors({ origin: config.corsOrigins }));
-app.use('/', pageRouter);
-app.use('/api', apiRouter);
+app.use('/', router);
 app.use(express.static('dist'));
 
 // Set CMS health before starting server so routes use local vs CMS consistently
