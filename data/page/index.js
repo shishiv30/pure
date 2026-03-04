@@ -11,6 +11,10 @@ export const meta = {
 	desc: 'Author: Conjee Zou, UI solution, Category: Home',
 	keywords: '',
 	theme: 'theme-yellow',
+	preload: [
+		{ as: 'image', href: '/images/logo-bg.svg' },
+		{ as: 'image', href: '/images/welcome/point0.jpeg' },
+	],
 };
 
 export default [

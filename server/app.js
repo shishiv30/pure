@@ -4,6 +4,7 @@ import router from './routes/index.js';
 import session from './middleware/session.js';
 import geo from './middleware/geo.js';
 import config from './config.js';
+import { uploadStaticHtmlToS3 } from './utils/uploadStaticHtmlS3.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { useCms } from './utils/cmsData.js';
@@ -30,14 +31,17 @@ app.use((req, res, next) => {
 	next();
 });
 
-/* routes */
+/* routes: static first so /page/index.html serves saved HTML; then dynamic routes */
 app.use(cors({ origin: config.corsOrigins }));
-app.use('/', router);
 app.use(express.static('dist'));
+app.use('/', router);
 
 // Set CMS health before starting server so routes use local vs CMS consistently
 (async () => {
 	config.cmsHealth = await useCms();
+	if (config.mode === 'production' && config.s3CdnBucket) {
+		config.uploadStaticHtml = uploadStaticHtmlToS3;
+	}
 	if (!config.cmsHealth) {
 		console.error('CMS is not healthy, use local data only');
 	} else {

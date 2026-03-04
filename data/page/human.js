@@ -10,6 +10,10 @@ export const meta = {
 	desc: 'Explore human introduction, types, behavior, body, geography, DNA, and evolution history.',
 	keywords: 'human evolution, human types, human behavior, human body, human geography, human DNA, evolution history',
 	theme: 'theme-pink',
+	preload: [
+		{ as: 'image', href: '/images/logo-bg.svg' },
+		{ as: 'image', href: '/images/welcome/point0.jpeg' },
+	],
 };
 
 export default [

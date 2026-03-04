@@ -10,6 +10,10 @@ export const meta = {
 	title: 'Pure - AI Trend',
 	desc: 'AI Trend: shaping the future with intelligence and innovation.',
 	keywords: 'AI, artificial intelligence, trends',
+	preload: [
+		{ as: 'image', href: '/images/logo-bg.svg' },
+		{ as: 'image', href: '/images/welcome/point0.jpeg' },
+	],
 };
 
 export default [

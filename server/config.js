@@ -67,6 +67,11 @@ let config = {
 		process.env.WEBPACK_OPTIMIZE === 'true' ||
 		NODE_ENV === 'production' ||
 		NODE_ENV === 'stage',
+
+	/** Production only: optional (path, html) => Promise to upload static HTML to CDN after save to dist */
+	uploadStaticHtml: null,
+	/** S3 bucket for CDN (AWS_S3_CDN_BUCKET or S3_CDN_BUCKET). When set in production, uploadStaticHtml uses S3. */
+	s3CdnBucket: process.env.AWS_S3_CDN_BUCKET || process.env.S3_CDN_BUCKET || '',
 };
 
 // Derived URLs

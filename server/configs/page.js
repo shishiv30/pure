@@ -47,16 +47,6 @@ function seoFromModel(req, model) {
 	return { title: m?.title ?? '', desc: m?.desc ?? '', keywords: m?.keywords ?? '' };
 }
 
-// Index (route /) – same logic as page, fixed key
-export const indexConfig = {
-	name: 'index',
-	assetName: 'index',
-	async seo(req, model) {
-		return seoFromModel(req, model);
-	},
-	get: async () => handlePageGet('index'),
-};
-
 // Dynamic page config (route /page/:key)
 export default {
 	name: 'page',

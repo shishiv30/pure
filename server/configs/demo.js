@@ -128,8 +128,7 @@ export default {
 				geo = null;
 			}
 		}
-		// Use SOA only when CMS is healthy; otherwise use local articlesData
-		if (geo && config.cmsHealth) {
+		if (geo && config.soaApiDomain) {
 			let soaPath = mapGeoToSOAPath(geo);
 			let properties = await fetchPropertiesFromSOA(soaPath);
 			articles = Array.isArray(properties) && properties.length > 0

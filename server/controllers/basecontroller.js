@@ -4,6 +4,7 @@ import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
 import { getHref, getSrc } from '../../helpers/ejsUrlHelpers.js';
+import { getStaticHtmlPath, saveStaticHtml } from '../utils/staticHtml.js';
 import themeData from '../../data/comps/theme.js';
 import fs from 'fs';
 import mime from 'mime';
@@ -87,17 +88,20 @@ export default class BaseController {
 		let origin = this.req.headers.origin || `${this.req.protocol}://${this.req.get('host')}`;
 		const cdnBase = serverConfig.cdnHost || '';
 		const assetPath = (path) => cdnBase ? `${cdnBase}${path}` : path;
-		let preload = [
-			{
-				as: 'image',
-				href: assetPath('/img.logo-bg.svg'),
-			},
+		const defaultPreload = [
+			{ as: 'image', href: assetPath('/images/logo-bg.svg') },
 		];
+		const pagePreload =
+			Array.isArray(originMeta?.preload) && originMeta.preload.length
+				? originMeta.preload.map((p) => ({
+						as: p.as || 'image',
+						href: assetPath(p.href || p.path || ''),
+					}))
+				: defaultPreload;
+		let preload = pagePreload;
 		if (this.config.preload) {
-			let pagePreload = this.config.preload(this.req, model);
-			if (pagePreload) {
-				preload = preload.concat(pagePreload);
-			}
+			const extra = this.config.preload(this.req, model);
+			if (extra && extra.length) preload = preload.concat(extra);
 		}
 		const assetName = this.config.assetName || this.config.name;
 		let meta = {
@@ -228,8 +232,16 @@ export default class BaseController {
 		model.cdnHost = model.meta?.cdnHost || '';
 		model.getHref = (item) => getHref(item, model.appHost);
 		model.getSrc = (img) => getSrc(img, model.cdnHost);
-		//relative path of ejs template
-		this.res.render(`${this.config.name}.ejs`, model);
+		this.res.render(`${this.config.name}.ejs`, model, (err, html) => {
+			if (err) {
+				console.error('Render error:', err);
+				this.res.status(500).send('Unable to load this page. Please try again later.');
+				return;
+			}
+			this.res.send(html);
+			const staticPath = getStaticHtmlPath(this.req);
+			saveStaticHtml(staticPath, html);
+		});
 	}
 
 	static async dist(res, fileName) {

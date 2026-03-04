@@ -23,5 +23,5 @@ import demoSitemap from './demoSitemap.js';
 import demoSitemapState from './demoSitemapState.js';
 import demoSitemapCounty from './demoSitemapCounty.js';
 import demoSitemapCity from './demoSitemapCity.js';
-import pageConfig, { indexConfig } from './page.js';
-export default [geo, demo, demoSitemap, demoSitemapState, demoSitemapCounty, demoSitemapCity, indexConfig, pageConfig];
+import pageConfig from './page.js';
+export default [geo, demo, demoSitemap, demoSitemapState, demoSitemapCounty, demoSitemapCity, pageConfig];
