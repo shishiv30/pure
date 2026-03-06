@@ -3,10 +3,10 @@
 @include comp-color('tag');
 
 .tag {
-	--tag-gap-x: var(--g1);
+	--tag-gap-x: var(--g2);
 	--tag-gap-y: var(--g0);
 	padding: var(--tag-gap-y) var(--tag-gap-x);
-	font-size: var(--font-size-7);
+	font-size: var(--font-size-6);
 	border-radius: var(--g1);
 	@include singleline();
 

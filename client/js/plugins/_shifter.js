@@ -37,6 +37,7 @@ export default {
             prevArrow.type = 'button';
             prevArrow.className = 'arrow prev circle small';
             prevArrow.innerHTML = '<i class="icon-angle-left"></i>';
+            prevArrow.setAttribute('aria-label', 'Previous');
             shifter.insertBefore(prevArrow, scroller);
         }
 
@@ -45,6 +46,7 @@ export default {
             nextArrow.type = 'button';
             nextArrow.className = 'arrow next circle small';
             nextArrow.innerHTML = '<i class="icon-angle-right"></i>';
+            nextArrow.setAttribute('aria-label', 'Next');
             shifter.appendChild(nextArrow);
         }
 

@@ -21,31 +21,31 @@ html {
 
 	--color-major-hue: 169;
 	--color-major-default-lightness: 23%;
-	--color-major-default-lightness-l1: 95%;
+	--color-major-default-lightness-l1: 99%;
 	--color-major-lightness: var(--color-major-default-lightness);
 	--color-major-lightness-l1: var(--color-major-default-lightness-l1);
 	--color-major-saturation: 76%;
-	--color-minor-hue: 185;
-	--color-minor-default-lightness: 15%;
-	--color-minor-default-lightness-l1: 95%;
+	--color-minor-hue: 169;
+	--color-minor-default-lightness: 31%;
+	--color-minor-default-lightness-l1: 99%;
 	--color-minor-lightness: var(--color-minor-default-lightness);
 	--color-minor-lightness-l1: var(--color-minor-default-lightness-l1);
 	--color-minor-saturation: 100%;
-	--color-safe-hue: 169;
-	--color-safe-default-lightness: 30%;
-	--color-safe-default-lightness-l1: 95%;
+	--color-safe-hue: 179;
+	--color-safe-default-lightness: 25%;
+	--color-safe-default-lightness-l1: 99%;
 	--color-safe-lightness: var(--color-safe-default-lightness);
 	--color-safe-lightness-l1: var(--color-safe-default-lightness-l1);
 	--color-safe-saturation: var(--color-glb-default-saturation);
-	--color-danger-hue: 4;
-	--color-danger-default-lightness: 50%;
-	--color-danger-default-lightness-l1: 95%;
+	--color-danger-hue: 10;
+	--color-danger-default-lightness: 48%;
+	--color-danger-default-lightness-l1: 99%;
 	--color-danger-lightness: var(--color-danger-default-lightness);
 	--color-danger-lightness-l1: var(--color-danger-default-lightness-l1);
 	--color-danger-saturation: var(--color-glb-default-saturation);
-	--color-tip-hue: 54;
-	--color-tip-default-lightness: 30%;
-	--color-tip-default-lightness-l1: 95%;
+	--color-tip-hue: 321;
+	--color-tip-default-lightness: 24%;
+	--color-tip-default-lightness-l1: 99%;
 	--color-tip-lightness: var(--color-tip-default-lightness);
 	--color-tip-lightness-l1: var(--color-tip-default-lightness-l1);
 	--color-tip-saturation: var(--color-glb-default-saturation);
@@ -77,9 +77,9 @@ html {
 	//f5
 	--font-size-5: 1rem;
 	//f6
-	--font-size-6: 0.75rem;
+	--font-size-6: 0.875rem;
 	//f7
-	--font-size-7: 0.625rem;
+	--font-size-7: 0.75rem;
 
 	//half of gs
 	--gxs: 0.125rem;
@@ -98,7 +98,7 @@ html {
 	//g4 + g5
 	--g6: 4.5rem;
 
-	--font-weight-regular: 300;
+	--font-weight-regular: 400;
 	--font-weight-medium: 400;
 	--font-weight-bold: 700;
 }
@@ -160,7 +160,7 @@ body {
 	--color-8: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-8-lightness));
 	--color-9: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-9-lightness));
 
-	--color-default-lightness: 10%;
+	--color-default-lightness: 25%;
 	--color-default-l1-lightness: 50%;
 	--color-bg-default-lightness: 100%;
 	--color-bg-default-l1-lightness: 96%;
@@ -227,7 +227,7 @@ body {
 		--color-9-lightness: 100%;
 
 		--color-default-lightness: 750%;
-		--color-default-l1-lightness: 80%;
+		--color-default-l1-lightness: 70%;
 
 		--color-bg-default-lightness: 15%;
 		--color-bg-default-l1-lightness: 8%;
