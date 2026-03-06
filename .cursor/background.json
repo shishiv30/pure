@@ -238,6 +238,45 @@
           "Use module-level variables",
           "Implement proper state management"
         ],
+        "ui_status_helpers": {
+          "overview": [
+            "Use defBool and defEnum from client/js/core/def.js to model UI state via CSS class names",
+            "Each status is driven by a CSS class on an element and a set of generated methods on exportObj",
+            "Prefer these helpers over hand-written add/remove/toggle for consistent behavior"
+          ],
+          "boolean_status": {
+            "helper": "defBool(name, $el, opt, exportObj)",
+            "css_class": "name (e.g. 'header-close') toggled on $el",
+            "status_property": "camelCase version of name on exportObj (e.g. 'headerClose')",
+            "methods": [
+              "add<Status>() – add the class and mark status true (e.g. addHeaderClose)",
+              "remove<Status>() – remove the class and mark status false (e.g. removeHeaderClose)",
+              "toggle<Status>() – toggle between add/remove (e.g. toggleHeaderClose)",
+              "is<Status>() – read-only check of the current DOM/class state (e.g. isHeaderClose)"
+            ],
+            "hooks_on_opt": [
+              "beforeAdd<Status>, afterAdd<Status>",
+              "beforeRemove<Status>, afterRemove<Status>"
+            ]
+          },
+          "enum_status": {
+            "helper": "defEnum(key, names, $el, opt, exportObj)",
+            "css_classes": "key-name for each value on $el (e.g. 'view-grid', 'view-detail', 'view-map')",
+            "status_property": "camelCase version of key on exportObj (e.g. 'view')",
+            "methods": [
+              "switchTo<Value>() – switch to one value and update classes (e.g. switchToGrid)",
+              "current<Key>() – read the current enum value (e.g. currentView)"
+            ],
+            "hooks_on_opt": [
+              "beforeSwitchTo<Value>, afterSwitchTo<Value> for each value"
+            ]
+          },
+          "plugin_pattern": [
+            "Define arrays like boolStatus and enumStatus inside a plugin/page (see client/js/plugins/_header.js and client/pages/demo/index.js)",
+            "In init($el, opt, exportObj), loop through boolStatus and enumStatus and call defBool/defEnum to attach all status methods",
+            "After init, use the generated methods on exportObj inside the plugin and in templates"
+          ]
+        },
         "error_handling": [
           "Handle all error cases",
           "Provide meaningful error messages",
@@ -794,15 +833,40 @@
         "functions": [
           {
             "name": "defBool",
-            "purpose": "Define boolean state with add/remove/toggle/is methods",
+            "purpose": "Define boolean state with add/remove/toggle/is methods based on a CSS class name",
             "params": ["name", "$el", "opt", "exportObj"]
           },
           {
             "name": "defEnum",
-            "purpose": "Define enum state with switchTo methods",
+            "purpose": "Define enum state with switchTo methods and a current<Key>() getter",
             "params": ["key", "names", "$el", "opt", "exportObj"]
           }
-        ]
+        ],
+        "patterns": {
+          "bool": {
+            "meta_helper": "getBoolStatusMeta(name)",
+            "generated": {
+              "status_property": "camelCase of name (e.g. 'header-close' -> 'headerClose')",
+              "methods": [
+                "add<Status>(), remove<Status>(), toggle<Status>(), is<Status>()"
+              ],
+              "hooks_on_opt": [
+                "beforeAdd<Status>, afterAdd<Status>, beforeRemove<Status>, afterRemove<Status>"
+              ]
+            }
+          },
+          "enum": {
+            "meta_helper": "getEnumStatusMeta(key, names)",
+            "generated": {
+              "status_property": "camelCase of key (e.g. 'view' -> 'view')",
+              "methods": [
+                "switchTo<Value>() for each name",
+                "current<Key>() getter"
+              ],
+              "css_classes": "key-name toggled on $el for each value"
+            }
+          }
+        }
       },
       "base": {
         "file": "client/js/core/base.js",
