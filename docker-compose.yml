@@ -15,6 +15,7 @@ services:
       - PORT=${PORT}
       - DOCKER_PORT=${DOCKER_PORT}
       - CDN_HOST=${CDN_HOST}
+      - APP_HOST=${APP_HOST:-${CDN_HOST}}
     volumes:
       - ./dist:/app/dist
     restart: unless-stopped

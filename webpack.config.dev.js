@@ -28,6 +28,10 @@ export default (env) => {
 		devServer: {
 			static: {
 				directory: path.join(__dirname, 'dist'),
+				// Ignore generated page HTML so writing dist/page/index.html doesn't trigger a refresh loop
+				watch: {
+					ignored: path.join(__dirname, 'dist', 'page'),
+				},
 			},
 			compress: true,
 			port: config.webpackDevServerPort,

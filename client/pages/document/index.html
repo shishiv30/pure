@@ -14,7 +14,7 @@
 
 <body id="body">
   <!-- include:header.html -->
-  <section class="section large">
+  <section class="section large" id="welcome">
     <div class="fixed fixed-max-xs panel inline corner-1 grid grid-xs-1 large">
       <div class="flex vertical">
         <h1 class="f3">Welcome to pure UI:</h1>
@@ -223,7 +223,7 @@
     <div class="panel fixed fixed-max-xs grid grid-xs-1">
       <h2 class="f3">Player</h2>
       <div class="player" data-role="player" data-index="0"
-        data-images='["img.01.jpg", "img.02.jpg", "img.03.jpg", "img.04.jpg", "img.05.jpg", "img.06.jpg", "img.07.jpg"]'>
+        data-images='["/images/01.jpg", "/images/02.jpg", "/images/03.jpg", "/images/04.jpg", "/images/05.jpg", "/images/06.jpg", "/images/07.jpg"]'>
         <img src="../../assets/images/01.jpg" alt="Playershow Image One">
         <img src="../../assets/images/02.jpg" alt="Playershow Image Two">
       </div>
@@ -233,7 +233,7 @@
     <div class="panel fixed fixed-max-xs grid grid-xs-1">
       <h2 class="f3">Album</h2>
       <div class="album" data-role="album" data-index="0"
-        data-images='["img.01.jpg", "img.02.jpg", "img.03.jpg", "img.04.jpg", "img.05.jpg", "img.06.jpg", "img.07.jpg"]'>
+        data-images='["/images/01.jpg", "/images/02.jpg", "/images/03.jpg", "/images/04.jpg", "/images/05.jpg", "/images/06.jpg", "/images/07.jpg"]'>
         <div class="album-list">
           <img src="../../assets/images/04.jpg" loading="lazy" alt="album photos">
         </div>
@@ -303,6 +303,15 @@
 						<li><a href="javascript:;">Cat</a></li>
 					</ul>
 				</script>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">ScrollTo</h2>
+      <p>Scroll down the page, then click the button to scroll back to the first section.</p>
+      <button type="button" class="btn default small" data-role="scrollto" data-target="#welcome">
+        Scroll to first section
+      </button>
     </div>
   </section>
   <section class="section bg default large" id="formPanel">

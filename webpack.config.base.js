@@ -40,7 +40,7 @@ export default () => {
 				},
 				{
 					// Output: images/[path relative to assets/images][name][ext] (e.g. images/welcome/point0.jpeg)
-					// Preserves folder structure. CDN URL mapping: helpers/imgCdn.js
+					// Preserves folder structure. CDN HOST mapping: helpers/imgCdn.js
 					test: /\.(svg|png|jpe?g|gif|ico|webp)$/i,
 					type: 'asset/resource',
 					generator: {

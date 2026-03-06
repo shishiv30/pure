@@ -14,7 +14,7 @@ import lazyload from './_lazyload.js';
 // import onscroll from './_onscroll.js';
 // import ranger from './_ranger.js';
 // import request from './_request.js';
-// import scrollTo from './_scrollTo.js';
+import scrollTo from './_scrollTo.js';
 import tab from './_tab.js';
 import shifter from './_shifter.js';
 import textbox from './_textbox.js';
@@ -48,7 +48,7 @@ export default {
 	// onscroll,
 	// ranger,
 	// request,
-	// scrollTo,
+	scrollTo,
 	tab,
 	textbox,
 	tooltip,

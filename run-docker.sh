@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pure UI Docker Runner Script
-# Loads port and config from .env / .env.stage / .env.production (by NODE_ENV), then .env.local overrides.
+# build-docker:dev → .env then .env.local; CDN_HOST=DOMAIN:DOCKER_PORT. build-docker:prod → .env.production; CDN_HOST from file.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -24,15 +24,16 @@ load_env_file() {
 NODE_ENV=${NODE_ENV:-development}
 
 if [[ "$NODE_ENV" = "production" ]]; then
+	# build-docker:prod — read .env.production; CDN_HOST from .env.production
 	load_env_file "$SCRIPT_DIR/.env.production"
 elif [[ "$NODE_ENV" = "stage" ]]; then
 	load_env_file "$SCRIPT_DIR/.env.stage"
 else
-	# build-docker:dev: base from .env.stage then .env.local overrides
-	load_env_file "$SCRIPT_DIR/.env.stage"
+	# build-docker:dev — read .env then .env.local overwrites
 	NODE_ENV=development
+	load_env_file "$SCRIPT_DIR/.env"
+	load_env_file "$SCRIPT_DIR/.env.local"
 fi
-load_env_file "$SCRIPT_DIR/.env.local"
 
 # Defaults only when not set by env files. All envs: host 3002 (DOCKER_PORT), Node listener 3000 (PORT).
 PORT=${PORT:-3000}
@@ -41,10 +42,16 @@ SESSION_SECRET=${SESSION_SECRET:-dev-session-secret-change-in-production}
 SOA_API_DOMAIN=${SOA_API_DOMAIN:-}
 DOCKER_PORT=${DOCKER_PORT:-3002}
 DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-$([ "$NODE_ENV" = "development" ] && echo "development" || echo "production")}
-# stage and production both use production Docker target
-CDN_HOST=${CDN_HOST:-"http://${DOMAIN}:${DOCKER_PORT}"}
-# build-docker:dev: force CDN_HOST to host port so container uses http://localhost:3002 (not PORT 3000)
-[[ "$NODE_ENV" = "development" ]] && CDN_HOST="http://localhost:${DOCKER_PORT}"
+# build-docker:dev → CDN_HOST = DOMAIN:DOCKER_PORT; build-docker:prod → CDN_HOST from .env.production
+echo "☁️  CDN HOST: $CDN_HOST"
+echo "🌐 APP HOST: $APP_HOST"
+if [[ "$NODE_ENV" = "development" ]]; then
+	CDN_HOST="http://${DOMAIN}:${DOCKER_PORT}"
+	APP_HOST="http://${DOMAIN}:${DOCKER_PORT}"
+else
+	CDN_HOST=${CDN_HOST:-"http://${DOMAIN}:${DOCKER_PORT}"}
+	APP_HOST=${APP_HOST:-"http://${DOMAIN}:${DOCKER_PORT}"}
+fi
 
 echo "🚀 Starting Pure UI Docker Container"
 echo "📡 Environment: $NODE_ENV"
@@ -54,7 +61,10 @@ echo "🔧 Server Port: $PORT"
 echo "🌐 Domain: $DOMAIN"
 echo "🔗 SOA API: $SOA_API_DOMAIN"
 if [ -n "$CDN_HOST" ]; then
-    echo "☁️  CDN URL: $CDN_HOST"
+	echo "☁️  CDN HOST: $CDN_HOST"
+fi
+if [ -n "$APP_HOST" ]; then
+	echo "🌐 APP HOST: $APP_HOST"
 fi
 echo ""
 
@@ -63,6 +73,7 @@ export NODE_ENV
 export PORT
 export DOCKER_PORT
 export CDN_HOST
+export APP_HOST
 export DOCKER_BUILD_TARGET
 
 # Stop existing containers and remove the previous image so only one image exists
@@ -108,4 +119,4 @@ echo "  - Local dev (npm run dev): uses localhost:3000"
 echo "  - Docker: uses localhost:3002 (mapped from internal port 3000)"
 echo "  - CDN_HOST: automatically set to localhost:3002 for Docker"
 echo ""
-echo "📝 Config loaded from: .env / .env.stage / .env.production (by NODE_ENV), then .env.local (overrides)"
+echo "📝 Config: build-docker:dev → .env + .env.local, CDN_HOST=DOMAIN:DOCKER_PORT; build-docker:prod → .env.production, CDN_HOST from file"

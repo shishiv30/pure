@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 // Determine environment: development | stage (GitHub) | production (AWS)
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Load environment variables based on NODE_ENV (override: false so Docker/shell env wins)
+// Env loading: npm run dev → .env then .env.local overwrites; build:stage → .env.stage; build:prod → .env.production
 if (NODE_ENV === 'production') {
 	dotenv.config({ path: path.join(__dirname, '../.env.production'), override: false });
 } else if (NODE_ENV === 'stage') {
@@ -41,13 +41,15 @@ let config = {
 	// App
 	appName: process.env.APP_NAME || 'Pure',
 
-	// Host Configuration (Docker dev: use DOCKER_PORT so CDN is http://localhost:3002)
+	// Host: when CDN_HOST unset, fall back to appHost (so assets follow the same origin/port as links).
+	// Docker sets CDN_HOST/APP_HOST in run-docker.sh.
+	appHost:
+		process.env.APP_HOST ||
+		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 3000}`,
 	cdnHost:
 		process.env.CDN_HOST ||
-		(process.env.DOCKER_PORT && NODE_ENV === 'development'
-			? `http://${process.env.DOMAIN || 'localhost'}:${process.env.DOCKER_PORT}`
-			: `http://${process.env.DOMAIN}:${process.env.PORT}`),
-	appHost: process.env.APP_HOST || `http://${process.env.DOMAIN}:${process.env.PORT}`,
+		process.env.APP_HOST ||
+		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 3000}`,
 	webpackDevServerUrl: `http://${process.env.WEBPACK_DEV_SERVER_HOST}:${process.env.WEBPACK_DEV_SERVER_PORT}`,
 
 	// Development Configuration
@@ -55,8 +57,9 @@ let config = {
 	webpackDevServerHost: process.env.WEBPACK_DEV_SERVER_HOST || 'localhost',
 	webpackHotReload: process.env.WEBPACK_HOT_RELOAD === 'true' || NODE_ENV === 'development',
 
-	// Docker / host port (from .env DOCKER_PORT, e.g. 3002)
-	dockerPort: parseInt(process.env.DOCKER_PORT) || 3002,
+	// Docker only: host-mapped port for CORS when running in container (run-docker.sh sets CDN_HOST)
+	dockerPort:
+		process.env.CDN_HOST ? (parseInt(process.env.DOCKER_PORT) || 3002) : undefined,
 
 	// Production Configuration (production and stage use minified builds)
 	webpackMinimize:
@@ -74,19 +77,17 @@ let config = {
 	s3CdnBucket: process.env.AWS_S3_CDN_BUCKET || process.env.S3_CDN_BUCKET || '',
 };
 
-// Derived URLs
+// Derived URLs (dockerPort only when CDN_HOST set, i.e. Docker run)
 config.corsOrigins = [
 	config.appHost,
 	config.webpackDevServerUrl,
-	...(config.dockerPort ? [`http://${config.domain}:${config.dockerPort}`] : []),
+	...(config.dockerPort ? [`http://${config.domain || 'localhost'}:${config.dockerPort}`] : []),
 ];
 
-// console.table({
-// 	mode: config.mode,
-// 	port: config.port,
-// 	domain: config.domain,
-// 	soaApiDomain: config.soaApiDomain,
-// 	webpackDevServerPort: config.webpackDevServerPort,
-// });
+// Debug: APP_HOST and CDN_HOST (remove when done)
+console.log('[config] env APP_HOST:', process.env.APP_HOST ?? '(unset)');
+console.log('[config] env CDN_HOST:', process.env.CDN_HOST ?? '(unset)');
+console.log('[config] resolved appHost:', config.appHost);
+console.log('[config] resolved cdnHost:', config.cdnHost);
 
 export default config;
