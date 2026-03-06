@@ -1,0 +1,68 @@
+@use './_mixins.scss' as *;
+@use './_circle.scss';
+
+.shifter {
+  --shifter-height: 200px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    @include box-shadow();
+    &.prev {
+      left: var(--g1);
+    }
+
+    &.next {
+      right: var(--g1);
+    }
+  }
+
+  .shifter-scroller {
+    display: flex;
+    align-items: stretch;
+    gap: var(--g2);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--g1) 0;
+    scroll-behavior: smooth;
+    @include hidden-scrollbar();
+
+    > * {
+      flex: 0 0 auto;
+      min-width: 160px;
+      height: var(--shifter-height);
+      padding: var(--g2);
+      border-radius: var(--radius-1);
+      background-color: var(--color-bg-l1);
+      box-shadow: 0 2px 6px hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+      font-size: var(--font-size-5);
+      line-height: var(--line-height-normal);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  &.hidden-prev {
+    .arrow.prev {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  &.hidden-next {
+    .arrow.next {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+}
+

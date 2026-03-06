@@ -42,8 +42,79 @@ export default {
 		// Optional: cleanup before destroy
 		// Remove event listeners, clean up DOM
 	},
+	destroyAfter: null,             // Optional: called after destroy completes
 };
 ```
+
+## Workflow: creating a new plugin
+
+When building a **new** plugin (not just converting an old one), follow this end‑to‑end flow:
+
+1. **Read the requirements carefully**  
+   - Clarify what user problem the plugin solves and how it should be used in HTML (`data-role="..."`, expected children, etc.).
+   - Check existing plugins first (e.g. `_header.js`, `_collapse.js`, `_autocomplete.js`, `_shifter.js`) and reuse patterns whenever possible.
+
+2. **Create JS + CSS files for the plugin name**  
+   - JS: `client/js/plugins/_<name>.js` exporting the standard plugin object shown above.  
+   - CSS: `client/scss/_<name>.scss` with a base class matching the plugin name (e.g. `.shifter`, `.tooltip`, `.album`).  
+   - Register both:
+     - JS: add the plugin to `client/js/plugins/index.js`.
+     - CSS: `@forward './_<name>.scss';` in `client/scss/base.scss`.
+
+3. **Design the HTML structure in `client/pages/document/index.html`**  
+   - Add a demo section that shows typical usage of the new plugin:
+     - A root element with `data-role="<name>"`.
+     - Any required nested elements (e.g. a `data-role="scroller"` child for scrolling content).
+   - Keep the markup minimal; let the plugin JS create extra DOM (e.g. arrows, overlays) when appropriate rather than hard‑coding everything in HTML.
+
+4. **Design UI status using `defBool` / `defEnum` (if needed)**  
+   - For boolean UI states, use `defBool` from `client/js/core/def.js`:
+     - Example: `defBool('header-close', $el, opt, exportObj);`
+       - Generates methods like `addHeaderClose()`, `removeHeaderClose()`, `toggleHeaderClose()`, `isHeaderClose()`.
+       - Toggles a CSS class (`.header-close`) on the element.
+   - For enum/multi‑state UI, use `defEnum`:
+     - Example: `defEnum('view', ['grid', 'detail', 'map'], $el, opt, exportObj);`
+       - Generates methods like `switchToGrid()`, `switchToDetail()`, `switchToMap()` and a `currentView()` getter.
+       - Manages classes like `.view-grid`, `.view-detail`, `.view-map`.
+   - Follow the pattern used in `client/pages/demo/index.js` and `_header.js`:
+     - Define `const boolStatus = [...]` / `const enumStatus = [...]` at the top.
+     - Loop them in `init` and call `defBool` / `defEnum` to attach all status methods.
+
+5. **Implement JS: when to switch UI status (if needed)**  
+   - Use existing utilities as much as possible:
+     - Event helpers: `on`, `off`, `emit`, `trigger` from `client/js/core/event.js`.
+     - State helpers: `defBool`, `defEnum` from `client/js/core/def.js`.
+     - Scroll/lock helpers: `disableScroll`, `enableScroll` from `client/js/core/scroll.js`.
+   - In `init($el, opt, exportObj)`:
+     - Create any dynamic DOM needed (e.g. shifter arrows, overlays).
+     - Wire event listeners that call the status methods (`add<Status>`, `remove<Status>`, `switchTo<Value>`).
+     - Expose a small, meaningful API on `exportObj` (e.g. `show()`, `hide()`, `next()`, `prev()`).
+   - Make sure listeners can be cleaned up later (store references on `exportObj` when necessary and remove them in `destroyBefore` if the plugin defines it).
+
+6. **Implement CSS: base + status modifiers (if needed)**  
+   - Base class: style the plugin’s default appearance on the root (e.g. `.shifter`, `.tooltip`, `.album`).
+   - Status modifiers: add CSS for the classes driven by `defBool` / `defEnum`:
+     - Boolean example:  
+       - `.header.header-close { transform: translateY(-100%); }`
+     - Enum example:  
+       - `.view-grid { /* grid layout */ }`  
+       - `.view-detail { /* detail layout */ }`
+   - Reuse existing utility classes and mixins (`_mixins.scss`, `_circle.scss`, `_utilities.scss`) instead of redefining spacing, typography, or shapes.
+
+7. **Wire the plugin into the system**  
+   - Confirm:
+     - It’s imported and exported in `client/js/plugins/index.js`.
+     - Its SCSS file is forwarded from `client/scss/base.scss`.
+     - `client/pages/document/index.html` has a clear demo section.
+   - Verify that `client/js/core/page.js` will pick it up via its `data-role` automatically (no extra wiring should be necessary).
+
+8. **Update documentation (`client.md` / `README.md`)**  
+   - Add a new section to `client.md` under “Plugins”:
+     - Show usage HTML.
+     - List data attributes / options.
+     - Describe any CSS custom properties (e.g. `--shifter-height`).
+     - Document generated UI status methods (from `defBool` / `defEnum`) if they’re meant to be used externally.
+   - If the plugin is a major UI element, add or update a short description in `README.md` to reflect its existence and purpose.
 
 ## Converting Old Plugins
 
@@ -326,4 +397,6 @@ When creating a new plugin:
 - [ ] Handle data attributes in `setOptionsBefore`
 - [ ] Set up event listeners in `initAfter`
 - [ ] Clean up in `destroyBefore`
+- [ ] Add a demo section to `client/pages/document/index.html` using `data-role="<name>"`
+- [ ] Document usage / options in `client.md` (and `README.md` if it's a major UI element)
 - [ ] Test with `data-role` attribute in HTML

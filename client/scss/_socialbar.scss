@@ -26,7 +26,7 @@ $social-list: socialbar-email $socialbar-email,
 
 .socialbar {
 	padding: 7px;
-	background-color: $color;
+	background-color: var(--color-bg-l1);
 	min-width: 180px;
 }
 
@@ -62,7 +62,7 @@ $social-list: socialbar-email $socialbar-email,
 		// end @each directive
 
 		a {
-			background-color: $color-l1;
+			background-color: var(--color-l1);
 			border-radius: 2px;
 			display: block;
 			font-size: $font-size-5;
@@ -99,7 +99,7 @@ $social-list: socialbar-email $socialbar-email,
 			}
 
 			&:active {
-				box-shadow: inset 1px 3px 15px 0 hsla(var(--color-major-hue), var(--color-glbsaturation), var(--color-glblightness), 0.25);
+				box-shadow: inset 1px 3px 15px 0 hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.25);
 			}
 		}
 

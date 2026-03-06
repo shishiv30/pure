@@ -487,21 +487,34 @@ sequenceDiagram
 **File**: `client/js/plugins/_shifter.js`
 **Usage**:
 ```html
-<div class="shifter" 
+<div class="shifter"
      data-role="shifter"
-     data-direction="horizontal"
-     data-animation="slide"
-     data-duration="300">
-  <div class="shifter-item">Item 1</div>
-  <div class="shifter-item">Item 2</div>
+     data-step="1"
+     style="--shifter-height: 200px;">
+  <div class="shifter-scroller" data-role="scroller">
+    <div>Item 1</div>
+    <div>Item 2</div>
+    <div>Item 3</div>
+  </div>
 </div>
 ```
 **Input Parameters**:
-- `data-direction`: Shift direction (default: 'horizontal')
-- `data-animation`: Animation type (default: 'slide')
-- `data-duration`: Animation duration in ms (default: 300)
-- `data-before-shift`: Callback before shift
-- `data-after-shift`: Callback after shift
+- `data-step`: How many cards to move per click (default: full visible width)
+
+**CSS Custom Properties**:
+- `--shifter-height`: Height for each direct child inside `.shifter-scroller` (default: `200px`)
+
+**Generated Markup (by plugin init)**:
+- Previous/next arrow buttons:
+  - `<button type="button" class="arrow prev circle small">…</button>`
+  - `<button type="button" class="arrow next circle small">…</button>`
+- Boolean UI statuses on root:
+  - `hidden-prev`: hides the previous arrow when at the start
+  - `hidden-next`: hides the next arrow when at the end
+
+These statuses are managed via `defBool('hidden-prev' | 'hidden-next', shifter, opt, exportObj)` and exposed as:
+- `exportObj.addHiddenPrev()`, `exportObj.removeHiddenPrev()`
+- `exportObj.addHiddenNext()`, `exportObj.removeHiddenNext()`
 
 **Events**:
 - Standard lifecycle events
