@@ -28,6 +28,7 @@ import album from './_album.js';
 // import scrollspy from './_scrollspy.js';
 // import flow from './_flow.js';
 import scrollview from './_scrollview.js';
+import sharelink from './_sharelink.js';
 
 export default {
 	collapse,
@@ -57,6 +58,7 @@ export default {
 	player,
 	album,
 	scrollview,
+	sharelink,
 	// view,
 	// carousel,
 	// scrollspy,
