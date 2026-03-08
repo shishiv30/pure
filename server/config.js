@@ -27,6 +27,9 @@ let config = {
 
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
+	/** Geoarea SOA API (e.g. geoarea.prod.aws.us-west-2.ojocore.com/geoarea). Auth: X-MData-Key = SOA_API_KEY. */
+	geoareaApiDomain: (process.env.GEOAREA_API_DOMAIN || '').replace(/\/$/, ''),
+	geoareaApiKey: process.env.SOA_API_KEY || '',
 	cmsUrl: (process.env.CMS_HOST || '').replace(/\/$/, ''),
 	/** Set by cmsData utility: true = use CMS API, false = use local data/ only. Undefined until first use. */
 	cmsHealth: undefined,
