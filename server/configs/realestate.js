@@ -88,7 +88,55 @@ export async function fetchFromGeoarea(method, path, options = {}) {
 	}
 }
 
+/**
+ * Call any SOA API by base URL, method and path. Uses X-MData-Key from config (SOA_API_KEY).
+ * @param {string} baseUrl - Base URL without trailing slash (e.g. config.propertyApiDomain)
+ * @param {string} method - GET, POST, PUT, DELETE, etc.
+ * @param {string} path - Path including leading slash (e.g. /listings/new)
+ * @param {Object} [options] - Optional. query: object for query string; body: object for POST/PUT body.
+ * @returns {Promise<unknown>}
+ */
+export async function fetchFromSoa(baseUrl, method, path, options = {}) {
+	if (!baseUrl) {
+		throw new Error('SOA base URL is required');
+	}
+	const base = String(baseUrl).replace(/\/$/, '');
+	const pathStr = path.startsWith('/') ? path : `/${path}`;
+	let urlStr = `${base}${pathStr}`;
+	if (options.query && typeof options.query === 'object') {
+		const params = new URLSearchParams();
+		Object.entries(options.query).forEach(([k, v]) => {
+			if (v !== undefined && v !== '') params.set(k, String(v));
+		});
+		const q = params.toString();
+		if (q) urlStr += `?${q}`;
+	}
+	const headers = { 'Content-Type': 'application/json' };
+	if (config.geoareaApiKey) {
+		headers['X-MData-Key'] = config.geoareaApiKey;
+	}
+	const init = {
+		method: method.toUpperCase(),
+		headers,
+	};
+	if (options.body != null && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+		init.body = JSON.stringify(options.body);
+	}
+	const response = await fetch(urlStr, init);
+	if (!response.ok) {
+		throw new Error(`SOA API ${method} ${path}: ${response.status} ${response.statusText}`);
+	}
+	const text = await response.text();
+	if (!text || text.trim() === '') return null;
+	try {
+		return JSON.parse(text);
+	} catch {
+		return text;
+	}
+}
+
 export default {
 	fetchStatesFromGeoarea,
 	fetchFromGeoarea,
+	fetchFromSoa,
 };

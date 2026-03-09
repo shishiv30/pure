@@ -104,6 +104,21 @@ Above each route, add `@swagger` blocks:
 
 Use the UI model shape in response schemas, not the raw upstream shape.
 
+### 9. SOA proxy routes (semantic names + input remap)
+
+When adding explicit SOA proxy endpoints (e.g. Property, School):
+
+- **Semantic route names**: Use handler names as paths (e.g. `/getPropertyByPath`) instead of raw SOA paths (e.g. `/mlsPublicRecordAssociations/url`).
+- **Input remapping**: Map client params to SOA format in the handler (e.g. `path` → `url`, `propertyId` from query or path).
+- **Full Swagger input/output** for each endpoint:
+  - **Input**: All parameters (query, path) with `schema`, `description`, `required`; for POST, add `requestBody` with `application/json` schema.
+  - **Output**: `responses.200.content.application/json.schema` with `type: object`, `additionalProperties: true` for passthrough SOA responses.
+  - **Errors**: `400`, `404`, `503` with `schema: { type: object, properties: { error: { type: string } } }`.
+- **Path variants**: When an ID can be passed via query or path (e.g. `?propertyId=123` vs `/getXById/123`), add separate `@swagger` path entries for each variant so both appear in Swagger UI.
+- **Shared proxy helper**: Use a helper like `proxyToPropertyPath(req, res, method, path, overrides)` to avoid duplication; `overrides` can include `query` or `body` for remapped inputs.
+
+Reference: `server/routes/api.soa.property.js`.
+
 ## Pattern Summary
 
 | Layer | Responsibility |
@@ -113,6 +128,8 @@ Use the UI model shape in response schemas, not the raw upstream shape.
 | `server/configs/*.js` | Fetch upstream API |
 | `helpers/*Mapper.js` | Raw → UI model (ensureArray + map*) |
 | `server/routes/api.*.js` | Route registration, handlers: fetch → map → res.json |
+
+**SOA proxy routes**: Use semantic names (`/getPropertyByPath`), remap inputs (path→url, propertyId), document full input/output in Swagger, add path variants when ID can be query or path. See §9.
 
 ## Example handler
 

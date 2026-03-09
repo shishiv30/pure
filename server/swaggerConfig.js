@@ -15,7 +15,14 @@ const options = {
 			},
 		],
 	},
-	apis: ['./server/routes/api.js', './server/routes/api.soa.js'], // Path from root
+	apis: [
+		'./server/routes/api.js',
+		'./server/routes/api.soa.js',
+		'./server/routes/api.soa.geoarea.js',
+		'./server/routes/api.soa.property.js',
+		'./server/routes/api.soa.school.js',
+		'./server/routes/api.soa.poi.js',
+	], // Path from root
 };
 
 const swaggerSpec = swaggerJsdoc(options);
