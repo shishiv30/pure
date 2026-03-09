@@ -23,5 +23,21 @@ import demoSitemap from './demoSitemap.js';
 import demoSitemapState from './demoSitemapState.js';
 import demoSitemapCounty from './demoSitemapCounty.js';
 import demoSitemapCity from './demoSitemapCity.js';
+import sitemap from './sitemap.js';
+import sitemapState from './sitemapState.js';
+import sitemapCounty from './sitemapCounty.js';
+import sitemapCity from './sitemapCity.js';
 import pageConfig from './page.js';
-export default [geo, demo, demoSitemap, demoSitemapState, demoSitemapCounty, demoSitemapCity, pageConfig];
+export default [
+	geo,
+	demo,
+	demoSitemap,
+	demoSitemapState,
+	demoSitemapCounty,
+	demoSitemapCity,
+	sitemap,
+	sitemapState,
+	sitemapCounty,
+	sitemapCity,
+	pageConfig,
+];

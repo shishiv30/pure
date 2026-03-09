@@ -27,6 +27,16 @@ let config = {
 
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
+	geoareaApiDomain: (process.env.GEOAREA_API_DOMAIN || '').replace(/\/$/, ''),
+	geoareaApiKey: process.env.SOA_API_KEY || '',
+	/** Property SOA API. Auth: X-MData-Key = SOA_API_KEY. */
+	propertyApiDomain: (process.env.PROPERTY_API_DOMAIN || '').replace(/\/$/, ''),
+	/** School SOA API. Auth: X-MData-Key = SOA_API_KEY. */
+	schoolApiDomain: (process.env.SCHOOL_API_DOMAIN || '').replace(/\/$/, ''),
+	/** User SOA API. Auth: X-MData-Key = SOA_API_KEY. */
+	userApiDomain: (process.env.USER_API_DOMAIN || '').replace(/\/$/, ''),
+	/** POI SOA API. Auth: X-MData-Key = SOA_API_KEY. */
+	poiApiDomain: (process.env.POI_API_DOMAIN || '').replace(/\/$/, ''),
 	cmsUrl: (process.env.CMS_HOST || '').replace(/\/$/, ''),
 	/** Set by cmsData utility: true = use CMS API, false = use local data/ only. Undefined until first use. */
 	cmsHealth: undefined,

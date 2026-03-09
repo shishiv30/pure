@@ -15,7 +15,7 @@ const options = {
 			},
 		],
 	},
-	apis: ['./server/routes/api.js'], // Path form root
+	apis: ['./server/routes/api.js', './server/routes/api.soa.js'], // Path from root
 };
 
 const swaggerSpec = swaggerJsdoc(options);
