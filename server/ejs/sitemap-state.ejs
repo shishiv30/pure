@@ -7,16 +7,16 @@
 <%_ } _%>
 <%- include('comp_breadcrumb') %>
 
+<section class="section grid grid-xs-1 fixed">
   <h1 class="f3 text-bold text-center">
-    <%= data.title || 'Counties Sitemap' %>
+    <%= data.title || 'Counties Sitemap for ' + data.stateName %>
   </h1>
   <%_ const linksComponent=data.linksComponent; _%>
   <%_ if (linksComponent && linksComponent.data && linksComponent.data.length) { _%>
-    <section class="section grid grid-xs-1 fixed">
       <h2 class="f4 text-bold">Counties</h2>
       <%- include(linksComponent.template, { links: linksComponent.data, getHref, getSrc }) %>
-    </section>
   <%_ } _%>
+</section>
 <%_ const footerComponent=data.footerComponent; _%>
 <%_ if (footerComponent) { _%>
   <%- include(footerComponent.template, { footer: footerComponent.data, getHref, getSrc }) %>

@@ -421,11 +421,11 @@ $blur-size: $blur-width $card-height;
 	margin-right: auto;
 
 	@media screen and (max-width: $screen-xs-max) {
-		width: 100%;
+		width: calc(100% - var(--panel-gap-x)*2);
 	}
 
 	@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-		width: 100%;
+		width: calc(100% - var(--panel-gap-x)*2);
 	}
 
 	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {

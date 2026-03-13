@@ -7,23 +7,22 @@
 <%_ } _%>
 <%- include('comp_breadcrumb') %>
 
+<section class="section grid grid-xs-1 fixed">
   <h1 class="f3 text-bold text-center">
-    <%= data.title || 'Neighborhoods & Zipcodes' %>
+    <%= data.title || 'Neighborhoods & Zipcodes for ' + data.cityName + ', ' + data.stateName %>
   </h1>
-  <%_ const neighborhoodsComponent=data.neighborhoodsComponent; _%>
-  <%_ if (neighborhoodsComponent && neighborhoodsComponent.data && neighborhoodsComponent.data.length) { _%>
-    <section class="section grid grid-xs-1 fixed">
-      <h2 class="f4 text-bold">Neighborhoods</h2>
-      <%- include(neighborhoodsComponent.template, { links: neighborhoodsComponent.data, getHref, getSrc }) %>
-    </section>
-  <%_ } _%>
   <%_ const zipcodesComponent=data.zipcodesComponent; _%>
   <%_ if (zipcodesComponent && zipcodesComponent.data && zipcodesComponent.data.length) { _%>
-    <section class="section grid grid-xs-1 fixed">
-      <h2 class="f4 text-bold">Zipcodes</h2>
-      <%- include(zipcodesComponent.template, { links: zipcodesComponent.data, getHref, getSrc }) %>
-    </section>
-  <%_ } _%>
+    <h2 class="f4 text-bold">Zipcodes</h2>
+    <%- include(zipcodesComponent.template, { links: zipcodesComponent.data, getHref, getSrc }) %>
+
+    <%_ const neighborhoodsComponent=data.neighborhoodsComponent; _%>
+    <%_ if (neighborhoodsComponent && neighborhoodsComponent.data && neighborhoodsComponent.data.length) { _%>
+        <h2 class="f4 text-bold">Neighborhoods</h2>
+        <%- include(neighborhoodsComponent.template, { links: neighborhoodsComponent.data, getHref, getSrc }) %>
+    <%_ } _%>
+<%_ } _%>
+</section>
 <%_ const footerComponent=data.footerComponent; _%>
 <%_ if (footerComponent) { _%>
   <%- include(footerComponent.template, { footer: footerComponent.data, getHref, getSrc }) %>
