@@ -21,6 +21,7 @@ export default [
 	{ id: 11, text: 'Human Evolution', path: '/page/human', order: 7, parentId: 2 },
 	{ id: 10, text: 'Lower', path: '/lower.html', order: 8, parentId: 2 },
 	{ id: 9, text: 'Sitemap', path: '/demo/sitemap', order: 8, parentId: 2 },
+	{ id: 12, text: 'List View', path: '/list-view.html', order: 9, parentId: 2 },
 	{ id: 7, text: 'Document', path: '/document', order: 7, parentId: null },
 	{ id: 8, text: 'Contact', path: 'javascript:;', order: 8, parentId: null },
 ];

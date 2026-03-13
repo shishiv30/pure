@@ -36,6 +36,10 @@ export const pageConfig = {
 			name: 'presentation-slider',
 			static: true,
 		},
+		{
+			name: 'list-view',
+			static: true,
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {
