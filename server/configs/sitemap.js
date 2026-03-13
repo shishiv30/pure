@@ -4,6 +4,7 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 import { getStateFullName } from '../../helpers/stateDict.js';
+import { getStatesForSitemap } from '../../helpers/geo.js';
 
 const SITEMAP_BASE = '/sitemap';
 
@@ -26,11 +27,17 @@ export default {
 	},
 	get: async function () {
 		const raw = await fetchStatesFromGeoarea();
-		const states = mapSoaStatesResponse(raw);
-		const stateLinks = states
-			.map((g) => geoToLink(g, SITEMAP_BASE, getStateFullName(g.state) || g.state))
-			.filter(Boolean);
-		const linksComponent = createLinksComponent(stateLinks);
+		let linksComponent;
+		if (!raw || (Array.isArray(raw) && raw.length === 0)) {
+			const stateLinks = getStatesForSitemap(SITEMAP_BASE);
+			linksComponent = createLinksComponent(stateLinks);
+		} else {
+			const states = mapSoaStatesResponse(raw) || [];
+			const stateLinks = states
+				.map((g) => geoToLink(g, SITEMAP_BASE, getStateFullName(g.state) || g.state))
+				.filter(Boolean);
+			linksComponent = createLinksComponent(stateLinks);
+		}
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const breadcrumb = {

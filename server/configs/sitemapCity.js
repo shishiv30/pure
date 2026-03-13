@@ -8,6 +8,8 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 import { getStateFullName } from '../../helpers/stateDict.js';
+import { getZipcodesForSitemap } from '../../helpers/geo.js';
+import { getGeoData } from '../../data/index.js';
 
 const SITEMAP_BASE = '/sitemap';
 
@@ -68,30 +70,52 @@ export default {
 			const rawCities = await fetchFromGeoarea('GET', `/state/${stateCode}/cities`, {
 				query: payload.query,
 			});
-			const cities = mapSoaCitiesResponse(rawCities);
-			const city = matchCityBySlug(cities, stateCode, payload.citySlug);
-			if (!city || !city.id) {
-				throw new Error(`City not found: ${payload.citySlug}`);
+			if (rawCities && rawCities.length === 0) {
+				const cities = mapSoaCitiesResponse(rawCities);
+				const city = matchCityBySlug(cities, stateCode, payload.citySlug);
+				if (!city || !city.id) {
+					throw new Error(`City not found: ${payload.citySlug}`);
+				}
+				cityId = city.id;
+				cityName = city.city || citySlugToName(payload.citySlug);
 			}
-			cityId = city.id;
-			cityName = city.city || citySlugToName(payload.citySlug);
-		} else {
+		}
+		if(!cityName){
 			cityName = citySlugToName(payload.citySlug);
 		}
-		const [rawNeighborhoods, rawZipcodes] = await Promise.all([
-			fetchFromGeoarea('GET', `/city/${cityId}/neighborhoods`, { query: payload.query }),
-			fetchFromGeoarea('GET', `/city/${cityId}/postalcodes`, { query: payload.query }),
-		]);
-		const neighborhoods = mapSoaNeighborhoodsResponse(rawNeighborhoods);
-		const zipcodes = mapSoaZipcodesResponse(rawZipcodes);
-		const neighborhoodLinks = neighborhoods
-			.map((g) => geoToLink(g, SITEMAP_BASE))
-			.filter(Boolean);
-		const zipcodeLinks = zipcodes.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
-		const neighborhoodsComponent =
-			neighborhoodLinks.length > 0 ? createLinksComponent(neighborhoodLinks) : null;
-		const zipcodesComponent =
-			zipcodeLinks.length > 0 ? createLinksComponent(zipcodeLinks) : null;
+
+		let neighborhoodsComponent = null;
+		let zipcodesComponent = null;
+		if(!cityId){
+				// Fallback to static geo data: only zipcode links
+				const geoData = getGeoData();
+				const zipcodesData = geoData?.zipcode || [];
+				const zipcodeLinks = getZipcodesForSitemap(cityName, stateCode, SITEMAP_BASE, zipcodesData);
+				if (zipcodeLinks.length > 0) {
+					zipcodesComponent = createLinksComponent(zipcodeLinks);
+				}
+		} else {
+			const [rawNeighborhoods, rawZipcodes] = await Promise.all([
+				fetchFromGeoarea('GET', `/city/${cityId}/neighborhoods`, { query: payload.query }),
+				fetchFromGeoarea('GET', `/city/${cityId}/postalcodes`, { query: payload.query }),
+			]);
+
+			if (rawZipcodes && rawZipcodes.length > 0) {
+				const zipcodes = mapSoaZipcodesResponse(rawZipcodes) || [];
+				const zipcodeLinks = zipcodes.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
+				if (zipcodeLinks.length > 0) {
+					zipcodesComponent = createLinksComponent(zipcodeLinks);
+				}
+			}
+			
+			if (rawNeighborhoods && rawNeighborhoods.length > 0) {
+				const neighborhoods = mapSoaNeighborhoodsResponse(rawNeighborhoods) || [];
+				const neighborhoodLinks = neighborhoods.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
+				if (neighborhoodLinks.length > 0) {
+					neighborhoodsComponent = createLinksComponent(neighborhoodLinks);
+				}
+			}
+		}
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const breadcrumb = {

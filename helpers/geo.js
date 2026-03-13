@@ -325,13 +325,15 @@ export function getCitiesForSitemap(countyName, stateCode, basePath, citiesData)
 	}
 	const path = (basePath || '').replace(/\/$/, '');
 	const stateUpper = stateCode.toUpperCase();
-	// County name in cities data is the full name (e.g., "Los Angeles County")
-	// Match both with and without "County" suffix
-	const countyMatch1 = countyName.trim();
-	const countyMatch2 = countyName.replace(/\s+County$/i, '').trim();
+
+	const countyKey = countyName?.trim()?.replace(/\s+County$/i, '').trim();
+	const countyMatch = RegExp(`^${countyKey}`, 'i');
+
 	const cities = new Map();
 	citiesData
-		.filter((c) => c.state === stateUpper && (c.county === countyMatch1 || c.county === countyMatch2))
+		.filter((c) => {
+			return c.state === stateUpper && countyMatch.test(c.county);
+		})
 		.forEach((c) => {
 			if (!c.city) {
 				return;
@@ -361,10 +363,11 @@ export function getZipcodesForSitemap(cityName, stateCode, basePath, zipcodesDat
 	}
 	const path = (basePath || '').replace(/\/$/, '');
 	const stateUpper = stateCode.toUpperCase();
-	const cityMatch = cityName.trim();
+	const cityKey = cityName.trim();
+	const cityMatch = RegExp(`^${cityKey}$`, 'i');
 	const zipcodes = new Map();
 	zipcodesData
-		.filter((z) => z.state === stateUpper && z.city === cityMatch)
+		.filter((z) => z.state === stateUpper && cityMatch.test(z.city))
 		.forEach((z) => {
 			if (!z.zipcode) {
 				return;

@@ -4,6 +4,8 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 import { getStateFullName } from '../../helpers/stateDict.js';
+import { getCountiesForSitemap } from '../../helpers/geo.js';
+import { getGeoData } from '../../data/index.js';
 
 const SITEMAP_BASE = '/sitemap';
 
@@ -39,9 +41,17 @@ export default {
 		const raw = await fetchFromGeoarea('GET', `/state/${stateCode}/counties`, {
 			query: payload.query,
 		});
-		const counties = mapSoaCountiesResponse(raw);
-		const countyLinks = counties.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
-		const linksComponent = createLinksComponent(countyLinks);
+		let linksComponent;
+		if (!raw || (Array.isArray(raw) && raw.length === 0)) {
+			const geoData = getGeoData();
+			const countiesData = geoData?.county || [];
+			const countyLinks = getCountiesForSitemap(stateCode, SITEMAP_BASE, countiesData);
+			linksComponent = createLinksComponent(countyLinks);
+		} else {
+			const counties = mapSoaCountiesResponse(raw) || [];
+			const countyLinks = counties.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
+			linksComponent = createLinksComponent(countyLinks);
+		}
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const breadcrumb = {

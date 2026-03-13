@@ -4,6 +4,8 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 import { getStateFullName } from '../../helpers/stateDict.js';
+import { getCitiesForSitemap } from '../../helpers/geo.js';
+import { getGeoData } from '../../data/index.js';
 
 const SITEMAP_BASE = '/sitemap';
 
@@ -63,18 +65,29 @@ export default {
 		const rawCounties = await fetchFromGeoarea('GET', `/state/${stateCode}/counties`, {
 			query: payload.query,
 		});
-		const counties = mapSoaCountiesResponse(rawCounties);
-		const county = matchCountyBySlug(counties, stateCode, payload.countySlug);
-		if (!county || !county.id) {
-			throw new Error(`County not found: ${payload.countySlug}`);
+		let countyName;
+		let linksComponent;
+		if (!rawCounties || rawCounties.length === 0) {
+			// Fallback to static geo data
+			countyName = countySlugToName(payload.countySlug);
+			const geoData = getGeoData();
+			const citiesData = geoData?.city || [];
+			const cityLinks = getCitiesForSitemap(countyName, stateCode, SITEMAP_BASE, citiesData);
+			linksComponent = createLinksComponent(cityLinks);
+		} else {
+			const counties = mapSoaCountiesResponse(rawCounties);
+			const county = matchCountyBySlug(counties, stateCode, payload.countySlug);
+			if (!county || !county.id) {
+				throw new Error(`County not found: ${payload.countySlug}`);
+			}
+			countyName = county.county || countySlugToName(payload.countySlug);
+			const rawCities = await fetchFromGeoarea('GET', `/county/${county.id}/cities`, {
+				query: payload.query,
+			});
+			const cities = mapSoaCitiesResponse(rawCities);
+			const cityLinks = cities.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
+			linksComponent = createLinksComponent(cityLinks);
 		}
-		const countyName = county.county || countySlugToName(payload.countySlug);
-		const rawCities = await fetchFromGeoarea('GET', `/county/${county.id}/cities`, {
-			query: payload.query,
-		});
-		const cities = mapSoaCitiesResponse(rawCities);
-		const cityLinks = cities.map((g) => geoToLink(g, SITEMAP_BASE)).filter(Boolean);
-		const linksComponent = createLinksComponent(cityLinks);
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const breadcrumb = {
