@@ -9,7 +9,9 @@ const SITEMAP_BASE = '/sitemap';
 
 function geoToLink(geo, base) {
 	if (!geo || !geo.path) return null;
-	return { text: geo.city || geo.path, href: `${base}/${geo.path}` };
+	const hrefBase = `${base}/${geo.path}`;
+	const href = geo.id ? `${hrefBase}?id=${encodeURIComponent(geo.id)}` : hrefBase;
+	return { text: geo.city || geo.path, href };
 }
 
 function countySlugToName(slug) {

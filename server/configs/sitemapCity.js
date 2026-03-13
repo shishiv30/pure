@@ -13,7 +13,8 @@ const SITEMAP_BASE = '/sitemap';
 
 function geoToLink(geo, base, textOverride) {
 	if (!geo || !geo.path) return null;
-	const href = `${base}/${geo.path}`;
+	const hrefBase = `${base}/${geo.path}`;
+	const href = geo.id ? `${hrefBase}?id=${geo.id}` : hrefBase;
 	const text = textOverride || geo.neighborhood || geo.zipcode || geo.path;
 	return { text, href };
 }
@@ -35,12 +36,13 @@ function matchCityBySlug(cities, stateCode, citySlug) {
 export default {
 	name: 'sitemap-city',
 	assetName: 'demo',
-	beforeGet(req, payload) {
+		beforeGet(req, payload) {
 		const pathMatch = req.path.match(/^\/sitemap\/([a-z]{2})\/([^/]+)\/?$/i);
 		if (pathMatch) {
 			return {
 				stateCode: pathMatch[1].toUpperCase(),
 				citySlug: pathMatch[2],
+					id: req.query?.id,
 			};
 		}
 		return null;
@@ -60,18 +62,25 @@ export default {
 		}
 		const stateCode = payload.stateCode;
 		const stateName = getStateFullName(stateCode) || stateCode;
-		const rawCities = await fetchFromGeoarea('GET', `/state/${stateCode}/cities`, {
-			query: payload.query,
-		});
-		const cities = mapSoaCitiesResponse(rawCities);
-		const city = matchCityBySlug(cities, stateCode, payload.citySlug);
-		if (!city || !city.id) {
-			throw new Error(`City not found: ${payload.citySlug}`);
+		let cityId = payload.id;
+		let cityName;
+		if (!cityId) {
+			const rawCities = await fetchFromGeoarea('GET', `/state/${stateCode}/cities`, {
+				query: payload.query,
+			});
+			const cities = mapSoaCitiesResponse(rawCities);
+			const city = matchCityBySlug(cities, stateCode, payload.citySlug);
+			if (!city || !city.id) {
+				throw new Error(`City not found: ${payload.citySlug}`);
+			}
+			cityId = city.id;
+			cityName = city.city || citySlugToName(payload.citySlug);
+		} else {
+			cityName = citySlugToName(payload.citySlug);
 		}
-		const cityName = city.city || citySlugToName(payload.citySlug);
 		const [rawNeighborhoods, rawZipcodes] = await Promise.all([
-			fetchFromGeoarea('GET', `/city/${city.id}/neighborhoods`, { query: payload.query }),
-			fetchFromGeoarea('GET', `/city/${city.id}/postalcodes`, { query: payload.query }),
+			fetchFromGeoarea('GET', `/city/${cityId}/neighborhoods`, { query: payload.query }),
+			fetchFromGeoarea('GET', `/city/${cityId}/postalcodes`, { query: payload.query }),
 		]);
 		const neighborhoods = mapSoaNeighborhoodsResponse(rawNeighborhoods);
 		const zipcodes = mapSoaZipcodesResponse(rawZipcodes);

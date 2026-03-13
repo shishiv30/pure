@@ -248,11 +248,30 @@ export function mapSoaCitiesResponse(raw) {
 
 /**
  * Map raw Geoarea neighborhoods response to UI geo array.
+ * Raw payload may contain multiple neighborhood arrays:
+ * - N_NEIGHBORHOOD, R_NEIGHBORHOOD, M_NEIGHBORHOOD, S_NEIGHBORHOOD
+ * We should pick the first non-empty in priority order:
+ * N_NEIGHBORHOOD -> R_NEIGHBORHOOD -> M_NEIGHBORHOOD, and ignore S_NEIGHBORHOOD.
  * @param {unknown} raw - Raw response from Geoarea neighborhoods endpoint
  * @returns {Array<{ state: string, city: string, neighborhood: string, type: string, id?: string, path?: string }>}
  */
 export function mapSoaNeighborhoodsResponse(raw) {
-	return mapSoaNeighborhoodsToGeo(ensureArray(raw));
+	let items = [];
+	if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+		const n = raw.N_NEIGHBORHOOD;
+		const r = raw.R_NEIGHBORHOOD;
+		const m = raw.M_NEIGHBORHOOD;
+		if (Array.isArray(n) && n.length) {
+			items = n;
+		} else if (Array.isArray(r) && r.length) {
+			items = r;
+		} else if (Array.isArray(m) && m.length) {
+			items = m;
+		}
+	} else {
+		items = ensureArray(raw);
+	}
+	return mapSoaNeighborhoodsToGeo(items);
 }
 
 /**

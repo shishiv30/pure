@@ -12,16 +12,25 @@
 import { getImgCdnUrl } from './imgCdn.js';
 
 /**
- * Build href for <a> from link/item. Uses href if present, else appHost + path/ctaPath.
- * @param {object} item - { href?, path?, ctaHref?, ctaPath? }
+ * Build href for <a> from link/item.
+ * Uses href if present, else appHost + path.
+ * If item.id exists, append "?id=<id>" (or "&id=<id>" when query already present).
+ * @param {object} item - { href?, path?, id? }
  * @param {string} appHost - Base app host (no trailing slash)
  * @returns {string}
  */
 export function getHref(item, appHost = '') {
-	if(item == null) return '';
-	if(item.href) return item.href;
-	if(item.path) return `${appHost}${item.path}`;
-	return '';
+	if (item == null) return '';
+	let url = '';
+	if (item.href) {
+		url = item.href;
+	} else if (item.path) {
+		url = `${appHost}${item.path}`;
+	}
+	if (!url) return '';
+	if (!item.id) return url;
+	const separator = url.includes('?') ? '&' : '?';
+	return `${url}${separator}id=${encodeURIComponent(item.id)}`;
 }
 
 /**

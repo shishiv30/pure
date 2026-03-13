@@ -1,6 +1,5 @@
 <%_ if (links && links.length) { _%>
-  <section class="comp-links">
-    <ul class="panel fixed  grid grid-xs-1 grid-sm-2 grid-md-3 grid-lg-4 grid-xl-5">
+    <ul class="grid grid-xs-1 grid-sm-2 grid-md-3 grid-lg-4 grid-xl-5">
       <%_ for (var i=0; i < links.length; i++) { _%>
         <li>
           <a class="link" href="<%= getHref(links[i]) %>">
@@ -9,5 +8,4 @@
         </li>
         <%_ } _%>
     </ul>
-  </section>
   <%_ } _%>
