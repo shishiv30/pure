@@ -7,6 +7,17 @@ description: Manage Pure CMS pages and comps via API. Update page theme, page da
 
 Manage **pages** and **comps** via CMS REST API (no full DB overwrite). Admin endpoints need auth (session after `POST /api/auth/login`). Details: **`cms/API.md`**.
 
+## Use this skill when
+
+- User asks to create/update/delete CMS pages or comps
+- User asks to apply theme/meta/data changes in CMS
+- You need API-first CMS updates without running full DB sync
+
+## Do not use this skill when
+
+- Task is read-only CMS fetching (use `cms-manager-read`)
+- Task is AWS infra/deployment or ECS/App Runner work (use `pure-aws-devops`)
+
 **Update workflow (always follow):**
 1. **Check existing** — Look up the record (e.g. `GET /api/comp/:key`, `GET /api/pages` or by-name).
 2. **If exists** → **update** that record (e.g. `PUT /api/pages/by-name/:name`, `PUT /api/comp/:id`, or `POST /api/comp` upsert by key).
@@ -38,3 +49,10 @@ Theme comps: **key** = `theme-<name>` (e.g. `theme-pink`), **type** = `"theme"`.
 - **`.cursor/rules/theme-change.mdc`** — theme file pattern and applying to DB.
 - **`data/comps/theme.js`**, **`data/comps/theme-pink.js`** — theme shape.
 - **`data/page/ai-trend.js`**, **`helpers/pageData.js`** — page section data shape.
+
+## Done checklist
+
+- Target records were checked before write operations
+- Correct create/update path was used based on existence
+- Cross-references were updated (for example page `meta.theme`)
+- Response payload confirms expected final state

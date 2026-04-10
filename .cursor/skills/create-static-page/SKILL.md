@@ -7,6 +7,18 @@ description: Creates a new static page in the pure project. Use when the user wa
 
 Follow this workflow to add a new static page. Reuse existing CSS and components; every page must include the header and footer comps. After creating the page, add its link to the header menu.
 
+## Use this skill when
+
+- User asks for a new static page under `client/pages/<name>/`
+- Task requires webpack page registration and navigation links
+- Task needs HTML/JS scaffold for a standalone page output
+
+## Do not use this skill when
+
+- User asks for CMS-driven dynamic page updates only
+- User asks for reusable server EJS component creation (use `create-comp`)
+- User asks for plugin behavior (use `create-plugin`)
+
 ## Workflow
 
 ### #0 Page name (from requirement)
@@ -231,6 +243,13 @@ If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` ha
 - [ ] #4 Links added in both `server/ejs/comp_header.js` and `client/components/header.html`.
 - [ ] #5 (Optional) Components created: see `.cursor/skills/create-comp/SKILL.md` for component creation workflow.
 - [ ] #6 (Optional) Server-rendered page: config created, registered, EJS template, route added.
+
+## Completion criteria
+
+- Webpack page config includes the new static page entry
+- `index.html` and `index.js` exist under `client/pages/<name>/`
+- Header links are synced in both server and static header sources
+- Page builds and renders with expected sections/assets
 
 ## Reference files
 

@@ -67,13 +67,27 @@ export default {
 **Prefer the CMS REST API** so the DB is updated without running `seed-and-sync.js` (which overwrites the whole DB). See **`cms/API.md`** for the full list.
 
 - **Update page meta** (e.g. set theme for a page): `PUT /api/pages/by-name/<pageName>` with body `{ "meta": { "theme": "theme-pink", ... } }`. Requires admin auth.
-- **Add or update a theme in comps**: Create or edit `data/theme-<name>.js`, then `POST /api/comp` with `{ "key": "theme-<name>", "type": "theme", "format": "json", "data": <themeObject> }`. Upsert by key; no seed script needed.
+- **Add or update a theme in comps**: Create or edit `data/comps/theme-<name>.js`, then `POST /api/comp` with `{ "key": "theme-<name>", "type": "theme", "format": "json", "data": <themeObject> }`. Upsert by key; no seed script needed.
 - **Delete a theme comp**: `DELETE /api/comp/by-key/theme-<name>`.
 
 The AI (or any client) can call these APIs with the CMS base URL and session cookie after login. **MCP is optional**: an MCP server could wrap these in tools (e.g. “update page meta”, “add theme comp”), but the CMS already provides the APIs; MCP is not required to apply changes.
 
 ## Applying a theme (logical steps)
 
-- **Global default**: Comp key `theme` (from `data/comps/theme.js`); used when a page has no meta.theme. Push via `POST /api/comp` or run seed script once.
-- **Named theme**: Add `data/theme-<name>.js`, then push to CMS with `POST /api/comp` (key `theme-<name>`, type `theme`, data = theme object). Set which page uses it with `PUT /api/pages/by-name/<pageName>` and body `{ "meta": { "theme": "theme-<name>" } }`.
+- **Global default**: Comp key `theme` (from `data/comps/theme.js`); used when a page has no `meta.theme`. Keep this comp available as fallback.
+- **Named theme**: Add `data/comps/theme-<name>.js`, then push to CMS with `POST /api/comp` (key `theme-<name>`, type `theme`, data = theme object). Set which page uses it with `PUT /api/pages/by-name/<pageName>` and body `{ "meta": { "theme": "theme-<name>" } }`.
 - **Per-page override (inline)**: Page config can return `model.data.theme` as the theme object (same shape); that overrides the comp theme for that page only.
+
+## Required update order
+
+1. Create or update the local theme file (`data/comps/theme.js` or `data/comps/theme-<name>.js`).
+2. Upsert the comp in CMS (`POST /api/comp`).
+3. Update page `meta.theme` references (if using a named theme).
+4. Verify the applied theme in page output.
+
+## Verify after apply
+
+- Target page has expected `meta.theme` in CMS data.
+- Referenced theme comp key exists and `type` is `theme`.
+- Theme object has both `default` and `dark`.
+- UI reflects updated colors/logos in both light and dark modes.

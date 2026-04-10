@@ -7,6 +7,16 @@ description: Sync local CMS data to AWS. Push pages and comps from local/seed to
 
 Push **local CMS data** (pages, comps) to the **AWS-hosted CMS** so the main site (e.g. App Runner) reads up-to-date content from the CMS.
 
+## Use this skill when
+
+- User asks to push local CMS seed/content to AWS CMS
+- User wants API-based sync instead of manual page-by-page updates
+
+## Do not use this skill when
+
+- Task is a small targeted content/meta/theme update (use `cms-manager`)
+- Task is infrastructure troubleshooting/deployments beyond sync (use `pure-aws-devops`)
+
 ## Workflow
 
 1. **Seed local DB** from data files (`data/page/*.js`, themes, header, footer).

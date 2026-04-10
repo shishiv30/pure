@@ -8,6 +8,18 @@ alwaysApply: true
 When the user asks to **build the image** (or "build Docker", "rebuild image", etc.):
 
 - **Production:** `npm run build-docker:prod` — builds production stage image and starts container (uses `.env.production`).
-- **Local / dev:** `npm run build-docker:dev` — builds development stage image with no cache and starts container (uses `.env` only, not `.env.production`).
+- **Local / dev:** `npm run build-docker:dev` — builds development stage image and starts container (uses `.env` only, not `.env.production`).
 
-Both use Docker Compose under the hood; image name is **pure**. From repo root you can also run `docker compose build` (optionally `--no-cache` for dev). Do **not** use raw `docker build --target ...`.
+Both use Docker Compose under the hood; image name is **pure**.
+
+## Allowed alternatives
+
+- `docker compose build` is acceptable for build-only workflows (for example, CI/local troubleshooting when you do not want to start containers).
+- Prefer `npm run build-docker:*` for normal project workflows because it uses repo defaults consistently.
+- Do **not** use raw `docker build --target ...` for this project.
+
+## Post-build checks
+
+- Confirm build completes without Dockerfile or compose errors.
+- Confirm expected environment source was used (`.env` for dev, `.env.production` for prod).
+- If container startup is part of the request, verify services are running after the command.

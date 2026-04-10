@@ -7,6 +7,18 @@ description: Creates and converts plugins for the pure UI framework. Use when cr
 
 This skill guides you through creating and converting plugins for the pure UI framework's Plugin system.
 
+## Use this skill when
+
+- User asks to create a new plugin under `client/js/plugins`
+- User asks to convert legacy/jQuery-style plugin behavior
+- Task involves `data-role` initialization and plugin lifecycle hooks
+
+## Do not use this skill when
+
+- Task is server-rendered EJS component work (`comp_*`) only
+- Task is static page scaffolding without plugin behavior
+- Task is CMS data/theme/meta operations
+
 ## Plugin System Overview
 
 Plugins are registered components that initialize on elements with `data-role` attributes. They follow a consistent structure and lifecycle.
@@ -400,3 +412,10 @@ When creating a new plugin:
 - [ ] Add a demo section to `client/pages/document/index.html` using `data-role="<name>"`
 - [ ] Document usage / options in `client.md` (and `README.md` if it's a major UI element)
 - [ ] Test with `data-role` attribute in HTML
+
+## Completion criteria
+
+- Plugin is registered and auto-initializes through `data-role`
+- Event listeners and DOM artifacts are cleaned up on destroy
+- Any status system (`defBool`/`defEnum`) is reflected in CSS classes
+- Demo usage and docs are updated

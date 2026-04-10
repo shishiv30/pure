@@ -7,6 +7,18 @@ description: Creates reusable server EJS components in the pure project. Use whe
 
 Follow this workflow to create reusable server-rendered components (e.g. `comp_header`, `comp_footer`, `comp_hero`, `comp_timeline`, `comp_gallery`).
 
+## Use this skill when
+
+- User wants a reusable server EJS component
+- User asks to convert repeated HTML into a component
+- User needs a new dynamic page section template (`comp_*`)
+
+## Do not use this skill when
+
+- Task is only static page scaffolding under `client/pages` (use `create-static-page`)
+- Task is client plugin behavior (`data-role`) work (use `create-plugin`)
+- Task is CMS-only content/meta updates with no component changes (use `cms-manager`)
+
 There are now **two patterns**:
 
 - **Pattern A – Global components** (header/footer, special widgets): `.js` data/factory file **plus** `.ejs` template.
@@ -399,6 +411,13 @@ In `page.ejs`, sections are rendered like this:
 - [ ] #4 (If converting HTML) HTML extracted, dynamic content identified, data and template created
 - [ ] #5 (If using images) Images placed in `client/assets/images/`, using `getImgCdnUrl()` in component data or referenced via `getSrc()` in templates
 - [ ] #6 Component wired into page config and EJS view (Pattern A or Pattern B)
+
+## Completion criteria
+
+- Correct pattern (A or B) selected and implemented end-to-end
+- Template contract is respected (`section` vs named prop)
+- Image/link helpers are used consistently (`getSrc`, `getHref`, `getImgCdnUrl`)
+- All required registrations/usages are updated (template map/config/view)
 
 ## Reference files
 

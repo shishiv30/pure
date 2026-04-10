@@ -47,6 +47,14 @@
       }
     }
   },
+  "guidance_policy": {
+    "purpose": "Reference knowledge for architecture, utilities, and workflows",
+    "normative_source": ".cursor/rules/*.mdc",
+    "usage": [
+      "Use this file for context and examples",
+      "When guidance conflicts with rules or repo reality, follow rules and current code"
+    ]
+  },
   "rules": {
     "event_system": {
       "core_functions": {
@@ -181,7 +189,8 @@
       },
       "request_handling": {
         "error_handling": [
-          "Never reject promises, always resolve with default values",
+          "Legacy request helpers often resolve fallback values on error to avoid UI crashes",
+          "For new code, prefer explicit error behavior based on call-site needs",
           "Log all errors through sendError system",
           "Categorize errors by type (NETWORK, TIMEOUT, HTTP, PARSE, VALIDATION)",
           "Include detailed error information in logs"
@@ -314,7 +323,7 @@
       },
       "analysis": {
         "maxLineLength": 100,
-        "enforceTypeScript": true,
+        "enforceTypeScript": "preferred for new or heavily modified modules where practical",
         "enforceESLint": true,
         "enforcePrettier": true
       },
@@ -610,7 +619,7 @@
         "Development: npm run dev → Webpack dev server → Hot reloading",
         "Local build: npm run build:dev → .env, dist/ output",
         "Stage (GitHub): npm run build:stage → .env.stage → then npm run deploy-gh",
-        "Production (AWS): npm run build:prod or build-docker:prod → .env.production",
+        "Production (AWS): npm run build:prod or npm run build-docker:prod → .env.production",
         "Deploy stage: npm run deploy-gh → publishes dist/ to gh-pages (workflow runs build:stage then deploy-gh on merge to main)"
       ]
     },

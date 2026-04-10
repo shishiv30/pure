@@ -7,6 +7,16 @@ description: Read/fetch data from Pure CMS. Use when integrating CMS content, ch
 
 Guide for **reading** data from the Pure CMS API. Use when integrating CMS content into pages, checking if records exist before update, or working with CMS GET endpoints. For create/update/delete, use **cms-manager** and `cms/API.md`.
 
+## Use this skill when
+
+- Task is read-only CMS retrieval
+- You need pre-checks before deciding create vs update in CMS workflows
+
+## Do not use this skill when
+
+- Task requires CMS write operations (use `cms-manager`)
+- Task is AWS deployment/infra work (use `pure-aws-devops`)
+
 ## Base URL
 
 - **Development**: `http://localhost:3003` (or `CMS_HOST` from env)

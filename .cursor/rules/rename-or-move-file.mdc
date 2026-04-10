@@ -12,4 +12,11 @@ When changing a file name or moving a file to a new path:
 3. **Document** the change: update READMEs, SKILLs, or in-file comments that describe the path or how to use it.
 4. **Delete** the old file only after references and docs are updated.
 
-Use project-wide search (e.g. grep for the old filename or path) to ensure no references are missed.
+Use project-wide search (e.g. `rg` for the old filename or path) to ensure no references are missed.
+
+## Move safety checklist
+
+- Imports/requires updated in source and tests
+- Build/config references updated (webpack, scripts, routing, aliases)
+- Documentation and skills updated where path/name is mentioned
+- No stale references remain from project-wide `rg` search

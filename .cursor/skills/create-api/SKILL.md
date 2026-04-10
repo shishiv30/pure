@@ -7,6 +7,18 @@ description: Build new APIs from a Swagger/OpenAPI document. Use when the user w
 
 Build new API routes from a provided Swagger/OpenAPI document. Covers config, docs, fetch layer, mappers, and router registration.
 
+## Use this skill when
+
+- User wants new API routes generated from Swagger/OpenAPI
+- User asks to proxy external API endpoints with mapping and docs
+- Task requires router + fetch layer + mapper pattern
+
+## Do not use this skill when
+
+- Only a small bugfix is needed in existing routes
+- No OpenAPI/Swagger source is available and the user did not request API scaffolding
+- Task is CMS page/comp operations (use `cms-manager`)
+
 ## Workflow
 
 ### 1. Fetch OpenAPI spec
@@ -17,7 +29,7 @@ Get the spec from the Swagger URL. Typical paths:
 - `https://<domain>/swagger.json`
 - `https://<domain>/api-docs`
 
-Use `curl` or `mcp_web_fetch`; if it times out (internal/VPN), use the user’s local access.
+Use `curl` or web fetch tooling; if it times out (internal/VPN), use the user’s local access.
 
 Parse paths, methods, schemas, and request bodies:
 
@@ -153,3 +165,11 @@ export async function getCountiesByStateCode(req, res) {
 - Mapper: `helpers/soaGeoMapper.js`
 - Config: `server/configs/realestate.js`
 - Routes: `server/routes/api.soa.js`
+
+## Done checklist
+
+- Upstream spec endpoints and schemas were captured
+- Config/env keys were added or verified
+- Route handlers delegate to fetch + mapper layers
+- Swagger docs represent UI-facing response shape
+- Router is mounted and reachable from `server/routes/index.js`

@@ -7,6 +7,23 @@ description: DevOps for the pure project on AWS (ECS Fargate CMS, ALB, EFS, ECR,
 
 This skill captures how the **pure** repo runs on AWS: CMS on ECS Fargate + EFS + ALB, main site on App Runner, DNS in Route 53. Default region is **us-east-1**.
 
+## Use this skill when
+
+- User asks to deploy/fix CMS or main site on AWS
+- User asks to sync local CMS data to AWS CMS
+- User asks to troubleshoot ALB/ECS/App Runner/Route53 integration
+
+## Do not use this skill when
+
+- Task is only local app code changes with no AWS operations
+- Task is CMS page/comp content editing only (use `cms-manager`)
+
+## Safety requirements
+
+- Confirm target region before executing (`us-east-1` unless user says otherwise)
+- Prefer non-destructive diagnostics before cleanup/delete actions
+- For destructive region cleanup, require explicit user confirmation
+
 ## Scripts and docs (repo paths)
 
 | Purpose | Path |

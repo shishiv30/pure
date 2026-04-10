@@ -5,6 +5,8 @@ alwaysApply: true
 
 # Project Standards
 
+This file is the **normative source of truth** for project standards. If another guidance file (for example, `.cursor/background.json` or a skill) differs, follow this file.
+
 ## Formatting
 
 - **indentSize**: 2
@@ -16,9 +18,9 @@ alwaysApply: true
 - **singleQuote**: true (single quotes only)
 - **maxLineLength**: 100 characters
 
-## Analysis
+## Quality Gates
 
-- **enforceTypeScript**: true
+- **enforceTypeScript**: preferred for new/modified modules when practical in this mixed JS/TS codebase
 - **enforceESLint**: true
 - **enforcePrettier**: true
 
@@ -58,3 +60,9 @@ alwaysApply: true
 - Import from appropriate utility modules
 - Extend existing utilities if needed rather than duplicating
 - Document any new utility functions added
+
+## Operational Conventions
+
+- Prefer `rg` and project tools for search; avoid `grep`/`find` in agent workflows
+- Keep guidance and examples aligned with real repo paths and scripts
+- When a rule changes behavior, update related skills and docs in the same pass
