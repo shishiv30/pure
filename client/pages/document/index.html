@@ -301,11 +301,12 @@
   <section class="section large">
     <div class="panel fixed fixed-max-xs grid grid-xs-1">
       <div class="wrap">
-        <h2 class="h3">Dialog</h2>
+        <h2 class="h3">Modal</h2>
+        <p class="small text-muted">Template-based overlay (<code>data-role="modal"</code>).</p>
       </div>
 
-      <a class="btn default small" href="javascript:;" data-role="dialog" data-target="#popupPanel1">
-        <span class="hidden-xs">Dialog </span>Default
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel1">
+        <span class="hidden-xs">Modal </span>Default
       </a>
       <script id="popupPanel1" type="text/template">
 					<div class="grid grid-xs-1 large">
@@ -327,12 +328,12 @@
 						</div>
 					</div>
 				</script>
-      <a class="btn default small" href="javascript:;" data-role="dialog" data-target="#popupPanel0"
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel0"
         data-theme="fullscreen">
-        <span class="hidden-xs">Dialog </span>Fullscreen
+        <span class="hidden-xs">Modal </span>Fullscreen
       </a>
       <script id="popupPanel0" type="text/template">
-					<div data-dialog="close">
+					<div data-modal="close">
 						<div class="text-white">Welcome to CUI!</div>
 						<div class=" text-white">A modal dialog is a window that forces the user to interact with it before they can go back to using the
 							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
@@ -349,9 +350,9 @@
 							parent application.</div>
 					</div>
 				</script>
-      <a class="btn default small" href="javascript:;" data-role="dialog" data-target="#popupPanel"
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel"
         data-theme="dropdown">
-        <span class="hidden-xs">Dialog </span>Dropdown
+        <span class="hidden-xs">Modal </span>Dropdown
       </a>
       <script id="popupPanel" type="text/template">
 					<div class="f3">Hello World!</div>
@@ -361,6 +362,28 @@
 						<li><a href="javascript:;">Cat</a></li>
 					</ul>
 				</script>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <div class="wrap">
+        <h2 class="h3">Dialog</h2>
+        <p class="small text-muted">HTML <code>&lt;dialog&gt;</code> with <code>showModal()</code> (<code>data-role="dialog"</code>).</p>
+      </div>
+      <button type="button" class="btn default small" data-role="dialog" data-target="#htmlDialogDemo">
+        Open dialog
+      </button>
+      <dialog id="htmlDialogDemo" class="dialog" aria-labelledby="htmlDialogTitle">
+        <div class="dialog-body">
+          <button type="button" class="dialog-title-close" data-dialog="close" aria-label="Close">
+            <i class="icon-close" aria-hidden="true"></i>
+          </button>
+          <div id="htmlDialogTitle" class="h4">Dialog</div>
+          <p>
+            Uses the HTML <code>dialog</code> element. Backdrop click closes when autoclose is enabled.
+          </p>
+        </div>
+      </dialog>
     </div>
   </section>
   <section class="section large">

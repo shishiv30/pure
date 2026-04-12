@@ -1,5 +1,5 @@
 const preventDefault = (event) => {
-	//if parent node not include '.overlay' '.dialog' '.mvt-searchbox' then prevent default with vanilla js
+	//if parent node not include '.overlay' '.modal' '.mvt-searchbox' then prevent default with vanilla js
 	if (!event.target.closest('.overlay')) {
 		event.preventDefault();
 	}

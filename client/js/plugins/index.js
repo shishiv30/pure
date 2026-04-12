@@ -1,6 +1,7 @@
 import collapse from './_collapse.js';
 
 // import datatable from './_datatable.js';
+import modal from './_modal.js';
 import dialog from './_dialog.js';
 import form from './_form.js';
 // import gridtable from './_gridtable.js';
@@ -35,6 +36,7 @@ export default {
 	collapse,
 	shifter,
 	// datatable,
+	modal,
 	dialog,
 	// dropdownbutton,
 	form,

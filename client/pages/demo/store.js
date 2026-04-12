@@ -4,6 +4,7 @@ export const conponentType = {
     MAP: 'map',
     SLIDER: 'slider',
     WORKFLOW: 'workflow',
+    MODAL: 'modal',
     DIALOG: 'dialog',
     FORM: 'form',
     FILTER: 'filter',

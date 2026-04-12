@@ -42,17 +42,28 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
    <div id="content" class="collapse-panel">Content</div>
    ```
 
-3. **dialog**
-   - Initializes modal dialog functionality
-   - Requires `data-target` pointing to the dialog template
-   - Optional `data-theme` for different styles (default, fullscreen, dropdown)
+3. **modal**
+   - Overlay modal built from a template (injected markup, not the HTML `<dialog>` element)
+   - Requires `data-target` pointing to the template (`script[type="text/template"]` or similar)
+   - Optional `data-theme`: default, fullscreen, dropdown
+   - Close controls use `data-modal="close"`
    - Example:
    ```html
-   <button data-role="dialog" data-target="#dialog1">Open Dialog</button>
-   <script id="dialog1" type="text/template">Content</script>
+   <button data-role="modal" data-target="#modal1">Open modal</button>
+   <script id="modal1" type="text/template">Content</script>
    ```
 
-4. **form**
+4. **dialog**
+   - Native `<dialog>` element: `showModal()` / `close()`
+   - Requires `data-target` pointing to a `<dialog id="...">` in the DOM
+   - Close controls use `data-dialog="close"`
+   - Example:
+   ```html
+   <button type="button" data-role="dialog" data-target="#myDialog">Open</button>
+   <dialog id="myDialog" class="dialog"><div class="dialog-body">…</div></dialog>
+   ```
+
+5. **form**
    - Enables form validation and submission handling
    - Can include `data-onsubmit` for custom submission behavior
    - Example:
@@ -62,7 +73,7 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
    </form>
    ```
 
-5. **player**
+6. **player**
    - Initializes image player/slider
    - Requires `data-images` array of image paths
    - Example:
@@ -70,7 +81,7 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
    <div data-role="player" data-images='["img1.jpg", "img2.jpg"]'>
    ```
 
-6. **album**
+7. **album**
    - Creates image album/gallery
    - Similar to player but with different layout
    - Example:
@@ -78,7 +89,7 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
    <div data-role="album" data-images='["img1.jpg", "img2.jpg"]'>
    ```
 
-7. **textbox**
+8. **textbox**
    - Enhanced input field with validation
    - Can include `data-validate` for validation rules
    - Example:
@@ -116,7 +127,7 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
    - Modifies the appearance of components
    - Common values: default, fullscreen, dropdown
    ```html
-   <div data-role="dialog" data-theme="fullscreen">
+   <div data-role="modal" data-theme="fullscreen">
    ```
 
 5. **data-images**
@@ -196,7 +207,7 @@ The `data-role` attribute is a core concept in Pure UI that connects HTML elemen
 
 ### Dialog Component
 ```html
-<a class="btn default small" href="javascript:;" data-role="dialog" data-target="#dialogPanel">
+<a class="btn default small" href="javascript:;" data-role="modal" data-target="#dialogPanel">
     Open Dialog
 </a>
 <script id="dialogPanel" type="text/template">

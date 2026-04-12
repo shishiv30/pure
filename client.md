@@ -250,48 +250,50 @@ sequenceDiagram
 - Thumbnail navigation
 - Lightbox view
 
-### 3. Dialog Plugin
-**File**: `client/js/plugins/_dialog.js`
+### 3. Modal Plugin
+**File**: `client/js/plugins/_modal.js`  
+Overlay modal: injects markup from a template (not the HTML `<dialog>` element).
+
 **Usage**:
 ```html
-<button data-role="dialog" 
-        data-target="#dialog-content"
-        data-theme="default"
-        data-auto-close="true"
-        data-cache="false">
-  Open Dialog
+<button data-role="modal"
+        data-target="#modal-content"
+        data-theme="default">
+  Open modal
 </button>
-<div id="dialog-content">
-  <h2>Dialog Content</h2>
-  <p>Dialog body content...</p>
-</div>
+<script id="modal-content" type="text/template">
+  <div><h2>Title</h2><p>Body…</p></div>
+</script>
 ```
 **Input Parameters**:
-- `data-target`: Selector for dialog content (required)
-- `data-theme`: Dialog theme (default: 'default')
-- `data-auto-close`: Auto close on overlay click (default: true)
-- `data-cache`: Cache dialog content (default: false)
-- `data-before-render`: Callback before render
-- `data-after-render`: Callback after render
-- `data-before-show`: Callback before show
-- `data-after-show`: Callback after show
-- `data-before-hide`: Callback before hide
-- `data-after-hide`: Callback after hide
-
-**Features**:
-- Modal windows
-- Custom themes
-- Event callbacks
-- Content caching
-- Auto-close option
+- `data-target`: Selector for template content (required)
+- `data-theme`: `default`, `fullscreen`, or `dropdown`
+- Close buttons inside injected markup: `data-modal="close"`
+- Optional hooks: `beforeRender`, `afterRender`, `beforeShow`, `afterShow`, `beforeHide`, `afterHide` (via plugin options)
 
 **Events**:
-- Standard lifecycle events
-- `dialog.show`: Triggered when dialog opens
-- `dialog.hide`: Triggered when dialog closes
-- `dialog.hidden.except`: Triggered to hide other dialogs
+- `modal.hidden.except`: broadcast so only one overlay modal stays open
 
-### 4. Form Plugin
+### 4. Dialog Plugin (native `<dialog>`)
+**File**: `client/js/plugins/_dialog.js`  
+Uses the browser `<dialog>` element with `showModal()` / `close()`.
+
+**Usage**:
+```html
+<button type="button" data-role="dialog" data-target="#confirmDialog">Open</button>
+<dialog id="confirmDialog" class="dialog">
+  <div class="dialog-body">
+    <button type="button" data-dialog="close" aria-label="Close">×</button>
+    <p>Content</p>
+  </div>
+</dialog>
+```
+**Input Parameters**:
+- `data-target`: Selector for a `<dialog>` element (required)
+- Close controls: `data-dialog="close"`
+- Backdrop click closes when `autoclose` is true (default)
+
+### 5. Form Plugin
 **File**: `client/js/plugins/_form.js`
 **Usage**:
 ```html
@@ -326,7 +328,7 @@ sequenceDiagram
 - `form.success`: Triggered on successful submission
 - `form.error`: Triggered on submission error
 
-### 5. Tab Plugin
+### 6. Tab Plugin
 **File**: `client/js/plugins/_tab.js`
 **Usage**:
 ```html
@@ -364,7 +366,7 @@ sequenceDiagram
 - `tab.show`: Triggered when tab content is shown
 - `tab.hide`: Triggered when tab content is hidden
 
-### 6. Autocomplete Plugin
+### 7. Autocomplete Plugin
 **File**: `client/js/plugins/_autocomplete.js`
 **Usage**:
 ```html
@@ -397,7 +399,7 @@ sequenceDiagram
 - `autocomplete.show`: Triggered when suggestions are shown
 - `autocomplete.hide`: Triggered when suggestions are hidden
 
-### 7. LazyLoad Plugin
+### 8. LazyLoad Plugin
 **File**: `client/js/plugins/_lazyload.js`
 **Usage**:
 ```html
@@ -427,7 +429,7 @@ sequenceDiagram
 - `lazyload.loaded`: Triggered when image is loaded
 - `lazyload.error`: Triggered when image fails to load
 
-### 8. Validate Plugin
+### 9. Validate Plugin
 **File**: `client/js/plugins/_validate.js`
 **Usage**:
 ```html
@@ -457,7 +459,7 @@ sequenceDiagram
 - `validate.error`: Triggered on validation error
 - `validate.complete`: Triggered when validation completes
 
-### 9. Collapse Plugin
+### 10. Collapse Plugin
 **File**: `client/js/plugins/_collapse.js`
 **Usage**:
 ```html
@@ -483,7 +485,7 @@ sequenceDiagram
 - `collapse.hide`: Triggered when content is hidden
 - `collapse.toggle`: Triggered when state is toggled
 
-### 10. Shifter Plugin
+### 11. Shifter Plugin
 **File**: `client/js/plugins/_shifter.js`
 **Usage**:
 ```html
@@ -521,7 +523,7 @@ These statuses are managed via `defBool('hidden-prev' | 'hidden-next', shifter, 
 - `shifter.shift`: Triggered when content shifts
 - `shifter.complete`: Triggered when shift completes
 
-### 11. Header Plugin
+### 12. Header Plugin
 **File**: `client/js/plugins/_header.js`
 **Usage**:
 ```html
@@ -546,7 +548,7 @@ These statuses are managed via `defBool('hidden-prev' | 'hidden-next', shifter, 
 - `header.sticky`: Triggered when header becomes sticky
 - `header.unsticky`: Triggered when header becomes unsticky
 
-### 12. Textbox Plugin
+### 13. Textbox Plugin
 **File**: `client/js/plugins/_textbox.js`
 **Usage**:
 ```html

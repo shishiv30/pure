@@ -1,127 +1,72 @@
 @use './_mixins.scss' as *;
 
-.dialog {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: var(--ui-dialog-index);
-	display: none;
-	opacity: 0;
-	transition: opacity 0.5s ease-in-out;
+dialog.dialog {
+	border: none;
+	padding: 0;
+	max-width: min(92vw, var(--screen-xs-max));
+	background-color: var(--color-bg);
+	color: var(--color);
+	border-radius: 5px;
+	box-shadow: 0 8px 32px hsla(var(--color-major-hue), 30%, 10%, 0.25);
 
-	.dialog-title-close {
-		font-size: var(--font-size-3);
-		display: block;
-		height: var(--comp-size-3);
-		width: var(--comp-size-3);
-		text-align: center;
-		right: 0;
-		top: 0;
-		position: absolute;
-		z-index: 1;
+	&::backdrop {
+		background-color: hsla(
+			var(--color-major-hue),
+			var(--color-glb-saturation),
+			var(--color-glb-lightness),
+			0.75
+		);
+		animation: dialog-backdrop-in 0.28s ease-out;
 	}
 
-	.dialog-overlay {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background-color: hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.8);
-		z-index: var(--ui-dialog-overlay);
-	}
-
-	.dialog-panel {
-		position: absolute;
-		width: 100vw;
-		height: auto;
-		max-width: var(--screen-xs-max);
-		border-radius: 5px;
-		z-index: var(--ui-dialog-index);
-		background-color: var(--color-bg);
-		top: 50%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-50%);
-		transition: top 0.5s;
-	}
-
-	.dialog-body {
-		position: relative;
-		z-index: 2;
-		color: var(--color);
-		padding: var(--g2);
-		overflow-x: hidden;
-		overflow-y: auto;
-		max-height: 100vh;
-	}
-
-	&.dialog-active {
-		opacity: 1;
-	}
-
-
-	&.dialog-fullscreen {
-		.dialog-title-close {
-			display: none;
-		}
-
-		.dialog-panel {
-			display: flex;
-			align-items: center;
-			width: 100%;
-			background: transparent;
-			color: var(--color-bg);
-		}
-	}
-
-	&.dialog-dropdown {
-		.dialog-header {
-			display: none;
-		}
-
-		.dialog-body {
-			padding: 0;
-
-			>div {
-				padding: var(--g2);
-				color: var(--color-l1);
-			}
-		}
-
-		ul {
-			z-index: 10;
-
-			>li {
-				margin: 0;
-				padding: 0;
-				text-align: left;
-				font-size: var(--font-size-4);
-
-				a {
-					>i {
-						float: left;
-						font-size: var(--font-size-3);
-					}
-
-					font-weight: var(--font-weight-medium);
-					display: block;
-					padding: var(--g2) var(--g3);
-					border-top: 1px solid var(--color-l1);
-				}
-			}
-		}
+	&[open] {
+		animation: dialog-panel-in 0.28s ease-out;
 	}
 }
 
-.dialog-model {
-	overflow-y: hidden !important;
-	overflow-x: hidden !important;
+.dialog-body {
+	position: relative;
+	padding: var(--g2);
+	max-height: min(80vh, 100%);
+	overflow: auto;
+}
 
-	body {
-		overflow-y: hidden !important;
-		overflow-x: hidden !important;
-		-webkit-overflow-scrolling: auto !important;
+.dialog-title-close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
+	font-size: var(--font-size-3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: var(--comp-size-3);
+	width: var(--comp-size-3);
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+}
+
+@keyframes dialog-backdrop-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes dialog-panel-in {
+	from {
+		opacity: 0;
+		transform: translateY(-6px) scale(0.98);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
 	}
 }
