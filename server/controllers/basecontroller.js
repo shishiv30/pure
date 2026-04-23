@@ -106,6 +106,7 @@ export default class BaseController {
 		const assetName = this.config.assetName || this.config.name;
 		let meta = {
 			...originMeta,
+			role: assetName || '',
 			uaData: this.req.uaData,
 			lang: (lang && lang[0]) || '',
 			path: this.req.path,

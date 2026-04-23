@@ -73,8 +73,36 @@ export async function fetchPropertiesImagesFromSOA(url) {
 	}
 }
 
+function getSeo(geo) {
+	const label = geo ? getGeoDisplayText(geo).trim() : '';
+	const place = label || 'Demo';
+	const typePart = geo && geo.type ? `${geo.type} ` : '';
+	const desc = `Search results at ${place} ${typePart}page`.trim();
+	return {
+		title: `Search results at ${place}`.trim(),
+		description: desc,
+		desc,
+		keywords: `${place}, real estate, demo`,
+	};
+}
+
 export default {
 	name: 'demo',
+	seo: function (_req, model) {
+		const fromGet = model?.data?.seo;
+		if (fromGet && typeof fromGet === 'object') {
+			return {
+				title: fromGet.title || 'Demo',
+				desc: fromGet.desc || fromGet.description || '',
+				keywords: fromGet.keywords || '',
+			};
+		}
+		return {
+			title: 'Demo',
+			desc: '',
+			keywords: 'demo',
+		};
+	},
 	beforeGet: function (req, payload) {
 		let geo;
 		if (req.query.path) {
@@ -110,6 +138,10 @@ export default {
 		return preload;
 	},
 	get: async function (payload) {
+		const demoSpaPath =
+			typeof payload?.path === 'string'
+				? String(payload.path).replace(/^\/+|\/+$/g, '')
+				: '';
 		let geo = null;
 		let articles = [];
 		if (payload && payload.text && payload.type) {
@@ -141,7 +173,10 @@ export default {
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 
+		const seo = getSeo(geo);
 		let model = {
+			seo: seo,
+			demoSpaPath,
 			geo: geo,
 			articles: articles,
 			articleComponent: articleComponent,

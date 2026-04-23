@@ -14,6 +14,9 @@ export default (env) => {
 		mode: config.webpackMode,
 		devtool: config.webpackDevtool,
 		stats: config.webpackStats,
+			infrastructureLogging: {
+				level: 'error',
+			},
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].min.js',
@@ -28,9 +31,12 @@ export default (env) => {
 		devServer: {
 			static: {
 				directory: path.join(__dirname, 'dist'),
-				// Ignore generated page HTML so writing dist/page/index.html doesn't trigger a refresh loop
+				// Ignore generated static HTML so runtime writes don't trigger refresh loops
 				watch: {
-					ignored: path.join(__dirname, 'dist', 'page'),
+					ignored: [
+						path.join(__dirname, 'dist', '**/*.html'),
+						path.join(__dirname, 'dist', 'page'),
+					],
 				},
 			},
 			compress: true,

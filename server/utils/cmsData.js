@@ -25,7 +25,7 @@ async function useCms() {
 		serverConfig.cmsHealth = res.ok;
 		return serverConfig.cmsHealth;
 	} catch (err) {
-		console.error('CMS health check failed:', err);
+		console.error('CMS health check failed: start cms in ./cms folder');
 		serverConfig.cmsHealth = false;
 		return false;
 	}

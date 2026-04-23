@@ -1,6 +1,16 @@
+/**
+ * @typedef {Object} RouterOptions
+ * @property {'demo'} [linkScope] When set, only same-origin links under `/demo/` are handled by the router (full navigation for others). Paths starting with `/demo/sitemap` always use full navigation.
+ */
+
 export class Router {
-	constructor(rules) {
+	/**
+	 * @param {Array} rules
+	 * @param {RouterOptions} [options]
+	 */
+	constructor(rules, options = {}) {
 		this.rules = rules;
+		this.options = options;
 		this.currentRouter = null;
 		this.history = [];
 		this.init();
@@ -16,6 +26,9 @@ export class Router {
 		}
 	}
 	async navigate(state, method) {
+		if (!state) {
+			return;
+		}
 		try {
 			let res = await this.loading(state);
 			this.loaded(state, res);
@@ -34,6 +47,9 @@ export class Router {
 			return;
 		}
 		let state = await this.routerTo(path);
+		if (!state) {
+			return;
+		}
 		await this.navigate(state, 'push');
 	}
 	async replace(path) {
@@ -41,11 +57,38 @@ export class Router {
 			return;
 		}
 		let state = await this.routerTo(path);
+		if (!state) {
+			return;
+		}
 		await this.navigate(state, 'replace');
 	}
+	shouldHandleDemoLink(internalPath, e, target) {
+		if (this.options.linkScope !== 'demo') {
+			return true;
+		}
+		if (!internalPath.startsWith('/demo/')) {
+			return false;
+		}
+		if (internalPath.startsWith('/demo/sitemap')) {
+			return false;
+		}
+		if (e && (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) {
+			return false;
+		}
+		if (target && target.getAttribute('target') === '_blank') {
+			return false;
+		}
+		if (target && target.hasAttribute('download')) {
+			return false;
+		}
+		return true;
+	}
+
 	init() {
 		//on popstate check if it back or forward
 		window.addEventListener('popstate', (e) => {
+			const pathname =
+				(e.state && e.state.pathname) || window.location.pathname || '';
 			if (
 				this.currentRouter &&
 				e.state &&
@@ -54,7 +97,10 @@ export class Router {
 			) {
 				return;
 			}
-			let state = this.routerTo(e.state.pathname);
+			let state = this.routerTo(pathname);
+			if (!state) {
+				return;
+			}
 			this.navigate(state, 'goto');
 			e.preventDefault();
 		});
@@ -69,6 +115,10 @@ export class Router {
 
 				let internalPath = this.getInternalPath(href);
 				if (internalPath === '') {
+					return;
+				}
+
+				if (!this.shouldHandleDemoLink(internalPath, e, target)) {
 					return;
 				}
 

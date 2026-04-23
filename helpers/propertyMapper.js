@@ -91,7 +91,7 @@ export function mapPropertyToArticle(property) {
 		imgTag: property.mlsName || 'Provided by MLS',
 		imgAlt: property.fullAddress,
 		title: property.fullAddress,
-		href: property.dppUrl,
+		href: `/demo/detail/${property.propertyId}`,
 		tags: tags,
 		attrs: attrs,
 	};
