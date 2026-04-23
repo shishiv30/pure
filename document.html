@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+
+<head>
+  <title>Pure Demo</title>
+  <meta name="Description" content="Author: Conjee Zou, UI solution, Category: Document" />
+  <meta name="background-color" content="#ffffff" />
+  <meta name="theme-color" content="#333333" />
+  <meta http-equiv="Cache-control" content="public" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/logo.png"><script defer src="/document.min.js"></script><link href="/document.min.css" rel="stylesheet"></head>
+
+<body id="body">
+  <header class="header sticky major active" data-role="header">
+	<div class="header-bar">
+		<a href="javascript:;" class="menu-img" aria-label="CUI Logo">
+		</a>
+		<div class="input right">
+			<input id="headerInput" placeholder="Search for ..." type="text" name="text" />
+			<a href="javascript:;" aria-label="Do Dearch" class="btn">
+				<i class="icon-search"></i>
+			</a>
+		</div>
+	</div>
+	<nav class="header-menu">
+		<ul class="header-menu-list">
+			<li>
+				<a href="./index.html">Home</a>
+			</li>
+			<li class="list">
+				<a href="./demo.html">Demo</a>
+				<ul>
+					<li>
+						<a href="./about.html">About</a>
+					</li>
+					<li>
+						<a href="/page/ai-trend">AI Trend</a>
+					</li>
+					<li>
+						<a href="./lower.html">Lower</a>
+					</li>
+					<li>
+						<a href="./3d.html">3D</a>
+					</li>
+					<li>
+						<a href="./animation.html">SVGAnimation</a>
+					</li>
+					<li>
+						<a href="./list-view.html">List View</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="./document.html">Document</a>
+			</li>
+			<li>
+				<a href="./lighthouse-report.report.html">Performance Report</a>
+			</li>
+			<li>
+				<a href="./presentation-slider.html">PPT</a>
+			</li>
+		</ul>
+		<a href="javascript:;" aria-label="Open Menu" class="menu-icon header-switch-link"><i class="icon-bars f3"></i></a>
+	</nav>
+</header>
+  <main id="main" role="main">
+  <section class="section large" id="welcome">
+    <div class="fixed fixed-max-xs panel inline corner-1 grid grid-xs-1 large">
+      <div class="flex vertical">
+        <h1 class="f3">Welcome to pure UI:</h1>
+        <div>
+          This is a lightweight UI framework that focuses solely on client-side
+          rendering for user experience. The framework itself is dedicated to
+          enhancing user experience. The core idea is to define interface states
+          purely with CSS and to use pure JavaScript for interaction and state
+          switching.
+        </div>
+      </div>
+      <div class="flex vertical">
+        <h2 class="f4">Why pure UI</h2>
+        <div>
+          This framework succinctly encapsulates the core concepts of UI design,
+          compressing most important concepts into less than 20 keywords. This ensures
+          that anyone using the framework, as long as they understand its core
+          concepts, can easily grasp any knowledge point within the system and apply
+          it elsewhere.
+        </div>
+      </div>
+      <div class="flex vertical">
+        <h2 class="f4">What need Learn before use it</h2>
+        <div>
+          If you are familiar with and understand the meanings of the following words,
+          then you have mastered the core concepts of this framework:
+        </div>
+        <ul class="grid grid-xs-1">
+          <li class="flex middle">
+            <span class="tag gray">x</span>horizontal setting,
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">y</span>vertical setting,
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">gap</span>gap size
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">large</span>preset large size of gap
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">small</span>preset small size of gap
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">normal</span>preset default size of gap
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">xs</span>phone device
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">sm</span>tablet device
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">md</span>dekstop device
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">lg</span>large desktop device
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">grid</span>grid system layout for multiple
+            items like array
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">flex</span>flex system layout for one item
+            like an object with fields
+          </li>
+          <li class="flex middle">
+            <span class="tag gray">0-9</span>value of color or size, lowest: 0, highest: 9
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="fixed fixed-max-xs panel large inline corner-1 grid grid-xs-1">
+      <h2 class="f3">Color text-center</h2>
+      <div class="grid color-swatch-grid text-center tiny">
+        <div style="background-color:var(--color-0);">0</div>
+        <div style="background-color:var(--color-1)">1</div>
+        <div style="background-color:var(--color-2)">2</div>
+        <div style="background-color:var(--color-3)">3</div>
+        <div style="background-color:var(--color-4)">4</div>
+        <div style="background-color:var(--color-5)">5</div>
+        <div style="color:var(--color-bg); background-color:var(--color-6)">6</div>
+        <div style="color:var(--color-bg); background-color:var(--color-7)">7</div>
+        <div style="color:var(--color-bg); background-color:var(--color-8)">8</div>
+        <div style="color:var(--color-bg); background-color:var(--color-9)">9</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section large major inline bg active">
+    <div class="fixed fixed-max-xs panel large inline corner-1 grid grid-xs-1">
+      <h2 class="f3">Button</h2>
+      <div class="flex wrap">
+        <button type="button" class="btn default small active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn gray active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn danger active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn minor active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn major active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn safe active">
+          <i class="icon-plus"></i> Apply
+        </button>
+        <button type="button" class="btn tip active">
+          <i class="icon-plus"></i> The long text button Apply will be truncated
+        </button>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="fixed major fixed-max-xs bg active panel large inline corner-1 grid grid-xs-1">
+      <h2 class="f3">Tag</h2>
+      <div class="flex wrap">
+        <button type="button" class="tag default"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag gray"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag danger"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag minor"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag major"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag safe"><i class="icon-plus"></i> Tag</button>
+        <button type="button" class="tag tip">
+          <i class="icon-plus"></i>The long text tag will be truncated
+        </button>
+      </div>
+    </div>
+  </section>
+  <section class="section large major inline bg active">
+    <div class="fixed fixed-max-xs panel large inline corner-1 grid grid-xs-1">
+      <h2 class="f3">Circle</h2>
+      <h3 class="f5">Colors</h3>
+      <div class="flex wrap middle">
+        <span class="circle default small">1</span>
+        <span class="circle gray small">2</span>
+        <span class="circle danger small">3</span>
+        <span class="circle minor small">4</span>
+        <span class="circle major small">5</span>
+        <span class="circle safe small">6</span>
+        <span class="circle tip small">7</span>
+      </div>
+      <h3 class="f5">Colors (active)</h3>
+      <div class="flex wrap middle">
+        <span class="circle default small active">1</span>
+        <span class="circle gray small active">2</span>
+        <span class="circle danger small active">3</span>
+        <span class="circle minor small active">4</span>
+        <span class="circle major small active">5</span>
+        <span class="circle safe small active">6</span>
+        <span class="circle tip small active">7</span>
+      </div>
+      <h3 class="f5">Sizes</h3>
+      <div class="flex wrap middle">
+        <span class="circle default tiny">t</span>
+        <span class="circle default small">s</span>
+        <span class="circle default">n</span>
+        <span class="circle default large">L</span>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Collapse</h2>
+      <div>
+        <button type="button" data-role="collapse" data-target="#caretPanel1">
+          <span>show content</span>
+          <i class="icon-angle-left"></i>
+        </button>
+        <div id="caretPanel1" class="collapse-panel">
+          This is a lightweight UI framework, the goal is to create a UI solution that
+          simplifies the memory extension markup. The principle of code writing is to
+          achieve as many UI components as possible through html standards so as to
+          reduce unnecessary dependencies.
+        </div>
+      </div>
+      <div>
+        <div id="caretPanel2" class="collapse-line multiline-2">
+          This is a lightweight UI framework, the goal is to create a UI solution that
+          simplifies the memory extension markup. The principle of code writing is to
+          achieve as many UI components as possible through html standards so as to
+          reduce unnecessary dependencies.
+        </div>
+        <button class="link" type="button" data-role="collapse" data-target="#caretPanel2">
+          <span>show more</span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="tipPanel">
+    <div class="fixed fixed-max-xs grid grid-xs-3">
+      <h2 class="f3 wrap">Tips</h2>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, not enough space focus left">top left</a></div>
+      <div class="text-center"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, enough space align center">top center</a></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link"
+          data-content="show on top side, not enough space focus right">top right</a></div>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, not enough space focus left">bottom left</a></div>
+      <div class="text-center"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, enough space align center">bottom center</a></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link" data-placement="bottom"
+          data-content="show on bottom side, not enough space focus right">bottom right</a></div>
+      <div class="text-left"><a href="javascript:;" data-role="tooltip" class="link" data-trigger="click"
+          data-placement="right" data-content="show on right side">right (click)</a></div>
+      <div></div>
+      <div class="text-right"><a href="javascript:;" data-role="tooltip" class="link" data-trigger="click"
+          data-placement="left" data-content="show on left side">left (click)</a></div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Tab</h2>
+      <div>
+        <div data-role="tab">
+          <button type="button" class="tab default active" data-target="tab1">
+            Tab1
+          </button>
+          <button type="button" class="tab default" data-target="tab2">Tab2</button>
+          <button type="button" class="tab default" data-target="tab3">Tab3</button>
+        </div>
+        <div class="panel inline default tab-panel">
+          <div data-id="tab1">Tab1</div>
+          <div data-id="tab2" class="hide">Tab2</div>
+          <div data-id="tab3" class="hide">Tab3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Player</h2>
+      <div class="player" data-role="player" data-index="0"
+        data-images='["/images/01.jpg", "/images/02.jpg", "/images/03.jpg", "/images/04.jpg", "/images/05.jpg", "/images/06.jpg", "/images/07.jpg"]'>
+        <img src="/images/01.jpg" alt="Playershow Image One">
+        <img src="/images/02.jpg" alt="Playershow Image Two">
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Album</h2>
+      <div class="album" data-role="album" data-index="0"
+        data-images='["/images/01.jpg", "/images/02.jpg", "/images/03.jpg", "/images/04.jpg", "/images/05.jpg", "/images/06.jpg", "/images/07.jpg"]'>
+        <div class="album-list">
+          <img src="/images/04.jpg" loading="lazy" alt="album photos">
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Shifter</h2>
+      <div class="shifter" data-role="shifter" data-step="1">
+        <div class="shifter-scroller" data-role="scroller">
+          <div>Item 1</div>
+          <div>Item 2</div>
+          <div>Item 3</div>
+          <div>Item 4</div>
+          <div>Item 5</div>
+          <div>Item 6</div>
+          <div>Item 7</div>
+          <div>Item 8</div>
+          <div>Item 9</div>
+          <div>Item 10</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Share link</h2>
+      <div data-role="sharelink"></div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <div class="wrap">
+        <h2 class="h3">Modal</h2>
+        <p class="small text-muted">Template-based overlay (<code>data-role="modal"</code>).</p>
+      </div>
+
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel1">
+        <span class="hidden-xs">Modal </span>Default
+      </a>
+      <script id="popupPanel1" type="text/template">
+					<div class="grid grid-xs-1 large">
+						<div class="h4">Welcome to CUI!</div>
+						<div>
+								A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+								parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the parent application.
+						</div>
+					</div>
+				</script>
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel0"
+        data-theme="fullscreen">
+        <span class="hidden-xs">Modal </span>Fullscreen
+      </a>
+      <script id="popupPanel0" type="text/template">
+					<div data-modal="close">
+						<div class="text-white">Welcome to CUI!</div>
+						<div class=" text-white">A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.A modal dialog is a window that forces the user to interact with it before they can go back to using the
+							parent application.</div>
+					</div>
+				</script>
+      <a class="btn default small" href="javascript:;" data-role="modal" data-target="#popupPanel"
+        data-theme="dropdown">
+        <span class="hidden-xs">Modal </span>Dropdown
+      </a>
+      <script id="popupPanel" type="text/template">
+					<div class="f3">Hello World!</div>
+					<ul>
+						<li><a href="javascript:;">Apple</a></li>
+						<li><a href="javascript:;">Banana</a></li>
+						<li><a href="javascript:;">Cat</a></li>
+					</ul>
+				</script>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <div class="wrap">
+        <h2 class="h3">Dialog</h2>
+        <p class="small text-muted">HTML <code>&lt;dialog&gt;</code> with <code>showModal()</code> (<code>data-role="dialog"</code>).</p>
+      </div>
+      <button type="button" class="btn default small" data-role="dialog" data-target="#htmlDialogDemo">
+        Open dialog
+      </button>
+      <dialog id="htmlDialogDemo" class="dialog" aria-labelledby="htmlDialogTitle">
+        <div class="dialog-body">
+          <button type="button" class="dialog-title-close" data-dialog="close" aria-label="Close">
+            <i class="icon-close" aria-hidden="true"></i>
+          </button>
+          <div id="htmlDialogTitle" class="h4">Dialog</div>
+          <p>
+            Uses the HTML <code>dialog</code> element. Backdrop click closes when autoclose is enabled.
+          </p>
+        </div>
+      </dialog>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">ScrollTo</h2>
+      <p>Scroll down the page, then click the button to scroll back to the first section.</p>
+      <button type="button" class="btn default small" data-role="scrollto" data-target="#welcome">
+        Scroll to first section
+      </button>
+    </div>
+  </section>
+  <section class="section bg default large" id="formPanel">
+    <form class="fixed fixed-max-xs grid grid-xs-1 grid-sm-2" data-role="form" data-onsubmit="submit">
+      <div class="h4 wrap">Forms</div>
+      <div>
+        <label for="txtReq">Name (Required)</label>
+        <div class="input left">
+          <i class="icon-user-circle-o"></i>
+          <input id="txtReq" name="username" placeholder="name" data-role="validate" data-type="required" />
+        </div>
+      </div>
+      <div>
+        <label for="txtMail">Mail</label>
+        <div class="input left">
+          <i class="icon-envelope"></i>
+          <input id="txtMail" name="email" placeholder="email" data-role="validate" data-type="email" />
+        </div>
+      </div>
+      <div>
+        <label for="txtPhone">Phone (Required)</label>
+        <div class="input left right">
+          <i class="icon-phone"></i>
+          <input id="txtPhone" name="phone" placeholder="phone" value="1234567890" data-role="validate"
+            data-type="required,phone" data-inputformat data-type="phone" />
+        </div>
+      </div>
+      <div>
+        <label for="ddlFequence">Fequence (Required)</label>
+        <div class="input left right">
+          <i class="icon-ellipsis-v"></i>
+          <select id="ddlFequence" name="fequence" data-role="validate" data-type="required">
+            <option value="" selected="selected" disabled="disabled">
+              select a fequence
+            </option>
+            <option value="Weekly">Weekly</option>
+            <option value="Daily">Daily</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+          <i disabled="disabled" class="icon-angle-down"></i>
+        </div>
+      </div>
+      <div>
+        <label>Select Gender</label>
+        <div class="radio">
+          <label for="chMale">
+            <input id="chMale" name="gender" type="radio" checked="checked" value="Male" />
+            <span>Male</span>
+          </label>
+          <label for="chkFemal">
+            <input id="chkFemal" name="gender" type="radio" value="Female" />
+            <span>Female</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label>Select Favor</label>
+        <div class="checkbox">
+          <label for="rbtnFavor1">
+            <input id="rbtnFavor1" name="favor" checked="checked" type="checkbox" value="Dance" />
+            <span>Dance</span>
+          </label>
+          <label for="rbtnFavor2">
+            <input id="rbtnFavor2" name="favor" type="checkbox" value="Sing" />
+            <span>Sing</span>
+          </label>
+          <label for="rbtnFavor3">
+            <input id="rbtnFavor3" name="favor" type="checkbox" value="Paint" />
+            <span>Paint</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label>Rating</label>
+        <br />
+        <div class="group-btn default">
+          <label for="rate0">
+            <input id="rate0" name="rating" type="radio" checked="checked" value="0" />
+            <span>0</span>
+          </label>
+          <label for="rate1">
+            <input id="rate1" name="rating" type="radio" value="1" />
+            <span>1</span>
+          </label>
+          <label for="rate2">
+            <input id="rate2" name="rating" type="radio" value="2" />
+            <span>2</span>
+          </label>
+          <label for="rate3">
+            <input id="rate3" name="rating" type="radio" value="3" />
+            <span>3</span>
+          </label>
+          <label for="rate4">
+            <input id="rate4" name="rating" type="radio" value="4" />
+            <span>4</span>
+          </label>
+          <label for="rate5">
+            <input id="rate5" name="rating" type="radio" value="5" />
+            <span>5</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label>Skills</label>
+        <div class="group-btn default">
+          <label for="tag4">
+            <input id="tag4" name="skill" checked="checked" type="checkbox" value="C#" />
+            <span>C#</span>
+          </label>
+          <label for="tag5">
+            <input id="tag5" name="skill" type="checkbox" value="css" />
+            <span>CSS</span>
+          </label>
+          <label for="tag6">
+            <input id="tag6" name="skill" type="checkbox" value="javascript" />
+            <span>Javascript</span>
+          </label>
+          <label for="tag7">
+            <input id="tag7" name="skill" type="checkbox" value="nodejs" />
+            <span>Node Js</span>
+          </label>
+        </div>
+      </div>
+      <div class="checkbox single">
+        <label for="confirm">
+          <input id="confirm" name="confirm" type="checkbox" data-role="validate" data-type="required" />
+          <span>Confirm to submit</span>
+        </label>
+      </div>
+      <div class="wrap text-center">
+        <button type="submit" class="btn default">Submit</button>
+      </div>
+    </form>
+  </section>
+  <section class="section large major inline bg active">
+    <div class="fixed bg default fixed-max-xs grid grid-xs-1 grid-sm-2">
+      <h2 class="f3 wrap">Textbox</h2>
+      <div>
+        <div class="selectbox">
+          <label for="select22">normal textbox select</label>
+          <select id="select22" name="fequence" data-validate="required">
+            <option value="" selected disabled>select a option</option>
+            <option value="Weekly">option weekly</option>
+            <option value="Daily">option daily</option>
+            <option value="Monthly">option monthly</option>
+          </select>
+          <i class="icon-angle-down"></i>
+        </div>
+      </div>
+      <div>
+        <div data-role="textbox">
+          <div class="input right">
+            <label for="txtReq2">normal textbox input</label>
+            <input type="email" id="txtReq2" name="username" value="" data-validate="required,email" />
+            <a href="javascript:;" aria-label="submit" class="icon-check"></a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="selectbox large">
+          <label for="select11">large textbox select</label>
+          <select id="select11" name="fequence" data-validate="required">
+            <option value="" selected disabled>select a option</option>
+            <option value="Weekly">option weekly</option>
+            <option value="Daily">option daily</option>
+            <option value="Monthly">option monthly</option>
+          </select>
+          <i class="icon-angle-down"></i>
+        </div>
+      </div>
+      <div>
+        <div data-role="textbox">
+          <div class="input large right">
+            <label for="txtReq1">large textbox input</label>
+            <input type="email" id="txtReq1" name="username" value="" data-validate="required,email" />
+            <a href="javascript:;" aria-label="submit" class="icon-check"></a>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div data-role="textbox">
+          <div class="textarea">
+            <label for="textReq4">textbox textarea</label>
+            <textarea name="span" id="textReq4" data-role="validate" data-type="required"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Lazyload</h2>
+      <div>
+        <img loading="lazy" src="/images/01.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/02.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/03.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/04.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/05.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/06.jpg" alt="demo image 1">
+        <img loading="lazy" src="/images/07.jpg" alt="demo image 1">
+      </div>
+    </div>
+  </section>
+  </main>
+  <footer class="footer">
+	<div class="section major large inline bg active">
+		<div class="fixed fixed-max-xs grid grid-xs-1">
+			<div class="footer-section">
+				<div class="f4 text-bold">Contact Us</div class="f4 text-bold">
+				<p>Email: info@company.com</p>
+				<p>Phone: (555) 123-4567</p>
+				<p>Address: 123 Main St, City, State 12345</p>
+			</div>
+			<div class="footer-section">
+				<div class="f4 text-bold">Follow Us</div class="f4 text-bold">
+				<div class="footer-social-link">
+					<a href="#" aria-label="Facebook"><i class="icon-facebook"></i></a>
+					<a href="#" aria-label="Twitter"><i class="icon-twitter"></i></a>
+					<a href="#" aria-label="LinkedIn"><i class="icon-linkedin"></i></a>
+					<a href="#" aria-label="Instagram"><i class="icon-instagram"></i></a>
+				</div>
+			</div>
+			<div class="footer-section default bg">
+				<div class="f4 text-bold">Newsletter</div class="f4 text-bold">
+				<p>Stay updated with our latest news and updates.</p>
+				<form class="input left">
+					<input type="email" placeholder="Enter your email" required>
+					<button type="submit" class="btn primary" aria-label="Subscribe"><i class="icon-envelope"></i></button>
+				</form>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; 2026 Company Name. All rights reserved.</p>
+			</div>
+		</div>
+	</div>
+</footer>
+  <div class="scroll-loading"></div>
+</body>
+<script type="text/javascript">
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('theme-dark');
+  } else if (savedTheme === 'light') {
+    document.body.classList.remove('theme-dark');
+  }
+</script>
+<script>
+  window.submit = function (e) {
+    console.log(e);
+  };
+</script>
+
+</html>

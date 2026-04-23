@@ -1,0 +1,502 @@
+[
+  {
+    "type": "state",
+    "path": "ca",
+    "state": "CA",
+    "name": "California",
+    "lat": "36.116203",
+    "lng": "-119.681564",
+    "input": "CA California",
+    "population": "39512223"
+  },
+  {
+    "type": "state",
+    "path": "tx",
+    "state": "TX",
+    "name": "Texas",
+    "lat": "31.054487",
+    "lng": "-97.563461",
+    "input": "TX Texas",
+    "population": "28995881"
+  },
+  {
+    "type": "state",
+    "path": "fl",
+    "state": "FL",
+    "name": "Florida",
+    "lat": "27.766279",
+    "lng": "-81.686783",
+    "input": "FL Florida",
+    "population": "21477737"
+  },
+  {
+    "type": "state",
+    "path": "ny",
+    "state": "NY",
+    "name": "New York",
+    "lat": "42.165726",
+    "lng": "-74.948051",
+    "input": "NY New York",
+    "population": "19453561"
+  },
+  {
+    "type": "state",
+    "path": "pa",
+    "state": "PA",
+    "name": "Pennsylvania",
+    "lat": "40.590752",
+    "lng": "-77.209755",
+    "input": "PA Pennsylvania",
+    "population": "12801989"
+  },
+  {
+    "type": "state",
+    "path": "il",
+    "state": "IL",
+    "name": "Illinois",
+    "lat": "40.349457",
+    "lng": "-88.986137",
+    "input": "IL Illinois",
+    "population": "12671821"
+  },
+  {
+    "type": "state",
+    "path": "oh",
+    "state": "OH",
+    "name": "Ohio",
+    "lat": "40.388783",
+    "lng": "-82.764915",
+    "input": "OH Ohio",
+    "population": "11689100"
+  },
+  {
+    "type": "state",
+    "path": "ga",
+    "state": "GA",
+    "name": "Georgia",
+    "lat": "33.040619",
+    "lng": "-83.643074",
+    "input": "GA Georgia",
+    "population": "10617423"
+  },
+  {
+    "type": "state",
+    "path": "nc",
+    "state": "NC",
+    "name": "North Carolina",
+    "lat": "35.630066",
+    "lng": "-79.806419",
+    "input": "NC North Carolina",
+    "population": "10488084"
+  },
+  {
+    "type": "state",
+    "path": "mi",
+    "state": "MI",
+    "name": "Michigan",
+    "lat": "43.326618",
+    "lng": "-84.536095",
+    "input": "MI Michigan",
+    "population": "9986857"
+  },
+  {
+    "type": "state",
+    "path": "nj",
+    "state": "NJ",
+    "name": "New Jersey",
+    "lat": "40.298904",
+    "lng": "-74.521011",
+    "input": "NJ New Jersey",
+    "population": "8882190"
+  },
+  {
+    "type": "state",
+    "path": "va",
+    "state": "VA",
+    "name": "Virginia",
+    "lat": "37.769337",
+    "lng": "-78.169968",
+    "input": "VA Virginia",
+    "population": "8535519"
+  },
+  {
+    "type": "state",
+    "path": "wa",
+    "state": "WA",
+    "name": "Washington",
+    "lat": "47.400902",
+    "lng": "-121.490494",
+    "input": "WA Washington",
+    "population": "7614893"
+  },
+  {
+    "type": "state",
+    "path": "az",
+    "state": "AZ",
+    "name": "Arizona",
+    "lat": "33.729759",
+    "lng": "-111.431221",
+    "input": "AZ Arizona",
+    "population": "7278717"
+  },
+  {
+    "type": "state",
+    "path": "ma",
+    "state": "MA",
+    "name": "Massachusetts",
+    "lat": "42.230171",
+    "lng": "-71.530106",
+    "input": "MA Massachusetts",
+    "population": "6949503"
+  },
+  {
+    "type": "state",
+    "path": "tn",
+    "state": "TN",
+    "name": "Tennessee",
+    "lat": "35.747845",
+    "lng": "-86.692345",
+    "input": "TN Tennessee",
+    "population": "6833174"
+  },
+  {
+    "type": "state",
+    "path": "in",
+    "state": "IN",
+    "name": "Indiana",
+    "lat": "39.849426",
+    "lng": "-86.258278",
+    "input": "IN Indiana",
+    "population": "6732219"
+  },
+  {
+    "type": "state",
+    "path": "mo",
+    "state": "MO",
+    "name": "Missouri",
+    "lat": "38.456085",
+    "lng": "-92.288368",
+    "input": "MO Missouri",
+    "population": "6137428"
+  },
+  {
+    "type": "state",
+    "path": "md",
+    "state": "MD",
+    "name": "Maryland",
+    "lat": "39.063946",
+    "lng": "-76.802101",
+    "input": "MD Maryland",
+    "population": "6045680"
+  },
+  {
+    "type": "state",
+    "path": "wi",
+    "state": "WI",
+    "name": "Wisconsin",
+    "lat": "44.268543",
+    "lng": "-89.616508",
+    "input": "WI Wisconsin",
+    "population": "5822434"
+  },
+  {
+    "type": "state",
+    "path": "co",
+    "state": "CO",
+    "name": "Colorado",
+    "lat": "39.059811",
+    "lng": "-105.311104",
+    "input": "CO Colorado",
+    "population": "5758736"
+  },
+  {
+    "type": "state",
+    "path": "mn",
+    "state": "MN",
+    "name": "Minnesota",
+    "lat": "45.694454",
+    "lng": "-93.900192",
+    "input": "MN Minnesota",
+    "population": "5639632"
+  },
+  {
+    "type": "state",
+    "path": "sc",
+    "state": "SC",
+    "name": "South Carolina",
+    "lat": "33.856892",
+    "lng": "-80.945007",
+    "input": "SC South Carolina",
+    "population": "5148714"
+  },
+  {
+    "type": "state",
+    "path": "al",
+    "state": "AL",
+    "name": "Alabama",
+    "lat": "32.806671",
+    "lng": "-86.79113",
+    "input": "AL Alabama",
+    "population": "4903185"
+  },
+  {
+    "type": "state",
+    "path": "la",
+    "state": "LA",
+    "name": "Louisiana",
+    "lat": "31.169546",
+    "lng": "-91.867805",
+    "input": "LA Louisiana",
+    "population": "4648794"
+  },
+  {
+    "type": "state",
+    "path": "ky",
+    "state": "KY",
+    "name": "Kentucky",
+    "lat": "37.66814",
+    "lng": "-84.670067",
+    "input": "KY Kentucky",
+    "population": "4467673"
+  },
+  {
+    "type": "state",
+    "path": "or",
+    "state": "OR",
+    "name": "Oregon",
+    "lat": "44.572021",
+    "lng": "-122.070938",
+    "input": "OR Oregon",
+    "population": "4217737"
+  },
+  {
+    "type": "state",
+    "path": "ok",
+    "state": "OK",
+    "name": "Oklahoma",
+    "lat": "35.565342",
+    "lng": "-96.928917",
+    "input": "OK Oklahoma",
+    "population": "3956971"
+  },
+  {
+    "type": "state",
+    "path": "ct",
+    "state": "CT",
+    "name": "Connecticut",
+    "lat": "41.597782",
+    "lng": "-72.755371",
+    "input": "CT Connecticut",
+    "population": "3565287"
+  },
+  {
+    "type": "state",
+    "path": "ut",
+    "state": "UT",
+    "name": "Utah",
+    "lat": "40.150032",
+    "lng": "-111.862434",
+    "input": "UT Utah",
+    "population": "3205958"
+  },
+  {
+    "type": "state",
+    "path": "ia",
+    "state": "IA",
+    "name": "Iowa",
+    "lat": "42.011539",
+    "lng": "-93.210526",
+    "input": "IA Iowa",
+    "population": "3155070"
+  },
+  {
+    "type": "state",
+    "path": "nv",
+    "state": "NV",
+    "name": "Nevada",
+    "lat": "38.313515",
+    "lng": "-117.055374",
+    "input": "NV Nevada",
+    "population": "3080156"
+  },
+  {
+    "type": "state",
+    "path": "ar",
+    "state": "AR",
+    "name": "Arkansas",
+    "lat": "34.969704",
+    "lng": "-92.373123",
+    "input": "AR Arkansas",
+    "population": "3017804"
+  },
+  {
+    "type": "state",
+    "path": "ms",
+    "state": "MS",
+    "name": "Mississippi",
+    "lat": "32.741646",
+    "lng": "-89.678696",
+    "input": "MS Mississippi",
+    "population": "2976149"
+  },
+  {
+    "type": "state",
+    "path": "ks",
+    "state": "KS",
+    "name": "Kansas",
+    "lat": "38.5266",
+    "lng": "-96.726486",
+    "input": "KS Kansas",
+    "population": "2913314"
+  },
+  {
+    "type": "state",
+    "path": "nm",
+    "state": "NM",
+    "name": "New Mexico",
+    "lat": "34.840515",
+    "lng": "-106.248482",
+    "input": "NM New Mexico",
+    "population": "2096829"
+  },
+  {
+    "type": "state",
+    "path": "ne",
+    "state": "NE",
+    "name": "Nebraska",
+    "lat": "41.12537",
+    "lng": "-98.268082",
+    "input": "NE Nebraska",
+    "population": "1934408"
+  },
+  {
+    "type": "state",
+    "path": "wv",
+    "state": "WV",
+    "name": "West Virginia",
+    "lat": "38.491226",
+    "lng": "-80.954456",
+    "input": "WV West Virginia",
+    "population": "1792147"
+  },
+  {
+    "type": "state",
+    "path": "id",
+    "state": "ID",
+    "name": "Idaho",
+    "lat": "44.240459",
+    "lng": "-114.478828",
+    "input": "ID Idaho",
+    "population": "1787065"
+  },
+  {
+    "type": "state",
+    "path": "hi",
+    "state": "HI",
+    "name": "Hawaii",
+    "lat": "21.094318",
+    "lng": "-157.498337",
+    "input": "HI Hawaii",
+    "population": "1415872"
+  },
+  {
+    "type": "state",
+    "path": "nh",
+    "state": "NH",
+    "name": "New Hampshire",
+    "lat": "43.452492",
+    "lng": "-71.563896",
+    "input": "NH New Hampshire",
+    "population": "1359711"
+  },
+  {
+    "type": "state",
+    "path": "me",
+    "state": "ME",
+    "name": "Maine",
+    "lat": "44.693947",
+    "lng": "-69.381927",
+    "input": "ME Maine",
+    "population": "1344212"
+  },
+  {
+    "type": "state",
+    "path": "mt",
+    "state": "MT",
+    "name": "Montana",
+    "lat": "46.921925",
+    "lng": "-110.454353",
+    "input": "MT Montana",
+    "population": "1068778"
+  },
+  {
+    "type": "state",
+    "path": "ri",
+    "state": "RI",
+    "name": "Rhode Island",
+    "lat": "41.680893",
+    "lng": "-71.51178",
+    "input": "RI Rhode Island",
+    "population": "1059361"
+  },
+  {
+    "type": "state",
+    "path": "de",
+    "state": "DE",
+    "name": "Delaware",
+    "lat": "39.318523",
+    "lng": "-75.507141",
+    "input": "DE Delaware",
+    "population": "973764"
+  },
+  {
+    "type": "state",
+    "path": "sd",
+    "state": "SD",
+    "name": "South Dakota",
+    "lat": "44.299782",
+    "lng": "-99.438828",
+    "input": "SD South Dakota",
+    "population": "884659"
+  },
+  {
+    "type": "state",
+    "path": "nd",
+    "state": "ND",
+    "name": "North Dakota",
+    "lat": "47.528912",
+    "lng": "-99.784012",
+    "input": "ND North Dakota",
+    "population": "762062"
+  },
+  {
+    "type": "state",
+    "path": "ak",
+    "state": "AK",
+    "name": "Alaska",
+    "lat": "61.370716",
+    "lng": "-152.404419",
+    "input": "AK Alaska",
+    "population": "731545"
+  },
+  {
+    "type": "state",
+    "path": "vt",
+    "state": "VT",
+    "name": "Vermont",
+    "lat": "44.045876",
+    "lng": "-72.710686",
+    "input": "VT Vermont",
+    "population": "623989"
+  },
+  {
+    "type": "state",
+    "path": "wy",
+    "state": "WY",
+    "name": "Wyoming",
+    "lat": "42.755966",
+    "lng": "-107.30249",
+    "input": "WY Wyoming",
+    "population": "578759"
+  }
+]
