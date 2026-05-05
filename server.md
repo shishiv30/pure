@@ -1,201 +1,133 @@
-# Server Documentation
+# Server Architecture
 
-## System Description
+## Scope
 
-The server is a Node.js application built with Express that handles geographical-based content delivery. It's designed to serve dynamic content based on location paths (state, city, zip, etc.) and provides a flexible framework for handling different types of requests while maintaining consistent response formatting.
+This document describes the current server runtime implemented under `server/`.
 
-### Key Components
+Key areas:
 
-- **Express Server**: Main application server
-- **Middleware Stack**: Compression, session, geo, and CORS handling
-- **Router System**: Page and API routing
-- **Controller Framework**: Base controller with extensible configuration
-- **View Engine**: EJS templating
-- **Data Sources**: Geo data, mock articles, and dynamic content generation
+- Express bootstrap and middleware
+- Route topology
+- Controller/config contract
+- API and SOA proxy behavior
+- CMS/local data fallback
 
-## System Workflow
+## Runtime Entry
 
-### Request Flow
+Main entry is `server/app.js`.
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Express
-    participant Middleware
-    participant PageRouter
-    participant BaseController
-    participant Config
-    participant View
+At startup it wires:
 
-    Client->>Express: GET /demo/tx/78717
-    Express->>Middleware: Apply Middleware
-    Note over Middleware: compression, session, geo, cors
-    Middleware->>PageRouter: Route Request
-    
-    PageRouter->>BaseController: new BaseController(req, res, 'demo')
-    Note over BaseController: Initialize with config
-    
-    BaseController->>BaseController: initialReq()
-    Note over BaseController: Parse user agent
-    
-    BaseController->>BaseController: get()
-    Note over BaseController: Process query params
-    
-    BaseController->>Config: config.get(payload)
-    Config-->>BaseController: Return data
-    
-    BaseController->>BaseController: toPage(model)
-    Note over BaseController: Prepare meta, SEO, breadcrumb
-    
-    BaseController->>View: render('demo.ejs', model)
-    View-->>Client: HTML Response
-```
+- Compression middleware
+- Session middleware
+- Geo middleware
+- CORS and headers
+- EJS view engine
+- API docs (`/api-docs`)
+- Main router (`server/routes/index.js`)
 
-### Data Flow
+## Route Topology
+
+Router composition in `server/routes/index.js`:
+
+- Page and HTML routes via:
+  - `default.js`
+  - `demo.js`
+  - `sitemap.js`
+  - `page.js`
+- API routes:
+  - `/api` -> `server/routes/api.js`
+  - `/api/soa` -> `server/routes/api.soa.js`
+
+SOA prefixes currently mounted in `server/routes/api.soa.js`:
+
+- `/api/soa/property/*`
+- `/api/soa/school/*`
+- `/api/soa/poi/*`
+- geoarea and catch-all paths through `/api/soa/*`
+
+## Request Lifecycle (Page Rendering)
 
 ```mermaid
-graph TD
-    A[Client Request /demo/tx/78717] --> B[Page Router]
-    B --> C[BaseController]
-    C --> D[Demo Config]
-    D --> E[beforeGet]
-    E --> F[getGeoByPath]
-    F --> G[Parse Path Segments]
-    G --> H[Create Geo Object]
-    H --> I[Geo Config.get]
-    I --> J[Search Geo Data]
-    J --> K[Get Articles]
-    K --> L[Modify Article Titles]
-    L --> M[Create Final Model]
-    M --> N[Render Page]
+flowchart TD
+  request["Incoming request"] --> routeMatch["Route handler (server/routes/*)"]
+  routeMatch --> baseController["BaseController(req,res,configName)"]
+  baseController --> beforeGet["config.beforeGet(payload) optional"]
+  beforeGet --> getData["config.get(payload)"]
+  getData --> toPage["controller.toPage(model)"]
+  toPage --> render["EJS render + staticHtml write"]
 ```
 
-## System Model Design
+## Controller and Config Contract
 
-### Page Data Model
+`server/controllers/basecontroller.js` orchestrates config-driven behavior.
 
-The system uses a hierarchical model structure that's built up through several stages:
+Config modules in `server/configs/*` commonly define:
 
-1. **Base Model Structure**
-```javascript
-{
-  geo: {
-    state: String,
-    city: String,
-    zipcode: String,
-    type: String,
-    // ... other geo properties
-  },
-  articles: Array<Article>,
-  meta: {
-    uaData: Object,
-    lang: String,
-    path: String,
-    preload: Array<Resource>,
-    css: String,
-    js: String
-  },
-  seo: {
-    title: String,
-    desc: String,
-    keywords: String
-  },
-  breadcrumb: {
-    links: Array<{
-      text: String,
-      href: String
-    }>
-  }
-}
+- `name`
+- `beforeGet(payload)` (optional)
+- `get(payload)` (required)
+- `seo(payload)` (optional)
+- `preload(payload)` (optional)
+
+`server/configs/configbase.js` contains the contract reference used by this architecture.
+
+## API and Proxy Pattern
+
+### App API (`/api`)
+
+`server/routes/api.js` serves app-facing endpoints and model mapping helpers.
+
+### SOA API (`/api/soa`)
+
+- Route adapters are split by domain (`property`, `school`, `poi`, `geoarea`).
+- Upstream calls are centralized through fetch helpers in `server/configs/realestate.js`.
+- Some geo responses are normalized through mapper utilities before returning.
+
+## Data Source Strategy
+
+Server-side content can come from:
+
+- CMS API (when healthy/available)
+- Local `data/` modules (fallback path)
+
+The fallback orchestration is implemented in `server/utils/cmsData.js`.
+
+## Dev and Environment Behavior
+
+Environment resolution is controlled in `server/config.js`:
+
+- development -> `.env` then `.env.local`
+- stage -> `.env.stage`
+- production -> `.env.production`
+
+Defaults:
+
+- `PORT=3000`
+- webpack dev server port `3001`
+
+## Testing Status (Server Focus)
+
+Most meaningful server tests currently target `BaseController` config behavior:
+
+- `server/controllers/__tests__/basecontroller.config.test.js`
+
+Run with:
+
+```bash
+npm run test:basecontroller
 ```
 
-2. **Configuration System**
-```javascript
-{
-  name: String,
-  beforeGet: Function,
-  get: Function,
-  preload: Function,
-  seo: Function
-}
+or via aggregate:
+
+```bash
+npm run test
 ```
 
-3. **Geo Types**
-```javascript
-{
-  state: 'state',
-  city: 'city',
-  county: 'county',
-  zipcode: 'zipcode',
-  address: 'address',
-  neighborhood: 'neighborhood'
-}
-```
+## Known Risks to Track
 
-### Data Sources
+- SOA fetch helper error handling should consistently map upstream failures to explicit HTTP errors.
+- Session secret should be supplied via env in all environments.
+- A few older abstractions appear underused and may be candidates for cleanup.
 
-1. **Geo Data**
-   - Path-based parsing
-   - Global search index
-   - IP-based location detection
-
-2. **Content Data**
-   - Mock articles
-   - Dynamic content modification
-   - SEO metadata
-
-3. **Navigation Data**
-   - Breadcrumb generation
-   - Path construction
-   - URL formatting
-
-## System Summary
-
-### Key Features
-
-1. **Flexible Routing**
-   - Geographical path handling
-   - Dynamic route matching
-   - Path parameter extraction
-
-2. **Data Processing**
-   - Location-based content
-   - Dynamic SEO generation
-   - Breadcrumb navigation
-
-3. **Performance Optimization**
-   - Response compression
-   - Resource preloading
-   - Static file serving
-
-4. **Security**
-   - CORS configuration
-   - Referrer policy
-   - Session management
-
-### Future Updates
-
-To update this documentation when making changes to the server:
-
-1. **Code Changes**
-   - Update relevant sections in this document
-   - Add new diagrams if workflow changes
-   - Document new features or modifications
-
-2. **Model Updates**
-   - Update model structure documentation
-   - Add new data source information
-   - Document new configuration options
-
-3. **Workflow Changes**
-   - Update sequence diagrams
-   - Modify data flow charts
-   - Document new middleware or processing steps
-
-### Maintenance Notes
-
-- Keep diagrams up to date with code changes
-- Document any new configuration options
-- Update model structures when modified
-- Maintain clear separation of concerns in documentation
-- Include examples for new features 
+Treat this section as an architecture watchlist, not a replacement for issue tracking.

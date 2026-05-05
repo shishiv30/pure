@@ -1,3 +1,4 @@
+// Full BaseController config contract: see ./configbase.js
 // each item could include as follow
 // {
 // 	beforeGet(req){

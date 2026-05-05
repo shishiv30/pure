@@ -64,11 +64,7 @@ export default class BaseController {
 	// }
 
 	getConfig(name) {
-		return config.find((item) => {
-			if (item.name === name) {
-				return true;
-			}
-		});
+		return config.find(e => e.name === name);
 	}
 
 	exceptionDataHandler(error, payload) {

@@ -2,171 +2,125 @@
 
 ## Overview
 
-This project uses a webpack-based build system with multiple environments (development, staging, and production) and supports multiple page entries. The build system is designed to be lightweight and performance-focused.
+This project uses webpack for multi-page bundles and Express for server-rendered routes and APIs.
 
-## Architecture
+- Dev flow: webpack dev server + Node app run together.
+- Build flow: webpack emits `dist/` assets for stage/prod, with optional server runtime.
+- Page entries are declared in `webpack.config.base.page.js`.
 
-### Core Components
+## Core Config Files
 
-1. **Base Configuration** (`webpack.config.base.js`)
-   - Defines common webpack rules and plugins
-   - Handles multiple page entries
-   - Configures asset loaders (fonts, images, SCSS, JS, HTML)
+- `webpack.config.base.js`: shared loaders/plugins and page plugin wiring.
+- `webpack.config.base.page.js`: page entry list and per-page defaults.
+- `webpack.config.dev.js`: local dev server, write-to-disk, proxy to Node.
+- `webpack.config.build.js`: stage/prod/static build configuration.
+- `server/config.js`: environment and port resolution used by webpack and server.
 
-2. **Page Configuration** (`webpack.config.base.page.js`)
-   - Defines multiple page entries
-   - Each page has its own entry point and HTML template
-   - Supports custom configurations per page
+## Commands
 
-3. **Environment-Specific Configurations**
-   - Development: `webpack.config.dev.js`
-   - Build (Staging): `webpack.config.build.js`
-   - Production: Uses build config with production flags
+### Development
 
-## Page Structure
-
-### Current Pages
-- `animation` - Animation demonstrations
-- `demo` - Demo page
-- `index` - Main landing page
-- `3d` - 3D content page
-
-### Page Configuration
-Each page is automatically configured with:
-- Entry point: `./client/pages/{pageName}/index.js`
-- Template: `./client/pages/{pageName}/index.html`
-- Output: `{pageName}.html`
-- Favicon: `./client/assets/img/logo.png`
-
-## Build Scripts
-
-### Development (local)
 ```bash
 npm run dev
 ```
-- Uses `webpack-dev-server` with `webpack.config.dev.js`
-- Opens browser automatically, hot reloading, source maps
 
-### Build: dev (local)
+- Starts webpack dev server and Node server concurrently.
+- Uses `NODE_ENV=development`.
+
+```bash
+npm run dev:client
+npm run dev:server
+```
+
+- Client-only / server-only variants.
+
+### Build
+
 ```bash
 npm run build:dev
 ```
-- `NODE_ENV=development` → loads `.env`
-- Uses `webpack.config.build.js`; runs webpack and server together
-- Outputs to `dist/`, includes PWA manifest and service worker
 
-### Build: stage (GitHub Pages)
+- `NODE_ENV=development`
+- Runs webpack build + Node server concurrently.
+
 ```bash
 npm run build:stage
 ```
-- `NODE_ENV=stage` → loads `.env.stage`
-- Uses `webpack.config.build.js`; CDN for GitHub Pages
-- Optimized bundles; then run `npm run deploy-gh` to publish
 
-### Build: production (AWS)
+- `NODE_ENV=stage`
+- Builds stage assets (commonly paired with `npm run deploy-gh`).
+
 ```bash
 npm run build:prod
 ```
-- `NODE_ENV=production` → loads `.env.production`
-- Full production optimizations; same-origin or CDN from `.env.production`
-- For Docker: `npm run build-docker:prod`
 
-### Deployment (stage → GitHub Pages)
+- `NODE_ENV=production`
+- Generates production bundle.
+
+### Deploy helper
+
 ```bash
 npm run deploy-gh
 ```
-- Publishes `dist/` to `gh-pages` branch
-- Run after `npm run build:stage`; workflow runs both on merge to main
 
-## Webpack Configuration Details
+- Publishes `dist/` to `gh-pages`.
 
-### Base Configuration Features
-- **Asset Management**: Handles fonts, images, and other static assets
-- **CSS Processing**: SCSS compilation with MiniCssExtractPlugin
-- **JavaScript Processing**: Babel transpilation for modern JS features
-- **HTML Processing**: HTML loader with custom source handling
-- **Multiple Entries**: Dynamic entry point generation for each page
+## Docker Build Paths
 
-### Development Features
-- Source maps for debugging
-- Development mode optimizations
-- Webpack dev server with hot reloading
+- Dev/local: `npm run build-docker:dev` (loads `.env`, rebuilds without cache).
+- Production: `npm run build-docker:prod` (loads `.env.production`).
 
-### Production Features
-- Bundle optimization and minification
-- PWA manifest generation
-- Service worker integration (Workbox)
-- CDN path configuration
-- Bundle analyzer support (commented out)
+Both run through `run-docker.sh` and Docker Compose.
 
-## File Structure
+## Dev Runtime Behavior
 
-```
-├── webpack.config.base.js          # Base webpack configuration
-├── webpack.config.base.page.js     # Page-specific configurations
-├── webpack.config.dev.js           # Development configuration
-├── webpack.config.build.js         # Build/production configuration
-├── deploy.js                       # GitHub Pages deployment script
-├── client/
-│   ├── pages/                      # Page-specific code
-│   │   ├── animation/
-│   │   ├── demo/
-│   │   ├── index/
-│   │   └── 3d/
-│   └── assets/                     # Static assets
-└── dist/                           # Build output directory
-```
+`webpack.config.dev.js` behavior:
 
-## Environment Variables
+- Serves from `dist/`.
+- Writes generated assets to disk (`devMiddleware.writeToDisk = true`) so Node can serve them.
+- Proxies non-asset requests to `config.appHost` (usually `http://localhost:3000`).
 
-### Development
-- No specific environment variables required
-- Uses local development server
+Default ports from `server/config.js` when env vars are absent:
 
-### Production
-- `serverConfig.cdnHost` - CDN host for assets
-- GitHub Pages URL: `https://shishiv30.github.io/pure/`
+- Node: `3000`
+- Webpack dev server: `3001`
+- Docker host mapped port: `3002`
 
-## Build Process Flow
+## Page Entry Model
 
-1. **Development**: `npm run dev` → Webpack dev server → Hot reloading
-2. **Staging**: `npm run build` → Production build → `dist/` output
-3. **Production**: `npm run prod` → Optimized build → `dist/` output
-4. **Deployment**: `npm run deploy-gh` → GitHub Pages upload
+Entries are defined in `webpack.config.base.page.js`.
 
-## Performance Optimizations
+Current pages:
 
-- **Code Splitting**: Each page has its own bundle
-- **Asset Optimization**: Images and fonts are optimized
-- **CSS Extraction**: Styles are extracted to separate files
-- **PWA Support**: Service worker and manifest for offline support
-- **Bundle Analysis**: Webpack bundle analyzer (available but disabled)
+- `animation`
+- `demo`
+- `index`
+- `3d`
+- `about`
+- `document`
+- `ai-trend`
+- `lower`
+- `presentation-slider`
+- `list-view`
 
-## Customization
+Each page defaults to:
 
-### Adding New Pages
-1. Create new directory in `client/pages/{pageName}/`
-2. Add `index.js` and `index.html` files
-3. Update `webpack.config.base.page.js` if custom configuration needed
+- Entry: `./client/pages/<name>/index.js`
+- Template: `./client/pages/<name>/index.html`
+- Output file: `<name>.html`
+- Favicon: `./client/assets/img/logo.png`
 
-### Modifying Build Process
-- Development: Edit `webpack.config.dev.js`
-- Production: Edit `webpack.config.build.js`
-- Base configuration: Edit `webpack.config.base.js`
+## Environment Loading
 
-### Deployment Configuration
-- Edit `deploy.js` for deployment settings
-- Modify `webpack.config.build.js` for CDN/public path changes
+Handled by `server/config.js`:
+
+- development -> `.env` then `.env.local` override
+- stage -> `.env.stage`
+- production -> `.env.production`
 
 ## Troubleshooting
 
-### Common Issues
-1. **Port conflicts**: Webpack dev server uses default port 8080
-2. **Build failures**: Check for syntax errors in entry files
-3. **Asset loading**: Verify file paths in HTML templates
-4. **Deployment issues**: Ensure GitHub Pages branch is configured correctly
-
-### Debug Tools
-- Webpack bundle analyzer (uncomment in build config)
-- Source maps in development
-- Console logging in build process 
+- **Port conflicts**: confirm `PORT` and `WEBPACK_DEV_SERVER_PORT`.
+- **Proxy mismatch**: verify `APP_HOST` and `WEBPACK_DEV_SERVER_HOST`.
+- **Missing page output**: confirm page is listed in `webpack.config.base.page.js` and has `index.js` + `index.html`.
+- **Asset path issues**: verify file exists and webpack loader handles the extension.

@@ -1,8 +1,8 @@
 export default {
 	default: {
-		'--color-major-hue': '160',
-		'--color-major-saturation': '55%',
-		'--color-major-lightness': '25%',
+		'--color-major-hue': '216',
+		'--color-major-saturation': '100%',
+		'--color-major-lightness': '50%',
 		'--color-major-lightness-l1': '96%',
 		'--logo': 'url("/assets/images/movoto-lower-logo.svg")',
 		'--logo-bg': 'url("/assets/images/movoto-lower-logo-white.svg")',

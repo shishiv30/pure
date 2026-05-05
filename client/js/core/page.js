@@ -55,11 +55,11 @@ export class Page extends Plugin {
 			},
 			render: function ($el, opt, exportObj) {
 				// Page.renderComponent();
-				Page.eventListener();
 				if (setting && setting.render) {
 					setting.render($el, opt, exportObj);
 				}
 				emit('dom.load');
+				Page.eventListener();
 				return exportObj;
 			},
 		};

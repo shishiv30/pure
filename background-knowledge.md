@@ -1,5 +1,7 @@
 # Project Background Knowledge
 
+> This document is conceptual background. For current implementation details, use `README.md`, `client.md`, `server.md`, and `docs/routes-reference.md`.
+
 This document consolidates all the documentation for the project, serving as a comprehensive reference for the system architecture, client implementation, and event handling.
 
 ## Table of Contents

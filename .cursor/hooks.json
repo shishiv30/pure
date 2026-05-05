@@ -1,0 +1,13 @@
+{
+	"version": 1,
+	"hooks": {
+		"beforeShellExecution": [
+			{
+				"command": ".cursor/hooks/run-tests-before-push.sh",
+				"matcher": "^git\\s+push(\\s|$)",
+				"failClosed": true,
+				"timeout": 1800
+			}
+		]
+	}
+}
