@@ -9,11 +9,24 @@ function sendJson(res, data) {
 	res.json(data);
 }
 
+function getPoiApiDomain() {
+	if (!config.poiApiDomain) {
+		throw new Error('POI_API_DOMAIN is not configured');
+	}
+	return config.poiApiDomain;
+}
+
 function handleSoaError(res, error) {
 	console.error('SOA POI API error:', error);
+	const status =
+		error.message === 'POI_API_DOMAIN is not configured'
+			? 503
+			: error.message === 'POI API path required'
+				? 400
+				: 500;
 	const match = error.message?.match(/: (\d{3}) /);
-	const status = match ? Number(match[1]) : 500;
-	res.status(status).json({ error: error.message || 'Internal server error' });
+	const fallbackStatus = match ? Number(match[1]) : status;
+	res.status(fallbackStatus).json({ error: error.message || 'Internal server error' });
 }
 
 /**
@@ -29,30 +42,28 @@ function handleSoaError(res, error) {
  *     tags:
  *       - SOA POI
  */
-async function proxyToPoi(req, res) {
+export async function proxyToPoi(method, path, options = {}) {
+	const domain = getPoiApiDomain();
+	if (!path || path === '/') {
+		throw new Error('POI API path required');
+	}
+	return fetchFromSoa(domain, method, path, options);
+}
+
+async function proxyToPoiHandler(req, res) {
 	try {
-		if (!config.poiApiDomain) {
-			res.status(503).json({ error: 'POI_API_DOMAIN is not configured' });
-			return;
-		}
-		const path = req.path;
-		if (!path || path === '/') {
-			res.status(404).json({ error: 'POI API path required' });
-			return;
-		}
 		const method = req.method;
 		const options = { query: req.query };
 		if ((method === 'POST' || method === 'PUT' || method === 'PATCH') && req.body) {
 			options.body = req.body;
 		}
-		const data = await fetchFromSoa(config.poiApiDomain, method, path, options);
-		sendJson(res, data);
+		sendJson(res, await proxyToPoi(method, req.path, options));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
 }
 
-router.get('*', proxyToPoi);
-router.post('*', proxyToPoi);
+router.get('*', proxyToPoiHandler);
+router.post('*', proxyToPoiHandler);
 
 export default router;

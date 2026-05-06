@@ -17,9 +17,10 @@ function sendJson(res, data) {
 
 function handleSoaError(res, error) {
 	console.error('SOA Geoarea API error:', error);
+	const status = error.message === 'SOA path required' ? 400 : 500;
 	const match = error.message?.match(/: (\d{3}) /);
-	const status = match ? Number(match[1]) : 500;
-	res.status(status).json({ error: error.message || 'Internal server error' });
+	const fallbackStatus = match ? Number(match[1]) : status;
+	res.status(fallbackStatus).json({ error: error.message || 'Internal server error' });
 }
 
 /**
@@ -34,10 +35,13 @@ function handleSoaError(res, error) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getStates(req, res) {
+export async function getStates() {
+	return fetchStatesFromGeoarea();
+}
+
+async function getStatesHandler(req, res) {
 	try {
-		const raw = await fetchStatesFromGeoarea();
-		sendJson(res, mapSoaStatesResponse(raw));
+		sendJson(res, mapSoaStatesResponse(await getStates()));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -51,13 +55,13 @@ export async function getStates(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getCountiesByStateCode(req, res) {
+export async function getCountiesByStateCode(stateCode, query = {}) {
+	return fetchFromGeoarea('GET', `/state/${stateCode}/counties`, { query });
+}
+
+async function getCountiesByStateCodeHandler(req, res) {
 	try {
-		const { stateCode } = req.params;
-		const data = await fetchFromGeoarea('GET', `/state/${stateCode}/counties`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaCountiesResponse(data));
+		sendJson(res, mapSoaCountiesResponse(await getCountiesByStateCode(req.params.stateCode, req.query)));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -71,15 +75,19 @@ export async function getCountiesByStateCode(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getNearbyCountiesByCountyId(req, res) {
+export async function getNearbyCountiesByCountyId(stateCode, countyId, query = {}) {
+	return fetchFromGeoarea('GET', `/statecode/${stateCode}/countyid/${countyId}/nearcounties`, {
+		query,
+	});
+}
+
+async function getNearbyCountiesByCountyIdHandler(req, res) {
 	try {
 		const { stateCode, countyId } = req.params;
-		const data = await fetchFromGeoarea(
-			'GET',
-			`/statecode/${stateCode}/countyid/${countyId}/nearcounties`,
-			{ query: req.query },
+		sendJson(
+			res,
+			mapSoaCountiesResponse(await getNearbyCountiesByCountyId(stateCode, countyId, req.query)),
 		);
-		sendJson(res, mapSoaCountiesResponse(data));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -93,13 +101,13 @@ export async function getNearbyCountiesByCountyId(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getCitiesByState(req, res) {
+export async function getCitiesByState(stateCode, query = {}) {
+	return fetchFromGeoarea('GET', `/state/${stateCode}/cities`, { query });
+}
+
+async function getCitiesByStateHandler(req, res) {
 	try {
-		const { stateCode } = req.params;
-		const data = await fetchFromGeoarea('GET', `/state/${stateCode}/cities`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaCitiesResponse(data));
+		sendJson(res, mapSoaCitiesResponse(await getCitiesByState(req.params.stateCode, req.query)));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -113,13 +121,13 @@ export async function getCitiesByState(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getCitiesByCountyId(req, res) {
+export async function getCitiesByCountyId(countyId, query = {}) {
+	return fetchFromGeoarea('GET', `/county/${countyId}/cities`, { query });
+}
+
+async function getCitiesByCountyIdHandler(req, res) {
 	try {
-		const { countyId } = req.params;
-		const data = await fetchFromGeoarea('GET', `/county/${countyId}/cities`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaCitiesResponse(data));
+		sendJson(res, mapSoaCitiesResponse(await getCitiesByCountyId(req.params.countyId, req.query)));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -133,13 +141,13 @@ export async function getCitiesByCountyId(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getNearbyCitiesByCityId(req, res) {
+export async function getNearbyCitiesByCityId(cityId, query = {}) {
+	return fetchFromGeoarea('GET', `/city/${cityId}/nearbycities`, { query });
+}
+
+async function getNearbyCitiesByCityIdHandler(req, res) {
 	try {
-		const { cityId } = req.params;
-		const data = await fetchFromGeoarea('GET', `/city/${cityId}/nearbycities`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaCitiesResponse(data));
+		sendJson(res, mapSoaCitiesResponse(await getNearbyCitiesByCityId(req.params.cityId, req.query)));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -153,12 +161,13 @@ export async function getNearbyCitiesByCityId(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getCityByIP(req, res) {
+export async function getCityByIP(ipAddress, query = {}) {
+	return fetchFromGeoarea('GET', `/ip/${ipAddress}/citylocation`, { query });
+}
+
+async function getCityByIPHandler(req, res) {
 	try {
-		const { ipAddress } = req.params;
-		const data = await fetchFromGeoarea('GET', `/ip/${ipAddress}/citylocation`, {
-			query: req.query,
-		});
+		const data = await getCityByIP(req.params.ipAddress, req.query);
 		const geo = mapSoaSingleItemResponse(data);
 		sendJson(res, geo ?? data);
 	} catch (error) {
@@ -174,13 +183,16 @@ export async function getCityByIP(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getNeighborhoodsByCityId(req, res) {
+export async function getNeighborhoodsByCityId(cityId, query = {}) {
+	return fetchFromGeoarea('GET', `/city/${cityId}/neighborhoods`, { query });
+}
+
+async function getNeighborhoodsByCityIdHandler(req, res) {
 	try {
-		const { cityId } = req.params;
-		const data = await fetchFromGeoarea('GET', `/city/${cityId}/neighborhoods`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaNeighborhoodsResponse(data));
+		sendJson(
+			res,
+			mapSoaNeighborhoodsResponse(await getNeighborhoodsByCityId(req.params.cityId, req.query)),
+		);
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -194,13 +206,16 @@ export async function getNeighborhoodsByCityId(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getZipcodesByStatecode(req, res) {
+export async function getZipcodesByStatecode(stateCode, query = {}) {
+	return fetchFromGeoarea('GET', `/state/${stateCode}/postalcodes`, { query });
+}
+
+async function getZipcodesByStatecodeHandler(req, res) {
 	try {
-		const { stateCode } = req.params;
-		const data = await fetchFromGeoarea('GET', `/state/${stateCode}/postalcodes`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaZipcodesResponse(data));
+		sendJson(
+			res,
+			mapSoaZipcodesResponse(await getZipcodesByStatecode(req.params.stateCode, req.query)),
+		);
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -214,29 +229,29 @@ export async function getZipcodesByStatecode(req, res) {
  *     tags:
  *       - SOA Geoarea
  */
-export async function getZipcodesByCityId(req, res) {
+export async function getZipcodesByCityId(cityId, query = {}) {
+	return fetchFromGeoarea('GET', `/city/${cityId}/postalcodes`, { query });
+}
+
+async function getZipcodesByCityIdHandler(req, res) {
 	try {
-		const { cityId } = req.params;
-		const data = await fetchFromGeoarea('GET', `/city/${cityId}/postalcodes`, {
-			query: req.query,
-		});
-		sendJson(res, mapSoaZipcodesResponse(data));
+		sendJson(res, mapSoaZipcodesResponse(await getZipcodesByCityId(req.params.cityId, req.query)));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
 }
 
 // Explicit routes (order matters: specific before catch-all)
-router.get('/states', getStates);
-router.get('/state/:stateCode/counties', getCountiesByStateCode);
-router.get('/statecode/:stateCode/countyid/:countyId/nearcounties', getNearbyCountiesByCountyId);
-router.get('/state/:stateCode/cities', getCitiesByState);
-router.get('/county/:countyId/cities', getCitiesByCountyId);
-router.get('/city/:cityId/nearbycities', getNearbyCitiesByCityId);
-router.get('/ip/:ipAddress/citylocation', getCityByIP);
-router.get('/city/:cityId/neighborhoods', getNeighborhoodsByCityId);
-router.get('/state/:stateCode/postalcodes', getZipcodesByStatecode);
-router.get('/city/:cityId/postalcodes', getZipcodesByCityId);
+router.get('/states', getStatesHandler);
+router.get('/state/:stateCode/counties', getCountiesByStateCodeHandler);
+router.get('/statecode/:stateCode/countyid/:countyId/nearcounties', getNearbyCountiesByCountyIdHandler);
+router.get('/state/:stateCode/cities', getCitiesByStateHandler);
+router.get('/county/:countyId/cities', getCitiesByCountyIdHandler);
+router.get('/city/:cityId/nearbycities', getNearbyCitiesByCityIdHandler);
+router.get('/ip/:ipAddress/citylocation', getCityByIPHandler);
+router.get('/city/:cityId/neighborhoods', getNeighborhoodsByCityIdHandler);
+router.get('/state/:stateCode/postalcodes', getZipcodesByStatecodeHandler);
+router.get('/city/:cityId/postalcodes', getZipcodesByCityIdHandler);
 
 /**
  * @swagger
@@ -254,27 +269,28 @@ router.get('/city/:cityId/postalcodes', getZipcodesByCityId);
  *     tags:
  *       - SOA Geoarea
  */
-async function proxyToGeoarea(req, res) {
+export async function proxyToGeoarea(method, path, options = {}) {
+	if (!path || path === '/') {
+		throw new Error('SOA path required');
+	}
+	return fetchFromGeoarea(method, path, options);
+}
+
+async function proxyToGeoareaHandler(req, res) {
 	try {
-		const path = req.path;
-		if (!path || path === '/') {
-			res.status(404).json({ error: 'SOA path required' });
-			return;
-		}
 		const method = req.method;
 		const options = { query: req.query };
 		if ((method === 'POST' || method === 'PUT' || method === 'PATCH') && req.body) {
 			options.body = req.body;
 		}
-		const data = await fetchFromGeoarea(method, path, options);
-		sendJson(res, data);
+		sendJson(res, await proxyToGeoarea(method, req.path, options));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
 }
 
-router.get('*', proxyToGeoarea);
-router.post('*', proxyToGeoarea);
-router.delete('*', proxyToGeoarea);
+router.get('*', proxyToGeoareaHandler);
+router.post('*', proxyToGeoareaHandler);
+router.delete('*', proxyToGeoareaHandler);
 
 export default router;

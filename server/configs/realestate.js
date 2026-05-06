@@ -5,8 +5,8 @@ import config from '../config.js';
  */
 function getGeoareaHeaders() {
 	const headers = { 'Content-Type': 'application/json' };
-	if (config.geoareaApiKey) {
-		headers['X-MData-Key'] = config.geoareaApiKey;
+	if (config.soaAPIKey) {
+		headers['X-MData-Key'] = config.soaAPIKey;
 	}
 	return headers;
 }
@@ -64,7 +64,7 @@ export async function fetchFromGeoarea(method, path, options = {}) {
 		if (options.query && typeof options.query === 'object') {
 			const params = new URLSearchParams();
 			Object.entries(options.query).forEach(([k, v]) => {
-				if (v !== undefined && v !== '') params.set(k, String(v));
+				if (v !== undefined && v !== '') params.set(k, `${v}`);
 			});
 			const q = params.toString();
 			if (q) urlStr += `?${q}`;
@@ -92,7 +92,19 @@ export async function fetchFromGeoarea(method, path, options = {}) {
 		return null;
 	}
 }
-
+function logCurlForSoa(urlStr, init) {
+	let curl = `curl -X ${init.method}`;
+	Object.entries(init.headers).forEach(([k, v]) => {
+		curl += ` -H "${k}: ${v}"`;
+	});
+	if (init.body) {
+		// Escape double quotes for JSON body for the curl command
+		const safeBody = init.body.replace(/"/g, '\\"');
+		curl += ` -d "${safeBody}"`;
+	}
+	curl += ` "${urlStr}"`;
+	console.log(`[fetchFromSoa curl]`, curl);
+}
 /**
  * Call any SOA API by base URL, method and path. Uses X-MData-Key from config (SOA_API_KEY).
  * @param {string} baseUrl - Base URL without trailing slash (e.g. config.propertyApiDomain)
@@ -106,20 +118,20 @@ export async function fetchFromSoa(baseUrl, method, path, options = {}) {
 		if (!baseUrl) {
 			throw new Error('SOA base URL is required');
 		}
-		const base = String(baseUrl).replace(/\/$/, '');
+		const base = baseUrl.replace(/\/$/, '');
 		const pathStr = path.startsWith('/') ? path : `/${path}`;
 		let urlStr = `${base}${pathStr}`;
 		if (options.query && typeof options.query === 'object') {
 			const params = new URLSearchParams();
 			Object.entries(options.query).forEach(([k, v]) => {
-				if (v !== undefined && v !== '') params.set(k, String(v));
+				if (v !== undefined && v !== '') params.set(k, `${v}`);
 			});
 			const q = params.toString();
 			if (q) urlStr += `?${q}`;
 		}
 		const headers = { 'Content-Type': 'application/json' };
-		if (config.geoareaApiKey) {
-			headers['X-MData-Key'] = config.geoareaApiKey;
+		if (config.soaAPIKey) {
+			headers['X-MData-Key'] = config.soaAPIKey;
 		}
 		const init = {
 			method: method.toUpperCase(),
@@ -128,8 +140,15 @@ export async function fetchFromSoa(baseUrl, method, path, options = {}) {
 		if (options.body != null && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
 			init.body = JSON.stringify(options.body);
 		}
+		// INSERT_YOUR_CODE
+		// If it's development environment, print equivalent curl command
+	
+		if (process.env.NODE_ENV === 'development') {
+			logCurlForSoa(urlStr, init);
+		}
 		const response = await fetch(urlStr, init);
 		if (!response.ok) {
+			//todo debug why error
 			throw new Error(`SOA API ${method} ${path}: ${response.status} ${response.statusText}`);
 		}
 		const text = await response.text();

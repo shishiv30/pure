@@ -1,10 +1,11 @@
 import express from 'express';
 const router = express.Router();
 import BaseController from '../controllers/basecontroller.js';
-import { fetchPropertiesFromSOA, fetchPropertiesImagesFromSOA } from '../configs/demo.js';
-import { mapGeoPathToSOAPath } from '../../helpers/geo.js';
+import { fetchPropertiesImagesFromSOA } from '../configs/demo.js';
+import { getGeoByPath } from '../../helpers/geo.js';
 import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
 import articlesData from '../../data/mock/articles.js';
+import { searchHouse } from './api.soa.property.js';
 
 /**
  * @swagger
@@ -95,6 +96,51 @@ router.get('/geo', async (req, res) => {
 	//get current router is get or post or put or delete
 	let controller = new BaseController(req, res, 'geo');
 	let result = await controller.get();
+	controller.toData(result);
+});
+
+/**
+ * @swagger
+ * /demo/detail/{propertyId}:
+ *   get:
+ *     summary: Demo property detail (JSON)
+ *     description: Same data as the demo HTML detail page for SPA clients.
+ *     parameters:
+ *       - in: path
+ *         name: propertyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Property id (same as /demo/detail/:propertyId page)
+ *     responses:
+ *       200:
+ *         description: BaseController JSON envelope
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   description: Demo page model (detail, nearbyArticleComponent, seo, etc.)
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                 cost:
+ *                   type: integer
+ *       500:
+ *         description: Server error
+ *     tags:
+ *       - Demo
+ */
+router.get('/demo/detail/:propertyId', async (req, res) => {
+	req.query.propertyId = req.params.propertyId;
+	req.query.path = `detail/${req.params.propertyId}`;
+	const controller = new BaseController(req, res, 'demo');
+	const result = await controller.get();
 	controller.toData(result);
 });
 
@@ -199,8 +245,12 @@ router.get('/geo', async (req, res) => {
 router.get('/properties/:path(*)', async (req, res) => {
 	try {
 		const { path } = req.params;
-		let soaPath = mapGeoPathToSOAPath(path);
-		const properties = await fetchPropertiesFromSOA(soaPath);
+		const geo = getGeoByPath(path);
+		if (!geo) {
+			res.status(400).json({ error: 'Invalid geo path' });
+			return;
+		}
+		const properties = await searchHouse(geo);
 		const articles = mapPropertiesToArticles(properties);
 		res.json(Array.isArray(properties) && properties.length > 0 ? articles : articlesData);
 	} catch (error) {

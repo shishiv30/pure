@@ -1,5 +1,5 @@
 import { formatPrice, formatNumber, formatSqft } from '../client/js/core/format.js';
-
+import { getZipcodePath } from './geo.js';
 export function mapPropertyToArticle(property) {
 	// Determine tags based on status and conditions
 	let tags = [];
@@ -85,13 +85,16 @@ export function mapPropertyToArticle(property) {
 			desc: 'Year Built',
 		});
 	}
+
+	let zipcodePath = getZipcodePath(property.zipcode, property.state);
+
 	let article = {
 		id: property.propertyId,
 		img: property.tnImgPath,
 		imgTag: property.mlsName || 'Provided by MLS',
 		imgAlt: property.fullAddress,
 		title: property.fullAddress,
-		href: `/demo/detail/${property.propertyId}`,
+		href: `/demo/detail/${zipcodePath}/${property.propertyId}`,
 		tags: tags,
 		attrs: attrs,
 	};

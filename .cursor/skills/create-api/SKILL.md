@@ -45,7 +45,7 @@ console.log(JSON.stringify({ paths: Object.keys(d.paths || {}), schemas: Object.
 In `server/config.js` add:
 
 - Base URL (e.g. `geoareaApiDomain` from `GEOAREA_API_DOMAIN`)
-- API key (e.g. `geoareaApiKey` from `SOA_API_KEY`)
+- API key (e.g. `soaAPIKey` from `SOA_API_KEY`)
 
 Add env vars to `.env.local` and comment them under the API section.
 

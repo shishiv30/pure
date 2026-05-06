@@ -1,0 +1,15 @@
+<%_ if (album && album.images && album.images.length) { _%>
+<section class="section large demo-album-wrap">
+  <div class="panel fixed fixed-max-xs grid grid-xs-1">
+    <%_ if (album.title) { _%>
+      <h2 class="f3"><%= album.title %></h2>
+    <%_ } _%>
+    <div class="album" data-role="album" data-index="<%= album.initialIndex || 0 %>"
+      data-images='<%- JSON.stringify(album.images) %>'>
+      <div class="album-list">
+        <img src="<%= getSrc(album.images[album.initialIndex || 0]) %>" loading="lazy" alt="<%= album.alt || '' %>">
+      </div>
+    </div>
+  </div>
+</section>
+<%_ } _%>

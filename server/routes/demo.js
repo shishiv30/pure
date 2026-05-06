@@ -42,6 +42,12 @@ export default function registerDemo(router) {
 		await handleDemoRoute(new BaseController(req, res, 'demo-sitemap-city'), res);
 	});
 
+	router.get(/^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/, async (req, res) => {
+		req.query.geoPath = `${req.params[0]}/${req.params[1]}`;
+		req.query.propertyId = req.params[2];
+		await handleDemoRoute(new BaseController(req, res, 'demo'), res);
+	});
+
 	router.get(/^\/demo([\/\w\-]+)\/?$/, async (req, res) => {
 		req.query.path = req?.params[0] || '';
 		await handleDemoRoute(new BaseController(req, res, 'demo'), res);

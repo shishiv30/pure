@@ -9,11 +9,24 @@ function sendJson(res, data) {
 	res.json(data);
 }
 
+function getSchoolApiDomain() {
+	if (!config.schoolApiDomain) {
+		throw new Error('SCHOOL_API_DOMAIN is not configured');
+	}
+	return config.schoolApiDomain;
+}
+
 function handleSoaError(res, error) {
 	console.error('SOA School API error:', error);
+	const status =
+		error.message === 'SCHOOL_API_DOMAIN is not configured'
+			? 503
+			: error.message === 'School API path required'
+				? 400
+				: 500;
 	const match = error.message?.match(/: (\d{3}) /);
-	const status = match ? Number(match[1]) : 500;
-	res.status(status).json({ error: error.message || 'Internal server error' });
+	const fallbackStatus = match ? Number(match[1]) : status;
+	res.status(fallbackStatus).json({ error: error.message || 'Internal server error' });
 }
 
 // --- Explicit SOA school routes (order: specific before catch-all) ---
@@ -26,23 +39,21 @@ function handleSoaError(res, error) {
  *     tags:
  *       - SOA School
  */
-async function getNearbySchoolsByLocation(req, res) {
+export async function getNearbySchoolsByLocation(latLng, query = {}) {
+	const domain = getSchoolApiDomain();
+	const path = `/property/locations/${latLng}/assignedSchools`;
+	return fetchFromSoa(domain, 'GET', path, { query });
+}
+
+async function getNearbySchoolsByLocationHandler(req, res) {
 	try {
-		if (!config.schoolApiDomain) {
-			res.status(503).json({ error: 'SCHOOL_API_DOMAIN is not configured' });
-			return;
-		}
-		const { latLng } = req.params;
-		const path = `/property/locations/${latLng}/assignedSchools`;
-		const options = { query: req.query };
-		const data = await fetchFromSoa(config.schoolApiDomain, 'GET', path, options);
-		sendJson(res, data);
+		sendJson(res, await getNearbySchoolsByLocation(req.params.latLng, req.query));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
 }
 
-router.get('/property/locations/:latLng/assignedSchools', getNearbySchoolsByLocation);
+router.get('/property/locations/:latLng/assignedSchools', getNearbySchoolsByLocationHandler);
 
 /**
  * @swagger
@@ -65,32 +76,30 @@ router.get('/property/locations/:latLng/assignedSchools', getNearbySchoolsByLoca
  *     tags:
  *       - SOA School
  */
-async function proxyToSchool(req, res) {
+export async function proxyToSchool(method, path, options = {}) {
+	const domain = getSchoolApiDomain();
+	if (!path || path === '/') {
+		throw new Error('School API path required');
+	}
+	return fetchFromSoa(domain, method, path, options);
+}
+
+async function proxyToSchoolHandler(req, res) {
 	try {
-		if (!config.schoolApiDomain) {
-			res.status(503).json({ error: 'SCHOOL_API_DOMAIN is not configured' });
-			return;
-		}
-		const path = req.path;
-		if (!path || path === '/') {
-			res.status(404).json({ error: 'School API path required' });
-			return;
-		}
 		const method = req.method;
 		const options = { query: req.query };
 		if ((method === 'POST' || method === 'PUT' || method === 'PATCH') && req.body) {
 			options.body = req.body;
 		}
-		const data = await fetchFromSoa(config.schoolApiDomain, method, path, options);
-		sendJson(res, data);
+		sendJson(res, await proxyToSchool(method, req.path, options));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
 }
 
-router.get('*', proxyToSchool);
-router.post('*', proxyToSchool);
-router.put('*', proxyToSchool);
-router.delete('*', proxyToSchool);
+router.get('*', proxyToSchoolHandler);
+router.post('*', proxyToSchoolHandler);
+router.put('*', proxyToSchoolHandler);
+router.delete('*', proxyToSchoolHandler);
 
 export default router;

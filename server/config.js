@@ -28,7 +28,11 @@ let config = {
 	// API Configuration
 	soaApiDomain: process.env.SOA_API_DOMAIN || '',
 	geoareaApiDomain: (process.env.GEOAREA_API_DOMAIN || '').replace(/\/$/, ''),
-	geoareaApiKey: process.env.SOA_API_KEY || '',
+	/**
+	 * Property SOA only:  shared SOA key.
+	 * Avoids 401 when operators set a property-specific key but omit SOA_API_KEY.
+	 */
+	soaAPIKey: process.env.SOA_API_KEY || '',
 	/** Property SOA API. Auth: X-MData-Key = SOA_API_KEY. */
 	propertyApiDomain: (process.env.PROPERTY_API_DOMAIN || '').replace(/\/$/, ''),
 	/** School SOA API. Auth: X-MData-Key = SOA_API_KEY. */
