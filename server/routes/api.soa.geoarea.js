@@ -7,7 +7,7 @@ import {
 	mapSoaNeighborhoodsResponse,
 	mapSoaZipcodesResponse,
 	mapSoaSingleItemResponse,
-} from '../../helpers/soaGeoMapper.js';
+} from '../../helpers/geo.js';
 
 const router = express.Router();
 

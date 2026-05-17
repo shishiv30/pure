@@ -1,8 +1,18 @@
 import loadMap from './load.map.js';
 import { emit, trigger } from './event.js';
-import { logError, logInfo } from './log.js';
+import {
+	logError,
+	logPluginCleanupCompleted,
+	logPluginCleanupInstance,
+	logPluginCleanupMissingElement,
+	logPluginPerformCleanup,
+	logPluginPhase,
+	logPluginScheduleCleanup,
+	logPluginStartCleanup,
+} from './log.js';
 import { Base } from './base.js';
 let id = 0;
+
 export class Plugin extends Base {
 	constructor(setting) {
 		super(setting.name, 'plugin');
@@ -66,55 +76,48 @@ export class Plugin extends Base {
 			return;
 		}
 		Plugin.cleanupScheduled = true;
-		logInfo('[Plugin] Scheduling cleanup, pending elements:', Plugin.pendingCleanup.size);
+		const pending = Array.from(Plugin.pendingCleanup);
+		logPluginScheduleCleanup(pending);
 
 		const cleanupFn = window.requestIdleCallback
 			? window.requestIdleCallback
 			: (cb) => setTimeout(cb, 0);
 
 		cleanupFn(() => {
-			logInfo('[Plugin] Performing cleanup');
+			logPluginPerformCleanup();
 			Plugin.performCleanup();
 			Plugin.cleanupScheduled = false;
 		});
 	}
 
 	static performCleanup() {
-		const count = Plugin.pendingCleanup.size;
-		logInfo(`[Plugin] Starting cleanup for ${count} element(s)`);
+		const pending = Array.from(Plugin.pendingCleanup);
+		const count = pending.length;
+		logPluginStartCleanup(pending);
 		let cleanedCount = 0;
-		Plugin.pendingCleanup.forEach(($el) => {
+		pending.forEach(($el) => {
 			if (Plugin.cleanupInstance($el)) {
 				cleanedCount++;
 			}
 		});
 		Plugin.pendingCleanup.clear();
-		logInfo(`[Plugin] Cleanup completed: ${cleanedCount}/${count} element(s) cleaned`);
+		logPluginCleanupCompleted(cleanedCount, count);
 	}
 
 	static cleanupInstance($el) {
 		if (!$el || !$el.dataset) {
-			logInfo('[Plugin] cleanupInstance: element is null or has no dataset');
+			logPluginCleanupMissingElement('element is null or has no dataset');
 			return false;
 		}
 		let _name = Plugin.namespace;
 		// Get PIDs before deleting
 		let _pids = $el.dataset[_name];
 		if (!_pids) {
-			logInfo('[Plugin] cleanupInstance: element has no plugin instances', {
-				element: $el,
-				tagName: $el.tagName,
-			});
+			logPluginCleanupInstance('no plugin instances', $el);
 			return false;
 		}
 
-		logInfo(`[Plugin] cleanupInstance: cleaning up element with pids: ${_pids}`, {
-			element: $el,
-			tagName: $el.tagName,
-			id: $el.id,
-			className: $el.className,
-			pids: _pids,
-		});
+		logPluginCleanupInstance('cleaning up', $el, { pids: _pids });
 
 		let cleanedCount = 0;
 		// Cleanup all instances for this element
@@ -122,12 +125,11 @@ export class Plugin extends Base {
 			let instanceKey = `${_name}_${pid}`;
 			let exportObj = Plugin.instanceMap.get(instanceKey);
 			if (exportObj) {
-				logInfo(`[Plugin] cleanupInstance: found instance ${instanceKey}, calling destroy`);
+				logPluginCleanupInstance('destroy', $el, { instanceKey });
 				// Call destroy hooks if exportObj has destroy method
 				if (exportObj.destroy && typeof exportObj.destroy === 'function') {
 					try {
 						exportObj.destroy();
-						logInfo(`[Plugin] cleanupInstance: destroy called for ${instanceKey}`);
 					} catch (e) {
 						logError('Error calling destroy on exportObj:', e);
 					}
@@ -135,13 +137,12 @@ export class Plugin extends Base {
 				// Remove from Map
 				Plugin.instanceMap.delete(instanceKey);
 				cleanedCount++;
-				logInfo(`[Plugin] cleanupInstance: removed instance ${instanceKey} from Map`);
 			} else {
-				logInfo(`[Plugin] cleanupInstance: instance ${instanceKey} not found in Map`);
+				logPluginCleanupInstance('instance not in map', $el, { instanceKey });
 			}
 		});
 
-		logInfo(`[Plugin] cleanupInstance: cleaned ${cleanedCount} instance(s) for element`);
+		logPluginCleanupInstance('done', $el, { cleanedCount });
 		return cleanedCount > 0;
 	}
 
@@ -195,49 +196,49 @@ export class Plugin extends Base {
 	}
 
 	initBefore($el, options, exportObj) {
-		logInfo('init' + (options && options.role ? ' ' + options.role : ''));
+		logPluginPhase(this.setting.name, 'init', $el, options, exportObj);
 		if (this.setting.initBefore) {
 			trigger(this.setting.initBefore, $el, options, exportObj);
 		}
 	}
 	initAfter($el, options, exportObj) {
-		logInfo('inited' + (options && options.role ? ' ' + options.role : ''));
+		logPluginPhase(this.setting.name, 'inited', $el, options, exportObj);
 		if (this.setting.initAfter) {
 			trigger(this.setting.initAfter, $el, options, exportObj);
 		}
 	}
 	loadBefore($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}load`);
+		logPluginPhase(this.setting.name, 'load', $el, options, exportObj);
 		if (this.setting.loadBefore) {
 			trigger(this.setting.loadBefore, $el, options, exportObj);
 		}
 	}
 	loadAfter($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}loaded`);
+		logPluginPhase(this.setting.name, 'loaded', $el, options, exportObj);
 		if (this.setting.loadAfter) {
 			trigger(this.setting.loadAfter, $el, options, exportObj);
 		}
 	}
 	renderBefore($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}render`);
+		logPluginPhase(this.setting.name, 'render', $el, options, exportObj);
 		if (this.setting.renderBefore) {
 			trigger(this.setting.renderBefore, $el, options, exportObj);
 		}
 	}
 	renderAfter($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}rendered`);
+		logPluginPhase(this.setting.name, 'rendered', $el, options, exportObj);
 		if (this.setting.renderAfter) {
 			trigger(this.setting.renderAfter, $el, options, exportObj);
 		}
 	}
 	destroyBefore($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}destroy`);
+		logPluginPhase(this.setting.name, 'destroy', $el, options, exportObj);
 		if (this.setting.destroyBefore) {
 			trigger(this.setting.destroyBefore, $el, options, exportObj);
 		}
 	}
 	destroyAfter($el, options, exportObj) {
-		logInfo(`${options && options.role ? options.role + ' ' : ''}destoried`);
+		logPluginPhase(this.setting.name, 'destroyed', $el, options, exportObj);
 		if (this.setting.destroyAfter) {
 			trigger(this.setting.destroyAfter, $el, options, exportObj);
 		}

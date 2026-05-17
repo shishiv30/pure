@@ -19,7 +19,7 @@
     <%_}_%>
   </ul>
   <figure>
-      <img src="<%= getSrc(article.img || article) %>" alt="<%=article.imgAlt%>" loading="lazy">
+      <img src="<%= getSrc(article.img || article) %>" alt="<%=article.imgAlt%>" loading="lazy" data-role="imgerror">
       <figcaption><%=article.imgTag%></figcaption>
   </figure>
   <%_if(article.tags && article.tags.length){_%>

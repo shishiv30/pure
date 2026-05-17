@@ -3,7 +3,7 @@ import config from '../configs/index.js';
 import serverConfig from '../config.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
-import { getHref, getSrc } from '../../helpers/ejsUrlHelpers.js';
+import { getHref, getSrc } from '../../helpers/url.js';
 import { getStaticHtmlPath, saveStaticHtml } from '../utils/staticHtml.js';
 import themeData from '../../data/comps/theme.js';
 import fs from 'fs';

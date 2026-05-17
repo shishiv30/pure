@@ -31,6 +31,7 @@ import album from './_album.js';
 import scrollview from './_scrollview.js';
 import autoscroller from './_autoscroller.js';
 import sharelink from './_sharelink.js';
+import imgError from './_imgerror.js';
 
 export default {
 	collapse,
@@ -63,6 +64,7 @@ export default {
 	scrollview,
 	autoscroller,
 	sharelink,
+	imgError,
 	// view,
 	// carousel,
 	// scrollspy,

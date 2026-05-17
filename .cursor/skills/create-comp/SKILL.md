@@ -47,7 +47,7 @@ Use this when you need a reusable component that is **not** just a CMS-driven pa
 
 ```js
 import config from '../config.js';
-import { getImgCdnUrl } from '../../helpers/imgCdn.js';
+import { getImgCdnUrl } from '../../helpers/url.js';
 
 const APP_HOST = config.appHost || '';
 const CDN_HOST = config.cdnHost || '';
@@ -71,7 +71,7 @@ export function create<Name>Component() {
 
 **Key principles:**
 - Import `config` for hosts (`APP_HOST`, `CDN_HOST`)
-- Import `getImgCdnUrl` from `helpers/imgCdn.js` for image URLs
+- Import `getImgCdnUrl` from `helpers/url.js` for image URLs
 - Define `COMPONENT_NAME` (camelCase) and `COMPONENT_TEMPLATE` (with `comp_` prefix)
 - Create a **data object** with all content hardcoded
 - Export a factory function `createXComponent()` that returns `{ name, template, data }`
@@ -80,7 +80,7 @@ export function create<Name>Component() {
 
 ```js
 import config from '../config.js';
-import { getImgCdnUrl } from '../../helpers/imgCdn.js';
+import { getImgCdnUrl } from '../../helpers/url.js';
 
 const APP_HOST = config.appHost || '';
 const CDN_HOST = config.cdnHost || '';
@@ -303,10 +303,10 @@ Webpack (via `CopyWebpackPlugin`) copies all images from `client/assets/images/`
 
 **Step 3: Use CDN URL helper in components**
 
-In server EJS components, use `helpers/imgCdn.js`:
+In server EJS components, use `helpers/url.js`:
 
 ```js
-import { getImgCdnUrl } from '../../helpers/imgCdn.js';
+import { getImgCdnUrl } from '../../helpers/url.js';
 import config from '../config.js';
 
 const CDN_HOST = config.cdnHost || '';
@@ -427,5 +427,5 @@ In `page.ejs`, sections are rendered like this:
 - **Page data examples**: `data/page/index.js`, `data/page/ai-trend.js`, `data/page/human.js`
 - **Dynamic page config**: `server/configs/page.js`
 - **Dynamic page view**: `server/ejs/page.ejs` (shows section looping and template includes)
-- **Image CDN helper**: `helpers/imgCdn.js` (`getImgCdnUrl()` function)
+- **URL helpers**: `helpers/url.js` (`getHref`, `getSrc`, `getImgCdnUrl`)
 - **Config**: `server/config.js` (for `appHost`, `cdnHost`)

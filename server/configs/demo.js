@@ -5,7 +5,7 @@ import {
 } from '../../helpers/geo.js';
 import articlesData from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
-import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
+import { mapSOADataListToArticles } from '../../helpers/property.js';
 import {
 	buildDetailBreadcrumb,
 	buildDetailDto,
@@ -13,7 +13,7 @@ import {
 	extractPrimaryListing,
 	normalizeListingToPropertyShape,
 	unwrapPropertyApiPayload,
-} from '../../helpers/propertyDetailMapper.js';
+} from '../../helpers/property.js';
 import config from '../config.js';
 import {
 	getPropertyHistoryById,
@@ -130,12 +130,11 @@ export default {
 			...(propertyId ? [getPropertyHistoryById(propertyId)] : []),
 		]);
 
-		//todo mapping to articles for server data
 		let articles = [];
 		if (properties) {
 			articles =
-				Array.isArray(properties) && properties.length > 0
-					? mapPropertiesToArticles(properties)
+				Array.isArray(properties.listings) && properties.listings.length > 0
+					? mapSOADataListToArticles(properties.listings)
 					: articlesData;
 		}
 

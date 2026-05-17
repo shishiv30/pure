@@ -1,5 +1,5 @@
 import { formatNumber, formatSqft } from '../client/js/core/format.js';
-import { mapPropertyToArticle } from './propertyMapper.js';
+import { mapPropertyToArticle } from './article.js';
 import { getCityPath, getStatePath } from './geo.js';
 
 /**
@@ -76,6 +76,7 @@ export function collectPhotoUrls(listing) {
 	pushUrl(/** @type {string} */ (L.primaryPhotoUrl));
 	pushUrl(/** @type {string} */ (L.tnImgPath));
 	pushUrl(/** @type {string} */ (L.thumbnailUrl));
+	pushUrl(/** @type {string} */ (L.stdThumbnail));
 	const seen = new Set();
 	return out.filter((u) => (seen.has(u) ? false : (seen.add(u), true)));
 }
@@ -90,48 +91,146 @@ export function normalizeListingToPropertyShape(listing) {
 		return null;
 	}
 	const L = /** @type {Record<string, unknown>} */ (listing);
-	const city = String(L.city || L.cityName || L.mailCity || '').trim();
-	const stateRaw = L.state || L.stateCode || L.mailState || '';
+	const addrObj =
+		L.address && typeof L.address === 'object'
+			? /** @type {Record<string, unknown>} */ (L.address)
+			: null;
+	const city = String(
+		L.city || L.cityName || L.mailCity || (addrObj && addrObj.city) || '',
+	).trim();
+	const stateRaw = L.state || L.stateCode || L.mailState || (addrObj && addrObj.state) || '';
 	const state = String(stateRaw).toUpperCase().replace(/[^A-Z]/g, '').slice(0, 2);
-	const street = [L.street, L.streetAddress, L.addressLine1]
+	const zipcode = String(L.zipcode || L.zipCode || (addrObj && addrObj.zipCode) || '').trim();
+	const street = [L.street, L.streetAddress, L.addressLine1, addrObj && addrObj.addressInfo]
 		.filter((x) => typeof x === 'string' && x.trim())
 		.map((x) => String(x).trim())[0];
+	const addressString =
+		typeof L.address === 'string' && L.address.trim() ? String(L.address).trim() : '';
 	const fullAddress =
-		String(L.fullAddress || L.address || '').trim() ||
+		String(L.fullAddress || '').trim() ||
+		addressString ||
+		[street, [city, state, zipcode].filter(Boolean).join(' ')].filter(Boolean).join(', ') ||
 		[street, city, state].filter(Boolean).join(', ');
 	const propertyId = String(L.propertyId || L.id || L.listingId || '').trim();
 	if (!propertyId) {
 		return null;
 	}
 	const bed = L.bedrooms ?? L.bed ?? L.bedroomCount;
-	const bath = L.bathrooms ?? L.bath ?? L.bathroomCount;
+	const bath = L.bathrooms ?? L.bath ?? L.bathroomCount ?? L.bathroomsTotal;
 	const listPrice = L.listPrice ?? L.price ?? L.listingPrice;
+	const sqftLiving = L.sqftTotal ?? L.livingAreaSqft;
 	const areaDisplay =
 		L.areaDisplay ??
 		L.livingAreaDisplay ??
-		(L.livingAreaSqft != null ? formatSqft(Number(L.livingAreaSqft)) : undefined);
+		(sqftLiving != null && sqftLiving !== ''
+			? formatSqft(Number(sqftLiving))
+			: undefined);
+	let pricePerArea = L.pricePerArea;
+	if (pricePerArea == null && listPrice != null && sqftLiving != null && sqftLiving !== '') {
+		const sq = Number(sqftLiving);
+		if (sq > 0) {
+			pricePerArea = Number(listPrice) / sq;
+		}
+	}
+	const lsRaw = L.listingStatus ?? L.houseRealStatus ?? L.status;
+	const houseRealStatusStr =
+		typeof lsRaw === 'string'
+			? lsRaw
+			: lsRaw && typeof lsRaw === 'object' && /** @type {Record<string, unknown>} */ (lsRaw).name != null
+				? String(/** @type {Record<string, unknown>} */ (lsRaw).name)
+				: '';
+	const listingStatusLabel =
+		lsRaw && typeof lsRaw === 'object' && /** @type {Record<string, unknown>} */ (lsRaw).displayName
+			? String(/** @type {Record<string, unknown>} */ (lsRaw).displayName).trim()
+			: '';
+	const houseRealStatus =
+		(typeof L.houseRealStatus === 'string' && L.houseRealStatus.trim() && L.houseRealStatus) ||
+		houseRealStatusStr ||
+		'ACTIVE';
+	const statusUp = String(houseRealStatus).toUpperCase();
+	const isSold =
+		L.isSold === true || statusUp === 'SOLD' || statusUp === 'CLOSED' || Boolean(L.closeDate);
+	const isActive =
+		L.isActive === true || statusUp === 'ACTIVE' || statusUp === 'COMING_SOON';
+	const lt = L.listingType;
+	const listingTypeLabel =
+		lt && typeof lt === 'object' && /** @type {Record<string, unknown>} */ (lt).displayName
+			? String(/** @type {Record<string, unknown>} */ (lt).displayName).trim()
+			: '';
+	const labelName =
+		(typeof L.labelName === 'string' && L.labelName.trim() && L.labelName) ||
+		listingStatusLabel ||
+		listingTypeLabel;
+	const photoUrls = collectPhotoUrls(L);
+	const tnImgPath =
+		L.tnImgPath ||
+		L.thumbnailUrl ||
+		L.primaryPhotoUrl ||
+		L.stdThumbnail ||
+		photoUrls[0];
+	const addressForArticle =
+		addrObj ||
+		(street || city || state || zipcode
+			? {
+					...(street ? { addressInfo: street } : {}),
+					...(city ? { city } : {}),
+					...(String(L.county || '').trim()
+						? { county: String(L.county).trim() }
+						: {}),
+					...(state ? { state } : {}),
+					...(zipcode ? { zipCode: zipcode } : {}),
+				}
+			: null);
 	return {
 		propertyId,
+		address: addressForArticle,
 		fullAddress: fullAddress || propertyId,
 		bed,
 		bath,
 		listPrice,
-		houseRealStatus: L.houseRealStatus || L.status || L.listingStatus,
-		openHouses: L.openHouses,
-		labelName: L.labelName,
-		priceChange: L.priceChange,
-		isSold: L.isSold,
-		isActive: L.isActive,
+		houseRealStatus,
+		openHouses: L.openHouses ?? L.currentOpenHouses,
+		labelName,
+		priceChange: L.priceChange ?? L.priceChangeAmount,
+		isSold,
+		isActive,
 		areaUnit: L.areaUnit || 'Sqft',
 		areaDisplay,
-		pricePerArea: L.pricePerArea,
+		pricePerArea,
 		yearBuilt: L.yearBuilt,
-		tnImgPath: L.tnImgPath || L.thumbnailUrl || L.primaryPhotoUrl,
-		mlsName: L.mlsName || L.providerName,
+		tnImgPath,
+		mlsName: L.mlsName || L.providerName || L.officeListName,
 		city,
 		state,
-		listingPathForPhotos: L.listingPath || L.pdpPath || L.path || L.url,
+		zipcode,
+		listingPathForPhotos: L.listingPath || L.pdpPath || L.path || L.url || L.listingUrl,
+		daysOnMovoto: L.daysOnMovoto ?? L.daysOnMarket ?? L.dom,
+		dppUrl: L.dppUrl ?? L.detailPageUrl ?? L.pdpUrl,
 	};
+}
+
+/**
+ * Map a Property API / SOA listing record to the article card shape used by `comp_article`.
+ * Supports nested `address`, `listingStatus.name`, `listingType.displayName`, `sqftTotal`,
+ * `bathroomsTotal`, `currentOpenHouses`, `priceChangeAmount`, etc.
+ *
+ * @param {object|null|undefined} soaListing
+ * @returns {object|null}
+ */
+export function mapSOADataToArticle(soaListing) {
+	const prop = normalizeListingToPropertyShape(soaListing);
+	return prop ? mapPropertyToArticle(prop) : null;
+}
+
+/**
+ * @param {unknown} soaListings
+ * @returns {object[]}
+ */
+export function mapSOADataListToArticles(soaListings) {
+	if (!Array.isArray(soaListings)) {
+		return [];
+	}
+	return soaListings.map(mapSOADataToArticle).filter(Boolean);
 }
 
 /**

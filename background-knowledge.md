@@ -324,7 +324,7 @@ The system implements a comprehensive state validation system using a centralize
 
 ### State Dictionary
 
-The state validation system is built around `helpers/stateDict.js`, which contains:
+The state validation system is built into `helpers/geo.js` (`stateDict` and helpers), which contains:
 
 1. **Complete State Dictionary**
    - All 50 US states with their codes and full names
@@ -341,7 +341,7 @@ The state validation system is built around `helpers/stateDict.js`, which contai
 ### Usage Examples
 
 ```javascript
-import { isValidStateCode, getStateFullName, getStateCode } from './helpers/stateDict.js';
+import { isValidStateCode, getStateFullName, getStateCode } from './helpers/geo.js';
 
 // Validate state codes
 isValidStateCode('CA');     // true

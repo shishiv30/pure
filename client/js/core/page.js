@@ -58,8 +58,8 @@ export class Page extends Plugin {
 				if (setting && setting.render) {
 					setting.render($el, opt, exportObj);
 				}
-				emit('dom.load');
 				Page.eventListener();
+				emit('dom.load');
 				return exportObj;
 			},
 		};
@@ -196,14 +196,20 @@ export class Page extends Plugin {
 		let dataFromStorage = {};
 		return dataFromStorage;
 	}
+	static domLoadRunCount = 0;
 
 	static eventListener() {
 		logInfo('add event for renderComponent');
 		on(
 			'dom.load',
-			throttle(() => {
+			debounce(() => {
+				Page.domLoadRunCount += 1;
+				const t0 = performance.now();
+				const nodes = document.querySelectorAll('[data-role]').length;
+				logInfo('[dom.load] handler run #' + Page.domLoadRunCount, 'candidates:', nodes);
 				Page.refreshComponents();
-			}),
+				logInfo('[dom.load] refreshComponents took', (performance.now() - t0).toFixed(1), 'ms');
+			}, 100),
 		);
 		on('dom.updated', (payload) => {
 			const elements = payload && payload.elements ? payload.elements : [payload];

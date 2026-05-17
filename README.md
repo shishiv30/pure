@@ -10,6 +10,7 @@ This README is a practical entry point. For deeper internals, use:
 - `server.md` for server routing/controller/data flow.
 - `build-system.md` for webpack and build/deploy behavior.
 - `cms/API.md` for CMS page/comp/theme update APIs.
+- `.cursor/background.json` for AI/agent-oriented path and helper reference (keep it in sync after renames or folder moves).
 
 ## Quick Start
 
@@ -121,8 +122,14 @@ GitHub workflow `.github/workflows/cursor-code-review.yml` currently triggers on
 │   ├── ejs/
 │   ├── middleware/
 │   └── utils/
-├── data/
-│   └── comps/
+├── helpers/          # Server-side mapping and transform logic (geo, URLs, articles, etc.)
+├── data/             # Seed/mock/sample payloads and CSV sources (not logic)
+│   ├── comps/
+│   ├── page/
+│   ├── mock/
+│   ├── csv/
+│   └── index.js      # Geo CSV ingest → dist JSON cache
+├── scripts/          # Ad-hoc tooling (e.g. webpack cleanup plugin referenced by webpack configs)
 ├── cms/
 ├── docs/
 ├── webpack.config*.js
@@ -150,6 +157,7 @@ Defined in `webpack.config.base.page.js`:
 - Server rendering is config-driven through `BaseController` and `server/configs/*`.
 - API layer combines app endpoints (`/api/*`) and SOA proxy routes (`/api/soa/*`).
 - CMS content is consumed with fallback to local data when CMS health is unavailable.
+- **`data/`** holds default, mock, and sample structures; **`helpers/`** holds transforms and path/URL mapping. Convention: `.cursor/background.json` (`data_folder`); renames: `.cursor/rules/rename-or-move-file.mdc`.
 
 ## License
 

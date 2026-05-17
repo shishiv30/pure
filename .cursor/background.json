@@ -44,7 +44,8 @@
         },
         "content_sources": {
           "cms_with_fallback": "server/utils/cmsData.js",
-          "local_seed_data": "data/"
+          "local_seed_data": "data/",
+          "local_seed_data_note": "See data_folder — all default/mock/sample hardcoded data lives under data/, not helpers/ or inline in configs"
         }
       }
     }
@@ -64,8 +65,30 @@
     "usage": [
       "Use this file for context and examples",
       "When guidance conflicts with rules or repo reality, follow rules and current code",
-      "For ports, scripts, and route topology, verify package.json, server/config.js, server/routes/*, and webpack.config*.js"
+      "For ports, scripts, and route topology, verify package.json, server/config.js, server/routes/*, and webpack.config*.js",
+      "Default, mock, or sample hardcoded data → data/ only (see data_folder); helpers/ is mapping/transform logic only"
     ]
+  },
+  "data_folder": {
+    "root": "data/",
+    "purpose": "Canonical home for hardcoded seed data: example structures, defaults, and mock values used as samples or local fallbacks before/atop CMS.",
+    "agent_rules": [
+      "When you need default, mock, fixture, or sample data to illustrate shape or fill dev/demo — add or extend files under data/, not helpers/, server/configs/, or inline in routes.",
+      "helpers/ holds mapping and transform logic (geo, article, property, url, path); data/ holds the actual payload objects and CSV sources.",
+      "Page/comp/theme samples sync to CMS via cms/scripts/seed-and-sync.js; prefer CMS API for production updates (see cms/API.md)."
+    ],
+    "layout": {
+      "index.js": "Geo CSV ingest (data/csv → dist JSON), getGeoData() cache — runtime reference data, not page content",
+      "page/": "Page section arrays + layout (hero, points, gallery, …); one file per page key (e.g. index.js, ai-trend.js); see data/page/README.md",
+      "comps/": "Reusable comp seed objects (header, footer, theme-*, comp_template)",
+      "mock/": "Mock API/list payloads (e.g. mock/articles.js for property/article cards)",
+      "csv/": "Source CSV for geo generation (usstates, uscities, uscounties, usneighborhoods, uszips)"
+    },
+    "examples": {
+      "new_page_sections": "data/page/<page-key>.js — default export ordered section array",
+      "new_theme_comp": "data/comps/theme-<name>.js — default + dark CSS vars; comp key theme-<name>",
+      "new_mock_listing": "data/mock/<name>.js — structured sample records matching API/article shape"
+    }
   },
   "rules": {
     "event_system": {
@@ -907,8 +930,12 @@
     "server_helpers": {
       "geo": {
         "file": "helpers/geo.js",
-        "purpose": "Geographic location utilities",
+        "purpose": "Geographic location utilities, US stateDict (codes/names), and SOA/Geoarea API → UI geo mappers",
         "constants": [
+          {
+            "name": "stateDict",
+            "purpose": "US state/territory codes to full names"
+          },
           {
             "name": "geoType",
             "purpose": "Geo type constants (state, city, county, zipcode, address, neighborhood)"
@@ -1028,9 +1055,9 @@
           }
         ]
       },
-      "pathMapper": {
-        "file": "helpers/pathMapper.js",
-        "purpose": "Map geo paths and properties to articles",
+      "path": {
+        "file": "helpers/path.js",
+        "purpose": "Path conversion only (no hosts): transform path strings between formats, e.g. our geo slugs vs SOA API paths. Not for appHost/cdnHost — use helpers/url.js",
         "functions": [
           {
             "name": "mapGeoPathToSOAPath",
@@ -1041,22 +1068,37 @@
             "name": "mapSOAToGeoPath",
             "purpose": "Map SOA API path format to our geo path format",
             "params": ["soaPath", "stateCode"]
-          },
-          {
-            "name": "mapPropertyToArticle",
-            "purpose": "Map property object to article object",
-            "params": ["property"]
-          },
-          {
-            "name": "mapPropertiesToArticles",
-            "purpose": "Map array of properties to array of articles",
-            "params": ["properties"]
           }
         ]
       },
-      "propertyMapper": {
-        "file": "helpers/propertyMapper.js",
-        "purpose": "Map property objects to article objects",
+      "url": {
+        "file": "helpers/url.js",
+        "purpose": "Host + path only (no path-format conversion): build href (appHost) and src (cdnHost) from stored path values for EJS. Not for geo/SOA path mapping — use helpers/path.js",
+        "functions": [
+          {
+            "name": "getHref",
+            "purpose": "Build full link URL from item.path or item.href plus optional appHost",
+            "params": ["item", "appHost"]
+          },
+          {
+            "name": "getSrc",
+            "purpose": "Build full image URL from img.path or img.src plus optional cdnHost",
+            "params": ["img", "cdnHost"]
+          },
+          {
+            "name": "getImgCdnUrl",
+            "purpose": "Build CDN image URL from path relative to client/assets/images",
+            "params": ["cdnHost", "imagePath"]
+          }
+        ]
+      },
+      "property": {
+        "file": "helpers/property.js",
+        "purpose": "Property listing/detail: SOA payload unwrap, detail DTO, breadcrumb, normalize listing shape, map to article cards"
+      },
+      "article": {
+        "file": "helpers/article.js",
+        "purpose": "Map Movoto-style property records to article card objects for comp_article",
         "functions": [
           {
             "name": "mapPropertyToArticle",
@@ -1078,43 +1120,6 @@
             "name": "getGeoCityByIp",
             "purpose": "Get geo city object from IP address",
             "params": ["ip"]
-          }
-        ]
-      },
-      "stateDict": {
-        "file": "helpers/stateDict.js",
-        "purpose": "US state code and name mapping utilities",
-        "constants": [
-          {
-            "name": "stateDict",
-            "purpose": "Dictionary mapping state codes to full names"
-          }
-        ],
-        "functions": [
-          {
-            "name": "isValidStateCode",
-            "purpose": "Check if string is valid US state code",
-            "params": ["stateCode"]
-          },
-          {
-            "name": "getStateFullName",
-            "purpose": "Get full state name from state code",
-            "params": ["stateCode"]
-          },
-          {
-            "name": "getStateCode",
-            "purpose": "Get state code from full name",
-            "params": ["fullName"]
-          },
-          {
-            "name": "getAllStateCodes",
-            "purpose": "Get all state codes as array",
-            "params": []
-          },
-          {
-            "name": "getAllStateFullNames",
-            "purpose": "Get all state full names as array",
-            "params": []
           }
         ]
       }

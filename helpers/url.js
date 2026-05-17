@@ -1,5 +1,7 @@
 /**
- * EJS template helpers for href and img src.
+ * URL helpers: attach hosts to path-only values (no path-format conversion).
+ * Use appHost/cdnHost + stored path to build href/src for EJS and components.
+ * For converting between path formats (e.g. geo slug vs SOA), use helpers/path.js.
  *
  * Definitions (DB + data files use path; render time builds href/src):
  * - path: path-only, no domain, always starts with "/" (e.g. /welcome/point0.jpeg, /demo/ny/new-york).
@@ -8,8 +10,34 @@
  *         from appHost + path. Use getHref(item) to resolve.
  * - src:  full URL with domain for <img> (e.g. https://cdn.example.com/images/welcome/point0.jpeg).
  *         Built at render via getImgCdnUrl(cdnHost, path). Use getSrc(img) to resolve.
+ *
+ * CDN images are copied to dist/images/ preserving folder structure from client/assets/images.
+ * webpack.config.base.js: images/[path relative to assets/images][name][ext]
+ * So e.g. client/assets/images/welcome/point0.jpeg → dist/images/welcome/point0.jpeg
+ * Usage: ${cdnHost}/images/welcome/point0.jpeg
  */
-import { getImgCdnUrl } from './imgCdn.js';
+
+/**
+ * Build CDN host URL for an image from its path relative to client/assets/images.
+ * @param {string} cdnHost - Base host (e.g. config.cdnHost)
+ * @param {string} imagePath - Path starting with "/" (e.g. '/welcome/point0.jpeg'); leading slash is stripped when building URL
+ * @returns {string} Full URL, e.g. `${cdnHost}/images/welcome/point0.jpeg`
+ */
+export function getImgCdnUrl(cdnHost, imagePath) {
+	const base = cdnHost ? `${cdnHost}/images` : '/images';
+	if (!imagePath.startsWith('/')) {
+		imagePath = `/${imagePath}`;
+	}
+	return imagePath ? `${base}${imagePath}` : '';
+}
+
+/** Known welcome images: basename → path starting with "/" (used by EJS comps and callers of getImgCdnUrl) */
+export const WELCOME_IMG = {
+	point0: '/welcome/point0.jpeg',
+	point1: '/welcome/point1.jpeg',
+	point2: '/welcome/point2.jpeg',
+	point3: '/welcome/point3.jpeg',
+};
 
 /**
  * Build href for <a> from link/item.

@@ -9,7 +9,6 @@
 
 <%- include('comp_breadcrumb') %>
 
-<div id="demo-spa-content">
 <% if (data.detail) { %>
   <%_ const d = data.detail; _%>
   <section class="detail demo-detail">
@@ -84,7 +83,7 @@
   <section class="detail demo-index">
     <div class="grid grid-xs-1">
       <a href="/demo/index" class="img-bg">
-        <img src="<%= meta.origin %>/img.welcome.webp" alt="Demo" loading="lazy">
+        <img src="<%= getSrc({ path: '/welcome.webp' }) %>" alt="Demo" loading="lazy">
       </a>
       <h1 class="h3">Send a Page on Real Estate</h1>
       <div>
@@ -122,7 +121,6 @@
     </section>
   <% } %>
 <% } %>
-</div>
 
 <%- include('html_menu') %>
 

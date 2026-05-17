@@ -1,9 +1,13 @@
-import { getCountiesForSitemap, getGeoByPath, getBreadcrumbByGeo } from '../../helpers/geo.js';
+import {
+	getBreadcrumbByGeo,
+	getCountiesForSitemap,
+	getGeoByPath,
+	getStateFullName,
+} from '../../helpers/geo.js';
 import { getGeoData } from '../../data/index.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
-import { getStateFullName } from '../../helpers/stateDict.js';
 
 const SITEMAP_BASE = '/demo/sitemap';
 

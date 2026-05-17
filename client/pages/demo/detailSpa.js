@@ -57,7 +57,7 @@ function articleHtml(article) {
   </a>
   <ul>${attrs}</ul>
   <figure>
-    <img src="${esc(imgSrc(article.img))}" alt="${esc(article.imgAlt || '')}" loading="lazy">
+    <img src="${esc(imgSrc(article.img))}" alt="${esc(article.imgAlt || '')}" loading="lazy" data-role="img-error">
     <figcaption>${esc(article.imgTag || '')}</figcaption>
   </figure>
   ${tags ? `<div class="tags">${tags}</div>` : ''}

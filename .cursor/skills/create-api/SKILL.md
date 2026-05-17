@@ -74,7 +74,7 @@ Use `config.<baseUrl>` and `config.<apiKey>` for the upstream API.
 
 ### 5. Create mapper (helpers)
 
-In `helpers/<name>Mapper.js` (e.g. `soaGeoMapper.js`):
+In `helpers/geo.js` (SOA response mappers) or a dedicated helper when not geo-related:
 
 - **Item mappers**: `mapSoaXxxToGeo(item)` – one raw item → UI model
 - **Response mappers**: `mapSoaXxxResponse(raw)` – raw response → UI array/object
@@ -162,7 +162,7 @@ export async function getCountiesByStateCode(req, res) {
 ## Reference
 
 - API list and schemas: `docs/soa-api.md`
-- Mapper: `helpers/soaGeoMapper.js`
+- Geo SOA mappers: `helpers/geo.js` (`mapSoaStatesResponse`, etc.)
 - Config: `server/configs/realestate.js`
 - Routes: `server/routes/api.soa.js`
 

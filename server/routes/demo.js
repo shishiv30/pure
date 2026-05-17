@@ -1,4 +1,8 @@
 import BaseController from '../controllers/basecontroller.js';
+import {
+	appendPreservedQuery,
+	getCanonicalDemoGeoRedirectPath,
+} from '../utils/demoGeoRedirect.js';
 
 function handleDemoRoute(controller, res) {
 	return (async () => {
@@ -49,7 +53,18 @@ export default function registerDemo(router) {
 	});
 
 	router.get(/^\/demo([\/\w\-]+)\/?$/, async (req, res) => {
-		req.query.path = req?.params[0] || '';
+		const tail = req.params[0] ?? '';
+		const canonical = getCanonicalDemoGeoRedirectPath(tail);
+		if (canonical) {
+			const currentPathOnly = req.path.replace(/\/+$/, '') || '/';
+			const targetPathOnly = canonical.replace(/\/+$/, '') || '/';
+			if (currentPathOnly !== targetPathOnly) {
+				res.redirect(301, appendPreservedQuery(req, canonical));
+				return;
+			}
+		}
+
+		req.query.path = tail;
 		await handleDemoRoute(new BaseController(req, res, 'demo'), res);
 	});
 }

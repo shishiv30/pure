@@ -1,10 +1,12 @@
 import { fetchFromGeoarea } from '../configs/realestate.js';
-import { mapSoaCountiesResponse } from '../../helpers/soaGeoMapper.js';
+import {
+	getCountiesForSitemap,
+	getStateFullName,
+	mapSoaCountiesResponse,
+} from '../../helpers/geo.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
-import { getStateFullName } from '../../helpers/stateDict.js';
-import { getCountiesForSitemap } from '../../helpers/geo.js';
 import { getGeoData } from '../../data/index.js';
 
 const SITEMAP_BASE = '/sitemap';

@@ -254,7 +254,7 @@ curl -s -H "X-MData-Key: YOUR_SOA_API_KEY" "$GEOAREA_API_DOMAIN/states"
 
 ### UI geo model (Geoarea)
 
-Responses can be mapped to the app’s geo model via `helpers/soaGeoMapper.js`:
+Responses can be mapped to the app’s geo model via `helpers/geo.js` (SOA mapper exports):
 
 - **State**: `{ state, type: 'state' }`
 - **City**: `{ state, city, type: 'city' }`

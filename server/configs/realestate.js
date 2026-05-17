@@ -103,7 +103,7 @@ function logCurlForSoa(urlStr, init) {
 		curl += ` -d "${safeBody}"`;
 	}
 	curl += ` "${urlStr}"`;
-	console.log(`[fetchFromSoa curl]`, curl);
+	console.info(curl);
 }
 /**
  * Call any SOA API by base URL, method and path. Uses X-MData-Key from config (SOA_API_KEY).

@@ -3,7 +3,7 @@ const router = express.Router();
 import BaseController from '../controllers/basecontroller.js';
 import { fetchPropertiesImagesFromSOA } from '../configs/demo.js';
 import { getGeoByPath } from '../../helpers/geo.js';
-import { mapPropertiesToArticles } from '../../helpers/propertyMapper.js';
+import { mapPropertiesToArticles } from '../../helpers/article.js';
 import articlesData from '../../data/mock/articles.js';
 import { searchHouse } from './api.soa.property.js';
 
