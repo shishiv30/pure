@@ -23,7 +23,8 @@
  *
  * ### HTML page (`toPage`)
  * - **`seo(req, model)`** (optional) — `{ title, desc, keywords }` or Promise thereof.
- * - **`preload(req, model)`** (optional) — Array of `{ as?, href? }` merged into `meta.preload` when non-empty.
+ * - **`preload(req, model)`** (optional) — Array of `{ as?, href }` merged into `meta.preload`.
+ *   **`href` must be an absolute URL with host** (not a path). Build it in `get()` (e.g. via `getImgCdnUrl`) and pass the same URL here; do not pass path-only values.
  *
  * ### Errors
  * - **`onError(error, payload)`** (optional) — Return `{ message?, data?, code? }` for `exceptionDataHandler`; missing pieces default to `error.message`, `null`, `500`.
@@ -42,7 +43,7 @@
  * @property {(req: import('express').Request, payload: object) => object} [beforeDelete]
  * @property {(payload: object) => unknown | Promise<unknown>} [delete]
  * @property {(req: import('express').Request, model: object) => object | Promise<object>} [seo]
- * @property {(req: import('express').Request, model: object) => Array<{as?: string, href?: string}> | null | undefined} [preload]
+ * @property {(req: import('express').Request, model: object) => Array<{as?: string, href: string}> | null | undefined} [preload] href = absolute URL with host
  * @property {(error: Error, payload: object) => {message?: string, data?: unknown, code?: number}} [onError]
  */
 

@@ -97,6 +97,7 @@ export default class BaseController {
 		let preload = pagePreload;
 		if (this.config.preload) {
 			const extra = this.config.preload(this.req, model);
+			// Route preload hook must return { href: absolute URL with host }, not path-only
 			if (extra && extra.length) preload = preload.concat(extra);
 		}
 		const assetName = this.config.assetName || this.config.name;

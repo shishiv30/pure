@@ -16,7 +16,7 @@
 		"docker:run": "./run-container.sh",
 		"start": "npx cross-env NODE_ENV=production node server/app.js",
 		"deploy-gh": "node deploy",
-		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js",
+		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js helpers/__tests__/property.test.js",
 		"test:basecontroller": "node --test server/controllers/__tests__/basecontroller.config.test.js",
 		"test:lighthouse": "npm run build-docker:dev && node scripts/run-lighthouse.js",
 		"lint": "echo 'Add your linting command here'",

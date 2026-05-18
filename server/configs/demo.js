@@ -5,13 +5,12 @@ import {
 } from '../../helpers/geo.js';
 import articlesData from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
-import { mapSOADataListToArticles } from '../../helpers/property.js';
 import {
-	buildDetailBreadcrumb,
-	buildDetailDto,
 	collectPhotoUrls,
 	extractPrimaryListing,
-	normalizeListingToPropertyShape,
+	mapSOADataListToArticles,
+	mapSOADataToArticleDetail,
+	mapSOADataToMetadata,
 	unwrapPropertyApiPayload,
 } from '../../helpers/property.js';
 import config from '../config.js';
@@ -23,6 +22,7 @@ import {
 import { createArticleComponent } from '../ejs/comp_article.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
+import { getImgCdnUrl } from '../../helpers/url.js';
 
 export async function fetchPropertiesImagesFromSOA(url) {
 	try {
@@ -96,7 +96,9 @@ export default {
 		const geoPathRaw = req.query.geoPath || req.query.path;
 		if (geoPathRaw) {
 			const normalized = String(geoPathRaw).replace(/^\//, '').replace(/\/$/, '');
-			geo = getGeoByPath(normalized);
+			if (!normalized.startsWith('detail/')) {
+				geo = getGeoByPath(normalized);
+			}
 		} else if (req.query.ip || req.ip) {
 			const ip = req.query.ip || req.ip;
 			geo = getGeoCityByIp(ip);
@@ -109,26 +111,38 @@ export default {
 			propertyId,
 		};
 	},
-	preload: function (req, model) {
-		let preload = null;
-		if (model?.data?.articles?.length > 0) {
-			preload = [
-				{
-					as: 'image',
-					href: model.data.articles[0].img,
-				},
-			];
+	preload: function (_req, model) {
+		const href = model?.data?.welcomeImage;
+		if (!href) {
+			return null;
 		}
-		return preload;
+		return [{ as: 'image', href }];
 	},
 	get: async function (payload) {
-		const { geo, propertyId } = payload || {};
+		const { geo: geoIn, propertyId } = payload || {};
+		let geo = geoIn;
+		const welcomeImage = getImgCdnUrl(config.cdnHost, '/welcome.webp');
 
-		const [properties, listingRaw, historiesRaw] = await Promise.all([
-			searchHouse(geo),
-			...(propertyId ? [getPropertyListingInfoById(propertyId)] : []),
-			...(propertyId ? [getPropertyHistoryById(propertyId)] : []),
-		]);
+		let listingRaw = null;
+		let historiesRaw = null;
+		if (propertyId) {
+			[listingRaw, historiesRaw] = await Promise.all([
+				getPropertyListingInfoById(propertyId),
+				getPropertyHistoryById(propertyId),
+			]);
+		}
+
+		const listing = propertyId
+			? extractPrimaryListing(unwrapPropertyApiPayload(listingRaw))
+			: null;
+		if (listing && !geo) {
+			const meta = mapSOADataToMetadata(listing);
+			if (meta?.geo) {
+				geo = meta.geo;
+			}
+		}
+
+		const properties = await searchHouse(geo);
 
 		let articles = [];
 		if (properties) {
@@ -138,23 +152,55 @@ export default {
 					: articlesData;
 		}
 
+		let detail = null;
+		let detailError = null;
+		if (propertyId) {
+			if (!listing) {
+				detailError = 'Listing unavailable';
+			} else {
+				const photoUrls = collectPhotoUrls(listing);
+				detail = mapSOADataToArticleDetail(
+					listing,
+					historiesRaw,
+					photoUrls,
+					propertyId,
+				);
+				if (!detail) {
+					detailError = 'Listing unavailable';
+				}
+			}
+		}
+
+		const nearbyArticles = propertyId
+			? articles.filter((article) => !String(article.path || '').endsWith(`/${propertyId}`))
+			: [];
+
 		const articleComponent = createArticleComponent(articles);
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
-		const seo = getSeo(geo);
+		const seo = detail
+			? {
+					title: detail.title || 'Listing',
+					description: detail.description || '',
+					desc: detail.description || '',
+					keywords: getSeo(geo).keywords,
+				}
+			: getSeo(geo);
 
 		return {
 			seo,
 			geo,
 			articles,
 			articleComponent,
-			nearbyArticleComponent: createArticleComponent([]),
+			nearbyArticleComponent: createArticleComponent(nearbyArticles),
 			headerComponent,
 			footerComponent,
+			welcomeImage,
 			cdnHost: config.cdnHost,
 			appHost: config.appHost,
 			soaApiDomain: config.soaApiDomain,
-			detail: null,
+			detail,
+			detailError,
 		};
 	},
 };

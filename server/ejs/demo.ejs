@@ -82,9 +82,11 @@
 <% } else { %>
   <section class="detail demo-index">
     <div class="grid grid-xs-1">
+      <% if (data.welcomeImage) { %>
       <a href="/demo/index" class="img-bg">
-        <img src="<%= getSrc({ path: '/welcome.webp' }) %>" alt="Demo" loading="lazy">
+        <img src="<%= data.welcomeImage %>" alt="Demo" loading="lazy" data-role="imgerror">
       </a>
+      <% } %>
       <h1 class="h3">Send a Page on Real Estate</h1>
       <div>
         Welcome to Demo on Real Estate, your trusted destination for buying, selling, and renting real

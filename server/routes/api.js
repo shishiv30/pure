@@ -138,7 +138,6 @@ router.get('/geo', async (req, res) => {
  */
 router.get('/demo/detail/:propertyId', async (req, res) => {
 	req.query.propertyId = req.params.propertyId;
-	req.query.path = `detail/${req.params.propertyId}`;
 	const controller = new BaseController(req, res, 'demo');
 	const result = await controller.get();
 	controller.toData(result);

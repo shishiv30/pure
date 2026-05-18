@@ -109,6 +109,52 @@ export function getGeoCityByCityState(city, state) {
 	return null;
 }
 
+/**
+ * Build UI geo model from SOA Pure listing `address`.
+ * @param {Record<string, unknown>|null|undefined} address
+ * @returns {object|null}
+ */
+export function mapAddressToGeo(address) {
+	if (!address || typeof address !== 'object') {
+		return null;
+	}
+	const state = String(address.state ?? address.stateCode ?? '')
+		.trim()
+		.toUpperCase();
+	if (!state) {
+		return null;
+	}
+	const city = String(address.city ?? '').trim();
+	const county = String(address.county ?? '').trim();
+	const zipcode = String(address.zipCode ?? address.zipcode ?? '').trim();
+	const street = String(
+		address.addressInfo ?? address.street ?? address.addressLine1 ?? '',
+	).trim();
+	const geo = { state };
+	if (city) {
+		geo.city = city;
+	}
+	if (county) {
+		geo.county = county;
+	}
+	if (zipcode) {
+		geo.zipcode = zipcode;
+	}
+	if (street && city) {
+		geo.address = street;
+		geo.type = geoType.address;
+	} else if (city) {
+		geo.type = geoType.city;
+	} else {
+		geo.type = geoType.state;
+	}
+	const path = getPathByGeo(geo);
+	if (path) {
+		geo.path = path;
+	}
+	return geo;
+}
+
 export function getBreadcrumbByGeo(geo, _path) {
 	let path = _path || '';
 	let data = [
@@ -253,7 +299,12 @@ export function getGeoDisplayText(geo) {
 	}
 
 	if (geo.address) {
-		return `${geo.address} ${geo.city}, ${geo.state} ${geo.zipcode}`;
+		const stateZip = [geo.state, geo.zipcode].filter(Boolean).join(' ').trim();
+		const locality = [geo.city, geo.county, stateZip].filter(Boolean).join(', ');
+		if (locality) {
+			return `${geo.address}, ${locality}`;
+		}
+		return String(geo.address);
 	} else if (geo.neighborhood) {
 		if (geo.city.includes(geo.neighborhood)) {
 			return `${geo.neighborhood}, ${geo.state}`;

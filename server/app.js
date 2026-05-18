@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 
 /* routes: static first so /page/index.html serves saved HTML; then dynamic routes */
 app.use(cors({ origin: config.corsOrigins }));
-app.use(express.static('dist'));
+app.use(express.static('dist', { redirect: false }));
 app.use('/', router);
 
 // Set CMS health before starting server so routes use local vs CMS consistently

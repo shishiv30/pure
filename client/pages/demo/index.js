@@ -15,7 +15,7 @@ const enumStatus = [
 	},
 ];
 
-const demoSpaRootSel = '#demo-spa-content';
+const demoSpaRootSel = '#body';
 
 let demo = {
 	name: 'demo',
@@ -53,8 +53,8 @@ let demo = {
 			defEnum(e.key, e.names, $el, viewOpt, exportObj);
 		});
 
-		exportObj.updateDetail = function (id, _subId) {
-			return fetch(`/api/demo/detail/${encodeURIComponent(id)}`)
+		exportObj.updateDetail = function (propertyId) {
+			return fetch(`/api/demo/detail/${encodeURIComponent(propertyId)}`)
 				.then((r) => r.json())
 				.then((envelope) => {
 					if (!envelope || envelope.code !== 200 || envelope.error) {
@@ -77,6 +77,8 @@ let demo = {
 							Object.assign(window.context, envelope.data);
 						}
 						emit('dom.load');
+					} else if (envelope.data?.detailError) {
+						root.innerHTML = `<section class="detail demo-detail demo-detail-missing"><motion class="grid grid-xs-1"><h1 class="h3">Listing unavailable</h1><p>${String(envelope.data.detailError)}</p></div></section>`;
 					}
 				})
 				.catch((err) => {
@@ -92,21 +94,17 @@ let demo = {
 			[
 				{
 					reg: /^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/i,
-
 					loading: (to) => {
 						return new Promise((resolve) => {
-							const geoPath = `${to.params[0]}/${to.params[1]}`;
 							const propertyId = to.params[2];
 							exportObj.switchToDetail();
-							exportObj
-								.updateDetail(geoPath, propertyId)
-								.finally(() => {
-									const detailEl = document.querySelector('.demo-detail');
-									if (detailEl) {
-										detailEl.scrollIntoView({ behavior: 'smooth' });
-									}
-									resolve(null);
-								});
+							exportObj.updateDetail(propertyId).finally(() => {
+								const detailEl = document.querySelector('.demo-detail');
+								if (detailEl) {
+									detailEl.scrollIntoView({ behavior: 'smooth' });
+								}
+								resolve(null);
+							});
 						});
 					},
 				},

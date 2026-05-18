@@ -1,5 +1,5 @@
 ---
-description: Core project standards - formatting, naming conventions, and code reuse requirements
+description: Core project standards - formatting, coding style, naming conventions, and code reuse
 alwaysApply: true
 ---
 
@@ -39,6 +39,49 @@ This file is the **normative source of truth** for project standards. If another
 | **CSS Class** | ^[a-z][a-z0-9-]*$ | apple-tree |
 | **Class Name** | ^[A-Z][a-zA-Z0-9]*$ | AppleTree |
 | **Constant** | ^[A-Z][A-Z0-9_]*$ | APPLE_TREE |
+
+## Coding style
+
+**Default: simple over clever.** The most important rule: do not make code complex—especially for hotfixes, naming, and templates.
+
+### Before every fix
+
+Ask: **hotfix or root cause?**
+
+| Choose root cause when | A hotfix is acceptable when |
+|------------------------|-----------------------------|
+| The bug will recur without fixing the real path | Cause is unknown and investigation is costly |
+| One config, condition, or missing field explains it | Change is tiny, scoped, and reversible |
+| You are adding layers (helpers, loops, rewriters) to mask a symptom | Production is blocked and you will follow up |
+
+Prefer the **smallest change that fixes the real cause**, not the most general framework.
+
+### Simplicity
+
+- **One name, one source of truth** — e.g. a single `welcomeImage` in config reused by preload and EJS; avoid string-matching in templates.
+- **Extract a function only when** the logic is genuinely common **and** used in **at least two places**. One call site → inline it; do not wrap.
+- **Names match the domain** — avoid overloading `context`, `ctx`, and `exportObj` without checking what each layer already means.
+- **Reuse existing utilities** (`getSrc`, `getHref`, config fields) instead of parallel logic in EJS or webpack.
+
+### Preload (`meta.preload` / route `preload` hook)
+
+- Each entry must use **`href` as an absolute URL with host** (e.g. `https://cdn.example.com/images/foo.webp`).
+- **Do not** pass path-only values (`/images/foo.webp`) or rely on EJS/`html_above.ejs` to add the domain.
+- Build the full URL once in config `get()` (e.g. `getImgCdnUrl(cdnHost, path)`), reuse the same string for preload and template `src`.
+
+### SOA Pure listing data
+
+- Treat **SOA Pure** fields as the source of truth after `mapSOADataToMetadata` (and the mapped names in `mapPropertyToArticle`).
+- **Do not** add `??` / `||` fallbacks to alternate field names, legacy shapes, or synthetic defaults unless the user explicitly asks.
+- If a required SOA field is missing, return empty / omit the UI piece — do not substitute `propertyId`, `fullAddress`, or guessed aliases.
+
+### Anti-patterns
+
+- Template loops or regex to find data that should live on `data` or config.
+- New pipelines (`basePath` rewriters, extra env flags) when webpack `publicPath` or env loading is wrong.
+- Duplicating the same path or URL in two places without a shared constant.
+- Preload entries with `path` and no host (templates read `href` only).
+- Fallback chains on SOA-mapped metadata (e.g. `fullAddress || propertyId` for display text).
 
 ## Code Reuse
 

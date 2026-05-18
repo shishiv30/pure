@@ -1,36 +1,5 @@
-import { formatPrice, formatNumber } from '../client/js/core/format.js';
-
-/**
- * Single-line street label from listing `address` (SOA / nested shape).
- * Uses addressInfo, city, state, zipCode (falls back to zipcode).
- *
- * @param {Record<string, unknown>|null|undefined} addr
- * @returns {string}
- */
-export function formatAddressLineFromAddress(addr) {
-	if (!addr || typeof addr !== 'object') {
-		return '';
-	}
-	const street = String(
-		addr.addressInfo ?? addr.street ?? addr.addressLine1 ?? addr.streetAddress ?? '',
-	).trim();
-	const city = String(addr.city ?? '').trim();
-	const county = String(addr.county ?? '').trim();
-	const state = String(addr.state ?? addr.stateCode ?? '').trim();
-	const zip = String(addr.zipCode ?? addr.zipcode ?? '').trim();
-	const stateZip = [state, zip].filter(Boolean).join(' ').trim();
-	const localityInner = [city, county, stateZip].filter(Boolean).join(', ');
-	if (street && localityInner) {
-		return `${street}, ${localityInner}`;
-	}
-	if (street) {
-		return street;
-	}
-	if (localityInner) {
-		return localityInner;
-	}
-	return '';
-}
+import { formatPrice, formatNumber, formatSqft } from '../client/js/core/format.js';
+import { getGeoDisplayText } from './geo.js';
 
 /**
  * Map a Movoto-style property record to the article card shape used by `comp_article`.
@@ -39,14 +8,36 @@ export function formatAddressLineFromAddress(addr) {
  * @returns {object}
  */
 export function mapPropertyToArticle(property) {
+	const listingStatus = property.listingStatus;
+	const status =
+		listingStatus &&
+		typeof listingStatus === 'object' &&
+		/** @type {Record<string, unknown>} */ (listingStatus).name != null
+			? String(/** @type {Record<string, unknown>} */ (listingStatus).name)
+			: '';
+	const sqftTotal = property.sqftTotal;
+	const areaUnit = 'Sqft';
+	const areaDisplay =
+		sqftTotal != null && sqftTotal !== ''
+			? formatSqft(Number(sqftTotal))
+			: undefined;
+	let pricePerArea;
+	if (property.price != null && sqftTotal != null && sqftTotal !== '') {
+		const sq = Number(sqftTotal);
+		if (sq > 0) {
+			pricePerArea = Number(property.price) / sq;
+		}
+	}
+	const daysOnMarket = property.daysOnMarket;
+	const officeListName = property.officeListName;
+
 	// Determine tags based on status and conditions
 	let tags = [];
-	const status = property.houseRealStatus || 'ACTIVE';
 
 	switch (status.toUpperCase()) {
 		case 'ACTIVE': {
 			const openHouse = property.openHouses;
-			const dom = property.daysOnMovoto;
+			const dom = daysOnMarket;
 			if (openHouse && openHouse.length > 0) {
 				tags.push({ className: 'major active', text: 'Open House' });
 			} else if ((dom && parseInt(dom, 10) <= 7) || dom === 0) {
@@ -85,10 +76,10 @@ export function mapPropertyToArticle(property) {
 	}
 
 	let attrs = [];
-	if (property.listPrice) {
+	if (property.price) {
 		attrs.push({
 			key: 'Est',
-			value: `$${formatNumber(property.listPrice)}`,
+			value: `$${formatNumber(property.price)}`,
 			desc: 'Estimate Price',
 		});
 	}
@@ -106,17 +97,17 @@ export function mapPropertyToArticle(property) {
 			desc: 'Bathrooms',
 		});
 	}
-	if (property.areaUnit) {
+	if (areaDisplay) {
 		attrs.push({
-			key: property.areaUnit,
-			value: property.areaDisplay,
+			key: areaUnit,
+			value: areaDisplay,
 			desc: 'Lot Size',
 		});
 	}
-	if (property.pricePerArea) {
+	if (pricePerArea) {
 		attrs.push({
-			key: `/${property.areaUnit}`,
-			value: `${formatNumber(Math.round(property.pricePerArea))}`,
+			key: `/${areaUnit}`,
+			value: `${formatNumber(Math.round(pricePerArea))}`,
 			desc: 'Price Per Sqft',
 		});
 	}
@@ -129,18 +120,16 @@ export function mapPropertyToArticle(property) {
 		});
 	}
 	
-	const displayAddress =
-		formatAddressLineFromAddress(property.address) ||
-		String(property.fullAddress || '').trim() ||
-		'';
+	const geo = property.geo;
+	const displayAddress = getGeoDisplayText(geo);
 
 	let article = {
-		id: property.propertyId,
-		img: property.tnImgPath,
-		imgTag: property.mlsName || 'Provided by MLS',
+		metadata: property,
+		img: Array.isArray(property.photos) ? property.photos[0] : undefined,
+		imgTag: officeListName,
 		imgAlt: displayAddress,
 		title: displayAddress,
-		href: property.listingUrl,
+		path: `/demo/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.propertyId}`,
 		tags: tags,
 		attrs: attrs,
 	};
