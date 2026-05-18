@@ -112,11 +112,11 @@ describe('mapPropertyToArticle', () => {
 	test('builds article card from SOA metadata', () => {
 		const meta = mapSOADataToMetadata(soaPureListing);
 		const article = mapPropertyToArticle(meta);
-		assert.equal(article.id, soaPureListing.id);
+		assert.equal(article.metadata.propertyId, soaPureListing.id);
 		assert.equal(article.img, meta.photos[0]);
 		assert.equal(
-			article.href,
-			`demo/detail/${meta.geo.state}/${meta.geo.zipcode}/${soaPureListing.id}`,
+			article.path,
+			`/demo/detail/${meta.geo.state.toLowerCase()}/${meta.geo.zipcode}/${soaPureListing.id}`,
 		);
 		assert.equal(
 			article.title,
@@ -139,7 +139,7 @@ describe('mapSOADataListToArticles', () => {
 	test('maps array and drops invalid rows', () => {
 		const articles = mapSOADataListToArticles([soaPureListing, null, { listPrice: 1 }]);
 		assert.equal(articles.length, 1);
-		assert.equal(articles[0].id, soaPureListing.id);
+		assert.equal(articles[0].metadata.propertyId, soaPureListing.id);
 	});
 
 	test('returns empty array for non-array input', () => {

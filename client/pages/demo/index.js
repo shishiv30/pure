@@ -78,7 +78,7 @@ let demo = {
 						}
 						emit('dom.load');
 					} else if (envelope.data?.detailError) {
-						root.innerHTML = `<section class="detail demo-detail demo-detail-missing"><motion class="grid grid-xs-1"><h1 class="h3">Listing unavailable</h1><p>${String(envelope.data.detailError)}</p></div></section>`;
+						root.innerHTML = `<section class="detail demo-detail demo-detail-missing"><div class="grid grid-xs-1"><h1 class="h3">Listing unavailable</h1><p>${String(envelope.data.detailError)}</p></div></section>`;
 					}
 				})
 				.catch((err) => {
