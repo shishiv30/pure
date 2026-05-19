@@ -48,7 +48,7 @@ export default function registerDemo(router) {
 
 	router.get(/^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/, async (req, res) => {
 		req.query.geoPath = `${req.params[0]}/${req.params[1]}`;
-		req.query.propertyId = req.params[2];
+		req.query.prId = req.params[2];
 		await handleDemoRoute(new BaseController(req, res, 'demo'), res);
 	});
 
@@ -64,7 +64,7 @@ export default function registerDemo(router) {
 			}
 		}
 
-		req.query.path = tail;
+		req.query.geoPath = tail;
 		await handleDemoRoute(new BaseController(req, res, 'demo'), res);
 	});
 }

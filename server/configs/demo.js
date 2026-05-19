@@ -3,15 +3,12 @@ import {
 	geoType,
 	getGeoByPath,
 } from '../../helpers/geo.js';
-import articlesData from '../../data/mock/articles.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
+import { mapSOADataListToArticles } from '../../helpers/article.js';
 import {
 	collectPhotoUrls,
-	extractPrimaryListing,
-	mapSOADataListToArticles,
 	mapSOADataToArticleDetail,
 	mapSOADataToMetadata,
-	unwrapPropertyApiPayload,
 } from '../../helpers/property.js';
 import config from '../config.js';
 import {
@@ -93,22 +90,19 @@ export default {
 	},
 	beforeGet: function (req, payload) {
 		let geo;
-		const geoPathRaw = req.query.geoPath || req.query.path;
+		const geoPathRaw = req.query.geoPath;
 		if (geoPathRaw) {
-			const normalized = String(geoPathRaw).replace(/^\//, '').replace(/\/$/, '');
-			if (!normalized.startsWith('detail/')) {
-				geo = getGeoByPath(normalized);
-			}
+			geo = getGeoByPath(geoPathRaw);
 		} else if (req.query.ip || req.ip) {
 			const ip = req.query.ip || req.ip;
 			geo = getGeoCityByIp(ip);
 		}
-		const propertyId = req.query.propertyId;
+		const prId = req.query.prId;
 
 		return {
 			...payload,
 			geo,
-			propertyId,
+			prId,
 		};
 	},
 	preload: function (_req, model) {
@@ -119,61 +113,30 @@ export default {
 		return [{ as: 'image', href }];
 	},
 	get: async function (payload) {
-		const { geo: geoIn, propertyId } = payload || {};
-		let geo = geoIn;
+		const { geo, prId } = payload || {};
 		const welcomeImage = getImgCdnUrl(config.cdnHost, '/welcome.webp');
 
-		let listingRaw = null;
-		let historiesRaw = null;
-		if (propertyId) {
-			[listingRaw, historiesRaw] = await Promise.all([
-				getPropertyListingInfoById(propertyId),
-				getPropertyHistoryById(propertyId),
-			]);
-		}
-
-		const listing = propertyId
-			? extractPrimaryListing(unwrapPropertyApiPayload(listingRaw))
-			: null;
-		if (listing && !geo) {
-			const meta = mapSOADataToMetadata(listing);
-			if (meta?.geo) {
-				geo = meta.geo;
-			}
-		}
-
-		const properties = await searchHouse(geo);
-
-		let articles = [];
-		if (properties) {
-			articles =
-				Array.isArray(properties.listings) && properties.listings.length > 0
-					? mapSOADataListToArticles(properties.listings)
-					: articlesData;
-		}
+		let [nearbyRaw, listingRaw, historiesRaw] = await Promise.all([
+			searchHouse(geo),
+			prId ? getPropertyListingInfoById(prId) : Promise.resolve(null),
+			prId ? getPropertyHistoryById(prId) : Promise.resolve(null),
+		]);
 
 		let detail = null;
-		let detailError = null;
-		if (propertyId) {
-			if (!listing) {
-				detailError = 'Listing unavailable';
-			} else {
-				const photoUrls = collectPhotoUrls(listing);
-				detail = mapSOADataToArticleDetail(
-					listing,
-					historiesRaw,
-					photoUrls,
-					propertyId,
-				);
-				if (!detail) {
-					detailError = 'Listing unavailable';
-				}
-			}
+		if(listingRaw && listingRaw.listingUrl) {
+			detail = mapSOADataToMetadata(listingRaw);
+			detail.histories = historiesRaw;
+			Object.assign(detail, mapSOADataToArticleDetail(listingRaw));
 		}
 
-		const nearbyArticles = propertyId
-			? articles.filter((article) => !String(article.path || '').endsWith(`/${propertyId}`))
-			: [];
+
+		let articles = []; 
+		let articleTotalCount = 0;
+		if (nearbyRaw && nearbyRaw.listings && nearbyRaw.listings.length > 0) {
+			articles =
+				mapSOADataListToArticles(nearbyRaw.listings)
+			articleTotalCount = nearbyRaw.articleTotalCount;
+		}
 
 		const articleComponent = createArticleComponent(articles);
 		const headerComponent = createHeaderComponent();
@@ -190,9 +153,8 @@ export default {
 		return {
 			seo,
 			geo,
-			articles,
 			articleComponent,
-			nearbyArticleComponent: createArticleComponent(nearbyArticles),
+			articleTotalCount,
 			headerComponent,
 			footerComponent,
 			welcomeImage,
@@ -200,7 +162,6 @@ export default {
 			appHost: config.appHost,
 			soaApiDomain: config.soaApiDomain,
 			detail,
-			detailError,
 		};
 	},
 };

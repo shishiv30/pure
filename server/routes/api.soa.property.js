@@ -21,7 +21,9 @@ function handleSoaError(res, error) {
 	const status =
 		error.message === 'PROPERTY_API_DOMAIN is not configured'
 			? 503
-			: error.message === 'propertyId is required' || error.message === 'Property API path required'
+			: error.message === 'propertyId is required' ||
+					error.message === 'prId is required' ||
+					error.message === 'Property API path required'
 				? 400
 				: 500;
 	const match = error.message?.match(/: (\d{3}) /);
@@ -456,14 +458,16 @@ async function getPropertyByPathHandler(req, res) {
  * @swagger
  * /soa/property/getPropertyHistoryById:
  *   get:
- *     summary: Get property history by ID (query)
- *     description: Proxies to SOA GET /properties/{propertyId}/histories. Pass propertyId in query.
+ *     summary: Get property history by prId (query)
+ *     description: Proxies to SOA GET /properties/{prId}/histories. Pass prId in query.
  *     parameters:
  *       - in: query
- *         name: propertyId
+ *         name: prId
  *         required: true
- *         schema: { type: string }
- *         description: Property ID
+ *         schema:
+ *           type: string
+ *           example: "45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
+ *         description: MLS public record id
  *     responses:
  *       200:
  *         description: Property histories (structure from Property SOA)
@@ -474,7 +478,7 @@ async function getPropertyByPathHandler(req, res) {
  *               description: Response shape defined by Property SOA API
  *               additionalProperties: true
  *       400:
- *         description: propertyId is required
+ *         description: prId is required
  *         content:
  *           application/json:
  *             schema: { type: object, properties: { error: { type: string } } }
@@ -485,16 +489,18 @@ async function getPropertyByPathHandler(req, res) {
  *             schema: { type: object, properties: { error: { type: string } } }
  *     tags:
  *       - SOA Property
- * /soa/property/getPropertyHistoryById/{propertyId}:
+ * /soa/property/getPropertyHistoryById/{prId}:
  *   get:
- *     summary: Get property history by ID (path)
- *     description: Proxies to SOA GET /properties/{propertyId}/histories. Pass propertyId in path.
+ *     summary: Get property history by prId (path)
+ *     description: Proxies to SOA GET /properties/{prId}/histories. Pass prId in path.
  *     parameters:
  *       - in: path
- *         name: propertyId
+ *         name: prId
  *         required: true
- *         schema: { type: string }
- *         description: Property ID
+ *         schema:
+ *           type: string
+ *           example: "45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
+ *         description: MLS public record id
  *     responses:
  *       200:
  *         description: Property histories (structure from Property SOA)
@@ -505,7 +511,7 @@ async function getPropertyByPathHandler(req, res) {
  *               description: Response shape defined by Property SOA API
  *               additionalProperties: true
  *       400:
- *         description: propertyId is required
+ *         description: prId is required
  *         content:
  *           application/json:
  *             schema: { type: object, properties: { error: { type: string } } }
@@ -517,19 +523,19 @@ async function getPropertyByPathHandler(req, res) {
  *     tags:
  *       - SOA Property
  */
-export async function getPropertyHistoryById(propertyId, queryParams = {}) {
-	if (!propertyId) {
-		throw new Error('propertyId is required');
+export async function getPropertyHistoryById(prId, queryParams = {}) {
+	if (!prId) {
+		throw new Error('prId is required');
 	}
 	const query = { ...queryParams };
-	delete query.propertyId;
-	return proxyToPropertyPath('GET', `/properties/${propertyId}/histories`, { query });
+	delete query.prId;
+	return proxyToPropertyPath('GET', `/properties/${prId}/histories`, { query });
 }
 
 async function getPropertyHistoryByIdHandler(req, res) {
 	try {
-		const propertyId = req.params.propertyId ?? req.query.propertyId;
-		sendJson(res, await getPropertyHistoryById(propertyId, req.query));
+		const prId = req.params.prId ?? req.query.prId;
+		sendJson(res, await getPropertyHistoryById(prId, req.query));
 	} catch (error) {
 		handleSoaError(res, error);
 	}
@@ -540,7 +546,7 @@ async function getPropertyHistoryByIdHandler(req, res) {
  * /soa/property/getPropertyListingInfoById:
  *   get:
  *     summary: Get property primary listing info by ID (v2, query)
- *     description: Proxies to SOA GET /properties/{propertyId}/primary-listing/v2. Pass propertyId in query.
+ *     description: Proxies to SOA GET /properties/{propertyId}/primary-listing. Pass propertyId in query.
  *     parameters:
  *       - in: query
  *         name: propertyId
@@ -571,7 +577,7 @@ async function getPropertyHistoryByIdHandler(req, res) {
  * /soa/property/getPropertyListingInfoById/{propertyId}:
  *   get:
  *     summary: Get property primary listing info by ID (v2, path)
- *     description: Proxies to SOA GET /properties/{propertyId}/primary-listing/v2. Pass propertyId in path.
+ *     description: Proxies to SOA GET /properties/{propertyId}/primary-listing. Pass propertyId in path.
  *     parameters:
  *       - in: path
  *         name: propertyId
@@ -606,7 +612,7 @@ export async function getPropertyListingInfoById(propertyId, queryParams = {}) {
 	}
 	const query = { ...queryParams };
 	delete query.propertyId;
-	return proxyToPropertyPath('GET', `/properties/${propertyId}/primary-listing/v2`, {
+	return proxyToPropertyPath('GET', `/properties/${propertyId}/primary-listing`, {
 		query,
 	});
 }
@@ -836,7 +842,7 @@ export async function proxyToPropertyPath(method, path, overrides = {}) {
 
 router.get('/getPropertyByPath', getPropertyByPathHandler);
 router.get('/getPropertyHistoryById', getPropertyHistoryByIdHandler);
-router.get('/getPropertyHistoryById/:propertyId', getPropertyHistoryByIdHandler);
+router.get('/getPropertyHistoryById/:prId', getPropertyHistoryByIdHandler);
 router.get('/getPropertyListingInfoById', getPropertyListingInfoByIdHandler);
 router.get('/getPropertyListingInfoById/:propertyId', getPropertyListingInfoByIdHandler);
 router.post('/searchHouse', searchHouseHandler);

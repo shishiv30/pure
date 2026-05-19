@@ -3,8 +3,7 @@ const router = express.Router();
 import BaseController from '../controllers/basecontroller.js';
 import { fetchPropertiesImagesFromSOA } from '../configs/demo.js';
 import { getGeoByPath } from '../../helpers/geo.js';
-import { mapPropertiesToArticles } from '../../helpers/article.js';
-import articlesData from '../../data/mock/articles.js';
+import { mapSOADataListToArticles } from '../../helpers/article.js';
 import { searchHouse } from './api.soa.property.js';
 
 /**
@@ -101,17 +100,18 @@ router.get('/geo', async (req, res) => {
 
 /**
  * @swagger
- * /demo/detail/{propertyId}:
+ * /demo/detail/{prId}:
  *   get:
  *     summary: Demo property detail (JSON)
  *     description: Same data as the demo HTML detail page for SPA clients.
  *     parameters:
  *       - in: path
- *         name: propertyId
+ *         name: prId
  *         required: true
  *         schema:
  *           type: string
- *         description: Property id (same as /demo/detail/:propertyId page)
+ *           example: "45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
+ *         description: MLS public record id (`mlsPublicRecordAssociation.id`; same as third segment of /demo/detail/{state}/{zip}/{prId})
  *     responses:
  *       200:
  *         description: BaseController JSON envelope
@@ -136,8 +136,8 @@ router.get('/geo', async (req, res) => {
  *     tags:
  *       - Demo
  */
-router.get('/demo/detail/:propertyId', async (req, res) => {
-	req.query.propertyId = req.params.propertyId;
+router.get('/demo/detail/:prId', async (req, res) => {
+	req.query.prId = req.params.prId;
 	const controller = new BaseController(req, res, 'demo');
 	const result = await controller.get();
 	controller.toData(result);
@@ -145,103 +145,136 @@ router.get('/demo/detail/:propertyId', async (req, res) => {
 
 /**
  * @swagger
- * /properties/{path}:
+ * /demo/search/{path}:
  *   get:
- *     summary: Get properties by location path
- *     description: Retrieve property listings from SOA API based on geographic location path. The path is automatically mapped from our geo format to SOA API format.
+ *     summary: Demo property search by geo path (JSON)
+ *     description: |
+ *       Resolves a Pure geo path via `getGeoByPath`, searches nearby listings through SOA
+ *       (`searchHouse`), and returns article cards for the demo SPA (`mapSOADataListToArticles`).
+ *       Same listing data as the demo HTML search page; path uses our geo format (not SOA slugs).
  *     parameters:
  *       - in: path
  *         name: path
  *         required: true
  *         schema:
  *           type: string
- *         description: Geographic location path in our format (will be mapped to SOA API format)
+ *         description: Geographic location path in Pure geo format
  *         examples:
  *           state:
- *             summary: State search
+ *             summary: State
  *             value: tx
- *             description: Maps to tx/ (Texas for SOA API)
  *           city:
- *             summary: City search
+ *             summary: City
  *             value: tx/round-rock
- *             description: Maps to round-rock-tx/
  *           county:
- *             summary: County search
+ *             summary: County
  *             value: tx/williamson_county
- *             description: Maps to williamson-county-tx/
  *           zipcode:
- *             summary: Zipcode search
+ *             summary: Zipcode
  *             value: tx/78664
- *             description: Maps to tx/78664/
  *           neighborhood:
- *             summary: Neighborhood search
+ *             summary: Neighborhood
  *             value: tx/round-rock/old-town_neighborhood
- *             description: Maps to round-rock-tx/old-town/
  *     responses:
  *       200:
- *         description: List of properties converted to article format
+ *         description: Search results as article cards plus SOA total count
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: Unique property identifier
- *                     example: "24cd15f9-647d-4361-9efe-2debf74376e2"
- *                   img:
- *                     type: string
- *                     description: Property thumbnail image URL
- *                     example: "image absolute url"
- *                   imgTag:
- *                     type: string
- *                     description: Image attribution tag
- *                     example: "MLSListings"
- *                   imgAlt:
- *                     type: string
- *                     description: Alt text for the image
- *                     example: "181 Alexander Ave, San Jose, CA 95116"
- *                   title:
- *                     type: string
- *                     description: Full property address
- *                     example: "181 Alexander Ave, San Jose, CA 95116"
- *                   href:
- *                     type: string
- *                     description: Property detail page URL
- *                     example: "page abosolution url"
- *                   tags:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         key:
- *                           type: string
- *                           example: "major"
- *                         value:
- *                           type: string
- *                           example: "New"
- *                     description: Property status tags
- *                   attrs:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         key:
- *                           type: string
- *                           example: "Est"
- *                         value:
- *                           type: string
- *                           example: "$1,750,000"
- *                         desc:
- *                           type: string
- *                           example: "Estimate Price"
- *                     description: Property attributes (price, beds, baths, sqft, price per sqft)
+ *               type: object
+ *               properties:
+ *                 articles:
+ *                   type: array
+ *                   description: Property listings mapped to `comp_article` card shape
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       metadata:
+ *                         type: object
+ *                         description: SOA Pure metadata from `mapSOADataToMetadata`
+ *                       img:
+ *                         type: string
+ *                         description: First listing photo URL (preview)
+ *                         example: "https://pi.movoto.com/p/402/21259416_0_ZjJZN2_p.webp"
+ *                       imgTag:
+ *                         type: string
+ *                         description: Listing office name
+ *                         example: "Hunter Ranch and Realty"
+ *                       imgAlt:
+ *                         type: string
+ *                         description: Display address for image alt text
+ *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
+ *                       title:
+ *                         type: string
+ *                         description: Display address (same as imgAlt)
+ *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
+ *                       path:
+ *                         type: string
+ *                         description: Demo SPA detail route
+ *                         example: "/demo/detail/tx/79567/45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
+ *                       tags:
+ *                         type: array
+ *                         description: Status badges (className/text) or price-change chips (key/value)
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             text:
+ *                               type: string
+ *                               example: "Pending"
+ *                             className:
+ *                               type: string
+ *                               example: "tip"
+ *                             key:
+ *                               type: string
+ *                               example: "danger"
+ *                             value:
+ *                               type: string
+ *                               example: "Reduced 50K"
+ *                       attrs:
+ *                         type: array
+ *                         description: Price, beds, baths, sqft, price per sqft, year built
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             key:
+ *                               type: string
+ *                               example: "Est"
+ *                             value:
+ *                               oneOf:
+ *                                 - type: string
+ *                                 - type: number
+ *                               example: "$135,000"
+ *                             desc:
+ *                               type: string
+ *                               example: "Estimate Price"
+ *                 totalCount:
+ *                   type: integer
+ *                   description: Total listings reported by SOA for this search
+ *                   example: 42
+ *       400:
+ *         description: Geo path could not be resolved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid geo path"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
  *     tags:
- *       - Properties
+ *       - Demo
  */
-router.get('/properties/:path(*)', async (req, res) => {
+router.get('/demo/search/:path(*)', async (req, res) => {
 	try {
 		const { path } = req.params;
 		const geo = getGeoByPath(path);
@@ -249,13 +282,78 @@ router.get('/properties/:path(*)', async (req, res) => {
 			res.status(400).json({ error: 'Invalid geo path' });
 			return;
 		}
-		const properties = await searchHouse(geo);
-		const articles = mapPropertiesToArticles(properties);
-		res.json(Array.isArray(properties) && properties.length > 0 ? articles : articlesData);
+		const nearbyProperties = await searchHouse(geo);
+		let articles = [];
+		let totalCount = 0;
+		if (nearbyProperties && nearbyProperties.listings && nearbyProperties.listings.length > 0) {
+			articles =
+				mapSOADataListToArticles(nearbyProperties.listings);
+			totalCount = nearbyProperties.totalCount;
+		}
+		res.json({ articles, totalCount });
 	} catch (error) {
 		console.error('Error fetching properties:', error);
 		res.status(500).json({ error: 'Internal server error' });
 	}
+});
+
+/**
+ * @swagger
+ * /demo/{geoPath}:
+ *   get:
+ *     summary: Demo geo page (JSON)
+ *     description: |
+ *       Same full page model as the demo HTML route `/demo/{geoPath}` (e.g. `/demo/tx/austin`,
+ *       `/demo/tx/78717`). Sets `geoPath` on the demo config; no canonical-path redirect.
+ *     parameters:
+ *       - in: path
+ *         name: geoPath
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Pure geo path (state, city, zipcode, county, neighborhood, etc.)
+ *         examples:
+ *           state:
+ *             summary: State
+ *             value: tx
+ *           city:
+ *             summary: City
+ *             value: tx/austin
+ *           zipcode:
+ *             summary: Zipcode
+ *             value: tx/78717
+ *           county:
+ *             summary: County
+ *             value: tx/williamson_county
+ *     responses:
+ *       200:
+ *         description: BaseController JSON envelope (seo, geo, articleComponent, detail, etc.)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   description: Demo page model from demo config get()
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                 cost:
+ *                   type: integer
+ *       500:
+ *         description: Server error
+ *     tags:
+ *       - Demo
+ */
+router.get('/demo/:geoPath(*)', async (req, res) => {
+	req.query.geoPath = req.params.geoPath;
+	const controller = new BaseController(req, res, 'demo');
+	const result = await controller.get();
+	controller.toData(result);
 });
 
 /**

@@ -1,47 +1,10 @@
 import { formatNumber } from '../client/js/core/format.js';
-import { mapPropertyToArticle } from './article.js';
 import { getCityPath, getStatePath, mapAddressToGeo } from './geo.js';
-
-/**
- * Unwrap typical SOA envelope { data: T }.
- * @param {unknown} raw
- * @returns {unknown}
- */
-export function unwrapPropertyApiPayload(raw) {
-	if (raw == null) {
-		return null;
-	}
-	if (
-		typeof raw === 'object' &&
-		raw.data !== undefined &&
-		raw.data !== null &&
-		typeof raw.data === 'object'
-	) {
-		return raw.data;
-	}
-	return raw;
-}
-
-/**
- * Find listing-like object from primary-listing/v2 payload.
- * @param {unknown} plain
- * @returns {object|null}
- */
-export function extractPrimaryListing(plain) {
-	if (!plain || typeof plain !== 'object') {
-		return null;
-	}
-	const o = /** @type {Record<string, unknown>} */ (plain);
-	return /** @type {object|null} */ (
-		o.listing ||
-			o.primaryListing ||
-			o.property ||
-			(o.propertyId || o.id || o.listingId ? plain : null)
-	);
-}
-
+import { mapPropertyToArticle } from './article.js';
+import { stringToDate } from './datetime.js';
 /** SOA photo URL suffixes → preview `_p.webp` (case-insensitive). */
 const SOA_PHOTO_WEBP_SUFFIX = /(?:_r|_l|_p)?\.webp$/i;
+
 
 /**
  * Normalize SOA webp photo URL to preview size (`_p.webp`).
@@ -80,22 +43,12 @@ export function mapSoaPhotosToUrls(photos) {
  * @returns {unknown}
  */
 function resolveSoaListingPrice(listing) {
-	if (listing.closePrice != null && listing.closePrice !== '') {
-		return listing.closePrice;
+	if (listing.listingStatus !== 'ACTIVE') {
+		if (listing.closePrice != null && listing.closePrice !== '') {
+			return listing.closePrice;
+		}
 	}
 	return listing.listPrice;
-}
-
-/**
- * Collect photo URLs from a SOA Pure listing (`photos` only).
- * @param {object} listing
- * @returns {string[]}
- */
-export function collectPhotoUrls(listing) {
-	if (!listing || typeof listing !== 'object') {
-		return [];
-	}
-	return mapSoaPhotosToUrls(/** @type {Record<string, unknown>} */ (listing).photos);
 }
 
 /**
@@ -116,20 +69,31 @@ export function mapSOADataToMetadata(soaListing) {
 		L.address && typeof L.address === 'object'
 			? /** @type {Record<string, unknown>} */ (L.address)
 			: null;
+
 	return {
 		propertyId,
 		geo: mapAddressToGeo(address),
 		bed: L.bedrooms,
 		bath: L.bathroomsTotal,
+		attributes: L.attributesTags,
 		price: resolveSoaListingPrice(L),
 		listingStatus: L.listingStatus,
 		openHouses: L.currentOpenHouses,
 		priceChange: L.priceChangeAmount,
+		grage: L.parkingGarageSpace,
+		prId: L?.mlsPublicRecordAssociation?.id,
+		mlsNumber: L.mlsNumber,
+		mlsId: L?.mls?.id,
+		mlsName: L?.mls?.name,
 		sqftTotal: L.sqftTotal,
 		lotSizeSqft: L.lotSizeSqft,
 		yearBuilt: L.yearBuilt,
-		photos: mapSoaPhotosToUrls(L.photos),
-		photoCount: L.photoCount,
+		photos: L?.photos?.length > 0 ? mapSoaPhotosToUrls(L.photos) : null,
+		photoCount: L?.photoCount ?? 0,
+		closeDate: L.closeDate ? stringToDate(L.closeDate) : null,
+		soldDate: L.soldDate ? stringToDate(L.soldDate) : null,
+		createDate: L.createdAt ? stringToDate(L.createdAt) : null,
+		listDate: L.listDate ? stringToDate(L.listDate) : null,
 		officeListName: L.officeListName,
 		daysOnMarket: L.daysOnMarket,
 		listingUrl: L.listingUrl,
@@ -137,17 +101,15 @@ export function mapSOADataToMetadata(soaListing) {
 }
 
 /**
- * @param {unknown} soaListings
- * @returns {object[]}
+ * Collect photo URLs from a SOA Pure listing (`photos` only).
+ * @param {object} listing
+ * @returns {string[]}
  */
-export function mapSOADataListToArticles(soaListings) {
-	if (!Array.isArray(soaListings)) {
+export function collectPhotoUrls(listing) {
+	if (!listing || typeof listing !== 'object') {
 		return [];
 	}
-	return soaListings
-		.map(mapSOADataToMetadata)
-		.filter(Boolean)
-		.map((meta) => mapPropertyToArticle(meta));
+	return mapSoaPhotosToUrls(/** @type {Record<string, unknown>} */ (listing).photos);
 }
 
 /**
@@ -252,29 +214,15 @@ export function buildDetailBreadcrumb(prop, basePath = '/demo') {
  * @param {string} propertyId
  * @returns {object|null}
  */
-export function mapSOADataToArticleDetail(listingRaw, historiesRaw, photoUrls, propertyId) {
-	const meta = mapSOADataToMetadata(listingRaw);
-	const article = meta ? mapPropertyToArticle(meta) : null;
-	if (!article) {
-		return null;
-	}
-	const images =
-		Array.isArray(photoUrls) && photoUrls.length > 0
-			? photoUrls
-			: Array.isArray(meta.photos) && meta.photos.length > 0
-				? meta.photos
-				: [];
+export function mapSOADataToArticleDetail(listingRaw) {
 	return {
-		propertyId: meta.propertyId || propertyId,
-		title: article.title || propertyId,
-		tags: article.tags,
-		photos: {
-			initialIndex: 0,
-			alt: article.imgAlt || '',
-			images,
-		},
-		description: extractListingDescription(listingRaw),
-		record: article.attrs,
-		datelist: mapHistoriesToDatelist(historiesRaw),
+		agentLicenses: listingRaw.agentLicenses,
+		agentListFullName: listingRaw.agentListFullName,
+		officeListName: listingRaw.officeListName,
+		officeListPhone: listingRaw.officeListPhone,
+		groupedFeatures: listingRaw.groupedFeatures,
+		currentOpenHouses: listingRaw.currentOpenHouses,
+		description: listingRaw.publicRemarks,
+
 	};
 }

@@ -53,6 +53,11 @@ export function getCanonicalDemoGeoRedirectPath(demoTail) {
 	if (!raw) return null;
 
 	const segments = raw.split('/').filter(Boolean);
+	let hasTrimmed = false;
+	if(segments[0] === 'detail') {
+		segments.shift();
+		hasTrimmed = true;
+	}
 
 	if (segments.length === 2) {
 		const a = segments[0];
@@ -66,6 +71,9 @@ export function getCanonicalDemoGeoRedirectPath(demoTail) {
 		const bLower = b.toLowerCase();
 		if (isValidStateCode(b) && !isValidStateCode(a) && !parseSoaCityStateSegment(a)) {
 			return `/demo/${bLower}/${aLower}`;
+		}
+		if(hasTrimmed) {
+			return `/demo/${segments[0]}/${segments[1]}`;
 		}
 		return null;
 	}
@@ -83,6 +91,9 @@ export function getCanonicalDemoGeoRedirectPath(demoTail) {
 			const state = city[2].toLowerCase();
 			const citySlug = city[1].toLowerCase();
 			return `/demo/${state}/${citySlug}`;
+		}
+		if(hasTrimmed) {
+			return `/demo/${segments[0]}`;
 		}
 		return null;
 	}

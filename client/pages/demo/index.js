@@ -15,7 +15,7 @@ const enumStatus = [
 	},
 ];
 
-const demoSpaRootSel = '#body';
+const demoSpaRootSel = '#detail';
 
 let demo = {
 	name: 'demo',
@@ -25,36 +25,13 @@ let demo = {
 		});
 
 		let gridSnapshot = null;
-		const userPageOpt = opt || {};
-		const viewOpt = {
-			...userPageOpt,
-			beforeSwitchToDetail($el2, o, target) {
-				const root = document.querySelector(demoSpaRootSel);
-				if (root && gridSnapshot === null) {
-					gridSnapshot = root.innerHTML;
-				}
-				if (userPageOpt.beforeSwitchToDetail) {
-					userPageOpt.beforeSwitchToDetail($el2, o, target);
-				}
-			},
-			afterSwitchToGrid($el2, o, target) {
-				const root = document.querySelector(demoSpaRootSel);
-				if (root && gridSnapshot != null) {
-					root.innerHTML = gridSnapshot;
-				}
-				emit('dom.load');
-				if (userPageOpt.afterSwitchToGrid) {
-					userPageOpt.afterSwitchToGrid($el2, o, target);
-				}
-			},
-		};
 
 		enumStatus.forEach((e) => {
-			defEnum(e.key, e.names, $el, viewOpt, exportObj);
+			defEnum(e.key, e.names, $el, opt, exportObj);
 		});
 
-		exportObj.updateDetail = function (propertyId) {
-			return fetch(`/api/demo/detail/${encodeURIComponent(propertyId)}`)
+		exportObj.updateDetail = function (prId) {
+			return fetch(`/api/demo/detail/${encodeURIComponent(prId)}`)
 				.then((r) => r.json())
 				.then((envelope) => {
 					if (!envelope || envelope.code !== 200 || envelope.error) {
@@ -65,7 +42,7 @@ let demo = {
 					}
 					const root = document.querySelector(demoSpaRootSel);
 					if (!root) {
-						return;
+						return false;
 					}
 					if (gridSnapshot === null) {
 						gridSnapshot = root.innerHTML;
@@ -77,31 +54,41 @@ let demo = {
 							Object.assign(window.context, envelope.data);
 						}
 						emit('dom.load');
-					} else if (envelope.data?.detailError) {
-						root.innerHTML = `<section class="detail demo-detail demo-detail-missing"><div class="grid grid-xs-1"><h1 class="h3">Listing unavailable</h1><p>${String(envelope.data.detailError)}</p></div></section>`;
+						return true;
 					}
+					return false;
 				})
 				.catch((err) => {
 					// eslint-disable-next-line no-console
 					console.error('updateDetail', err);
+					return false;
 				});
 		};
 
 		if (window.location.pathname.indexOf('/demo/sitemap') > -1) {
 			return;
 		}
-		const _demoSpaRouter = new Router(
+		return new Router(
 			[
 				{
 					reg: /^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/i,
 					loading: (to) => {
 						return new Promise((resolve) => {
 							const propertyId = to.params[2];
-							exportObj.switchToDetail();
-							exportObj.updateDetail(propertyId).finally(() => {
-								const detailEl = document.querySelector('.demo-detail');
-								if (detailEl) {
-									detailEl.scrollIntoView({ behavior: 'smooth' });
+							//if to is same as current path, don't load
+							if (to.pathname === window.location.pathname) {
+								resolve(null);
+								return;
+							}
+							exportObj.updateDetail(propertyId).then((detailLoaded) => {
+								if (detailLoaded) {
+									exportObj.switchToDetail();
+									const detailEl = document.querySelector('.demo-detail');
+									if (detailEl) {
+										detailEl.scrollIntoView({ behavior: 'smooth' });
+									}
+								} else {
+									exportObj.switchToGrid();
 								}
 								resolve(null);
 							});
@@ -129,9 +116,13 @@ let demo = {
 			],
 			{ linkScope: 'demo' },
 		);
-		void _demoSpaRouter;
 	},
 	load: function ($el, opt, exportObj) {
+		if(context.detail){
+			exportObj.switchToDetail();
+		} else {
+			exportObj.switchToGrid();
+		}
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				if (opt && opt.data) {

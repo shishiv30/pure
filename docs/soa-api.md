@@ -310,7 +310,6 @@ Optional: `id`, `zipcode`, `path`. See mapper for field names from the API.
 | GET | `/mlsid/{mlsId}/mlsnumber/{mlsNumber}/listings` |
 | GET | `/properties/{propertyId}/histories` |
 | GET | `/properties/{propertyId}/primary-listing` |
-| GET | `/properties/{propertyId}/primary-listing/v2` |
 | GET | `/refreshstatusmap` |
 | GET | `/saved-searches/{savedSearchId}` |
 | GET | `/states/{state}/cities/listingCount` |

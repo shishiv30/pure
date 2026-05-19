@@ -1,5 +1,20 @@
 import { formatPrice, formatNumber, formatSqft } from '../client/js/core/format.js';
 import { getGeoDisplayText } from './geo.js';
+import { mapSOADataToMetadata } from './property.js';
+
+/**
+ * @param {unknown} soaListings
+ * @returns {object[]}
+ */
+export function mapSOADataListToArticles(soaListings) {
+	if (!Array.isArray(soaListings)) {
+		return [];
+	}
+	return soaListings
+		.map(mapSOADataToMetadata)
+		.filter(Boolean)
+		.map((meta) => mapPropertyToArticle(meta));
+}
 
 /**
  * Map a Movoto-style property record to the article card shape used by `comp_article`.
@@ -119,7 +134,7 @@ export function mapPropertyToArticle(property) {
 			desc: 'Year Built',
 		});
 	}
-	
+
 	const geo = property.geo;
 	const displayAddress = getGeoDisplayText(geo);
 
@@ -129,7 +144,7 @@ export function mapPropertyToArticle(property) {
 		imgTag: officeListName,
 		imgAlt: displayAddress,
 		title: displayAddress,
-		path: `/demo/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.propertyId}`,
+		path: `/demo/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.prId}`,
 		tags: tags,
 		attrs: attrs,
 	};

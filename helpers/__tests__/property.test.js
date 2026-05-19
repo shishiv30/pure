@@ -1,13 +1,8 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mapPropertyToArticle } from '../article.js';
+import { mapPropertyToArticle, mapSOADataListToArticles } from '../article.js';
 import { geoType } from '../geo.js';
-import {
-	collectPhotoUrls,
-	mapSOADataListToArticles,
-	mapSOADataToMetadata,
-	toSoaPreviewPhotoUrl,
-} from '../property.js';
+import { collectPhotoUrls, mapSOADataToMetadata, toSoaPreviewPhotoUrl } from '../property.js';
 
 /** Minimal SOA Pure listing (subset of production shape). */
 const soaPureListing = {
@@ -29,6 +24,9 @@ const soaPureListing = {
 		name: 'PENDING',
 	},
 	listingUrl: 'winters-tx/101-mel-st-winters-tx-79567/pid_dh5p9ng4nh/',
+	mlsPublicRecordAssociation: {
+		id: '45a6f0ff-21ec-45f6-8a35-69de1bc9368d',
+	},
 	lotSizeSqft: 8233,
 	officeListName: 'Hunter Ranch and Realty',
 	photoCount: 29,
@@ -113,10 +111,11 @@ describe('mapPropertyToArticle', () => {
 		const meta = mapSOADataToMetadata(soaPureListing);
 		const article = mapPropertyToArticle(meta);
 		assert.equal(article.metadata.propertyId, soaPureListing.id);
+		assert.equal(article.metadata.prId, soaPureListing.mlsPublicRecordAssociation.id);
 		assert.equal(article.img, meta.photos[0]);
 		assert.equal(
 			article.path,
-			`/demo/detail/${meta.geo.state.toLowerCase()}/${meta.geo.zipcode}/${soaPureListing.id}`,
+			`/demo/detail/${meta.geo.state.toLowerCase()}/${meta.geo.zipcode}/${meta.prId}`,
 		);
 		assert.equal(
 			article.title,
