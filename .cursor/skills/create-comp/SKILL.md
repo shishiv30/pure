@@ -341,7 +341,7 @@ There are two usage patterns that match Pattern A and Pattern B above.
 
 #### 6.1 Global components (header/footer) – Pattern A
 
-**In page config (`server/configs/<page>.js`):**
+**In page config (`server/controllers/<page>.js`):**
 
 ```js
 import { createHeaderComponent } from '../ejs/comp_header.js';
@@ -381,7 +381,7 @@ export default {
 Dynamic pages use **section data** + **template mapping** instead of per-component JS factories.
 
 - Section data comes from `data/page/<page>.js` (and CMS).
-- `server/configs/page.js` loads the sections and passes them to `server/ejs/page.ejs`.
+- `server/controllers/page.js` loads the sections and passes them to `server/ejs/page.ejs`.
 
 In `page.ejs`, sections are rendered like this:
 
@@ -425,7 +425,7 @@ In `page.ejs`, sections are rendered like this:
 - **Page section templates**: `server/ejs/comp_hero.ejs`, `comp_scrollview.ejs`, `comp_points.ejs`, `comp_gallery.ejs`, `comp_timeline.ejs`
 - **Section → template mapping**: `data/comps/comp_template.js`
 - **Page data examples**: `data/page/index.js`, `data/page/ai-trend.js`, `data/page/human.js`
-- **Dynamic page config**: `server/configs/page.js`
+- **Dynamic page config**: `server/controllers/page.js`
 - **Dynamic page view**: `server/ejs/page.ejs` (shows section looping and template includes)
 - **URL helpers**: `helpers/url.js` (`getHref`, `getSrc`, `getImgCdnUrl`)
 - **Config**: `server/config.js` (for `appHost`, `cdnHost`)

@@ -71,7 +71,7 @@ Prefer the **smallest change that fixes the real cause**, not the most general f
 
 ### SOA Pure listing data
 
-- Treat **SOA Pure** fields as the source of truth after `mapSOADataToMetadata` (and the mapped names in `mapPropertyToArticle`).
+- Treat **SOA Pure** fields as the source of truth after `mapSOADataToMetadata` (list cards: `mapPropertyToArticle`; detail page: `mapPropertyDetailToArticle`).
 - **Do not** add `??` / `||` fallbacks to alternate field names, legacy shapes, or synthetic defaults unless the user explicitly asks.
 - If a required SOA field is missing, return empty / omit the UI piece — do not substitute `propertyId`, `fullAddress`, or guessed aliases.
 

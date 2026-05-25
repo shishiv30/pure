@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchStatesFromGeoarea, fetchFromGeoarea } from '../configs/realestate.js';
+import { fetchStatesFromGeoarea, fetchFromGeoarea } from '../controllers/realestate.js';
 import {
 	mapSoaStatesResponse,
 	mapSoaCountiesResponse,

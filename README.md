@@ -116,7 +116,6 @@ GitHub workflow `.github/workflows/cursor-code-review.yml` currently triggers on
 ├── server/
 │   ├── app.js
 │   ├── config.js
-│   ├── configs/
 │   ├── controllers/
 │   ├── routes/
 │   ├── ejs/
@@ -154,7 +153,7 @@ Defined in `webpack.config.base.page.js`:
 ## Architecture Snapshot
 
 - Client runtime is declarative: DOM nodes with `data-role` are discovered and initialized through `Page.refreshComponents()` and `Plugin`.
-- Server rendering is config-driven through `BaseController` and `server/configs/*`.
+- Server rendering is config-driven through `BaseController` in `server/controllers/index.js` and sibling route config modules (see `configbase.js`).
 - API layer combines app endpoints (`/api/*`) and SOA proxy routes (`/api/soa/*`).
 - CMS content is consumed with fallback to local data when CMS health is unavailable.
 - **`data/`** holds default, mock, and sample structures; **`helpers/`** holds transforms and path/URL mapping. Convention: `.cursor/background.json` (`data_folder`); renames: `.cursor/rules/rename-or-move-file.mdc`.

@@ -62,7 +62,7 @@ Add `docs/<name>-api.md` (e.g. `docs/soa-api.md`) with:
 
 ### 4. Create fetch layer
 
-In `server/configs/<name>.js` (e.g. `realestate.js`):
+In `server/controllers/<name>.js` (e.g. `realestate.js`):
 
 - `getHeaders()` – build auth headers (e.g. `X-MData-Key`)
 - `fetchFromApi(method, path, options)` – generic fetch with:
@@ -137,7 +137,7 @@ Reference: `server/routes/api.soa.property.js`.
 |-------|----------------|
 | `server/config.js` | Base URL, API key from env |
 | `docs/*-api.md` | Reference: APIs table, schemas, POST bodies |
-| `server/configs/*.js` | Fetch upstream API |
+| `server/controllers/*.js` | Fetch upstream API |
 | `helpers/*Mapper.js` | Raw → UI model (ensureArray + map*) |
 | `server/routes/api.*.js` | Route registration, handlers: fetch → map → res.json |
 
@@ -163,7 +163,7 @@ export async function getCountiesByStateCode(req, res) {
 
 - API list and schemas: `docs/soa-api.md`
 - Geo SOA mappers: `helpers/geo.js` (`mapSoaStatesResponse`, etc.)
-- Config: `server/configs/realestate.js`
+- Config: `server/controllers/realestate.js`
 - Routes: `server/routes/api.soa.js`
 
 ## Done checklist

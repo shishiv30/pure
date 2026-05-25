@@ -1,6 +1,6 @@
 import express from 'express';
 import config from '../config.js';
-import { fetchFromSoa } from '../configs/realestate.js';
+import { fetchFromSoa } from '../controllers/realestate.js';
 
 const router = express.Router();
 router.use(express.json());

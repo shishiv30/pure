@@ -28,9 +28,9 @@
         "routes": "server/routes/index.js",
         "controller": {
           "class": "BaseController",
-          "file": "server/controllers/basecontroller.js",
-          "configs_directory": "server/configs/",
-          "contract_reference": "server/configs/configbase.js"
+          "file": "server/controllers/index.js",
+          "configs_directory": "server/controllers/",
+          "contract_reference": "server/controllers/configbase.js"
         },
         "api": {
           "app_prefix": "/api",
@@ -73,7 +73,7 @@
     "root": "data/",
     "purpose": "Canonical home for hardcoded seed data: example structures, defaults, and mock values used as samples or local fallbacks before/atop CMS.",
     "agent_rules": [
-      "When you need default, mock, fixture, or sample data to illustrate shape or fill dev/demo — add or extend files under data/, not helpers/, server/configs/, or inline in routes.",
+      "When you need default, mock, fixture, or sample data to illustrate shape or fill dev/demo — add or extend files under data/, not helpers/, route config modules in server/controllers/, or inline in routes.",
       "helpers/ holds mapping and transform logic (geo, article, property, url, path); data/ holds the actual payload objects and CSV sources.",
       "Page/comp/theme samples sync to CMS via cms/scripts/seed-and-sync.js; prefer CMS API for production updates (see cms/API.md)."
     ],

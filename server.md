@@ -60,9 +60,9 @@ flowchart TD
 
 ## Controller and Config Contract
 
-`server/controllers/basecontroller.js` orchestrates config-driven behavior.
+`server/controllers/index.js` (`BaseController`) orchestrates config-driven behavior and registers route configs.
 
-Config modules in `server/configs/*` commonly define:
+Other modules in `server/controllers/*` (route configs, e.g. `demo.js`, `page.js`) commonly define:
 
 - `name`
 - `beforeGet(payload)` (optional)
@@ -70,7 +70,7 @@ Config modules in `server/configs/*` commonly define:
 - `seo(payload)` (optional)
 - `preload(payload)` (optional)
 
-`server/configs/configbase.js` contains the contract reference used by this architecture.
+`server/controllers/configbase.js` contains the contract reference used by this architecture.
 
 ## API and Proxy Pattern
 
@@ -81,7 +81,7 @@ Config modules in `server/configs/*` commonly define:
 ### SOA API (`/api/soa`)
 
 - Route adapters are split by domain (`property`, `school`, `poi`, `geoarea`).
-- Upstream calls are centralized through fetch helpers in `server/configs/realestate.js`.
+- Upstream calls are centralized through fetch helpers in `server/controllers/realestate.js`.
 - Some geo responses are normalized through mapper utilities before returning.
 
 ## Data Source Strategy

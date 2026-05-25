@@ -1,9 +1,24 @@
-import { formatNumber } from '../client/js/core/format.js';
+import { formatNumber, formatSqft } from '../client/js/core/format.js';
 import { getCityPath, getStatePath, mapAddressToGeo } from './geo.js';
-import { mapPropertyToArticle } from './article.js';
 import { stringToDate } from './datetime.js';
 /** SOA photo URL suffixes → preview `_p.webp` (case-insensitive). */
 const SOA_PHOTO_WEBP_SUFFIX = /(?:_r|_l|_p)?\.webp$/i;
+
+/**
+ * Unwrap SOA API envelope `{ data }` or return the payload as-is.
+ * @param {unknown} raw
+ * @returns {unknown}
+ */
+function unwrapPropertyApiPayload(raw) {
+	if (raw == null || typeof raw !== 'object') {
+		return raw;
+	}
+	const o = /** @type {Record<string, unknown>} */ (raw);
+	if ('data' in o) {
+		return o.data;
+	}
+	return raw;
+}
 
 
 /**
@@ -39,24 +54,49 @@ export function mapSoaPhotosToUrls(photos) {
 }
 
 /**
+ * @param {unknown} groupedFeatures — object or JSON string from SOA
+ * @returns {Record<string, string[]>|null}
+ */
+export function normalizeGroupedFeatures(groupedFeatures) {
+	if (groupedFeatures == null) {
+		return null;
+	}
+	let raw = groupedFeatures;
+	if (typeof groupedFeatures === 'string') {
+		try {
+			raw = JSON.parse(groupedFeatures);
+		} catch {
+			return null;
+		}
+	}
+	if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+		return null;
+	}
+	return /** @type {Record<string, string[]>} */ (raw);
+}
+
+/**
  * @param {Record<string, unknown>} listing
  * @returns {unknown}
  */
 function resolveSoaListingPrice(listing) {
-	if (listing.listingStatus !== 'ACTIVE') {
-		if (listing.closePrice != null && listing.closePrice !== '') {
-			return listing.closePrice;
-		}
+	if(listing.listingStatus.name === 'SOLD') {
+		return listing.soldPrice || listing.closePrice;
+	} else if (listing.listingStatus.name !== 'ACTIVE' && listing.listingStatus.name !== 'PENDING') {
+		return listing.closePrice || listing.soldPrice || listing.listPrice;
 	}
 	return listing.listPrice;
 }
 
 /**
- * Map SOA Pure listing to normalized metadata (raw fields only) for `mapPropertyToArticle`.
+ * Map SOA Pure listing (+ optional histories) to normalized metadata for article mappers.
+ * List cards use listing only; detail pages pass `historiesRaw` for a sorted `histories` array.
+ *
  * @param {object|null|undefined} soaListing
+ * @param {unknown} [historiesRaw]
  * @returns {object|null}
  */
-export function mapSOADataToMetadata(soaListing) {
+export function mapSOADataToMetadata(soaListing, historiesRaw = null) {
 	if (!soaListing || typeof soaListing !== 'object') {
 		return null;
 	}
@@ -70,13 +110,21 @@ export function mapSOADataToMetadata(soaListing) {
 			? /** @type {Record<string, unknown>} */ (L.address)
 			: null;
 
-	return {
+	const sqftTotal = L.sqftTotal;
+	const lotSizeSqft = L.lotSizeSqft;
+	const price = resolveSoaListingPrice(L);
+	const area = Number(sqftTotal || lotSizeSqft);
+	const areaUnit = 'Sqft';
+	const areaDisplay = area > 0 ? formatSqft(Number(area)) : '';
+	const pricePerArea = area > 0 && price > 0 ? price / area : null;
+
+	const meta = {
 		propertyId,
 		geo: mapAddressToGeo(address),
 		bed: L.bedrooms,
 		bath: L.bathroomsTotal,
 		attributes: L.attributesTags,
-		price: resolveSoaListingPrice(L),
+		price,
 		listingStatus: L.listingStatus,
 		openHouses: L.currentOpenHouses,
 		priceChange: L.priceChangeAmount,
@@ -85,8 +133,12 @@ export function mapSOADataToMetadata(soaListing) {
 		mlsNumber: L.mlsNumber,
 		mlsId: L?.mls?.id,
 		mlsName: L?.mls?.name,
-		sqftTotal: L.sqftTotal,
-		lotSizeSqft: L.lotSizeSqft,
+		sqftTotal,
+		lotSizeSqft,
+		area,
+		areaUnit,
+		areaDisplay,
+		pricePerArea,
 		yearBuilt: L.yearBuilt,
 		photos: L?.photos?.length > 0 ? mapSoaPhotosToUrls(L.photos) : null,
 		photoCount: L?.photoCount ?? 0,
@@ -97,7 +149,18 @@ export function mapSOADataToMetadata(soaListing) {
 		officeListName: L.officeListName,
 		daysOnMarket: L.daysOnMarket,
 		listingUrl: L.listingUrl,
+		description: L.publicRemarks,
+		agentLicenses: L.agentLicenses,
+		agentListFullName: L.agentListFullName,
+		officeListPhone: L.officeListPhone,
+		groupedFeatures: normalizeGroupedFeatures(L.groupedFeatures),
 	};
+
+	if (historiesRaw != null) {
+		meta.histories = mapHistoriesToDatelist(historiesRaw);
+	}
+
+	return meta;
 }
 
 /**
@@ -189,6 +252,45 @@ export function mapHistoriesToDatelist(historiesRaw) {
 }
 
 /**
+ * Map sorted history rows to `comp_timeline` data shape.
+ * @param {Array<{ date: string, title: string, subtitle: string }>} rows
+ * @returns {{ heading: string, intro: string, entries: object[] }|null}
+ */
+export function mapHistoryRowsToTimelineComp(rows) {
+	if (!Array.isArray(rows) || !rows.length) {
+		return null;
+	}
+	return {
+		heading: 'History',
+		intro: '',
+		entries: rows.map((row) => ({
+			type: 'desc',
+			date: row.date,
+			text: row.subtitle ? `${row.title} — ${row.subtitle}` : row.title,
+		})),
+	};
+}
+
+/**
+ * Map SOA `currentOpenHouses` rows to `comp_open_houses` shape.
+ * @param {unknown} openHouses
+ * @returns {{ heading: string, items: object[] }|null}
+ */
+export function mapOpenHousesToComp(openHouses) {
+	if (!Array.isArray(openHouses) || !openHouses.length) {
+		return null;
+	}
+	const items = openHouses.filter((row) => row && typeof row === 'object');
+	if (!items.length) {
+		return null;
+	}
+	return {
+		heading: 'Open Houses',
+		items,
+	};
+}
+
+/**
  * @param {{ city?: string, state?: string, fullAddress?: string, propertyId?: string }} prop
  * @param {string} [basePath]
  * @returns {{ links: Array<{ text: string, href: string }> }}
@@ -206,23 +308,3 @@ export function buildDetailBreadcrumb(prop, basePath = '/demo') {
 	return { links };
 }
 
-/**
- * Map SOA listing + histories to demo detail shape (article base + photos, description, datelist).
- * @param {object|null} listingRaw — raw SOA listing
- * @param {unknown} historiesRaw
- * @param {string[]} photoUrls
- * @param {string} propertyId
- * @returns {object|null}
- */
-export function mapSOADataToArticleDetail(listingRaw) {
-	return {
-		agentLicenses: listingRaw.agentLicenses,
-		agentListFullName: listingRaw.agentListFullName,
-		officeListName: listingRaw.officeListName,
-		officeListPhone: listingRaw.officeListPhone,
-		groupedFeatures: listingRaw.groupedFeatures,
-		currentOpenHouses: listingRaw.currentOpenHouses,
-		description: listingRaw.publicRemarks,
-
-	};
-}

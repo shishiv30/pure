@@ -125,7 +125,7 @@ To create a server-rendered page (like the index page), follow this pattern:
 
 **Step 1: Create page config**
 
-Create `server/configs/<pageName>.js`:
+Create `server/controllers/<pageName>.js`:
 
 ```js
 import { createHeaderComponent } from '../ejs/comp_header.js';
@@ -163,11 +163,14 @@ export default {
 
 **Step 2: Register config**
 
-Add to `server/configs/index.js`:
+In `server/controllers/index.js`, import the config and add it to `routeConfigs`:
 
 ```js
 import <pageName> from './<pageName>.js';
-export default [geo, demo, indexPage, <pageName>];
+// …inside routeConfigs array:
+	geo,
+	demo,
+	<pageName>,
 ```
 
 **Step 3: Create EJS template**
@@ -231,7 +234,7 @@ If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` ha
 4. Controller calls `toPage(model)` → renders `<pageName>.ejs` with model
 5. EJS includes components → components render their data
 
-**Example**: See `server/configs/page/index.js` and `server/ejs/index.ejs` for the index page implementation.
+**Example**: See `server/controllers/page/index.js` and `server/ejs/index.ejs` for the index page implementation.
 
 ## Checklist
 
@@ -263,4 +266,4 @@ If the page needs its own CSS/JS bundle, ensure `webpack.config.base.page.js` ha
 - Icons: `client/scss/_icon.scss` (use `icon-*` classes)
 - Welcome images: `client/assets/images/welcome/` (point0–point9)
 - Server EJS components: See `.cursor/skills/create-comp/SKILL.md` for component creation guide
-- Server-rendered page examples: `server/configs/page/index.js`, `server/ejs/index.ejs`, `server/routes/page.js` (index route)
+- Server-rendered page examples: `server/controllers/page/index.js`, `server/ejs/index.ejs`, `server/routes/page.js` (index route)

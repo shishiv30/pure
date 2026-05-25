@@ -73,19 +73,21 @@ export function buildDemoSpaInnerHtml(data) {
 	if (!d) {
 		return '';
 	}
-	const photos = d.photos || {};
-	const images = photos.images || [];
-	const initial = Math.min(photos.initialIndex || 0, Math.max(0, images.length - 1));
+	const album = d.album || {};
+	const images = album.images || [];
+	const initial = Math.min(album.initialIndex || 0, Math.max(0, images.length - 1));
 	const firstImg = images.length ? imgSrc(images[initial]) : '';
 	const dataImages = esc(JSON.stringify(images));
-	const tags = (d.tags || [])
+	const tagItems = (d.tags && d.tags.items) || [];
+	const tags = tagItems
 		.map((tag) => {
 			const cls = tag.className ? ` ${esc(tag.className)}` : '';
 			const label = esc(tag.text != null ? tag.text : tag.value || '');
 			return `<span class="tag${cls}">${label}</span>`;
 		})
 		.join('');
-	const record = (d.record || [])
+	const recordItems = (d.record && d.record.items) || [];
+	const record = recordItems
 		.map((attr) => {
 			const v = attr.value
 				? `<span${attr.className ? ` class="${esc(attr.className)}"` : ''}>${esc(attr.value)}</span>`
@@ -96,17 +98,17 @@ export function buildDemoSpaInnerHtml(data) {
 			return `<li>${v}${k}</li>`;
 		})
 		.join('');
-	const dates = (d.datelist || [])
+	const timelineEntries = (d.timeline && d.timeline.entries) || [];
+	const dates = timelineEntries
+		.filter((entry) => entry.type === 'desc')
 		.map(
-			(row) =>
-				`<li><time>${esc(row.date)}</time><strong>${esc(row.title)}</strong>${
-					row.subtitle ? `<span>${esc(row.subtitle)}</span>` : ''
-				}</li>`,
+			(entry) =>
+				`<li><time>${esc(entry.date)}</time><strong>${esc(entry.text)}</strong></li>`,
 		)
 		.join('');
 	const albumSection =
 		images.length > 0
-			? `<section class="section large demo-album-wrap"><div class="panel fixed fixed-max-xs grid grid-xs-1"><div class="album" data-role="album" data-index="${initial}" data-images="${dataImages}"><div class="album-list"><img src="${esc(firstImg)}" loading="lazy" alt="${esc(photos.alt || '')}"></div></div></div></section>`
+			? `<section class="section large demo-album-wrap"><div class="panel fixed fixed-max-xs grid grid-xs-1"><div class="album" data-role="album" data-index="${initial}" data-images="${dataImages}"><div class="album-list"><img src="${esc(firstImg)}" loading="lazy" alt="${esc(album.alt || '')}"></div></div></div></section>`
 			: '';
 	const nearby = data.nearbyArticleComponent;
 	const nearbyItems = nearby && nearby.data && nearby.data.length
@@ -115,10 +117,11 @@ export function buildDemoSpaInnerHtml(data) {
 	const nearbySection = nearbyItems
 		? `<section class="result demo-nearby"><h2 class="f4">Nearby in area</h2><ul>${nearbyItems}</ul></section>`
 		: '';
+	const description = d.paragraph && d.paragraph.text;
 	return `<section class="detail demo-detail"><div class="grid grid-xs-1"><h1 class="h3">${esc(d.title)}</h1>${
 		tags ? `<div class="filter demo-detail-tags"><span class="f7">Tags</span>${tags}</div>` : ''
 	}${albumSection}${
-		d.description ? `<div class="demo-detail-description">${esc(d.description)}</div>` : ''
+		description ? `<div class="demo-detail-description">${esc(description)}</div>` : ''
 	}${
 		record
 			? `<h2 class="f4">Facts</h2><ul class="demo-detail-record">${record}</ul>`

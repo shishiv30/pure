@@ -83,10 +83,6 @@ let demo = {
 							exportObj.updateDetail(propertyId).then((detailLoaded) => {
 								if (detailLoaded) {
 									exportObj.switchToDetail();
-									const detailEl = document.querySelector('.demo-detail');
-									if (detailEl) {
-										detailEl.scrollIntoView({ behavior: 'smooth' });
-									}
 								} else {
 									exportObj.switchToGrid();
 								}

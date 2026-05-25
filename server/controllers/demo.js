@@ -4,12 +4,11 @@ import {
 	getGeoByPath,
 } from '../../helpers/geo.js';
 import { getGeoCityByIp } from '../../helpers/ip.js';
-import { mapSOADataListToArticles } from '../../helpers/article.js';
 import {
-	collectPhotoUrls,
-	mapSOADataToArticleDetail,
-	mapSOADataToMetadata,
-} from '../../helpers/property.js';
+	buildDetailSeo,
+	mapPropertyDetailToArticle,
+	mapSOADataListToArticles,
+} from '../../helpers/article.js';
 import config from '../config.js';
 import {
 	getPropertyHistoryById,
@@ -90,14 +89,15 @@ export default {
 	},
 	beforeGet: function (req, payload) {
 		let geo;
+		const prId = req.query.prId;
+
 		const geoPathRaw = req.query.geoPath;
 		if (geoPathRaw) {
 			geo = getGeoByPath(geoPathRaw);
-		} else if (req.query.ip || req.ip) {
+		} else if ((req.query.ip || req.ip) && !prId) {
 			const ip = req.query.ip || req.ip;
 			geo = getGeoCityByIp(ip);
 		}
-		const prId = req.query.prId;
 
 		return {
 			...payload,
@@ -117,38 +117,24 @@ export default {
 		const welcomeImage = getImgCdnUrl(config.cdnHost, '/welcome.webp');
 
 		let [nearbyRaw, listingRaw, historiesRaw] = await Promise.all([
-			searchHouse(geo),
+			geo ? searchHouse(geo) : Promise.resolve(null),
 			prId ? getPropertyListingInfoById(prId) : Promise.resolve(null),
 			prId ? getPropertyHistoryById(prId) : Promise.resolve(null),
 		]);
 
-		let detail = null;
-		if(listingRaw && listingRaw.listingUrl) {
-			detail = mapSOADataToMetadata(listingRaw);
-			detail.histories = historiesRaw;
-			Object.assign(detail, mapSOADataToArticleDetail(listingRaw));
-		}
+		const detail = mapPropertyDetailToArticle(listingRaw, historiesRaw);
 
-
-		let articles = []; 
+		let articles = [];
 		let articleTotalCount = 0;
 		if (nearbyRaw && nearbyRaw.listings && nearbyRaw.listings.length > 0) {
-			articles =
-				mapSOADataListToArticles(nearbyRaw.listings)
+			articles = mapSOADataListToArticles(nearbyRaw.listings);
 			articleTotalCount = nearbyRaw.articleTotalCount;
 		}
 
 		const articleComponent = createArticleComponent(articles);
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
-		const seo = detail
-			? {
-					title: detail.title || 'Listing',
-					description: detail.description || '',
-					desc: detail.description || '',
-					keywords: getSeo(geo).keywords,
-				}
-			: getSeo(geo);
+		const seo = buildDetailSeo(detail) || getSeo(geo);
 
 		return {
 			seo,

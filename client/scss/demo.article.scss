@@ -9,11 +9,11 @@ article {
     box-shadow: 0 0 0px 1px var(--color-bg-l1);
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: var(--article-width);
+    aspect-ratio: 4/3;
     overflow: hidden;
-    gap: var(--g2);
-    padding-bottom: var(--g2);
+    gap: var(--article-gap);
+    padding-bottom: var(--article-gap);
 
     .tags {
         position: absolute;
@@ -23,12 +23,10 @@ article {
     }
 
     >figure {
-        width: 100%;
-        padding-top: 65%;
-        height: 0;
         order: 1;
         position: relative;
         overflow: hidden;
+        flex: 1;
 
         >figcaption {
             position: absolute;
@@ -43,11 +41,8 @@ article {
         }
 
         >img {
-            height: 100%;
             width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
+            height: 100%;
             object-fit: cover;
         }
     }
@@ -58,19 +53,20 @@ article {
 
         address {
             font-size: var(--font-size-6);
+            color: var(--color-l1);
             @include singleline();
         }
     }
 
     >ul {
         flex-shrink: 0;
+        flex-direction: row;
         order: 2;
-        padding: 0 var(--article-gap);
+        margin: 0 var(--article-gap);
         font-weight: var(--font-weight-medium);
         display: flex;
         gap: var(--g2) var(--article-gap);
         align-items: baseline;
-        flex-wrap: wrap;
         height: 1.2rem;
         overflow: hidden;
 
@@ -84,11 +80,10 @@ article {
 
             span {
                 font-size: var(--font-size-5);
-                font-weight: var(--font-weight-medium);
             }
 
             abbr {
-                font-size: var(--font-size-6);
+                font-size: var(--font-size-7);
                 color: var(--color-l1)
             }
         }

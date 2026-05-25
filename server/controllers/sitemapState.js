@@ -1,4 +1,4 @@
-import { fetchFromGeoarea } from '../configs/realestate.js';
+import { fetchFromGeoarea } from './realestate.js';
 import {
 	getCountiesForSitemap,
 	getStateFullName,

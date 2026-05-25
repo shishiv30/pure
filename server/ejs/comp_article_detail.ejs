@@ -1,0 +1,27 @@
+<%_ if (detail) { _%>
+<section class="detail demo-detail" id="detail">
+	<div class="grid grid-xs-1">
+		<%_ if (detail.title) { _%>
+			<h1 class="h3"><%= detail.title %></h1>
+		<%_ } _%>
+		<%_ if (detail.tags) { _%>
+			<%- include('comp_tags', { tags: detail.tags }) %>
+		<%_ } _%>
+		<%_ if (detail.album) { _%>
+			<%- include('comp_album', { album: detail.album, getSrc }) %>
+		<%_ } _%>
+		<%_ if (detail.paragraph) { _%>
+			<%- include('comp_paragraph', { paragraph: detail.paragraph }) %>
+		<%_ } _%>
+		<%_ if (detail.record) { _%>
+			<%- include('comp_record', { record: detail.record.items, heading: detail.record.heading }) %>
+		<%_ } _%>
+		<%_ if (detail.openHouses) { _%>
+			<%- include('comp_open_houses', { openHouses: detail.openHouses }) %>
+		<%_ } _%>
+		<%_ if (detail.timeline) { _%>
+			<%- include('comp_timeline', { comp: detail.timeline }) %>
+		<%_ } _%>
+	</div>
+</section>
+<%_ } _%>

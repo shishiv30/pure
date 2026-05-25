@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import BaseController from '../controllers/basecontroller.js';
-import { fetchPropertiesImagesFromSOA } from '../configs/demo.js';
+import BaseController from '../controllers/index.js';
+import { fetchPropertiesImagesFromSOA } from '../controllers/demo.js';
 import { getGeoByPath } from '../../helpers/geo.js';
 import { mapSOADataListToArticles } from '../../helpers/article.js';
 import { searchHouse } from './api.soa.property.js';
@@ -214,7 +214,7 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *                         example: "/demo/detail/tx/79567/45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
  *                       tags:
  *                         type: array
- *                         description: Status badges (className/text) or price-change chips (key/value)
+ *                         description: Status and price-change badges (className/text)
  *                         items:
  *                           type: object
  *                           properties:
@@ -223,13 +223,7 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *                               example: "Pending"
  *                             className:
  *                               type: string
- *                               example: "tip"
- *                             key:
- *                               type: string
  *                               example: "danger"
- *                             value:
- *                               type: string
- *                               example: "Reduced 50K"
  *                       attrs:
  *                         type: array
  *                         description: Price, beds, baths, sqft, price per sqft, year built

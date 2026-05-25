@@ -26,7 +26,9 @@
   <div class="tags">
     <%_for(var i=0; i<article.tags.length; i++){_%>
     <%_ const tag = article.tags[i]; _%>
+    <%_if(tag.text){_%>
     <span class="tag<%=tag.className ? ' ' + tag.className : ''%>"><%=tag.text%></span>
+    <%_}_%>
     <%_}_%>
   </div>
   <%_}_%>

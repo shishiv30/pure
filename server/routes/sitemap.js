@@ -1,4 +1,4 @@
-import BaseController from '../controllers/basecontroller.js';
+import BaseController from '../controllers/index.js';
 
 async function handleSitemapRoute(controller, res) {
 	try {

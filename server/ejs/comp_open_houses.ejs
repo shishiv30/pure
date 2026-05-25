@@ -1,0 +1,16 @@
+<%_ if (openHouses && openHouses.items && openHouses.items.length) { _%>
+<%_ if (openHouses.heading) { _%>
+<h2 class="f4"><%= openHouses.heading %></h2>
+<%_ } _%>
+<ul class="demo-detail-open-houses">
+	<%_ for (var i = 0; i < openHouses.items.length; i++) { _%>
+		<%_ const row = openHouses.items[i]; _%>
+		<li>
+			<%_ if (row.startDate) { _%><time><%= row.startDate %></time><%_ } _%>
+			<%_ if (row.startTime) { _%><span><%= row.startTime %></span><%_ } _%>
+			<%_ if (row.endDate) { _%><span><%= row.endDate %></span><%_ } _%>
+			<%_ if (row.endTime) { _%><span><%= row.endTime %></span><%_ } _%>
+		</li>
+	<%_ } _%>
+</ul>
+<%_ } _%>

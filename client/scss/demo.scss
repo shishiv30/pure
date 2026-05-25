@@ -87,6 +87,7 @@
 
     .footer {
         grid-area: footer;
+        margin-top: var(--g4);
     }
 
     display: grid;
@@ -167,8 +168,11 @@
                 > ul {
                     display:flex;
                     flex-wrap: nowrap;
-                    li{
+                    > li{
                         flex: 0 0 var(--item-width);
+                        article{
+                            --article-width: var(--item-width);
+                        }
                     }
                 }
             }
@@ -228,10 +232,7 @@
         gap: var(--g2);
         padding: 0 var(--g2) ;
     }
-
-
     li {
-        cursor: pointer;
     }
 }
 

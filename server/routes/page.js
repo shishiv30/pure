@@ -1,4 +1,4 @@
-import BaseController from '../controllers/basecontroller.js';
+import BaseController from '../controllers/index.js';
 
 export default function registerPage(router) {
 	// Dynamic page: :key drives data source. In production uses data/page/{key}.js only; else CMS then data/page/{key}.js

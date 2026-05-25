@@ -7,8 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import BaseController from '../basecontroller.js';
-import routeConfigs from '../../configs/index.js';
+import BaseController from '../index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../../../dist');
@@ -155,10 +154,12 @@ afterEach(() => {
 });
 
 describe('BaseController + route config', () => {
-	test('getConfig resolves real entries from configs/index.js', () => {
-		const geo = routeConfigs.find((e) => e.name === 'geo');
-		assert.ok(geo);
-		assert.equal(typeof geo.get, 'function');
+	test('getConfig resolves real route config entries', () => {
+		const req = createMockReq();
+		const res = createMockRes();
+		const bc = new BaseController(req, res, 'geo');
+		assert.equal(bc.config.name, 'geo');
+		assert.equal(typeof bc.config.get, 'function');
 	});
 
 	test('constructor throws when no matching config', () => {

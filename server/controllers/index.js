@@ -1,11 +1,21 @@
+// Full BaseController config contract: see ./configbase.js
 import useragent from 'express-useragent';
-import config from '../configs/index.js';
 import serverConfig from '../config.js';
+import geo from './geo.js';
+import demo from './demo.js';
+import demoSitemap from './demoSitemap.js';
+import demoSitemapState from './demoSitemapState.js';
+import demoSitemapCounty from './demoSitemapCounty.js';
+import demoSitemapCity from './demoSitemapCity.js';
+import sitemap from './sitemap.js';
+import sitemapState from './sitemapState.js';
+import sitemapCounty from './sitemapCounty.js';
+import sitemapCity from './sitemapCity.js';
+import pageConfig from './page.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
 import { getHref, getSrc } from '../../helpers/url.js';
 import { getStaticHtmlPath, saveStaticHtml } from '../utils/staticHtml.js';
-import themeData from '../../data/comps/theme.js';
 import fs from 'fs';
 import mime from 'mime';
 import path from 'path';
@@ -13,6 +23,20 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const queryGroupKey = ['utm', 'hack'];
+
+const routeConfigs = [
+	geo,
+	demo,
+	demoSitemap,
+	demoSitemapState,
+	demoSitemapCounty,
+	demoSitemapCity,
+	sitemap,
+	sitemapState,
+	sitemapCounty,
+	sitemapCity,
+	pageConfig,
+];
 
 export default class BaseController {
 	constructor(req, res, name) {
@@ -64,7 +88,7 @@ export default class BaseController {
 	// }
 
 	getConfig(name) {
-		return config.find(e => e.name === name);
+		return routeConfigs.find((e) => e.name === name);
 	}
 
 	exceptionDataHandler(error, payload) {

@@ -1,4 +1,4 @@
-import BaseController from '../controllers/basecontroller.js';
+import BaseController from '../controllers/index.js';
 import { pageConfig } from '../../webpack.config.base.page.js';
 
 export default function registerDefault(router) {

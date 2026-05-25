@@ -1,9 +1,10 @@
 /**
- * @module server/configs/configbase
- * @description **Route config contract** for `BaseController` (`server/controllers/basecontroller.js`).
+ * @module server/controllers/configbase
+ * @description **Route config contract** for `BaseController` (`server/controllers/index.js`).
  *
- * Each entry in `server/configs/index.js` is a plain object keyed by `name`. `BaseController` loads it via
- * `config.find((e) => e.name === name)` and invokes hooks on that object.
+ * Each route config module is registered in the `routeConfigs` array in `server/controllers/index.js`.
+ * `BaseController` loads entries via
+ * `routeConfigs.find((e) => e.name === name)` and invokes hooks on that object.
  *
  * ### Identity and assets
  * - **`name`** (string, required for `toPage`) — Unique id for lookup; also the EJS template basename (`${name}.ejs`).
