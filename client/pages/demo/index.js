@@ -2,6 +2,10 @@ import { defBool, defEnum } from '../../js/core/def.js';
 import { main } from '../../js/index.js';
 import { Router } from '../../js/core/router.js';
 import { emit } from '../../js/core/event.js';
+import {
+	createDemoSpaRegExp,
+	DEMO_SPA_ROUTES,
+} from '../../../helpers/routes/demoSpaRoutes.js';
 import { buildDemoSpaInnerHtml } from './detailSpa.js';
 import scss from '../../scss/demo.scss';
 
@@ -71,10 +75,10 @@ let demo = {
 		return new Router(
 			[
 				{
-					reg: /^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/i,
+					reg: createDemoSpaRegExp('detail'),
 					loading: (to) => {
 						return new Promise((resolve) => {
-							const propertyId = to.params[2];
+							const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
 							//if to is same as current path, don't load
 							if (to.pathname === window.location.pathname) {
 								resolve(null);
@@ -92,7 +96,7 @@ let demo = {
 					},
 				},
 				{
-					reg: /^\/demo\/[a-z]{2}\/[^/]+\/@[^/]+,[^/]+\/?$/i,
+					reg: createDemoSpaRegExp('map'),
 					loading: () => {
 						return new Promise((resolve) => {
 							exportObj.switchToMap();
@@ -101,7 +105,7 @@ let demo = {
 					},
 				},
 				{
-					reg: /^\/demo(?:\/.*)?\/?$/i,
+					reg: createDemoSpaRegExp('geo'),
 					loading: () => {
 						return new Promise((resolve) => {
 							exportObj.switchToGrid();

@@ -69,6 +69,11 @@ Prefer the **smallest change that fixes the real cause**, not the most general f
 - **Do not** pass path-only values (`/images/foo.webp`) or rely on EJS/`html_above.ejs` to add the domain.
 - Build the full URL once in config `get()` (e.g. `getImgCdnUrl(cdnHost, path)`), reuse the same string for preload and template `src`.
 
+### Listing data pipeline
+
+- Architecture and demo trace: **`docs/listing-data-pipeline.md`**.
+- Controllers: after `mapPropertyDetailToArticle` (or list mappers), use **`detail.metadata`**, **`detail.*` comp fields**, and **`buildDetailSeo(detail)`** only — not raw SOA listing for SEO or EJS.
+
 ### SOA Pure listing data
 
 - Treat **SOA Pure** fields as the source of truth after `mapSOADataToMetadata` (list cards: `mapPropertyToArticle`; detail page: `mapPropertyDetailToArticle`).
@@ -115,7 +120,7 @@ Prefer the **smallest change that fixes the real cause**, not the most general f
 When you change architecture, routes, build scripts, ports, or CMS/theme conventions, update the **canonical** docs in the same pass where practical:
 
 - `README.md`, `client.md`, `server.md`, `build-system.md`
-- `docs/development-workflow.md`, `docs/routes-reference.md`
+- `docs/listing-data-pipeline.md`, `docs/development-workflow.md`, `docs/routes-reference.md`
 - `.cursor/background.json` (high-level context for agents)
 - Theme/CMS API details: `cms/API.md` and `.cursor/rules/theme-change.mdc`
 

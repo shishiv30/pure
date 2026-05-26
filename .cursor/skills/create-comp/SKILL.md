@@ -23,6 +23,7 @@ There are now **two patterns**:
 
 - **Pattern A – Global components** (header/footer, special widgets): `.js` data/factory file **plus** `.ejs` template.
 - **Pattern B – Page sections** (hero, scrollview, points, gallery, timeline): **EJS-only** templates driven by **page data** (`data/page/*.js` and CMS), mapped via `data/comps/comp_template.js`.
+- **Pattern C – Demo detail section** (SOA listings): metadata in `helpers/property.js` → `mapXToComp` in `helpers/article.js` → include from `comp_article_detail.ejs`. See [`docs/listing-data-pipeline.md`](../../docs/listing-data-pipeline.md).
 
 ## Workflow
 
@@ -396,9 +397,22 @@ In `page.ejs`, sections are rendered like this:
 <%_ } _%>
 ```
 
+## Pattern C – Demo detail section (SOA listing)
+
+Use when adding a section to the property **detail** page (demo). Do **not** put presentation logic in EJS or the controller.
+
+1. **Metadata** — if the field is new on SOA Pure, add it in `mapSOADataToMetadata` (`helpers/property.js`).
+2. **Comp model** — add `mapXToComp()` in `helpers/article.js`; call from `mapPropertyDetailToArticle`.
+3. **EJS** — create `server/ejs/comp_<name>.ejs`; guard and include from `server/ejs/comp_article_detail.ejs` (e.g. `detail.album`, `detail.timeline`).
+4. **Plugin** (optional) — `data-role="<name>"` in EJS; register in `client/js/plugins/index.js` (see `create-plugin`).
+5. **Tests** — extend `helpers/__tests__/property.test.js`.
+
+References: `comp_tags.ejs`, `comp_open_houses.ejs`, `comp_article_detail.ejs`, [`docs/listing-data-pipeline.md`](../../docs/listing-data-pipeline.md).
+
 ## Checklist
 
 - [ ] #1 Component name decided (camelCase, e.g. `hero`, `timeline`)
+- [ ] Pattern C (if demo detail): metadata → `mapXToComp` → `comp_article_detail` include
 - [ ] #2A (Global comp) `server/ejs/comp_<name>.js` created with:
   - `COMPONENT_NAME` and `COMPONENT_TEMPLATE` constants
   - Data object with all content
@@ -429,3 +443,4 @@ In `page.ejs`, sections are rendered like this:
 - **Dynamic page view**: `server/ejs/page.ejs` (shows section looping and template includes)
 - **URL helpers**: `helpers/url.js` (`getHref`, `getSrc`, `getImgCdnUrl`)
 - **Config**: `server/config.js` (for `appHost`, `cdnHost`)
+- **Listing pipeline**: `docs/listing-data-pipeline.md`, `helpers/article.js`, `helpers/property.js`, `server/ejs/comp_article_detail.ejs`

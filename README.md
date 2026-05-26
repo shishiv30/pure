@@ -8,6 +8,7 @@ This README is a practical entry point. For deeper internals, use:
 
 - `client.md` for client architecture and plugin lifecycle.
 - `server.md` for server routing/controller/data flow.
+- `docs/listing-data-pipeline.md` for SOA → metadata → comp models → EJS/SPA (demo reference).
 - `build-system.md` for webpack and build/deploy behavior.
 - `cms/API.md` for CMS page/comp/theme update APIs.
 - `.cursor/background.json` for AI/agent-oriented path and helper reference (keep it in sync after renames or folder moves).
@@ -90,9 +91,9 @@ Default Docker access URL: `http://localhost:3002`
 
 ## Testing and Quality
 
-- Test suite: `npm run test`
+- Test suite: `npm run test` — helper mapping tests, BaseController config, geo/dialog scripts, `htmlPath`, demo geo redirect
 - BaseController tests only: `npm run test:basecontroller`
-- Lighthouse flow: `npm run test:lighthouse`
+- Lighthouse (UI perf only, not e2e): `npm run test:lighthouse`
 - Lint script exists but is currently a placeholder in `package.json`.
 
 AI review tooling:
@@ -156,7 +157,7 @@ Defined in `webpack.config.base.page.js`:
 - Server rendering is config-driven through `BaseController` in `server/controllers/index.js` and sibling route config modules (see `configbase.js`).
 - API layer combines app endpoints (`/api/*`) and SOA proxy routes (`/api/soa/*`).
 - CMS content is consumed with fallback to local data when CMS health is unavailable.
-- **`data/`** holds default, mock, and sample structures; **`helpers/`** holds transforms and path/URL mapping. Convention: `.cursor/background.json` (`data_folder`); renames: `.cursor/rules/rename-or-move-file.mdc`.
+- **`data/`** holds default, mock, and sample structures; **`helpers/`** holds transforms and path/URL mapping (listing pipeline: `docs/listing-data-pipeline.md`). Convention: `.cursor/background.json` (`data_folder`); renames: `.cursor/rules/rename-or-move-file.mdc`.
 
 ## License
 

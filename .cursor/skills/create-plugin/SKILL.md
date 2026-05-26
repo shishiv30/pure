@@ -119,6 +119,7 @@ When building a **new** plugin (not just converting an old one), follow this end
      - Its SCSS file is forwarded from `client/scss/base.scss`.
      - `client/pages/document/index.html` has a clear demo section.
    - Verify that `client/js/core/page.js` will pick it up via its `data-role` automatically (no extra wiring should be necessary).
+   - **Server EJS:** use the same `data-role` string and `data-*` options as the plugin `name` / `defaultOpt` (e.g. `comp_album.ejs` → `data-role="album"`). After SPA HTML inject (`client/pages/demo/detailSpa.js`), call `emit('dom.load')` so plugins initialize on new nodes.
 
 8. **Update documentation (`client.md` / `README.md`)**  
    - Add a new section to `client.md` under “Plugins”:

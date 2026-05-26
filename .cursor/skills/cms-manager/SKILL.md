@@ -29,7 +29,7 @@ Manage **pages** and **comps** via CMS REST API (no full DB overwrite). Admin en
 | # | Capability | API |
 |---|------------|-----|
 | 1 | Update page theme | Push theme comp: `POST /api/comp` `{ key, type: "theme", format: "json", data }`. Assign: `PUT /api/pages/by-name/<name>` `{ "meta": { "theme": "theme-<name>" } }`. |
-| 2 | Update page content data | `PUT /api/pages/by-name/<name>` `{ "data": <sectionData> }`. Section order: hero, scrollview, points, gallery, timeline (see `helpers/pageData.js`). |
+| 2 | Update page content data | `PUT /api/pages/by-name/<name>` `{ "data": <sectionData> }`. Section order: hero, scrollview, points, gallery, timeline (see `data/page/*.js` and `data/comps/comp_template.js`). |
 | 3 | Update page meta | `PUT /api/pages/by-name/<name>` `{ "meta": { title, desc, path, theme, ... } }`. Partial update. |
 | 4 | Create new page from raw content | `POST /api/pages` `{ name, path, data, meta, format: "json", status }`. Optional: update header comp via `POST /api/comp` key `header`. |
 | + | Import/update comps (header, footer, themes) | `POST /api/comp` `{ key, type, format: "json", data }` (upsert). `DELETE /api/comp/by-key/<key>`. |
@@ -48,7 +48,7 @@ Theme comps: **key** = `theme-<name>` (e.g. `theme-pink`), **type** = `"theme"`.
 - **`cms/API.md`** — full endpoints and examples.
 - **`.cursor/rules/theme-change.mdc`** — theme file pattern and applying to DB.
 - **`data/comps/theme.js`**, **`data/comps/theme-pink.js`** — theme shape.
-- **`data/page/ai-trend.js`**, **`helpers/pageData.js`** — page section data shape.
+- **`data/page/ai-trend.js`**, **`data/page/*.js`** — page section data shape for CMS-driven pages.
 
 ## Done checklist
 

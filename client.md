@@ -78,6 +78,23 @@ Common conventions:
 - Toggle CSS classes for state changes rather than inline styles where possible.
 - Use core event helpers instead of ad-hoc global listeners.
 
+### `list-dict` (key/value grid)
+
+Responsive definition list for property facts and similar data.
+
+```html
+<ul class="list-dict" data-role="list-dict">
+  <li>
+    <abbr class="key" title="List price">Price</abbr>
+    <span class="value">$425,000</span>
+  </li>
+</ul>
+```
+
+- **Columns:** `repeat(auto-fill, minmax(calc(var(--list-dict-item-width) - var(--g2) * 2), 1fr))` — same idea as `.result > ul` in `demo.scss`. Default `--list-dict-item-width: 320px`; override with `data-item-width` on the root.
+- **Server:** `server/ejs/comp_record.ejs` renders the same structure for demo detail SSR.
+- **SPA:** `client/pages/demo/detailSpa.js` must keep `data-role="list-dict"` and `.key` / `.value` classes when building record HTML.
+
 ## CSS and Theme System
 
 ### SCSS organization
@@ -92,6 +109,14 @@ Common conventions:
 - Base theme defaults live in SCSS.
 - Runtime theme values can be injected server-side from theme comps (`data/comps/theme*.js` + `server/ejs/comp_theme.js`).
 - Dark mode behavior is controlled with theme variable overrides.
+
+## Router and demo SPA
+
+[`client/js/core/router.js`](client/js/core/router.js) matches URL paths to handlers. The demo page ([`client/pages/demo/index.js`](client/pages/demo/index.js)) uses `linkScope: 'demo'` for grid, detail, and map views.
+
+Detail navigation fetches `GET /api/demo/detail/:prId` (same model as SSR `demo.get()`), builds HTML in [`client/pages/demo/detailSpa.js`](client/pages/demo/detailSpa.js), injects into `#detail`, then `emit('dom.load')` so plugins re-bind.
+
+EJS comps use `data-role` (e.g. `comp_album.ejs` → `album`). SPA strings must use the same role names (e.g. `imgerror`, not `img-error`). See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md) for SSR/SPA duplication notes.
 
 ## Page Entry Structure
 

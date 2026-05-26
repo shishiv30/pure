@@ -2,15 +2,15 @@
 <%_ if (heading) { _%>
 <h2 class="f4"><%= heading %></h2>
 <%_ } _%>
-<ul class="demo-detail-record">
+<ul class="list-dict" data-role="list-dict">
 	<%_ for (var r = 0; r < record.length; r++) { _%>
 		<%_ const attr = record[r]; _%>
 		<li>
-			<%_ if (attr.value) { _%>
-				<span<% if (attr.className) { %> class="<%= attr.className %>"<% } %>><%= attr.value %></span>
-			<%_ } _%>
 			<%_ if (attr.key) { _%>
-				<abbr title="<%= attr.desc %>"><%= attr.key %></abbr>
+				<abbr class="key" title="<%= attr.desc %>"><%= attr.key %></abbr>
+			<%_ } _%>
+			<%_ if (attr.value) { _%>
+				<span class="value<% if (attr.className) { %> <%= attr.className %><% } %>"><%= attr.value %></span>
 			<%_ } _%>
 		</li>
 	<%_ } _%>

@@ -74,6 +74,8 @@ Use `config.<baseUrl>` and `config.<apiKey>` for the upstream API.
 
 ### 5. Create mapper (helpers)
 
+**Property / listing fields (SOA Pure):** normalize in `helpers/property.js` via `mapSOADataToMetadata` first. Presentation and comp shapes (`album`, `tags`, `timeline`, etc.) belong in `helpers/article.js` (`mapPropertyToArticle`, `mapPropertyDetailToArticle`, `mapXToComp`). Do not map listing display fields only in routers or EJS. See [`docs/listing-data-pipeline.md`](../../docs/listing-data-pipeline.md).
+
 In `helpers/geo.js` (SOA response mappers) or a dedicated helper when not geo-related:
 
 - **Item mappers**: `mapSoaXxxToGeo(item)` – one raw item → UI model

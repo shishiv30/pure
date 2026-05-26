@@ -1,8 +1,17 @@
 import BaseController from '../controllers/index.js';
 import {
+	createDemoSpaRegExp,
+	DEMO_SPA_ROUTES,
+} from '../../helpers/routes/demoSpaRoutes.js';
+import {
 	appendPreservedQuery,
 	getCanonicalDemoGeoRedirectPath,
 } from '../utils/demoGeoRedirect.js';
+
+function applyDetailQuery(req) {
+	req.query.geoPath = `${req.params[0]}/${req.params[1]}`;
+	req.query.prId = req.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
+}
 
 function handleDemoRoute(controller, res) {
 	return (async () => {
@@ -46,13 +55,12 @@ export default function registerDemo(router) {
 		await handleDemoRoute(new BaseController(req, res, 'demo-sitemap-city'), res);
 	});
 
-	router.get(/^\/demo\/detail\/([a-z]{2})\/([0-9a-z-]+)\/([0-9a-z-]+)\/?$/, async (req, res) => {
-		req.query.geoPath = `${req.params[0]}/${req.params[1]}`;
-		req.query.prId = req.params[2];
+	router.get(createDemoSpaRegExp('detail'), async (req, res) => {
+		applyDetailQuery(req);
 		await handleDemoRoute(new BaseController(req, res, 'demo'), res);
 	});
 
-	router.get(/^\/demo([\/\w\-]+)\/?$/, async (req, res) => {
+	router.get(createDemoSpaRegExp('geo'), async (req, res) => {
 		const tail = req.params[0] ?? '';
 		const canonical = getCanonicalDemoGeoRedirectPath(tail);
 		if (canonical) {

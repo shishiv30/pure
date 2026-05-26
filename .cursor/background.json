@@ -60,6 +60,7 @@
       "build-system.md",
       "docs/development-workflow.md",
       "docs/routes-reference.md",
+      "docs/listing-data-pipeline.md",
       "cms/API.md"
     ],
     "usage": [
@@ -1092,23 +1093,54 @@
           }
         ]
       },
+      "listing_pipeline": {
+        "doc": "docs/listing-data-pipeline.md",
+        "purpose": "SOA Pure → mapSOADataToMetadata (property.js) → mapPropertyToArticle / mapPropertyDetailToArticle + mapXToComp (article.js) → EJS/plugins; demo is reference"
+      },
       "property": {
         "file": "helpers/property.js",
-        "purpose": "Property listing/detail: SOA payload unwrap, detail DTO, breadcrumb, normalize listing shape, map to article cards"
+        "purpose": "SOA Pure listing metadata: unwrap payloads, mapSOADataToMetadata, photo URLs, histories, groupedFeatures, open-house/timeline comp helpers",
+        "functions": [
+          {
+            "name": "mapSOADataToMetadata",
+            "purpose": "Normalize SOA Pure listing (+ optional histories) to metadata object",
+            "params": ["soaListing", "historiesRaw"]
+          },
+          {
+            "name": "mapHistoryRowsToTimelineComp",
+            "purpose": "History rows → comp_timeline model",
+            "params": ["rows"]
+          },
+          {
+            "name": "mapOpenHousesToComp",
+            "purpose": "Open houses → comp_open_houses model",
+            "params": ["openHouses"]
+          }
+        ]
       },
       "article": {
         "file": "helpers/article.js",
-        "purpose": "Map Movoto-style property records to article card objects for comp_article",
+        "purpose": "Comp UI models from metadata: list cards (comp_article), detail (comp_article_detail), buildDetailSeo",
         "functions": [
           {
             "name": "mapPropertyToArticle",
-            "purpose": "Map property object to article object with tags and attrs",
-            "params": ["property"]
+            "purpose": "Map metadata to list/card article shape",
+            "params": ["metadata", "isFull"]
           },
           {
-            "name": "mapPropertiesToArticles",
-            "purpose": "Map array of properties to array of articles",
-            "params": ["properties"]
+            "name": "mapPropertyDetailToArticle",
+            "purpose": "Detail page: metadata + album, paragraph, record, tags, openHouses, timeline comp models",
+            "params": ["soaListing", "historiesRaw"]
+          },
+          {
+            "name": "mapSOADataListToArticles",
+            "purpose": "Map SOA listing array to article cards",
+            "params": ["soaListings"]
+          },
+          {
+            "name": "buildDetailSeo",
+            "purpose": "SEO from detail.metadata + detail.paragraph (no raw SOA)",
+            "params": ["detail"]
           }
         ]
       },

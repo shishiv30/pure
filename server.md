@@ -72,6 +72,18 @@ Other modules in `server/controllers/*` (route configs, e.g. `demo.js`, `page.js
 
 `server/controllers/configbase.js` contains the contract reference used by this architecture.
 
+### `toPage` vs `toData`
+
+| | `toPage` | `toData` |
+|---|----------|----------|
+| Output | HTML (`${config.name}.ejs`) | JSON `{ code, data, error, cost }` |
+| SEO / breadcrumb / theme | yes | no |
+| `getHref` / `getSrc` on model | yes | no |
+
+Both call the same `config.get()`. Example: demo SSR and `GET /api/demo/detail/:prId` share [`server/controllers/demo.js`](server/controllers/demo.js).
+
+Listing SOA → metadata → comp models: [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md).
+
 ## API and Proxy Pattern
 
 ### App API (`/api`)
@@ -108,21 +120,29 @@ Defaults:
 
 ## Testing Status (Server Focus)
 
-Most meaningful server tests currently target `BaseController` config behavior:
+Included in `npm run test`:
 
-- `server/controllers/__tests__/basecontroller.config.test.js`
+- `server/controllers/__tests__/basecontroller.config.test.js` — BaseController / `toPage` contract
+- `server/controllers/__tests__/demo.get.test.js` — demo `get()` return shape (no SOA when no `prId`)
+- `server/routes/__tests__/demoGeoRedirect.test.js` — demo geo canonical redirect
+- `helpers/__tests__/property.test.js` — SOA metadata and detail comp mappers
+- `helpers/__tests__/datetime.test.js`
+- `helpers/__tests__/htmlPath.test.js`
+- Root scripts: `test-geo-mapping.js`, `test-auto-detection.js`, `test-dialog-plugin.js`
 
-Run with:
+Run subset:
 
 ```bash
 npm run test:basecontroller
 ```
 
-or via aggregate:
+Full suite:
 
 ```bash
 npm run test
 ```
+
+No Playwright/e2e in repo; optional UI checks via `npm run test:lighthouse` (Docker + Lighthouse).
 
 ## Known Risks to Track
 

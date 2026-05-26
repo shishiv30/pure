@@ -90,12 +90,12 @@ export function buildDemoSpaInnerHtml(data) {
 	const record = recordItems
 		.map((attr) => {
 			const v = attr.value
-				? `<span${attr.className ? ` class="${esc(attr.className)}"` : ''}>${esc(attr.value)}</span>`
+				? `<span class="value${attr.className ? ` ${esc(attr.className)}` : ''}">${esc(attr.value)}</span>`
 				: '';
 			const k = attr.key
-				? `<abbr title="${esc(attr.desc || '')}">${esc(attr.key)}</abbr>`
+				? `<abbr class="key" title="${esc(attr.desc || '')}">${esc(attr.key)}</abbr>`
 				: '';
-			return `<li>${v}${k}</li>`;
+			return `<li>${k}${v}</li>`;
 		})
 		.join('');
 	const timelineEntries = (d.timeline && d.timeline.entries) || [];
@@ -124,7 +124,7 @@ export function buildDemoSpaInnerHtml(data) {
 		description ? `<div class="demo-detail-description">${esc(description)}</div>` : ''
 	}${
 		record
-			? `<h2 class="f4">Facts</h2><ul class="demo-detail-record">${record}</ul>`
+			? `<h2 class="f4">Facts</h2><ul class="list-dict" data-role="list-dict">${record}</ul>`
 			: ''
 	}${
 		dates ? `<h2 class="f4">History</h2><ul class="demo-detail-dates">${dates}</ul>` : ''

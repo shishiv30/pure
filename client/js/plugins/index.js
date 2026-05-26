@@ -32,6 +32,7 @@ import scrollview from './_scrollview.js';
 import autoscroller from './_autoscroller.js';
 import sharelink from './_sharelink.js';
 import imgError from './_imgerror.js';
+import listDict from './_listdict.js';
 
 export default {
 	collapse,
@@ -65,6 +66,7 @@ export default {
 	autoscroller,
 	sharelink,
 	imgError,
+	listDict,
 	// view,
 	// carousel,
 	// scrollspy,

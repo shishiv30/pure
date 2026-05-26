@@ -18,6 +18,7 @@ Follow this workflow to add a new static page. Reuse existing CSS and components
 - User asks for CMS-driven dynamic page updates only
 - User asks for reusable server EJS component creation (use `create-comp`)
 - User asks for plugin behavior (use `create-plugin`)
+- User asks for the **demo** property listing page — that is config-driven (`server/controllers/demo.js`, SOA, [`docs/listing-data-pipeline.md`](../../docs/listing-data-pipeline.md)), not a webpack-only static page
 
 ## Workflow
 
