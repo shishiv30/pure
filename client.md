@@ -116,7 +116,7 @@ Responsive definition list for property facts and similar data.
 
 Detail navigation fetches `GET /api/demo/detail/:prId` (same model as SSR `demo.get()`), builds HTML in [`client/pages/demo/detailSpa.js`](client/pages/demo/detailSpa.js), injects into `#detail`, then `emit('dom.load')` so plugins re-bind.
 
-EJS comps use `data-role` (e.g. `comp_album.ejs` → `album`). SPA strings must use the same role names (e.g. `imgerror`, not `img-error`). See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md) for SSR/SPA duplication notes.
+EJS comps use `data-role` (e.g. `comp_album.ejs` → `slider`). SPA strings must use the same role names (e.g. `imgerror`, not `img-error`). See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md) for SSR/SPA duplication notes.
 
 ## Page Entry Structure
 

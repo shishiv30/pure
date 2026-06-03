@@ -68,7 +68,7 @@ When building a **new** plugin (not just converting an old one), follow this end
 
 2. **Create JS + CSS files for the plugin name**  
    - JS: `client/js/plugins/_<name>.js` exporting the standard plugin object shown above.  
-   - CSS: `client/scss/_<name>.scss` with a base class matching the plugin name (e.g. `.shifter`, `.tooltip`, `.album`).  
+   - CSS: `client/scss/_<name>.scss` with a base class matching the plugin name (e.g. `.shifter`, `.tooltip`, `.slider`).  
    - Register both:
      - JS: add the plugin to `client/js/plugins/index.js`.
      - CSS: `@forward './_<name>.scss';` in `client/scss/base.scss`.
@@ -104,7 +104,7 @@ When building a **new** plugin (not just converting an old one), follow this end
    - Make sure listeners can be cleaned up later (store references on `exportObj` when necessary and remove them in `destroyBefore` if the plugin defines it).
 
 6. **Implement CSS: base + status modifiers (if needed)**  
-   - Base class: style the plugin’s default appearance on the root (e.g. `.shifter`, `.tooltip`, `.album`).
+   - Base class: style the plugin’s default appearance on the root (e.g. `.shifter`, `.tooltip`, `.slider`).
    - Status modifiers: add CSS for the classes driven by `defBool` / `defEnum`:
      - Boolean example:  
        - `.header.header-close { transform: translateY(-100%); }`
@@ -119,7 +119,7 @@ When building a **new** plugin (not just converting an old one), follow this end
      - Its SCSS file is forwarded from `client/scss/base.scss`.
      - `client/pages/document/index.html` has a clear demo section.
    - Verify that `client/js/core/page.js` will pick it up via its `data-role` automatically (no extra wiring should be necessary).
-   - **Server EJS:** use the same `data-role` string and `data-*` options as the plugin `name` / `defaultOpt` (e.g. `comp_album.ejs` → `data-role="album"`). After SPA HTML inject (`client/pages/demo/detailSpa.js`), call `emit('dom.load')` so plugins initialize on new nodes.
+   - **Server EJS:** use the same `data-role` string and `data-*` options as the plugin `name` / `defaultOpt` (e.g. `comp_album.ejs` → `data-role="slider"`). After SPA HTML inject (`client/pages/demo/detailSpa.js`), call `emit('dom.load')` so plugins initialize on new nodes.
 
 8. **Update documentation (`client.md` / `README.md`)**  
    - Add a new section to `client.md` under “Plugins”:
@@ -396,7 +396,7 @@ export default {
 ## Examples
 
 - **Simple**: `client/js/plugins/_collapse.js` - Toggle visibility
-- **Complex**: `client/js/plugins/_album.js` - Image gallery with touch support
+- **Complex**: `client/js/plugins/_slider.js` - Image gallery with touch support
 - **Converted**: `client/js/plugins/_tooltip.js` - Converted from jQuery-style
 
 ## Checklist

@@ -1,181 +1,535 @@
 import { trigger, emit, on, off } from '../core/event.js';
+import { stringToObj } from '../convert.js';
+const ImgStatus = {
+	INIT: 0,
+	LOADING: 1,
+	LOADED: 2,
+};
+let _getNextIndex = function (index, length) {
+	if (index === length - 1) {
+		return 0;
+	} else {
+		return index + 1;
+	}
+};
 
-class IntervalTimer {
-    constructor(callback, interval) {
-        this.callback = callback;
-        this.interval = interval;
-        this.timerId = null;
-        this.startTime = null;
-        this.remaining = 0;
-        this.state = IntervalTimer.STATES.IDLE;
-        this.start();
-        this.pause();
-    }
-
-    static get STATES() {
-        return {
-            IDLE: 0,
-            RUNNING: 1,
-            PAUSED: 2,
-            RESUMED: 3,
-        };
-    }
-
-    pause() {
-        if (this.state !== IntervalTimer.STATES.RUNNING) return;
-
-        this.remaining = Math.abs(this.interval - (Date.now() - this.startTime));
-        clearInterval(this.timerId);
-        this.state = IntervalTimer.STATES.PAUSED;
-    }
-
-    resume() {
-        if (this.state !== IntervalTimer.STATES.PAUSED) return;
-
-        this.state = IntervalTimer.STATES.RESUMED;
-        setTimeout(this.timeoutCallback.bind(this), this.remaining);
-    }
-
-    timeoutCallback() {
-        if (this.state !== IntervalTimer.STATES.RESUMED) return;
-
-        this.callback();
-
-        this.startTime = Date.now();
-        this.timerId = setInterval(() => this.callback(), this.interval);
-        this.state = IntervalTimer.STATES.RUNNING;
-    }
-
-    start() {
-        if (this.state === IntervalTimer.STATES.IDLE) {
-            this.startTime = Date.now();
-            this.timerId = setInterval(() => this.callback(), this.interval);
-            this.state = IntervalTimer.STATES.RUNNING;
-        }
-    }
-
-    clear(force = false) {
-        if (this.state !== IntervalTimer.STATES.IDLE || force) {
-            clearInterval(this.timerId);
-            this.state = IntervalTimer.STATES.IDLE;
-        }
-    }
-}
-
+let _getPrevIndex = function (index, length) {
+	if (index === 0) {
+		return length - 1;
+	} else {
+		return index - 1;
+	}
+};
+const classStatus = {
+	current: 'current',
+	prev: 'prev',
+	next: 'next',
+	preload: 'preload',
+};
+const emptyImg = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACAkQBADs=';
+let updateImage = function (img, className, src, alt, index, length) {
+	if (img) {
+		if (img.className !== className) {
+			img.className = className;
+		}
+		if (!src) {
+			src = emptyImg;
+		} else if (img.src !== src) {
+			img.src = src;
+		}
+		if (alt) {
+			if (index !== undefined && length != undefined) {
+				img.alt = `${alt} (${index + 1} of ${length})`;
+			} else {
+				img.alt = alt;
+			}
+		}
+	}
+};
 
 export default {
-    name: 'slider',
-    defaultOpt: {
-        data: [],
-        startIndex: 0,
-        autoPlay: false,
-        showProcess: false,
-        animationDuration: 4000,
-        animationStyle: ['slider-fly-left', 'slider-zoom-in'],
-        animationNextStyle: ['slider-next-zoom-in', 'slider-next-fly-left'],
-    },
-    init($el, opt, exportOb) {
-        if (!Array.isArray(opt.data) || opt.data.length < 2) {
-            return;
-        }
-        let index = Math.min(opt.data.length - 1, opt.startIndex);
-        let index1 = index;
-        let index2 = index < opt.data.length - 1 ? index + 1 : 0;
-        let timer = null;
-        let isPaused = true;
-        let animationIndex = 0;
-        let animateScript = [
-            [0, 0],
-            [1, 1],
-        ];
-        let intervalTimer = null;
-        let goTo = function (index) {
-            intervalTimer.clear();
-            index = index;
-            if (index < data.length - 1) {
-                index1 = index;
-                index2 = index + 1;
-            } else {
-                index1 = index;
-                index2 = 0;
-            }
-            animationIndex = animationIndex + 1 >= animateScript.length ? 0 : animationIndex + 1;
-            play();
-            intervalTimer.start();
-        };
-        let goNext = function () {
-            intervalTimer.clear();
-            next();
-            play();
-            intervalTimer.start();
-        };
-        let goPrev = function () {
-            intervalTimer.clear();
-            prev();
-            play();
-            intervalTimer.start();
-        };
-        let next = function () {
-            if (data.length <= 1) return;
-            if (index + 1 < data.length) {
-                index = index + 1;
-            } else {
-                index = 0;
-            }
-            if (index === index2) {
-                index1 = index < data.length - 1 ? index + 1 : 0;
-            } else {
-                index2 = index < data.length - 1 ? index + 1 : 0;
-            }
+	name: 'slider',
+	defaultOpt: {
+		images: [],
+		imagesMeta: [],
+		autoPlay: false,
+		showProcess: true,
+		showControl: true,
+		direction: true,
+		preload: true,
+		duration: 0.2,
+		throttle: 50,
+		alt: '',
+	},
+	async init($el, opt, exportOb) {
+		if (opt.imagesUrl) {
+			//fetch images from url
+			try {
+				const response = await fetch(opt.imagesUrl);
+				let data = await response.json();
+				if (data.images && data.imagesMeta) {
+					opt.images = data.images;
+					opt.imagesMeta = data.imagesMeta;
+				} else if (data.images) {
+					opt.images = data.images;
+				}
+			} catch (error) {
+				console.error('Error fetching images:', error);
+				return;
+			}
+		}
+		if (!opt.images) {
+			return;
+		}
 
-            animationIndex = animationIndex + 1 >= animateScript.length ? 0 : animationIndex + 1;
-        };
-        let prev = function () {
-            if (data.length <= 1) return;
-            let temp = index;
-            index = index > 0 ? index - 1 : data.length - 1;
+		opt.images = stringToObj(opt.images);
+		if (opt.imagesMeta && opt.imagesMeta.length > 0) {
+			opt.imagesMeta = stringToObj(opt.imagesMeta);
+		}
+		let length = opt.images.length;
+		if (length <= 1) {
+			return;
+		}
+		let $list = $el.querySelector('.slider-list');
+		if (!$list) {
+			$list = document.createElement('div');
+			$list.className = 'slider-list';
+			$el.appendChild($list);
+		}
+		let currentImg = $el.querySelector('img');
+		if (currentImg) {
+			opt.imgIndex = opt.images.findIndex((img) => currentImg.src.indexOf(img) > -1);
+			if (currentImg.alt && !opt.alt) {
+				opt.alt = currentImg.alt;
+			}
+			if (opt.imgIndex < 0) {
+				opt.imgIndex = 0;
+				console.warn('initial image not found in slider');
+			}
+			updateImage(
+				currentImg,
+				classStatus.current,
+				opt.images[opt.imgIndex],
+				opt.alt,
+				opt.imgIndex,
+				length,
+			);
+		} else {
+			opt.imgIndex = 0;
+			currentImg = document.createElement('img');
+			updateImage(
+				currentImg,
+				classStatus.current,
+				opt.images[opt.imgIndex],
+				opt.alt,
+				opt.imgIndex,
+				length,
+			);
+			currentImg.attributes['loading'] = 'lazy';
+			$list.appendChild(currentImg);
+		}
 
-            if (index1 > index2) {
-                index2 = temp;
-                index1 = index;
-            } else {
-                index1 = temp;
-                index2 = index;
-            }
-            animationIndex = animationIndex - 1 < 0 ? animateScript.length - 1 : animationIndex - 1;
-        };
-        let play = function () {
-            $el.classList.remove('paused');
-            intervalTimer.resume();
-            emit('slider.play', [opt._pid]);
-        };
-        let update = function () {
-            next();
-        };
-        let pause = function () {
-            $el.classList.add('paused');
-            intervalTimer.pause();
-            emit('slider.pause', [opt._pid]);
-        };
-        let toggle = function () {
-            if (isPaused) {
-                play();
-            } else {
-                pause();
-            }
-        };
-        let clearTimer = function () {
-            if (intervalTimer) {
-                intervalTimer.clear();
-            }
-        };
-        let setAnimationDuration = function (duration) {
-            $refs.img1.style.animationDuration = `${duration}ms`;
-            $refs.img2.style.animationDuration = `${duration}ms`;
-        };
-        let init = function () {
+		let prevImg = document.createElement('img');
+		opt.prevIndex = _getPrevIndex(opt.imgIndex, length);
+		updateImage(
+			prevImg,
+			classStatus.prev,
+			opt.preload ? opt.images[opt.prevIndex] : null,
+			opt.alt,
+			opt.prevIndex,
+			length,
+		);
+		$list.appendChild(prevImg);
 
-        }
+		let nextImg = document.createElement('img');
+		opt.nextIndex = _getNextIndex(opt.imgIndex, length);
+		updateImage(
+			nextImg,
+			classStatus.next,
+			opt.preload ? opt.images[opt.nextIndex] : null,
+			opt.alt,
+			opt.nextIndex,
+			length,
+		);
+		$list.appendChild(nextImg);
 
-    }
-}
+		let preloadImg;
+		if (length > 3) {
+			preloadImg = document.createElement('img');
+			updateImage(preloadImg, classStatus.preload, null, opt.alt);
+			$list.appendChild(preloadImg);
+		}
+
+		//if touch event
+		let width;
+		let timer;
+		let touchStart;
+		let touchStartY;
+		let deltaX = 0;
+		function reset() {
+			if ($list.style.transition) {
+				$list.style.transition = 'none';
+			}
+			if (deltaX > opt.throttle) {
+				prev();
+			} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
+				next();
+			} else if (opt.preload) {
+				//reset to initial image
+				let prevImg = $list.querySelector(`img.${classStatus.prev}`);
+				prevImg.src = opt.images[opt.prevIndex];
+				let nextImg = $list.querySelector(`img.${classStatus.next}`);
+				nextImg.src = opt.images[opt.nextIndex];
+				opt.preload = true;
+			}
+			$list.style.transform = `translateX(${width * -1}px)`;
+			deltaX = 0;
+			updateProcess();
+		}
+		function updateProcess() {
+			if (opt.showProcess) {
+				let active = $el.querySelector('.slider-processing > .active');
+				if (active) {
+					active.classList.remove('active');
+				}
+				let current = $el.querySelector(`.slider-processing > button[data-index="${opt.imgIndex}"]`);
+				if (current) {
+					current.classList.add('active');
+				}
+				if (current) {
+					let process = $el.querySelector('.slider-processing');
+					let offset = current.offsetLeft - process.clientWidth / 2 + current.clientWidth / 2;
+					process.scrollTo({
+						left: offset,
+						behavior: 'smooth',
+					});
+				}
+			}
+		}
+		function updateSliderInfo() {
+			if (!opt.imagesMeta || opt.imagesMeta.length === 0) {
+				return;
+			}
+			let sliderInfo = $el.querySelector('.slider-info');
+			let sliderInfoContent = sliderInfo?.querySelector('.slider-info-content');
+
+			// Create structure if it doesn't exist
+			if (!sliderInfo) {
+				sliderInfo = document.createElement('div');
+				sliderInfo.className = 'slider-info';
+				sliderInfoContent = document.createElement('div');
+				sliderInfoContent.className = 'slider-info-content';
+
+				const labelEl = document.createElement('span');
+				labelEl.className = 'slider-info-label';
+				const titleEl = document.createElement('b');
+				titleEl.className = 'slider-info-title';
+				const descEl = document.createElement('p');
+				descEl.className = 'slider-info-description';
+
+				sliderInfoContent.appendChild(labelEl);
+				sliderInfoContent.appendChild(titleEl);
+				sliderInfoContent.appendChild(descEl);
+				sliderInfo.appendChild(sliderInfoContent);
+				$el.appendChild(sliderInfo);
+			}
+
+			// Update content
+			const currentIndex = opt.imgIndex;
+			if (currentIndex >= 0 && currentIndex < opt.imagesMeta.length) {
+				const meta = opt.imagesMeta[currentIndex];
+				const labelEl = sliderInfoContent.querySelector('.slider-info-label');
+				const titleEl = sliderInfoContent.querySelector('.slider-info-title');
+				const descEl = sliderInfoContent.querySelector('.slider-info-description');
+
+				if (labelEl) {
+					labelEl.textContent = meta.index + ' / ' + opt.imagesMeta.length;
+				}
+				if (titleEl) {
+					titleEl.textContent = meta.title;
+				}
+				if (descEl) {
+					descEl.textContent = meta.description;
+				}
+			}
+		}
+		function next() {
+			//update image
+			opt.prevIndex = opt.imgIndex;
+			opt.imgIndex = opt.nextIndex;
+			opt.nextIndex = _getNextIndex(opt.nextIndex, length);
+			let currentImg = $list.querySelector(`img.${classStatus.current}`);
+			let prevImg = $list.querySelector(`img.${classStatus.prev}`);
+			let nextImg = $list.querySelector(`img.${classStatus.next}`);
+			nextImg.className = classStatus.current;
+			currentImg.className = classStatus.prev;
+			if (preloadImg) {
+				opt.preloadIndex = _getNextIndex(opt.nextIndex, length);
+				updateImage(
+					preloadImg,
+					classStatus.preload,
+					opt.images[opt.preloadIndex],
+					opt.alt,
+					opt.preloadIndex,
+					length,
+				);
+			}
+			updateImage(
+				prevImg,
+				classStatus.next,
+				opt.images[opt.nextIndex],
+				opt.alt,
+				opt.nextIndex,
+				length,
+			);
+			updateSliderInfo();
+		}
+
+		function prev() {
+			//update image
+			opt.nextIndex = opt.imgIndex;
+			opt.imgIndex = opt.prevIndex;
+			opt.prevIndex = _getPrevIndex(opt.prevIndex, length);
+			let currentImg = $list.querySelector(`img.${classStatus.current}`);
+			let prevImg = $list.querySelector(`img.${classStatus.prev}`);
+			let nextImg = $list.querySelector(`img.${classStatus.next}`);
+			prevImg.className = classStatus.current;
+			currentImg.className = classStatus.next;
+			if (preloadImg) {
+				opt.preloadIndex = _getPrevIndex(opt.prevIndex, length);
+				updateImage(
+					preloadImg,
+					classStatus.preload,
+					opt.images[opt.preloadIndex],
+					opt.alt,
+					opt.preloadIndex,
+					length,
+				);
+			}
+			updateImage(
+				nextImg,
+				classStatus.prev,
+				opt.images[opt.prevIndex],
+				opt.alt,
+				opt.prevIndex,
+				length,
+			);
+			updateSliderInfo();
+		}
+		//how to check if the device has mouse or touch pad
+		let isOnlyTouchScreen =
+			window.ontouchstart !== undefined && window.matchMedia('(hover: hover)').matches === false;
+		let onStart = isOnlyTouchScreen
+			? (e) => {
+				let touch = e.touches[0];
+				clearTimeout(timer);
+				width = $list.clientWidth;
+				touchStart = touch.clientX;
+				touchStartY = touch.clientY;
+				if (e.touches.length > 1) {
+					return;
+				}
+				reset();
+			}
+			: (e) => {
+				clearTimeout(timer);
+				width = $list.clientWidth;
+				reset();
+				touchStart = e.clientX;
+				touchStartY = e.clientY;
+			};
+		let onMove = isOnlyTouchScreen
+			? (e) => {
+				if ($list.style.transition) {
+					$list.style.transition = 'none';
+				}
+
+				cancelAnimationFrame(timer);
+				timer = requestAnimationFrame(() => {
+					let touch = e.touches[0];
+					deltaX = touch.clientX - touchStart;
+					//base on deltaX, to get a percentage of the animation
+					let percentage = (deltaX / width) * 100;
+					$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
+				});
+			}
+			: (e) => {
+				if (!touchStart) {
+					return;
+				}
+				if ($list.style.transition) {
+					$list.style.transition = 'none';
+				}
+
+				cancelAnimationFrame(timer);
+				timer = requestAnimationFrame(() => {
+					deltaX = e.clientX - touchStart;
+					$list.style.transform = `translateX(${width * -1 + deltaX}px)`;
+				});
+			};
+		let onEnd = isOnlyTouchScreen
+			? (e) => {
+				if (!touchStart) {
+					return;
+				}
+				touchStart = null;
+				if (e.touches.length > 0) {
+					return;
+				}
+				cancelAnimationFrame(timer);
+				width = $list.clientWidth;
+				$list.style.transition = `transform ${opt.duration}s`;
+
+				if (deltaX > 0 && deltaX > opt.throttle) {
+					//snap to left with animation next
+					$list.style.transform = 'translateX(0px)';
+				} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
+					//snap to right with animation prev
+					$list.style.transform = `translateX(${width * -2}px)`;
+				} else {
+					$list.style.transform = `translateX(${width * -1}px)`;
+				}
+				timer = setTimeout(() => {
+					reset();
+				}, opt.duration * 1100);
+			}
+			: (e) => {
+				if (!touchStart) {
+					return;
+				}
+				touchStart = null;
+				cancelAnimationFrame(timer);
+				width = $list.clientWidth;
+				$list.style.transition = `transform ${opt.duration}s`;
+
+				if (deltaX > 0 && deltaX > opt.throttle) {
+					//snap to left with animation next
+					$list.style.transform = 'translateX(0px)';
+				} else if (deltaX < 0 && deltaX < opt.throttle * -1) {
+					//snap to right with animation prev
+					$list.style.transform = `translateX(${width * -2}px)`;
+				} else {
+					$list.style.transform = `translateX(${width * -1}px)`;
+				}
+				timer = setTimeout(() => {
+					reset();
+				}, opt.duration * 1100);
+			};
+		if (isOnlyTouchScreen) {
+			$list.addEventListener('touchstart', (e) => {
+				onStart(e);
+			});
+			$list.addEventListener('touchmove', (e) => {
+				// Only trigger on horizontal move
+				if (e.touches.length === 1 && touchStart && touchStartY) {
+					const dx = Math.abs(e.touches[0].clientX - touchStart);
+					const dy = Math.abs(e.touches[0].clientY - touchStartY);
+					//after I get horizontal move and vertical move, I need to check if user want to scroll
+					if (dx > dy && dy < 150) {
+						e.preventDefault();
+						onMove(e);
+					} else {
+						//check why need to reset touchStart and touchStartY
+						touchStart = null;
+						touchStartY = null;
+					}
+				}
+			});
+			$list.addEventListener('touchend', (e) => {
+				e.preventDefault();
+				onEnd(e);
+			});
+			$list.addEventListener('touchcancel', (e) => {
+				e.preventDefault();
+				onEnd(e);
+			});
+		} else {
+			$list.addEventListener('mousedown', (e) => {
+				e.preventDefault();
+				onStart(e);
+			});
+			$list.addEventListener('mousemove', (e) => {
+				e.preventDefault();
+				onMove(e);
+			});
+			$list.addEventListener('mouseup', (e) => {
+				e.preventDefault();
+				onEnd(e);
+			});
+			$list.addEventListener('mouseleave', (e) => {
+				e.preventDefault();
+				onEnd(e);
+			});
+		}
+
+		if (opt.showProcess) {
+			let process = document.createElement('div');
+			process.className = 'slider-processing';
+			for (let i = 0; i < length; i++) {
+				let button = document.createElement('button');
+				button.setAttribute('aria-label', `Go to ${i + 1}`);
+				button.setAttribute('data-index', i);
+				button.addEventListener('click', function () {
+					if (i === opt.imgIndex) {
+						return;
+					}
+					opt.imgIndex = i;
+					opt.prevIndex = _getPrevIndex(i, length);
+					opt.nextIndex = _getNextIndex(i, length);
+					updateImage(currentImg, classStatus.current, opt.images[i], opt.alt, i, length);
+					updateImage(
+						prevImg,
+						classStatus.prev,
+						opt.images[opt.prevIndex],
+						opt.alt,
+						opt.prevIndex,
+						length,
+					);
+					updateImage(
+						nextImg,
+						classStatus.next,
+						opt.images[opt.nextIndex],
+						opt.alt,
+						opt.nextIndex,
+						length,
+					);
+					updateProcess();
+					updateSliderInfo();
+				});
+				process.appendChild(button);
+			}
+			$el.appendChild(process);
+			updateProcess();
+		}
+
+		// Keyboard navigation support
+		let handleKeyDown = (e) => {
+			// Only handle if slider is visible and not typing in an input/textarea
+			if (
+				$el.offsetParent === null ||
+				document.activeElement.tagName === 'INPUT' ||
+				document.activeElement.tagName === 'TEXTAREA'
+			) {
+				return;
+			}
+			if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				prev();
+			} else if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				next();
+			}
+		};
+		document.addEventListener('keydown', handleKeyDown);
+
+		// Store cleanup function
+		exportOb.destroy = () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+
+		exportOb.next = next;
+		exportOb.prev = prev;
+		updateSliderInfo();
+		return exportOb;
+	},
+};

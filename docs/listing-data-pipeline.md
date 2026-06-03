@@ -164,9 +164,9 @@ Contract: [`server/controllers/configbase.js`](../server/controllers/configbase.
 
 1. `client/js/index.js` registers plugins from `client/js/plugins/index.js`.
 2. `Page` (`client/js/core/page.js`) on `dom.load` scans `[data-role]`, initializes `Plugin` lifecycle (`init` → `load` → `render`).
-3. After SPA injects HTML, `emit('dom.load')` re-binds plugins (e.g. `album` on `#detail`).
+3. After SPA injects HTML, `emit('dom.load')` re-binds plugins (e.g. `slider` on `#detail`).
 
-EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ejs` → `data-role="album"` → `client/js/plugins/_album.js`.
+EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ejs` → `data-role="slider"` → `client/js/plugins/_slider.js`.
 
 ### Demo client router
 

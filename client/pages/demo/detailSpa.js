@@ -106,9 +106,9 @@ export function buildDemoSpaInnerHtml(data) {
 				`<li><time>${esc(entry.date)}</time><strong>${esc(entry.text)}</strong></li>`,
 		)
 		.join('');
-	const albumSection =
+	const sliderSection =
 		images.length > 0
-			? `<section class="section large demo-album-wrap"><div class="panel fixed fixed-max-xs grid grid-xs-1"><div class="album" data-role="album" data-index="${initial}" data-images="${dataImages}"><div class="album-list"><img src="${esc(firstImg)}" loading="lazy" alt="${esc(album.alt || '')}"></div></div></div></section>`
+			? `<section class="section large demo-slider"><div class="panel fixed fixed-max-xs grid grid-xs-1"><div class="slider" data-role="slider" data-index="${initial}" data-images="${dataImages}"><div class="slider-list"><img src="${esc(firstImg)}" loading="lazy" alt="${esc(album.alt || '')}"></div></div></div></section>`
 			: '';
 	const nearby = data.nearbyArticleComponent;
 	const nearbyItems = nearby && nearby.data && nearby.data.length
@@ -120,7 +120,7 @@ export function buildDemoSpaInnerHtml(data) {
 	const description = d.paragraph && d.paragraph.text;
 	return `<section class="detail demo-detail"><div class="grid grid-xs-1"><h1 class="h3">${esc(d.title)}</h1>${
 		tags ? `<div class="filter demo-detail-tags"><span class="f7">Tags</span>${tags}</div>` : ''
-	}${albumSection}${
+	}${sliderSection}${
 		description ? `<div class="demo-detail-description">${esc(description)}</div>` : ''
 	}${
 		record
