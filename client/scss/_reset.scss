@@ -6,7 +6,7 @@
 }
 
 :root {
-	color-scheme: light dark;
+	color-scheme: light;
 }
 
 nav,
@@ -74,6 +74,26 @@ body {
 	color: var(--color);
 	background-color: var(--color-bg);
 	min-height: 100%;
+
+	::selection {
+		background-color: var(--selection-background);
+		color: var(--selection-color);
+	}
+
+	::-moz-selection {
+		background-color: var(--selection-background);
+		color: var(--selection-color);
+	}
+
+	&.theme-auto {
+		@media (prefers-color-scheme: dark) {
+			color-scheme: dark;
+		}
+	}
+
+	&.theme-dark {
+		color-scheme: dark;
+	}
 }
 
 fieldset {

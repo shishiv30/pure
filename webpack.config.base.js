@@ -25,12 +25,22 @@ pageSettings.pages.forEach((page) => {
 	};
 	plugins.push(new HtmlWebpackPlugin(page));
 });
+const ejsRoot = path.resolve(__dirname, 'server/ejs');
+
 export default () => {
 	// console.log(env);
 	return {
 		entry: entry,
+		resolve: {
+			extensions: ['.js', '.ejs'],
+		},
 		module: {
 			rules: [
+				{
+					test: /\.ejs$/i,
+					include: ejsRoot,
+					use: path.resolve(__dirname, 'helpers/ejs-client-loader.js'),
+				},
 				{
 					test: /\.(woff2?|ttf|eot)$/i,
 					type: 'asset/resource',

@@ -14,19 +14,9 @@
 <% } %>
 
 
-<%_ const articleComponent = data.articleComponent; _%>
-<% if (articleComponent && articleComponent.data && articleComponent.data.length) { %>
-  <section class="result">
-    <ul>
-      <% for (var i = 0; i < articleComponent.data.length; i++) { %>
-        <li class="item">
-          <%_ const article = articleComponent.data[i]; _%>
-          <%- include(articleComponent.template, { article, getHref, getSrc }) %>
-        </li>
-      <% } %>
-    </ul>
-  </section>
-<% } %>
+<%_ if (data.articleComponent) { _%>
+  <%- include('comp_demo_nearby', { articleComponent: data.articleComponent, getHref, getSrc }) %>
+<%_ } _%>
 
 <%- include('html_menu') %>
 

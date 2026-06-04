@@ -171,9 +171,9 @@ EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ej
 ### Demo client router
 
 - `client/pages/demo/index.js` — `Router` rules for grid / detail / map; `linkScope: 'demo'`.
-- Detail navigation: `fetch('/api/demo/detail/:prId')` → `buildDemoSpaInnerHtml(envelope.data)` in `client/pages/demo/detailSpa.js` → `innerHTML` on `#detail`.
+- Detail navigation: `fetch('/api/demo/detail/:prId')` → `buildDemoSpaInnerHtml(envelope.data)` in [`client/pages/demo/detailSpa.js`](../client/pages/demo/detailSpa.js) (renders [`comp_article_detail.ejs`](../server/ejs/comp_article_detail.ejs) + [`comp_demo_nearby.ejs`](../server/ejs/comp_demo_nearby.ejs) via [`client/js/core/renderEjs.js`](../client/js/core/renderEjs.js)) → `outerHTML` on `#detail` and nearby `section.result`.
 
-**Data is unified** with SSR (`demo.get()`). **Markup is duplicated** between EJS comps and `detailSpa.js` (known debt; see appendix).
+**Data and markup** match SSR (`demo.get()` + same EJS comps). Render context (`getHref`, `getSrc`) comes from [`helpers/ejsRenderContext.js`](../helpers/ejsRenderContext.js).
 
 ---
 
@@ -183,7 +183,7 @@ EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ej
 2. **Comp model** → add `mapXToComp()` in `helpers/article.js`; call from `mapPropertyDetailToArticle`.
 3. **Template** → create `server/ejs/comp_x.ejs`; include from `comp_article_detail.ejs` with `<%_ if (detail.x) { _%>`.
 4. **Plugin** (if interactive) → `client/js/plugins/_x.js`, register in `plugins/index.js`, `data-role="x"` in EJS.
-5. **SPA** (if needed) → update `detailSpa.js` to consume same comp field from JSON (or defer to Phase 5 unification).
+5. **SPA** — add include in `comp_article_detail.ejs`; demo SPA picks it up automatically via client EJS bundle (no hand-built HTML).
 6. **Tests** → extend `helpers/__tests__/property.test.js`.
 
 See also [create-comp skill](../.cursor/skills/create-comp/SKILL.md) Pattern C (demo detail).
@@ -217,29 +217,19 @@ No Playwright/e2e in repo; optional Lighthouse via `npm run test:lighthouse`.
 
 ---
 
-## Appendix: known duplication and future work
+## Appendix: client EJS and future work
 
-Documented for maintainers; **no implementation** unless explicitly approved.
+### Demo detail client EJS
 
-### SSR vs SPA markup
-
-- Server: EJS comps under `server/ejs/comp_*.ejs`.
-- Client: string templates in `client/pages/demo/detailSpa.js`.
-- **Direction:** SPA should render from the same comp models (`detail.album`, `detail.timeline`, …) via a thin client renderer or a server partial HTML endpoint — not re-parse SOA.
+- Webpack [`helpers/ejs-client-loader.js`](../helpers/ejs-client-loader.js) compiles `server/ejs/*.ejs` entries with static `include('…')` partials (function sources embedded as strings, instantiated via `new Function` for browser `include` support).
+- [`renderEjsTemplate`](../client/js/core/renderEjs.js) merges [`createEjsRenderContext`](../helpers/ejsRenderContext.js) (same `getHref` / `getSrc` as `BaseController.toPage`).
+- Dynamic `include(variable.template)` (e.g. `page.ejs`) is not bundled yet — needs a partial registry follow-up.
 
 ### Route patterns
 
 - Server: regexes in `server/routes/demo.js`.
 - Client: regexes in `client/pages/demo/index.js`.
 - **Direction:** shared route manifest (e.g. `data/routes/demo.json`) consumed by both sides.
-
-### SPA gaps to fix when unifying
-
-| Issue | Notes |
-|-------|--------|
-| `#detail` id | SSR `comp_article_detail` uses `id="detail"`; static webpack demo HTML may not — SPA updates require that id |
-| `data-role` | Use `imgerror` (registered plugin), not `img-error` in SPA strings |
-| Nearby list | `demo.get()` returns `articleComponent`; SPA `detailSpa.js` references `nearbyArticleComponent` — may be empty in SPA |
 
 ### Optional shared route manifest (RFC sketch)
 

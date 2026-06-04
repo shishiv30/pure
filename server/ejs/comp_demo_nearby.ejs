@@ -1,0 +1,12 @@
+<%_ if (articleComponent && articleComponent.data && articleComponent.data.length) { _%>
+<section class="result">
+	<ul>
+		<%_ for (var i = 0; i < articleComponent.data.length; i++) { _%>
+			<%_ const article = articleComponent.data[i]; _%>
+			<li class="item">
+				<%- include('comp_article', { article, getHref, getSrc }) %>
+			</li>
+		<%_ } _%>
+	</ul>
+</section>
+<%_ } _%>

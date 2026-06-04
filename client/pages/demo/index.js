@@ -20,6 +20,37 @@ const enumStatus = [
 ];
 
 const demoSpaRootSel = '#detail';
+const demoSpaNearbySel = 'section.result';
+
+/**
+ * @param {string} html — detail + optional nearby sections from EJS
+ * @returns {boolean}
+ */
+function injectDemoSpaHtml(html) {
+	const wrap = document.createElement('div');
+	wrap.innerHTML = html.trim();
+	const detailSection = wrap.querySelector('#detail');
+	if (!detailSection) {
+		return false;
+	}
+	let root = document.querySelector(demoSpaRootSel);
+	if (!root) {
+		root = document.querySelector('section.detail');
+		if (root) {
+			root.id = 'detail';
+		}
+	}
+	if (!root) {
+		return false;
+	}
+	root.outerHTML = detailSection.outerHTML;
+	const nearbySection = wrap.querySelector(demoSpaNearbySel);
+	const resultEl = document.querySelector(demoSpaNearbySel);
+	if (nearbySection && resultEl) {
+		resultEl.outerHTML = nearbySection.outerHTML;
+	}
+	return true;
+}
 
 let demo = {
 	name: 'demo',
@@ -29,6 +60,7 @@ let demo = {
 		});
 
 		let gridSnapshot = null;
+		let resultSnapshot = null;
 
 		enumStatus.forEach((e) => {
 			defEnum(e.key, e.names, $el, opt, exportObj);
@@ -44,16 +76,21 @@ let demo = {
 								'Detail request failed',
 						);
 					}
-					const root = document.querySelector(demoSpaRootSel);
+					const root =
+						document.querySelector(demoSpaRootSel) ||
+						document.querySelector('section.detail');
 					if (!root) {
 						return false;
 					}
 					if (gridSnapshot === null) {
-						gridSnapshot = root.innerHTML;
+						gridSnapshot = root.outerHTML;
+						const resultEl = document.querySelector(demoSpaNearbySel);
+						if (resultEl) {
+							resultSnapshot = resultEl.outerHTML;
+						}
 					}
 					const html = buildDemoSpaInnerHtml(envelope.data);
-					if (html) {
-						root.innerHTML = html;
+					if (html && injectDemoSpaHtml(html)) {
 						if (typeof window !== 'undefined' && window.context && envelope.data) {
 							Object.assign(window.context, envelope.data);
 						}

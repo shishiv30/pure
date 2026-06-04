@@ -11,6 +11,7 @@ const PROP_PROTOTYPES = [
 ];
 
 // Debounce only cleanup + dom.updated; apply writes synchronously so DOM updates immediately
+let domHooksInstalled = false;
 let flushScheduled = false;
 const updatedElements = new Set();
 
@@ -68,6 +69,11 @@ function collectInstancesForElement(element, prop, namespace) {
 }
 
 export function installDOMHooks() {
+	if (domHooksInstalled) {
+		return;
+	}
+	domHooksInstalled = true;
+
 	const namespace = Plugin.namespace;
 
 	PROP_PROTOTYPES.forEach(([prop, prototype]) => {

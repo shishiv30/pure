@@ -9,6 +9,8 @@ This document describes the current client runtime in this repo. It is focused o
 - `client/scss/*`
 - `client/pages/*`
 
+For boot order, `main()` → `page.init()` → Router → `dom.load` / SPA inject (including duplicate-init pitfalls), see **[`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md)**.
+
 ## Design Model
 
 The client follows a declarative plugin model:
@@ -22,14 +24,20 @@ This keeps markup expressive while avoiding per-page imperative bootstrap code.
 
 ## Runtime Flow
 
+High level: webpack entry → `main()` registers plugins and runs `page.init()` (page-specific `init`/`load`/`render`, e.g. demo `Router`) → first `emit('dom.load')` → `refreshComponents` for `[data-role]` nodes. SPA updates call `emit('dom.load')` again after HTML inject.
+
 ```mermaid
 flowchart TD
-  htmlNodes["HTML nodes (data-role)"] --> pageRefresh["Page.refreshComponents()"]
+  bundle["Webpack entry main()"] --> pageInit["page.init body"]
+  pageInit --> domLoad["emit dom.load"]
+  domLoad --> pageRefresh["Page.refreshComponents()"]
   pageRefresh --> pluginRegistry["Plugin.records"]
   pluginRegistry --> pluginInit["Plugin.init() lifecycle"]
   pluginInit --> pluginState["Class/dataset/exportObj state"]
-  pluginState --> eventBus["event.js (emit/on/off)"]
+  pluginState --> eventBus["event.js emit/on/off"]
 ```
+
+Full sequence diagrams: [`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md).
 
 ## Core Modules
 
@@ -93,7 +101,7 @@ Responsive definition list for property facts and similar data.
 
 - **Columns:** `repeat(auto-fill, minmax(calc(var(--list-dict-item-width) - var(--g2) * 2), 1fr))` — same idea as `.result > ul` in `demo.scss`. Default `--list-dict-item-width: 320px`; override with `data-item-width` on the root.
 - **Server:** `server/ejs/comp_record.ejs` renders the same structure for demo detail SSR.
-- **SPA:** `client/pages/demo/detailSpa.js` must keep `data-role="list-dict"` and `.key` / `.value` classes when building record HTML.
+- **SPA:** demo detail uses the same `server/ejs/comp_record.ejs` as SSR (via `renderEjsTemplate`); no hand-built record HTML.
 
 ## CSS and Theme System
 
@@ -114,9 +122,9 @@ Responsive definition list for property facts and similar data.
 
 [`client/js/core/router.js`](client/js/core/router.js) matches URL paths to handlers. The demo page ([`client/pages/demo/index.js`](client/pages/demo/index.js)) uses `linkScope: 'demo'` for grid, detail, and map views.
 
-Detail navigation fetches `GET /api/demo/detail/:prId` (same model as SSR `demo.get()`), builds HTML in [`client/pages/demo/detailSpa.js`](client/pages/demo/detailSpa.js), injects into `#detail`, then `emit('dom.load')` so plugins re-bind.
+Detail navigation fetches `GET /api/demo/detail/:prId` (same model as SSR `demo.get()`), renders [`server/ejs/comp_article_detail.ejs`](server/ejs/comp_article_detail.ejs) and [`comp_demo_nearby.ejs`](server/ejs/comp_demo_nearby.ejs) in [`client/pages/demo/detailSpa.js`](client/pages/demo/detailSpa.js) via [`client/js/core/renderEjs.js`](client/js/core/renderEjs.js), replaces `#detail` / nearby `section.result` `outerHTML`, then `emit('dom.load')` so plugins re-bind.
 
-EJS comps use `data-role` (e.g. `comp_album.ejs` → `slider`). SPA strings must use the same role names (e.g. `imgerror`, not `img-error`). See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md) for SSR/SPA duplication notes.
+EJS comps define `data-role` (e.g. `comp_album.ejs` → `slider`); client reuse keeps SSR and SPA markup aligned. See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md).
 
 ## Page Entry Structure
 

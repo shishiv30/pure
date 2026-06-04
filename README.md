@@ -7,6 +7,7 @@ Lightweight UI framework and server-rendered app built with pure JavaScript, SCS
 This README is a practical entry point. For deeper internals, use:
 
 - `client.md` for client architecture and plugin lifecycle.
+- `docs/client-js-lifecycle.md` for bundle boot, `main()` / Router / `dom.load` sequence (demo SPA).
 - `server.md` for server routing/controller/data flow.
 - `docs/listing-data-pipeline.md` for SOA → metadata → comp models → EJS/SPA (demo reference).
 - `build-system.md` for webpack and build/deploy behavior.

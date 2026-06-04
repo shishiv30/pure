@@ -61,6 +61,7 @@
       "docs/development-workflow.md",
       "docs/routes-reference.md",
       "docs/listing-data-pipeline.md",
+      "docs/client-js-lifecycle.md",
       "cms/API.md"
     ],
     "usage": [
