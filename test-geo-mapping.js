@@ -1,3 +1,6 @@
+/**
+ * @deprecated Prefer helpers/__tests__/ and `npm test` (node --test). Kept for legacy geo path checks.
+ */
 import { getCityPath, getCountyPath, getGeoByPath, getPathByGeo, geoType } from './helpers/geo.js';
 
 // Helper function to compare objects regardless of property order

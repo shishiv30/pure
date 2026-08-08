@@ -11,6 +11,8 @@
 
 <% if (data.detail) { %>
   <%- include('comp_article_detail', { detail: data.detail, getSrc, getHref }) %>
+<% } else { %>
+  <section class="detail demo-detail" id="detail"></section>
 <% } %>
 
 

@@ -109,97 +109,6 @@ export function getGeoCityByCityState(city, state) {
 	return null;
 }
 
-/**
- * Build UI geo model from SOA Pure listing `address`.
- * @param {Record<string, unknown>|null|undefined} address
- * @returns {object|null}
- */
-export function mapAddressToGeo(address) {
-	if (!address || typeof address !== 'object') {
-		return null;
-	}
-	const state = String(address.state ?? address.stateCode ?? '')
-		.trim()
-		.toUpperCase();
-	if (!state) {
-		return null;
-	}
-	const city = String(address.city ?? '').trim();
-	const county = String(address.county ?? '').trim();
-	const zipcode = String(address.zipCode ?? address.zipcode ?? '').trim();
-	const street = String(
-		address.addressInfo ?? address.street ?? address.addressLine1 ?? '',
-	).trim();
-	const geo = { state };
-	if (city) {
-		geo.city = city;
-	}
-	if (county) {
-		geo.county = county;
-	}
-	if (zipcode) {
-		geo.zipcode = zipcode;
-	}
-	if (street && city) {
-		geo.address = street;
-		geo.type = geoType.address;
-	} else if (city) {
-		geo.type = geoType.city;
-	} else {
-		geo.type = geoType.state;
-	}
-	const path = getPathByGeo(geo);
-	if (path) {
-		geo.path = path;
-	}
-	return geo;
-}
-
-export function getBreadcrumbByGeo(geo, _path) {
-	let path = _path || '';
-	let data = [
-		{
-			text: 'Home',
-			href: path,
-		},
-	];
-
-	if (geo) {
-		if (geo.state) {
-			data.push({
-				text: geo.state,
-				href: `${path}/${getStatePath(geo.state)}`,
-			});
-		}
-		if (geo.county) {
-			data.push({
-				text: geo.county,
-				href: `${path}/${getCountyPath(geo.county, geo.state)}`,
-			});
-		}
-		if (geo.city) {
-			data.push({
-				text: geo.city,
-				href: `${path}/${getCityPath(geo.city, geo.state)}`,
-			});
-		}
-		if (geo.neighborhood) {
-			data.push({
-				text: geo.neighborhood,
-				href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
-			});
-		}
-		if (geo.zipcode) {
-			data.push({
-				text: geo.zipcode,
-				href: `${path}/${getZipcodePath(geo.zipcode, geo.state)}`,
-			});
-		}
-	}
-	return {
-		links: data,
-	};
-}
 
 export function getGeoByPath(_path) {
 	let path = _path.replace(/^\//, '').replace(/\/$/, '');
@@ -293,35 +202,6 @@ export function getNeighborhoodPath(neighborhood, city, state) {
 	return `${stateCode}/${cityCode}/${neighborhoodCode}_neighborhood`;
 }
 
-export function getGeoDisplayText(geo) {
-	if (!geo) {
-		return '';
-	}
-
-	if (geo.address) {
-		const stateZip = [geo.state, geo.zipcode].filter(Boolean).join(' ').trim();
-		const locality = [geo.city, geo.county, stateZip].filter(Boolean).join(', ');
-		if (locality) {
-			return `${geo.address}, ${locality}`;
-		}
-		return String(geo.address);
-	} else if (geo.neighborhood) {
-		if (geo.city.includes(geo.neighborhood)) {
-			return `${geo.neighborhood}, ${geo.state}`;
-		}
-		return `${geo.neighborhood} ${geo.city}, ${geo.state}`;
-	} else if (geo.city) {
-		return `${geo.city}, ${geo.state}`;
-	} else if (geo.county) {
-		return `${geo.county}, ${geo.state}`;
-	} else if (geo.zipcode) {
-		return `${geo.zipcode} ${geo.state}`;
-	} else if (geo.state) {
-		return `${geo.state}`;
-	}
-
-	return '';
-}
 
 export function getPathByGeo(geo) {
 	if (geo.type === geoType.state) {
@@ -340,77 +220,7 @@ export function getPathByGeo(geo) {
 	return null;
 }
 
-/**
- * Maps our geo paths to SOA API format
- * Our format: tx/round-rock, tx/williamson_county, tx/78664, tx/round-rock/old-town_neighborhood
- * SOA format: round-rock-ca/, ca/, ca/95121/, round-rock-ca/central-san-jose/, santa-clara-county-ca/
- */
-const pathMappings = {
-	city: (city, state) => `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/`,
-	state: (state) => `${state.toLowerCase()}/`,
-	zipcode: (zipcode, state) => `${state.toLowerCase()}/${zipcode}/`,
-	neighborhood: (city, neighborhood, state) =>
-		`${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/${neighborhood
-			.toLowerCase()
-			.replace(/\s+/g, '-')}/`,
-	county: (county, state) => {
-		// Remove 'county' if it exists in the name and add it back in the correct format
-		const cleanName = county
-			.toLowerCase()
-			.replace(/\s+/g, '-')
-			.replace(/-county$/, '');
-		return `${cleanName}-county-${state.toLowerCase()}/`;
-	},
-};
 
-export function mapGeoToSOAPath(geo) {
-	// Auto-detect geo type based on geo properties
-	// Priority order: zipcode > neighborhood > city > county > state
-
-	if (geo.zipcode) {
-		return pathMappings.zipcode(geo.zipcode, geo.state);
-	}
-
-	if (geo.neighborhood) {
-		return pathMappings.neighborhood(geo.city, geo.neighborhood, geo.state);
-	}
-
-	if (geo.city) {
-		return pathMappings.city(geo.city, geo.state);
-	}
-
-	if (geo.county) {
-		return pathMappings.county(geo.county, geo.state);
-	}
-
-	if (geo.state) {
-		return pathMappings.state(geo.state);
-	}
-
-	throw new Error(
-		'No valid geo data provided. Must include at least state, or city, county, zipcode, or neighborhood with state.',
-	);
-}
-
-/**
- * Maps our geo path format to SOA API format
- * @param {string} geoPath - Our geo path format (e.g., "tx/round-rock")
- * @returns {string} - SOA API path format (e.g., "round-rock-ca/")
- */
-export function mapGeoPathToSOAPath(geoPath) {
-	if (!geoPath) {
-		throw new Error('Path is required');
-	}
-
-	const geo = getGeoByPath(geoPath);
-	return mapGeoToSOAPath(geo);
-}
-
-/**
- * Returns all states as sitemap links (href + text) for a given base path.
- * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
- * @returns {{ href: string, text: string }[]}
- */
 export function getStatesForSitemap(basePath) {
 	const codes = getAllStateCodes();
 	return codes.map((code) => ({
@@ -524,6 +334,196 @@ export function getZipcodesForSitemap(cityName, stateCode, basePath, zipcodesDat
 			}
 		});
 	return Array.from(zipcodes.values());
+}
+
+export function getBreadcrumbByGeo(geo, _path) {
+	let path = _path || '';
+	let data = [
+		{
+			text: 'Home',
+			href: path,
+		},
+	];
+
+	if (geo) {
+		if (geo.state) {
+			data.push({
+				text: geo.state,
+				href: `${path}/${getStatePath(geo.state)}`,
+			});
+		}
+		if (geo.county) {
+			data.push({
+				text: geo.county,
+				href: `${path}/${getCountyPath(geo.county, geo.state)}`,
+			});
+		}
+		if (geo.city) {
+			data.push({
+				text: geo.city,
+				href: `${path}/${getCityPath(geo.city, geo.state)}`,
+			});
+		}
+		if (geo.neighborhood) {
+			data.push({
+				text: geo.neighborhood,
+				href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
+			});
+		}
+		if (geo.zipcode) {
+			data.push({
+				text: geo.zipcode,
+				href: `${path}/${getZipcodePath(geo.zipcode, geo.state)}`,
+			});
+		}
+	}
+	return {
+		links: data,
+	};
+}
+
+
+export function getGeoDisplayText(geo) {
+	if (!geo) {
+		return '';
+	}
+
+	if (geo.address) {
+		const stateZip = [geo.state, geo.zipcode].filter(Boolean).join(' ').trim();
+		const locality = [geo.city, geo.county, stateZip].filter(Boolean).join(', ');
+		if (locality) {
+			return `${geo.address}, ${locality}`;
+		}
+		return String(geo.address);
+	} else if (geo.neighborhood) {
+		if (geo.city.includes(geo.neighborhood)) {
+			return `${geo.neighborhood}, ${geo.state}`;
+		}
+		return `${geo.neighborhood} ${geo.city}, ${geo.state}`;
+	} else if (geo.city) {
+		return `${geo.city}, ${geo.state}`;
+	} else if (geo.county) {
+		return `${geo.county}, ${geo.state}`;
+	} else if (geo.zipcode) {
+		return `${geo.zipcode} ${geo.state}`;
+	} else if (geo.state) {
+		return `${geo.state}`;
+	}
+
+	return '';
+}
+
+/**
+ * Build UI geo model from SOA Pure listing `address`.
+ * @param {Record<string, unknown>|null|undefined} address
+ * @returns {object|null}
+ */
+export function mapAddressToGeo(address) {
+	if (!address || typeof address !== 'object') {
+		return null;
+	}
+	const state = String(address.state ?? address.stateCode ?? '')
+		.trim()
+		.toUpperCase();
+	if (!state) {
+		return null;
+	}
+	const city = String(address.city ?? '').trim();
+	const county = String(address.county ?? '').trim();
+	const zipcode = String(address.zipCode ?? address.zipcode ?? '').trim();
+	const street = String(
+		address.addressInfo ?? address.street ?? address.addressLine1 ?? '',
+	).trim();
+	const geo = { state };
+	if (city) {
+		geo.city = city;
+	}
+	if (county) {
+		geo.county = county;
+	}
+	if (zipcode) {
+		geo.zipcode = zipcode;
+	}
+	if (street && city) {
+		geo.address = street;
+		geo.type = geoType.address;
+	} else if (city) {
+		geo.type = geoType.city;
+	} else {
+		geo.type = geoType.state;
+	}
+	const path = getPathByGeo(geo);
+	if (path) {
+		geo.path = path;
+	}
+	return geo;
+}
+
+
+/**
+ * Maps our geo paths to SOA API format
+ * Our format: tx/round-rock, tx/williamson_county, tx/78664, tx/round-rock/old-town_neighborhood
+ * SOA format: round-rock-ca/, ca/, ca/95121/, round-rock-ca/central-san-jose/, santa-clara-county-ca/
+ */
+const pathMappings = {
+	city: (city, state) => `${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/`,
+	state: (state) => `${state.toLowerCase()}/`,
+	zipcode: (zipcode, state) => `${state.toLowerCase()}/${zipcode}/`,
+	neighborhood: (city, neighborhood, state) =>
+		`${city.toLowerCase().replace(/\s+/g, '-')}-${state.toLowerCase()}/${neighborhood
+			.toLowerCase()
+			.replace(/\s+/g, '-')}/`,
+	county: (county, state) => {
+		// Remove 'county' if it exists in the name and add it back in the correct format
+		const cleanName = county
+			.toLowerCase()
+			.replace(/\s+/g, '-')
+			.replace(/-county$/, '');
+		return `${cleanName}-county-${state.toLowerCase()}/`;
+	},
+};
+
+export function mapGeoToSOAPath(geo) {
+	// Auto-detect geo type based on geo properties
+	// Priority order: zipcode > neighborhood > city > county > state
+
+	if (geo.zipcode) {
+		return pathMappings.zipcode(geo.zipcode, geo.state);
+	}
+
+	if (geo.neighborhood) {
+		return pathMappings.neighborhood(geo.city, geo.neighborhood, geo.state);
+	}
+
+	if (geo.city) {
+		return pathMappings.city(geo.city, geo.state);
+	}
+
+	if (geo.county) {
+		return pathMappings.county(geo.county, geo.state);
+	}
+
+	if (geo.state) {
+		return pathMappings.state(geo.state);
+	}
+
+	throw new Error(
+		'No valid geo data provided. Must include at least state, or city, county, zipcode, or neighborhood with state.',
+	);
+}
+
+/**
+ * Maps our geo path format to SOA API format
+ * @param {string} geoPath - Our geo path format (e.g., "tx/round-rock")
+ * @returns {string} - SOA API path format (e.g., "round-rock-ca/")
+ */
+export function mapGeoPathToSOAPath(geoPath) {
+	if (!geoPath) {
+		throw new Error('Path is required');
+	}
+
+	const geo = getGeoByPath(geoPath);
+	return mapGeoToSOAPath(geo);
 }
 
 /**

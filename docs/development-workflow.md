@@ -67,6 +67,7 @@ Demo controller: `server/controllers/demo.js`. Do not use raw SOA listing in tem
 
 ## Notes
 
-- `npm run lint` is currently a placeholder and is not an enforced gate.
+- `npm run lint` runs ESLint (`.eslintrc.cjs`) on geo helpers, routes manifests, SOA property client/payload, listing mappers, and client boot/router.
+- Prefer colocated tests under `helpers/__tests__/`, `server/**/__tests__/`. Root scripts `test-geo-mapping.js`, `test-auto-detection.js`, `test-dialog-plugin.js` are legacy and still invoked by `npm test`.
 - No Playwright/e2e; optional Lighthouse via `npm run test:lighthouse`.
 - Current PR code-review workflow triggers on pull request `opened`.

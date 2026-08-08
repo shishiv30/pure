@@ -1,8 +1,10 @@
 # Project Background Knowledge
 
-> This document is conceptual background. For current implementation details, use `README.md`, `client.md`, `server.md`, and `docs/routes-reference.md`.
+> **Legacy / superseded.** Do not use this as the primary reference.
+>
+> Prefer: [`docs/index.md`](docs/index.md) (map catalog), [`client.md`](client.md), [`server.md`](server.md), [`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md), [`docs/routes-reference.md`](docs/routes-reference.md).
 
-This document consolidates all the documentation for the project, serving as a comprehensive reference for the system architecture, client implementation, and event handling.
+This document consolidates older conceptual notes for the project. Kept for history; content may drift from current code.
 
 ## Table of Contents
 

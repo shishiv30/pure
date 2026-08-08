@@ -2,6 +2,8 @@
 
 Canonical reference for how webpack page bundles boot, run the Page/plugin pipeline, wire the demo Router, and refresh `[data-role]` components. Use this when debugging duplicate `init`, double fetches, or missing plugin binding after SPA HTML inject.
 
+For the full `/demo/tx` path (build + Express SSR + APIs + client), see [`demo-tx-lifecycle.md`](demo-tx-lifecycle.md).
+
 ---
 
 ## 1. Document and bundle entry
@@ -120,7 +122,9 @@ flowchart LR
 | `popstate` | Back/forward → `navigate` |
 | `replace(pathname)` | Initial route sync (detail URL can trigger `updateDetail` on load) |
 
-**Lifetime issue:** Each `new Router()` adds **another** `document` click listener. There is no `destroy()` or singleton. If `main()` / `demo.init` runs twice → duplicate navigations and API fetches.
+**Lifetime issue (fixed):** Each `new Router()` used to add another `document` click listener with no teardown. **Now:** `Router.destroy()` removes listeners; constructing a new `Router` destroys `Router.active`; `main()` is idempotent per frame (`__pureMainPage` boot guard). HMR can call `resetMain()` via `module.hot.dispose`.
+
+If `main()` / `demo.init` still appears to double-fetch, check that the entry script is not evaluated twice without dispose, and that DevTools shows a single `document` click listener.
 
 ---
 
@@ -217,15 +221,15 @@ flowchart LR
 
 Same in production if the entry script were evaluated twice (unusual).
 
-**Symptoms:**
+**Symptoms (before fix):**
 
 - `console.count('demo.init')` → 2+
 - `updateDetail` / detail API called twice per click
 - Multiple `document` click listeners (DevTools: `getEventListeners(document).click`)
 
-**Not caused by:** `refreshComponents` alone (does not call `demo.init`). **Caused by:** repeated `Router.init()` without teardown.
+**Not caused by:** `refreshComponents` alone (does not call `demo.init`). **Was caused by:** repeated `Router.init()` without teardown.
 
-**Follow-up fix (not implemented here):** Router listener cleanup or singleton, optional `main()` boot guard, HMR `dispose`.
+**Mitigation (implemented):** `Router.destroy()` + `Router.active` singleton teardown; `main()` boot guard (`__pureMainPage`); `resetMain()` for HMR dispose. See [`client/js/core/router.js`](../client/js/core/router.js) and [`client/js/index.js`](../client/js/index.js).
 
 ---
 

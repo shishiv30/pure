@@ -31,6 +31,15 @@ export class Page extends Plugin {
 				if (setting && setting.init) {
 					setting.init($el, opt, exportObj);
 				}
+				// main() calls page.init() directly (not via Plugin.register), so register
+				// the instance on body. Otherwise dom.load → refreshComponents re-inits
+				// body[data-role="<page>"] and creates a second Router / click listener.
+				if ($el && exportObj && exportObj._pid) {
+					Plugin.setInstance($el, exportObj);
+					if (!$el.hasAttribute('loaded')) {
+						$el.setAttribute('loaded', 2);
+					}
+				}
 				return exportObj;
 			},
 			load: async function ($el, opt, exportObj) {
@@ -88,6 +97,7 @@ export class Page extends Plugin {
 	/**
 	 * Refresh (init) plugins on [data-role] elements within root.
 	 * Call after HTML update/replace/add (e.g. after innerHTML, appendChild).
+	 * @see docs/client-js-lifecycle.md (map: client-boot)
 	 * @param {Document|Element} [root=document] - Root to scan; defaults to document
 	 */
 	static refreshComponents(root = document) {

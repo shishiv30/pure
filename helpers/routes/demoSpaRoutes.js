@@ -38,6 +38,7 @@ export const DEMO_SPA_ROUTE_ORDER = ['detail', 'map', 'geo'];
 const DEFAULT_FLAGS = 'i';
 
 /**
+ * @see docs/routes-reference.md (map: demo-spa-routes)
  * @param {'detail' | 'map' | 'geo'} id
  * @param {string} [flags]
  * @returns {RegExp}

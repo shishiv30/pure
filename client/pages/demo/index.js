@@ -7,9 +7,8 @@ import {
 	DEMO_SPA_ROUTES,
 } from '../../../helpers/routes/demoSpaRoutes.js';
 import { buildDemoSpaInnerHtml } from './detailSpa.js';
-import scss from '../../scss/demo.scss';
+import '../../scss/demo.scss';
 
-// eslint-disable-next-line no-unused-vars
 const boolStatus = ['lock', 'collapse', 'menu'];
 
 const enumStatus = [
@@ -40,10 +39,26 @@ function injectDemoSpaHtml(html) {
 			root.id = 'detail';
 		}
 	}
-	if (!root) {
-		return false;
+	if (root) {
+		root.outerHTML = detailSection.outerHTML;
+	} else {
+		// Geo SSR has no detail block — insert mount before nearby results.
+		const resultEl = document.querySelector(demoSpaNearbySel);
+		const anchor =
+			resultEl ||
+			document.querySelector('.breadcrumb') ||
+			document.querySelector('body');
+		if (!anchor) {
+			return false;
+		}
+		if (resultEl) {
+			resultEl.insertAdjacentElement('beforebegin', detailSection);
+		} else if (anchor !== document.body) {
+			anchor.insertAdjacentElement('afterend', detailSection);
+		} else {
+			anchor.appendChild(detailSection);
+		}
 	}
-	root.outerHTML = detailSection.outerHTML;
 	const nearbySection = wrap.querySelector(demoSpaNearbySel);
 	const resultEl = document.querySelector(demoSpaNearbySel);
 	if (nearbySection && resultEl) {
@@ -61,15 +76,57 @@ let demo = {
 
 		let gridSnapshot = null;
 		let resultSnapshot = null;
+		/** @type {AbortController|null} */
+		let detailAbort = null;
+		let detailRequestId = 0;
 
 		enumStatus.forEach((e) => {
 			defEnum(e.key, e.names, $el, opt, exportObj);
 		});
 
+		/**
+		 * Restore pre-detail grid markup after SPA inject replaced it.
+		 * @returns {boolean}
+		 */
+		function restoreGridSnapshots() {
+			if (!gridSnapshot) {
+				return false;
+			}
+			const root =
+				document.querySelector(demoSpaRootSel) ||
+				document.querySelector('section.detail');
+			if (root) {
+				root.outerHTML = gridSnapshot;
+			}
+			if (resultSnapshot) {
+				const resultEl = document.querySelector(demoSpaNearbySel);
+				if (resultEl) {
+					resultEl.outerHTML = resultSnapshot;
+				}
+			}
+			emit('dom.load');
+			return true;
+		}
+
 		exportObj.updateDetail = function (prId) {
-			return fetch(`/api/demo/detail/${encodeURIComponent(prId)}`)
-				.then((r) => r.json())
+			if (detailAbort) {
+				detailAbort.abort();
+			}
+			detailAbort = new AbortController();
+			const { signal } = detailAbort;
+			const requestId = ++detailRequestId;
+
+			return fetch(`/api/demo/detail/${encodeURIComponent(prId)}`, { signal })
+				.then((r) => {
+					if (!r.ok) {
+						throw new Error(`Detail request failed (${r.status})`);
+					}
+					return r.json();
+				})
 				.then((envelope) => {
+					if (requestId !== detailRequestId) {
+						return false;
+					}
 					if (!envelope || envelope.code !== 200 || envelope.error) {
 						throw new Error(
 							(typeof envelope?.error === 'string' && envelope.error) ||
@@ -79,10 +136,7 @@ let demo = {
 					const root =
 						document.querySelector(demoSpaRootSel) ||
 						document.querySelector('section.detail');
-					if (!root) {
-						return false;
-					}
-					if (gridSnapshot === null) {
+					if (gridSnapshot === null && root) {
 						gridSnapshot = root.outerHTML;
 						const resultEl = document.querySelector(demoSpaNearbySel);
 						if (resultEl) {
@@ -91,7 +145,7 @@ let demo = {
 					}
 					const html = buildDemoSpaInnerHtml(envelope.data);
 					if (html && injectDemoSpaHtml(html)) {
-						if (typeof window !== 'undefined' && window.context && envelope.data) {
+						if (window.context && envelope.data) {
 							Object.assign(window.context, envelope.data);
 						}
 						emit('dom.load');
@@ -100,6 +154,9 @@ let demo = {
 					return false;
 				})
 				.catch((err) => {
+					if (err && err.name === 'AbortError') {
+						return false;
+					}
 					// eslint-disable-next-line no-console
 					console.error('updateDetail', err);
 					return false;
@@ -113,41 +170,34 @@ let demo = {
 			[
 				{
 					reg: createDemoSpaRegExp('detail'),
-					loading: (to) => {
-						return new Promise((resolve) => {
-							const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
-							//if to is same as current path, don't load
-							if (to.pathname === window.location.pathname) {
-								resolve(null);
-								return;
-							}
-							exportObj.updateDetail(propertyId).then((detailLoaded) => {
-								if (detailLoaded) {
-									exportObj.switchToDetail();
-								} else {
-									exportObj.switchToGrid();
-								}
-								resolve(null);
-							});
-						});
+					loading: async (to) => {
+						const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
+						if (to.pathname === window.location.pathname) {
+							return null;
+						}
+						const detailLoaded = await exportObj.updateDetail(propertyId);
+						if (detailLoaded) {
+							exportObj.switchToDetail();
+						} else {
+							restoreGridSnapshots();
+							exportObj.switchToGrid();
+						}
+						return null;
 					},
 				},
 				{
 					reg: createDemoSpaRegExp('map'),
-					loading: () => {
-						return new Promise((resolve) => {
-							exportObj.switchToMap();
-							resolve(null);
-						});
+					loading: async () => {
+						exportObj.switchToMap();
+						return null;
 					},
 				},
 				{
 					reg: createDemoSpaRegExp('geo'),
-					loading: () => {
-						return new Promise((resolve) => {
-							exportObj.switchToGrid();
-							resolve(null);
-						});
+					loading: async () => {
+						restoreGridSnapshots();
+						exportObj.switchToGrid();
+						return null;
 					},
 				},
 			],
@@ -155,7 +205,7 @@ let demo = {
 		);
 	},
 	load: function ($el, opt, exportObj) {
-		if(context.detail){
+		if (window.context?.detail) {
 			exportObj.switchToDetail();
 		} else {
 			exportObj.switchToGrid();
@@ -169,7 +219,8 @@ let demo = {
 			}, 1000);
 		});
 	},
-	render: function ($el, opt, exportObj) {},
+	// Plugin lifecycle slot (Page still runs renderBefore/After).
+	render: function () {},
 };
 
 export default (function (win) {

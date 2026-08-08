@@ -4,15 +4,18 @@ Lightweight UI framework and server-rendered app built with pure JavaScript, SCS
 
 ## Source of Truth
 
-This README is a practical entry point. For deeper internals, use:
+This README is a practical entry point. **Start with [`docs/index.md`](docs/index.md)** (map catalog), then:
 
-- `client.md` for client architecture and plugin lifecycle.
-- `docs/client-js-lifecycle.md` for bundle boot, `main()` / Router / `dom.load` sequence (demo SPA).
-- `server.md` for server routing/controller/data flow.
-- `docs/listing-data-pipeline.md` for SOA → metadata → comp models → EJS/SPA (demo reference).
-- `build-system.md` for webpack and build/deploy behavior.
-- `cms/API.md` for CMS page/comp/theme update APIs.
-- `.cursor/background.json` for AI/agent-oriented path and helper reference (keep it in sync after renames or folder moves).
+- `docs/index.md` — lifecycle map IDs, architecture vs ops docs, how to extend a map
+- `docs/folder-ownership.md` — what each folder may contain
+- `client.md` for client architecture and plugin lifecycle
+- `docs/client-js-lifecycle.md` for bundle boot, `main()` / Router / `dom.load` (demo SPA)
+- `docs/demo-tx-lifecycle.md` for `/demo/tx` end-to-end
+- `server.md` for server routing/controller/data flow
+- `docs/listing-data-pipeline.md` for SOA → metadata → comps → EJS/SPA
+- `build-system.md` for webpack and build/deploy
+- `cms/API.md` for CMS page/comp/theme APIs
+- `.cursor/background.json` for AI/agent path and helper reference
 
 ## Quick Start
 
@@ -95,7 +98,8 @@ Default Docker access URL: `http://localhost:3002`
 - Test suite: `npm run test` — helper mapping tests, BaseController config, geo/dialog scripts, `htmlPath`, demo geo redirect
 - BaseController tests only: `npm run test:basecontroller`
 - Lighthouse (UI perf only, not e2e): `npm run test:lighthouse`
-- Lint script exists but is currently a placeholder in `package.json`.
+- Lint: `npm run lint` — ESLint on geo helpers, route manifests, SOA property modules, listing mappers, client boot/router (config: `.eslintrc.cjs`)
+- Root `test-*.js` scripts are legacy; prefer `helpers/__tests__/` (still run via `npm test` for now)
 
 AI review tooling:
 

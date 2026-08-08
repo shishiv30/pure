@@ -55,6 +55,8 @@
     "normative_source": ".cursor/rules/*.mdc",
     "canonical_docs": [
       "README.md",
+      "docs/index.md",
+      "docs/folder-ownership.md",
       "client.md",
       "server.md",
       "build-system.md",
@@ -62,6 +64,7 @@
       "docs/routes-reference.md",
       "docs/listing-data-pipeline.md",
       "docs/client-js-lifecycle.md",
+      "docs/demo-tx-lifecycle.md",
       "cms/API.md"
     ],
     "usage": [

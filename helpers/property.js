@@ -92,6 +92,7 @@ function resolveSoaListingPrice(listing) {
  * Map SOA Pure listing (+ optional histories) to normalized metadata for article mappers.
  * List cards use listing only; detail pages pass `historiesRaw` for a sorted `histories` array.
  *
+ * @see docs/listing-data-pipeline.md (map: listing-pipeline)
  * @param {object|null|undefined} soaListing
  * @param {unknown} [historiesRaw]
  * @returns {object|null}

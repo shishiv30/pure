@@ -1,5 +1,7 @@
 # Event Handling System Documentation
 
+> **Legacy / superseded.** Prefer [`client.md`](client.md) and [`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md) for current event bus, Plugin lifecycle, and `dom.load` behavior. Map catalog: [`docs/index.md`](docs/index.md).
+
 ## Overview
 
 The client implements a robust event handling system through the `event.js` module, which provides a flexible and powerful way to manage events throughout the application. The system supports both custom events and DOM events, with namespace support for better event organization.

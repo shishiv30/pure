@@ -249,6 +249,7 @@ export function mapRecordToComp(attrs, heading = 'Facts') {
 /**
  * Map SOA listing (+ optional histories) to comp render models for `comp_article_detail`.
  *
+ * @see docs/listing-data-pipeline.md (map: listing-pipeline)
  * @param {object|null|undefined} soaListing — raw SOA listing
  * @param {unknown} [historiesRaw]
  * @returns {object|null}

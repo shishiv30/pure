@@ -2,7 +2,7 @@
 
 Canonical guide for how **SOA Property listings** flow through Pure: raw API → **metadata** → **comp UI models** → EJS (SSR) or JSON (SPA). Use the **demo page** as the reference implementation.
 
-Normative coding rules: [`.cursor/rules/project-standards.mdc`](../.cursor/rules/project-standards.mdc). SOA HTTP reference: [`soa-api.md`](soa-api.md).
+Normative coding rules: [`.cursor/rules/project-standards.mdc`](../.cursor/rules/project-standards.mdc). SOA HTTP reference: [`soa-api.md`](soa-api.md). Full `/demo/tx` build → SSR → client timeline: [`demo-tx-lifecycle.md`](demo-tx-lifecycle.md).
 
 ## Three layers (do not mix)
 

@@ -3,18 +3,13 @@
 .list-dict {
 	width: 100%;
 	margin: var(--g1) auto;
-	--list-dict-item-width: 320px;
-
 	display: grid;
-	grid-template-columns: repeat(
-		auto-fill,
-		minmax(calc(var(--list-dict-item-width) - var(--g2) * 2), 1fr)
-	);
+	grid-template-columns:  1fr 1fr;
 	gap: var(--g2);
 
 	> li {
 		width: 100%;
-		border-bottom: 1px solid var(--color-l1);
+		border-bottom: 1px solid var(--color-border);
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
@@ -25,17 +20,17 @@
 	}
 
 	.key {
-		flex: 0 0 40%;
+		flex: 0 0 30%;
 		min-width: 0;
 		text-decoration: none;
 		cursor: help;
+		font-weight: var(--font-weight-bold);
 	}
 
 	.value {
 		flex: 1 1 auto;
 		display: flex;
 		align-items: baseline;
-		justify-content: flex-end;
 		text-align: end;
 		font-weight: var(--font-weight-bold);
 		word-break: break-word;

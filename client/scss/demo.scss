@@ -24,7 +24,7 @@
     }
 
     @media screen and (min-width: $screen-lg-min) {
-        --item-width: 400px;
+        --item-width: 360px;
     }
     @media screen and (orientation:portrait) {
         --detail-max-width: 56%;
@@ -32,7 +32,16 @@
     @media screen and (orientation:landscape) {
         --detail-max-width: 40%;
     }
+    &.view-detail{
+        @media screen and (max-width: $screen-md-max) {
+            --item-width: 260px;
+        }
 
+        
+        @media (min-width: $screen-lg-min)  {
+            --item-width: 320px;
+        }
+    }
 
     @include hidden-scrollbar();
 

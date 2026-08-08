@@ -1,3 +1,6 @@
+/**
+ * @deprecated Prefer helpers/__tests__/ and `npm test`. Legacy SOA path auto-detection checks.
+ */
 import { mapGeoToSOAPath } from './helpers/geo.js';
 
 // Test cases for auto-detection

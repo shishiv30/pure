@@ -1,4 +1,5 @@
 /**
+ * @deprecated Prefer colocated tests under helpers/__tests__/ or client when expanded.
  * Contract test for dialog plugin (HTML dialog element; runs in Node; no browser DOM).
  */
 import assert from 'node:assert/strict';

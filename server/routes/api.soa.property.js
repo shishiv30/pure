@@ -101,7 +101,7 @@ export function getFilterByPayloadFilter(payload) {
 			filter.maxBath = payload.maxBath;
 	}
 	if (payload.propertyTypes && payload.propertyTypes.length > 0) {
-			filter.propertyType = payload.propertyTypes.map((e) => propertyTypes[e] || e);
+			filter.propertyType = payload.propertyTypes.slice();
 	}
 	if (payload.minSqft !== undefined) {
 			filter.minHouseSize = payload.minSqft;

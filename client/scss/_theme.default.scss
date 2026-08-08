@@ -170,10 +170,11 @@ body {
 	--color-bg-default: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-lightness));
 	--color-bg-default-l1: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-l1-lightness));
 	--color-bg-default-hsl: var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-lightness);
+	--color-border-default: hsl(var(--color-major-hue), var(--color-glb-saturation), var(--color-bg-default-l1-lightness));
 
 
 	--color: var(--color-default);
-	--color-border: var(--color-bg-default);
+	--color-border: var(--color-border-default);
 	--color-bg: var(--color-bg-default);
 	--color-hover: var(--color-default-l1);
 	--color-border-hover: var(--color-bg-default);
