@@ -1,9 +1,34 @@
 /**
  * Client SPA router (click + popstate).
+ *
+ * Boot: `init()` listens for click/popstate, then `replace(location.pathname)`.
+ * Click → `push` (`loading`, then `pushState`). Back/forward → `goto` (`loading`
+ * only; the browser already changed the URL). `replace` syncs the current URL.
+ *
+ * Rule `loading(to, from, method)` is the only hook. Do not treat
+ * `to.pathname === window.location.pathname` as "initial load" — that is also
+ * true for `goto`. Use `method === 'replace'` (or `from == null`) to skip work
+ * SSR already painted.
+ *
  * @see docs/client-js-lifecycle.md (map: client-boot)
  *
+ * @typedef {'push' | 'replace' | 'goto'} NavigationMethod
+ *
+ * @typedef {Object} RouteState
+ * @property {RouteRule} rule
+ * @property {string[]|null} params Regex capture groups (full match stripped)
+ * @property {string} pathname
+ *
+ * @typedef {Object} RouteRule
+ * @property {RegExp} [reg] First matching rule wins. Do not use the `g` flag.
+ * @property {string} [path] Exact pathname when `reg` is omitted.
+ * @property {function(RouteState, RouteState|null, NavigationMethod):
+ *   (any|Promise<any>)} [loading]
+ *
  * @typedef {Object} RouterOptions
- * @property {'demo'} [linkScope] When set, only same-origin links under `/demo/` are handled by the router (full navigation for others). Paths starting with `/demo/sitemap` always use full navigation.
+ * @property {'demo'} [linkScope] When `demo`, only same-origin `/demo/` links
+ *   are intercepted (except `/demo/sitemap`). Omit to intercept every
+ *   same-origin path `getInternalPath` can parse.
  */
 
 export class Router {
@@ -11,7 +36,7 @@ export class Router {
 	static active = null;
 
 	/**
-	 * @param {Array} rules
+	 * @param {RouteRule[]} rules First match wins; put specific patterns first.
 	 * @param {RouterOptions} [options]
 	 */
 	constructor(rules, options = {}) {
@@ -20,8 +45,8 @@ export class Router {
 		}
 		this.rules = rules;
 		this.options = options;
+		/** @type {RouteState|null} */
 		this.currentRouter = null;
-		this.history = [];
 		this._onPopstate = null;
 		this._onClick = null;
 		this._destroyed = false;
@@ -29,6 +54,11 @@ export class Router {
 		Router.active = this;
 	}
 
+	/**
+	 * Pathname for a same-origin href, or `''` (let the browser handle it).
+	 * @param {string} path
+	 * @returns {string}
+	 */
 	getInternalPath(path) {
 		try {
 			if (path.indexOf(window.location.origin) === 0) {
@@ -43,16 +73,21 @@ export class Router {
 		return '';
 	}
 
+	/**
+	 * Run the matched rule's `loading`, then update history for `push`/`replace`.
+	 * `goto` does not touch history — popstate already changed the URL.
+	 * @param {RouteState} state
+	 * @param {NavigationMethod} method
+	 */
 	async navigate(state, method) {
 		if (!state || this._destroyed) {
 			return;
 		}
 		try {
-			let res = await this.loading(state);
+			await this.loading(state, method);
 			if (this._destroyed) {
 				return;
 			}
-			this.loaded(state, res);
 			this.currentRouter = state;
 			if (method === 'push') {
 				window.history.pushState({ pathname: state.pathname }, '', state.pathname);
@@ -64,6 +99,10 @@ export class Router {
 		}
 	}
 
+	/**
+	 * In-app navigation. `loading` runs before `pushState`.
+	 * @param {string} path
+	 */
 	async push(path) {
 		if (this._destroyed) {
 			return;
@@ -71,13 +110,17 @@ export class Router {
 		if (this.currentRouter && this.currentRouter.pathname === path) {
 			return;
 		}
-		let state = await this.routerTo(path);
+		let state = this.routerTo(path);
 		if (!state || this._destroyed) {
 			return;
 		}
 		await this.navigate(state, 'push');
 	}
 
+	/**
+	 * Sync the current URL (boot). `loading` runs while the bar already matches.
+	 * @param {string} path
+	 */
 	async replace(path) {
 		if (this._destroyed) {
 			return;
@@ -85,13 +128,19 @@ export class Router {
 		if (this.currentRouter && this.currentRouter.pathname === path) {
 			return;
 		}
-		let state = await this.routerTo(path);
+		let state = this.routerTo(path);
 		if (!state || this._destroyed) {
 			return;
 		}
 		await this.navigate(state, 'replace');
 	}
 
+	/**
+	 * @param {string} internalPath
+	 * @param {MouseEvent} [e]
+	 * @param {Element} [target]
+	 * @returns {boolean} `true` to intercept (preventDefault + push)
+	 */
 	shouldHandleDemoLink(internalPath, e, target) {
 		if (this.options.linkScope !== 'demo') {
 			return true;
@@ -181,24 +230,21 @@ export class Router {
 		}
 	}
 
-	async loading(to) {
+	/**
+	 * @param {RouteState} to
+	 * @param {NavigationMethod} method
+	 */
+	async loading(to, method) {
 		if (to && to.rule && to.rule.loading) {
-			let res = await to.rule.loading(to, this.currentRouter);
-			if (res) {
-				return res;
-			} else {
-				return null;
-			}
-		}
-		return null;
-	}
-
-	async loaded(to) {
-		if (this.currentRouter && this.currentRouter.destroy) {
-			this.currentRouter.destroy(to, this.currentRouter);
+			await to.rule.loading(to, this.currentRouter, method);
 		}
 	}
 
+	/**
+	 * First matching rule, or full navigation if none match a different URL.
+	 * @param {string} pathname
+	 * @returns {RouteState|undefined}
+	 */
 	routerTo(pathname) {
 		if (!pathname) {
 			return;

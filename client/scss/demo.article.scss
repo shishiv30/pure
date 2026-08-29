@@ -2,7 +2,7 @@
 @use './_mixins.scss' as *;
 article {
     --article-width: 100%;
-    --article-gap: min(var(--g2), 3%);
+    --article-gap: min(var(--g3), 5%);
     background-color: var(--color-bg-l1);
     position: relative;
     border-radius: 8px;
@@ -65,7 +65,7 @@ article {
         margin: 0 var(--article-gap);
         font-weight: var(--font-weight-medium);
         display: flex;
-        gap: var(--g2) var(--article-gap);
+        gap: var(--g2);
         align-items: baseline;
         height: 1.2rem;
         overflow: hidden;

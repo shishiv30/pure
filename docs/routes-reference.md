@@ -39,6 +39,7 @@ Sitemap HTML routes are defined in [`server/routes/demo.js`](../server/routes/de
 
 - [`server/routes/demo.js`](../server/routes/demo.js) — `detail` and `geo` handlers (map URLs use `geo` on the server)
 - [`client/pages/demo/index.js`](../client/pages/demo/index.js) — client `Router` rules (`detail`, `map`, `geo`)
+- Client `Router` `push` / `replace` / `goto` contract: [`docs/client-js-lifecycle.md`](client-js-lifecycle.md#4-client-router-contract)
 
 When changing demo SPA URL shapes, update `demoSpaRoutes.js` and its tests first.
 

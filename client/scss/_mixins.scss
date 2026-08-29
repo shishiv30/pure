@@ -30,6 +30,7 @@
 		&.normal {
 			--#{$name}-gap: var(--g1);
 			--#{$name}-font-size: var(--font-size-5);
+			--#{$name}-font-weight: var(--font-weight-regular);
 			--#{$name}-size: var(--comp-size-3);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-width: #{$width};

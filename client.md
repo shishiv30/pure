@@ -9,7 +9,7 @@ This document describes the current client runtime in this repo. It is focused o
 - `client/scss/*`
 - `client/pages/*`
 
-For boot order, `main()` → `page.init()` → Router → `dom.load` / SPA inject (including duplicate-init pitfalls), see **[`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md)**.
+For boot order, `main()` → `page.init()` → Router → `dom.load` / SPA inject (including duplicate-init pitfalls), see **[`docs/client-js-lifecycle.md`](docs/client-js-lifecycle.md)**. Router `push` / `replace` / `goto` contract: [§4](docs/client-js-lifecycle.md#4-client-router-contract).
 
 ## Design Model
 
@@ -104,6 +104,8 @@ Responsive definition list for property facts and similar data.
 - **SPA:** demo detail uses the same `server/ejs/comp_record.ejs` as SSR (via `renderEjsTemplate`); no hand-built record HTML.
 
 ## CSS and Theme System
+
+Token names, `:root` vs `body` alias rules, and the token audit live in **[`docs/css-design-system.md`](docs/css-design-system.md)**.
 
 ### SCSS organization
 

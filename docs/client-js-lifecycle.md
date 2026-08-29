@@ -1,6 +1,6 @@
 # Client-side JS lifetime (Pure)
 
-Canonical reference for how webpack page bundles boot, run the Page/plugin pipeline, wire the demo Router, and refresh `[data-role]` components. Use this when debugging duplicate `init`, double fetches, or missing plugin binding after SPA HTML inject.
+Canonical reference for how webpack page bundles boot, run the Page/plugin pipeline, wire the demo Router, and refresh `[data-role]` components. Use this when debugging duplicate `init`, double fetches, or missing plugin binding after SPA HTML inject. **Router `push` / `replace` / `goto` contract:** [§4](#4-client-router-contract).
 
 For the full `/demo/tx` path (build + Express SSR + APIs + client), see [`demo-tx-lifecycle.md`](demo-tx-lifecycle.md).
 
@@ -97,7 +97,49 @@ flowchart TB
 
 ---
 
-## 4. Demo `init`: Router and global listeners
+## 4. Client Router contract
+
+Source: [`client/js/core/router.js`](../client/js/core/router.js). Demo rules: [`client/pages/demo/index.js`](../client/pages/demo/index.js). URL patterns: [`helpers/routes/demoSpaRoutes.js`](../helpers/routes/demoSpaRoutes.js).
+
+```text
+new Router(rules, options)
+  → click: preventDefault → push(path) → loading → pushState
+  → popstate: goto → loading (no pushState; URL already changed)
+  → boot: replace(location.pathname) → loading (URL already this page)
+```
+
+| `method` | Trigger | Is `window.location` already `to.pathname`? |
+|----------|---------|-----------------------------------------------|
+| `push` | in-app click | **No** — `pushState` runs after `loading` |
+| `replace` | boot `init()` | **Yes** — SSR already on this URL |
+| `goto` | back/forward | **Yes** — popstate already changed the URL |
+
+**Rule shape:** `{ reg | path, loading(to, from, method) }`. `to` / `from` are `{ rule, params, pathname }`. `from` is `null` on the first `replace`. `params` are regex capture groups with the full match stripped. First matching rule wins — put specific patterns first. Do not use a regex `g` flag.
+
+**Rule-author rules:**
+
+1. Do **not** use `to.pathname === window.location.pathname` to mean “initial load.” Use `method === 'replace'` (or `from == null`).
+2. On `goto` / `replace`, the address bar is already correct; `loading` must still update the DOM when the view should change.
+3. `loading` is the only hook. Return values are unused.
+4. Demo pages must pass `{ linkScope: 'demo' }` so `/page`, `/api`, and `/demo/sitemap` are not hijacked. Omitting `linkScope` intercepts every same-origin path `getInternalPath` can parse.
+
+Example (detail skip only on SSR boot):
+
+```javascript
+{
+  reg: createDemoSpaRegExp('detail'),
+  loading: async (to, from, method) => {
+    if (method === 'replace') {
+      return null; // SSR already painted this page
+    }
+    await renderDetail(to.params[prIdIndex]);
+  },
+}
+```
+
+---
+
+## 5. Demo `init`: Router and global listeners
 
 Inside `demo.init` ([`client/pages/demo/index.js`](../client/pages/demo/index.js)):
 
@@ -119,8 +161,8 @@ flowchart LR
 | `Router.init` | Effect |
 |---------------|--------|
 | `click` | Intercepts same-origin `/demo/` links → `push()` → rule `loading` |
-| `popstate` | Back/forward → `navigate` |
-| `replace(pathname)` | Initial route sync (detail URL can trigger `updateDetail` on load) |
+| `popstate` | Back/forward → `navigate(..., 'goto')` |
+| `replace(pathname)` | Initial route sync (`method === 'replace'`; detail skips fetch — SSR already painted) |
 
 **Lifetime issue (fixed):** Each `new Router()` used to add another `document` click listener with no teardown. **Now:** `Router.destroy()` removes listeners; constructing a new `Router` destroys `Router.active`; `main()` is idempotent per frame (`__pureMainPage` boot guard). HMR can call `resetMain()` via `module.hot.dispose`.
 
@@ -128,7 +170,7 @@ If `main()` / `demo.init` still appears to double-fetch, check that the entry sc
 
 ---
 
-## 5. First `dom.load` and `[data-role]` plugins
+## 6. First `dom.load` and `[data-role]` plugins
 
 After page `render`, `Page.eventListener()` ([`client/js/core/page.js`](../client/js/core/page.js)) runs once per completed `page.init`:
 
@@ -148,7 +190,7 @@ flowchart TB
 
 ---
 
-## 6. Demo SPA detail path
+## 7. Demo SPA detail path
 
 ```mermaid
 sequenceDiagram
@@ -182,7 +224,7 @@ sequenceDiagram
 
 ---
 
-## 7. Ongoing runtime (after boot)
+## 8. Ongoing runtime (after boot)
 
 ```mermaid
 flowchart TB
@@ -207,7 +249,7 @@ flowchart TB
 
 ---
 
-## 8. When the graph runs again (duplicate lifetime)
+## 9. When the graph runs again (duplicate lifetime)
 
 ```mermaid
 flowchart LR
@@ -233,13 +275,13 @@ Same in production if the entry script were evaluated twice (unusual).
 
 ---
 
-## 9. Quick reference: who owns what
+## 10. Quick reference: who owns what
 
 | Concern | Owner | Init trigger |
 |---------|--------|----------------|
 | Page context (`exportObj.ctx`) | `Page` wrapper | `page.init()` |
 | Demo view state (`switchToGrid`, etc.) | `defEnum` on `body` | `demo.init` |
-| Client routing | `Router` | `demo.init` → `new Router` |
+| Client routing | `Router` | `demo.init` → `new Router` — [§4 contract](#4-client-router-contract) |
 | Detail HTML + fetch | `exportObj.updateDetail` | Router `loading` or manual |
 | Widget plugins (slider, header, …) | `Plugin.register` | `dom.load` / `dom.updated` → `refreshComponents` |
 | SOA-shaped data | `window.context` / API envelope | SSR inline or `updateDetail` assign |
@@ -250,4 +292,5 @@ Same in production if the entry script were evaluated twice (unusual).
 
 - [`client.md`](../client.md) — plugin model, SCSS, practical guidelines
 - [`docs/listing-data-pipeline.md`](listing-data-pipeline.md) — demo data → EJS / SPA
+- [`docs/routes-reference.md`](routes-reference.md) — server + demo SPA URL patterns
 - [`build-system.md`](../build-system.md) — webpack entries and output

@@ -171,6 +171,7 @@ EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ej
 ### Demo client router
 
 - `client/pages/demo/index.js` — `Router` rules for grid / detail / map; `linkScope: 'demo'`.
+- `push` / `replace` / `goto` contract: [`docs/client-js-lifecycle.md` §4](client-js-lifecycle.md#4-client-router-contract).
 - Detail navigation: `fetch('/api/demo/detail/:prId')` → `buildDemoSpaInnerHtml(envelope.data)` in [`client/pages/demo/detailSpa.js`](../client/pages/demo/detailSpa.js) (renders [`comp_article_detail.ejs`](../server/ejs/comp_article_detail.ejs) + [`comp_demo_nearby.ejs`](../server/ejs/comp_demo_nearby.ejs) via [`client/js/core/renderEjs.js`](../client/js/core/renderEjs.js)) → `outerHTML` on `#detail` and nearby `section.result`.
 
 **Data and markup** match SSR (`demo.get()` + same EJS comps). Render context (`getHref`, `getSrc`) comes from [`helpers/ejsRenderContext.js`](../helpers/ejsRenderContext.js).

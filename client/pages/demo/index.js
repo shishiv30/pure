@@ -170,9 +170,10 @@ let demo = {
 			[
 				{
 					reg: createDemoSpaRegExp('detail'),
-					loading: async (to) => {
+					loading: async (to, _from, method) => {
 						const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
-						if (to.pathname === window.location.pathname) {
+						// Initial SSR replace already painted detail; popstate/push must still update.
+						if (method === 'replace') {
 							return null;
 						}
 						const detailLoaded = await exportObj.updateDetail(propertyId);

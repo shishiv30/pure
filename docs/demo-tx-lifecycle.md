@@ -268,7 +268,7 @@ Bus events that **do** exist: `dom.load`, `dom.updated`, `dom.resize`, `dom.scro
 | 9 | **render** — `Page.eventListener()`; `emit('dom.load')` | Page wrapper; demo `render` is empty |
 | 10 | Debounced `refreshComponents` → `[data-role]` widgets | `page.js` |
 
-Router rules (order): **detail** → **map** → **geo**. On `/demo/tx`, `replace` matches **geo** → `loading` only calls `switchToGrid` (no fetch). Detail `loading` skips fetch when `to.pathname === window.location.pathname` (SSR detail hard load).
+Router rules (order): **detail** → **map** → **geo**. On `/demo/tx`, `replace` matches **geo** → `loading` only calls `switchToGrid` (no fetch). Detail `loading` skips fetch only on initial `replace` (SSR detail hard load). Back/forward uses `goto` and must still `updateDetail` + `switchToDetail` because the browser already changed the URL. Contract: [`client-js-lifecycle.md` §4](client-js-lifecycle.md#4-client-router-contract).
 
 ### SPA click on article `<a>`
 

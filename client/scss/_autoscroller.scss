@@ -21,11 +21,11 @@
 		flex: 0 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: var(--g1-5, var(--g2));
+		gap: var(--g2);
 	}
 
 	&-item {
-		border-bottom: 1px solid var(--color-border, var(--color-bg-l2));
+		border-bottom: 1px solid var(--color-border);
 		padding: var(--g1) 0;
 
 		&:last-child {
@@ -37,7 +37,7 @@
 			grid-template-columns: auto 1fr;
 			grid-template-rows: auto auto;
 			column-gap: var(--g2);
-			row-gap: var(--g0-5, var(--g1));
+			row-gap: var(--g1);
 			align-items: baseline;
 			text-decoration: none;
 			color: inherit;
@@ -61,7 +61,7 @@
 		display: flex;
 		gap: var(--g1);
 		font-size: min(var(--font-size-1), 4vw);
-		color: var(--color-text-2, var(--color-fg-2));
+		color: var(--color-l1);
 	}
 
 	&-tag {

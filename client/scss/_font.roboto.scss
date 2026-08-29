@@ -14,10 +14,8 @@
 	font-display: swap;
 }
 
-@font-face {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 700;
-	src: url('../assets/fonts/Roboto-Regular.woff2') format('woff2');
-	font-display: swap;
-}
+//NOTE: no Roboto-Bold.woff2 ships with this repo. declaring a 700 face that
+//points at Roboto-Regular.woff2 makes the browser treat it as a real bold and
+//skip synthesis, so --font-weight-bold rendered identically to regular.
+//leaving 700 undeclared lets the engine synthesise faux-bold from the 400 face.
+//drop this comment and add a real face if Roboto-Bold.woff2 is added.

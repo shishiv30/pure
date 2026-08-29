@@ -1,3 +1,4 @@
+@use './_var.icon.scss' as *;
 @use './_mixins.scss' as *;
 @use './_var.screen.scss' as *;
 
@@ -431,7 +432,7 @@ hr {
 		}
 
 		a {
-			color: var(--color-link-default);
+			color: var(--color-link);
 			border-radius: var(--radius-3);
 
 			@include hover() {
@@ -446,8 +447,8 @@ hr {
 			&.next,
 			&.prev {
 				@include icon();
-				background-color: var(--color-link-default);
-				color: var(--color-f);
+				background-color: var(--color-link);
+				color: var(--color-bg-default);
 
 				&[disabled] {
 					background-color: var(--color-l1);
@@ -457,17 +458,17 @@ hr {
 
 			&.prev::before {
 				line-height: var(--comp-size-2);
-				content: var(--icon-angle-left);
+				content: $icon-angle-left;
 			}
 
 			&.next::before {
 				line-height: var(--comp-size-2);
-				content: var(--icon-angle-right);
+				content: $icon-angle-right;
 			}
 
 			&.selected {
-				background-color: var(--color-link-default);
-				color: var(--color-f);
+				background-color: var(--color-link);
+				color: var(--color-bg-default);
 			}
 		}
 	}
@@ -502,7 +503,7 @@ hr {
 	.count {
 		display: block;
 		padding: var(--g2);
-		color: var(--color-f);
+		color: var(--color-bg-default);
 		background-color: #49d9e2;
 		border-radius: var(--radius-0);
 		text-shadow: var(--color);
@@ -519,7 +520,7 @@ hr {
 
 		.unit {
 			font-size: var(--font-size-5);
-			color: var(--color-f);
+			color: var(--color-bg-default);
 			@include singleline();
 		}
 	}

@@ -120,7 +120,7 @@
 
 			&::before {
 				@include icon();
-				content: var(--icon-info);
+				content: $icon-info;
 				display: inline-block;
 				padding: 0 3px;
 			}
@@ -141,7 +141,7 @@
 
 			&::before {
 				@include icon();
-				content: var(--icon-minor);
+				content: $icon-minor;
 				display: inline-block;
 				padding: 0 3px;
 			}
@@ -162,7 +162,7 @@
 
 			&::before {
 				@include icon();
-				content: var(--icon-minor);
+				content: $icon-minor;
 				display: inline-block;
 				padding: 0 3px;
 			}

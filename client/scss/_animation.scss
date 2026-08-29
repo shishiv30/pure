@@ -103,7 +103,7 @@
 		animation: rotate 1s infinite steps(8);
 		color: var(--color-bg);
 		@include icon();
-		content: var(--icon-refresh);
+		content: $icon-refresh;
 	}
 
 	&::after {

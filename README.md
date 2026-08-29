@@ -9,10 +9,11 @@ This README is a practical entry point. **Start with [`docs/index.md`](docs/inde
 - `docs/index.md` — lifecycle map IDs, architecture vs ops docs, how to extend a map
 - `docs/folder-ownership.md` — what each folder may contain
 - `client.md` for client architecture and plugin lifecycle
-- `docs/client-js-lifecycle.md` for bundle boot, `main()` / Router / `dom.load` (demo SPA)
+- `docs/client-js-lifecycle.md` for bundle boot, Router contract (`push` / `replace` / `goto`), `dom.load` (demo SPA)
 - `docs/demo-tx-lifecycle.md` for `/demo/tx` end-to-end
 - `server.md` for server routing/controller/data flow
 - `docs/listing-data-pipeline.md` for SOA → metadata → comps → EJS/SPA
+- `docs/css-design-system.md` for SCSS tokens, theme aliases, and CSS custom-property rules
 - `build-system.md` for webpack and build/deploy
 - `cms/API.md` for CMS page/comp/theme APIs
 - `.cursor/background.json` for AI/agent path and helper reference
