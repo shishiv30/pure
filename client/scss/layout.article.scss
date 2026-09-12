@@ -128,6 +128,14 @@
 		}
 	}
 
+	> footer {
+		font-size: var(--font-size-7);
+		color: var(--color-0);
+		border-top: 1px solid var(--article-color-border);
+		padding-top: var(--g1);
+		margin-top: auto;
+	}
+
 	> dl.dict {
 		display: grid;
 		grid-template-columns: auto 1fr;
