@@ -1,0 +1,163 @@
+@use './_mixins.scss' as *;
+
+@include comp-color('article');
+@include comp-size('article');
+
+.article {
+	display: flex;
+	flex-direction: column;
+	gap: var(--g2);
+	padding: var(--g2) var(--g3);
+
+	color: var(--article-color);
+	background-color: var(--article-color-bg);
+
+	transition:
+		color var(--animation-time) ease,
+		background-color var(--animation-time) ease,
+		box-shadow var(--animation-time) ease,
+		border-radius var(--animation-time) ease,
+		padding var(--animation-time) ease,
+		gap var(--animation-time) ease;
+
+	&.small {
+		gap: var(--g1);
+		padding: var(--g1) var(--g2);
+	}
+
+	&.large {
+		gap: var(--g3);
+		padding: var(--g3) var(--g4);
+	}
+
+	// active: invert bg/color to highlight
+	&.active {
+		color: var(--article-color-active);
+		background-color: var(--article-color-active-bg);
+		box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-active-border);
+	}
+
+	// outline: border only, transparent bg
+	&.outline {
+		background-color: transparent;
+		box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-border);
+
+		&.active {
+			background-color: var(--article-color-active-bg);
+			box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-active-border);
+		}
+	}
+
+	// corner: rounded borders
+	&.corner {
+		border-radius: var(--radius-2);
+
+		img {
+			border-radius: calc(var(--radius-2) - var(--g0));
+		}
+	}
+
+	// shadow: drop shadow
+	&.shadow {
+		box-shadow: 0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+
+		&.outline {
+			box-shadow:
+				inset 0 0 0 var(--article-border-weight) var(--article-color-border),
+				0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+		}
+
+		&.active {
+			box-shadow:
+				inset 0 0 0 var(--article-border-weight) var(--article-color-active-border),
+				0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.15);
+		}
+	}
+
+	// inner elements
+	> i {
+		font-size: var(--article-font-size);
+		color: inherit;
+	}
+
+	> img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		display: block;
+		border-radius: var(--radius-1);
+		transition: border-radius var(--animation-time) ease;
+	}
+
+	> h3 {
+		margin: 0;
+		font-size: var(--font-size-3);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height-2);
+	}
+
+	> sub,
+	> sup {
+		font-size: var(--font-size-6);
+		color: var(--color-0);
+		line-height: var(--line-height-2);
+	}
+
+	> div {
+		font-size: var(--article-font-size);
+		line-height: var(--line-height-3);
+	}
+
+	> ul.tag {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--g0);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		> li {
+			font-size: var(--font-size-7);
+			line-height: var(--line-height-2);
+			padding: var(--gxs) var(--g1);
+			background-color: var(--color-bg-default-l1);
+			border-radius: var(--radius-4);
+			transition:
+				background-color var(--animation-time) ease,
+				color var(--animation-time) ease;
+		}
+	}
+
+	> dl.dict {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--gxs) var(--g2);
+		margin: 0;
+
+		> dt {
+			font-size: var(--font-size-6);
+			color: var(--color-0);
+			font-weight: var(--font-weight-medium);
+		}
+
+		> dd {
+			margin: 0;
+			font-size: var(--font-size-6);
+		}
+	}
+}
+
+// color modifier — apply color() mixin inside .article scope
+.article {
+	@include color();
+}
+
+// layout container
+.layout {
+	display: flex;
+	flex-direction: column;
+	gap: var(--g3);
+	padding: var(--g3);
+	max-width: 960px;
+	margin: 0 auto;
+}
