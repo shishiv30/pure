@@ -1,0 +1,185 @@
+@use './index.scss';
+@use './_mixins.scss' as *;
+
+@include comp-color('article');
+
+.article {
+	--article-size: var(--g4);
+	--article-icon-size: var(--font-size-6);
+	--article-font-weight: var(--font-weight-regular);
+	--article-line-height: var(--line-height-3);
+	--article-gap: var(--g2);
+	// matches the icon mark, so the top-left badge never covers the title
+	--article-padding: var(--article-size);
+	--article-color-muted: color-mix(in hsl, currentColor 70%, transparent);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--article-gap);
+	padding: var(--article-padding);
+	position: relative;
+
+	color: var(--article-color);
+	background-color: var(--article-color-bg);
+
+	transition:
+		color var(--animation-time) ease,
+		background-color var(--animation-time) ease,
+		box-shadow var(--animation-time) ease,
+		border-radius var(--animation-time) ease,
+		padding var(--animation-time) ease,
+		gap var(--animation-time) ease;
+
+	&.small {
+		--article-size: var(--g3);
+		--article-gap: var(--g1);
+	}
+
+	&.large {
+		--article-size: var(--g5);
+		--article-gap: var(--g3);
+		--article-border-weight: 2px;
+	}
+
+	// active: invert bg/color to highlight
+	&.active {
+		color: var(--article-color-active);
+		background-color: var(--article-color-active-bg);
+		box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-active-border);
+
+		// the card is already inverted, so the mark reverts to the base colours
+		> i {
+			color: var(--article-color);
+			background-color: var(--article-color-bg);
+		}
+	}
+
+	// outline: border only, transparent bg
+	&.outline {
+		background-color: transparent;
+		box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-border);
+
+		&.active {
+			background-color: var(--article-color-active-bg);
+			box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-active-border);
+		}
+	}
+
+	// corner: rounded borders — outer --radius-2, inner --radius-1
+	&.corner {
+		border-radius: var(--radius-2);
+
+		// top corners follow the card; the bottom meets the content
+		figure {
+			border-radius: var(--radius-2) var(--radius-2) 0 0;
+		}
+
+		> i {
+			border-radius: var(--radius-2) 0 var(--radius-1) 0;
+		}
+	}
+
+	// shadow: drop shadow
+	&.shadow {
+		box-shadow: 0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+
+		&.outline {
+			box-shadow:
+				inset 0 0 0 var(--article-border-weight) var(--article-color-border),
+				0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+		}
+
+		&.active {
+			box-shadow:
+				inset 0 0 0 var(--article-border-weight) var(--article-color-active-border),
+				0 var(--g0) var(--g3) hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.15);
+		}
+	}
+
+	// inner elements
+
+	// icon mark — pinned to the top-left corner with inverted colours
+	> i {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--article-size);
+		height: var(--article-size);
+		font-size: var(--article-icon-size);
+		color: var(--article-color-active);
+		background-color: var(--article-color-active-bg);
+	}
+
+	// frame: bleeds past the card padding, clips the loaded image
+	> figure {
+		overflow: hidden;
+		margin: calc(var(--article-padding) * -1) calc(var(--article-padding) * -1) 0;
+
+		> img {
+			width: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		> img[data-src-loaded] {
+			transform-origin: center center;
+			animation: article-img-zoom-out .4s .4s ease-in-out both;
+		}
+	}
+
+	> h3 {
+		margin: 0;
+		font-size: var(--font-size-3);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--line-height-2);
+	}
+
+	> sub,
+	> sup {
+		font-size: var(--font-size-6);
+		color: var(--article-color-muted);
+		line-height: var(--line-height-2);
+	}
+
+	> div:not(.tags) {
+		font-size: var(--article-icon-size);
+		line-height: var(--line-height-3);
+	}
+
+	> .tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--g0);
+	}
+
+	> footer {
+		font-size: var(--font-size-7);
+		color: var(--article-color-muted);
+	}
+}
+
+// image reveal — clipped by the > figure frame above
+@keyframes article-img-zoom-out {
+	from {
+		opacity: 0;
+		transform: scale(1.25);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+// layout container
+.layout {
+	display: flex;
+	flex-direction: column;
+	gap: var(--g3);
+	padding: var(--g3);
+	max-width: 960px;
+	margin: 0 auto;
+}

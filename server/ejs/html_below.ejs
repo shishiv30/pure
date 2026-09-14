@@ -1,4 +1,20 @@
 </body>
+<script type="text/javascript">
+  // Swap eagerly-rendered img src to data-src for lazyload (skip fetchpriority images)
+  (function () {
+    var defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    document.querySelectorAll('img').forEach(function (img) {
+      if (img.hasAttribute('fetchpriority')) return;
+      var src = img.getAttribute('src');
+      if (src && src !== defaultSrc) {
+        img.setAttribute('data-src', src);
+        img.setAttribute('src', defaultSrc);
+      } else if (!src && img.hasAttribute('data-src')) {
+        img.setAttribute('src', defaultSrc);
+      }
+    });
+  })();
+</script>
 <%_if(data){_%>
   <script type="text/javascript">
     // Load saved theme preference

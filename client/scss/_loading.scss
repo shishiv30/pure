@@ -1,7 +1,41 @@
-[data-role*='lazyload'] {
-	transition: opacity 0.5s ease-in-out;
-	opacity: 0.1;
+// img[data-src]         → waiting to enter viewport (skeleton shimmer)
+// img[data-src-loaded]  → load finished; height settles, reveal is per-component
+// img.img-load-error    → error fallback (set alongside data-src-loaded)
+
+img[data-src] {
+	border: none;
+	height: 200px;
+	opacity: 1;
+	background-color: var(--color-bg-l1);
+	background-image: linear-gradient(
+		90deg,
+		var(--color-bg-l1) 25%,
+		var(--color-bg) 50%,
+		var(--color-bg-l1) 75%
+	);
+	background-size: 200% 100%;
+	animation: lazyload-shimmer 1.4s ease-in-out infinite;
 }
+
+img[data-src-loaded] {
+	transition: height .5s ease-in-out;
+}
+
+img[data-src-loaded].img-load-error {
+	opacity: 1;
+	background-color: var(--color-bg-l1);
+	background-image: none;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+@keyframes lazyload-shimmer {
+	0%   { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
+
+// legacy class kept for non-lazyload uses
 .img-load-success {
 	opacity: 1 !important;
 }

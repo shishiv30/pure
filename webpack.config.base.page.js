@@ -40,6 +40,10 @@ export const pageConfig = {
 			name: 'list-view',
 			static: true,
 		},
+		{
+			name: 'layout',
+			static: true,
+		},
 	],
 };
 pageConfig.pages.forEach((page) => {

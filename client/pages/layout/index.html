@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout — Article Component</title>
+</head>
+
+<body id="body">
+    <div class="layout">
+        <!-- 1. demo — wide landscape, medium title, both sub/sup, single desc, tags + dict, footer created -->
+        <article class="article default shadow corner" id="article-1">
+            <i class="icon-graduation-cap"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=1"></figure>
+            <h3 class="f3">Demo Article</h3>
+            <sub>Est. 1985 · Public School</sub>
+            <sup>Education</sup>
+            <div>Greenfield Primary serves 600+ students across grades K–6, known for its STEM programme and bilingual curriculum.</div>
+            <div class="tags">
+                <span class="tag">K–6</span>
+                <span class="tag">STEM</span>
+                <span class="tag">Bilingual</span>
+                <span class="tag">Public</span>
+            </div>
+            <dl class="dict">
+                <dt>Principal</dt>
+                <dd>Dr. Linda Marsh</dd>
+                <dt>Enrolment</dt>
+                <dd>612 students</dd>
+                <dt>Rating</dt>
+                <dd>9.2 / 10</dd>
+            </dl>
+            <footer>Created 1 Sep 2026</footer>
+        </article>
+        <!-- 1. School — wide landscape, medium title, both sub/sup, single desc, tags + dict, footer created -->
+        <article class="article default shadow corner" id="article-1">
+            <i class="icon-graduation-cap"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=1"></figure>
+            <h3 class="f3">Greenfield Primary School</h3>
+            <sub>Est. 1985 · Public School</sub>
+            <sup>Education</sup>
+            <div>Greenfield Primary serves 600+ students across grades K–6, known for its STEM programme and bilingual curriculum.</div>
+            <div class="tags">
+                <span class="tag">K–6</span>
+                <span class="tag">STEM</span>
+                <span class="tag">Bilingual</span>
+                <span class="tag">Public</span>
+            </div>
+            <dl class="dict">
+                <dt>Principal</dt>
+                <dd>Dr. Linda Marsh</dd>
+                <dt>Enrolment</dt>
+                <dd>612 students</dd>
+                <dt>Rating</dt>
+                <dd>9.2 / 10</dd>
+            </dl>
+            <footer>Created 1 Sep 2026</footer>
+        </article>
+
+        <!-- 2. Restaurant — square image, short title, only sup, two desc, no dict, footer updated -->
+        <article class="article major shadow corner" id="article-2">
+            <i class="icon-cutlery"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=2"></figure>
+            <h3 class="f3">Sakura Izakaya</h3>
+            <sup>Open Now</sup>
+            <div>A cosy izakaya tucked in Midtown offering handcrafted ramen, fresh sushi, and a curated sake selection.</div>
+            <div>Weekend omakase available with 48-hr advance booking. Vegan options available on request.</div>
+            <div class="tags">
+                <span class="tag">Japanese</span>
+                <span class="tag">Fusion</span>
+                <span class="tag">Sake</span>
+            </div>
+            <footer>Updated 11 Sep 2026</footer>
+        </article>
+
+        <!-- 3. Property — portrait image, long title, both sub/sup, three desc, no tags, dict only -->
+        <article class="article minor shadow corner" id="article-3">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/600?random=3"></figure>
+            <h3 class="f3">Skyline Penthouse — 3 Bedroom, 2 Bathroom with Panoramic Harbour View, Floor 42</h3>
+            <sub>Harbour District</sub>
+            <sup>For Sale</sup>
+            <div>Open-plan living spanning 180 m² with floor-to-ceiling glazing and a wrap-around terrace.</div>
+            <div>Concierge building with heated pool, gym, and 24-hour security. Two car spaces included.</div>
+            <div>Vacant and ready to move in immediately. Arrange a private inspection today.</div>
+            <dl class="dict">
+                <dt>Asking price</dt>
+                <dd>$4,850,000</dd>
+                <dt>Floor area</dt>
+                <dd>180 m²</dd>
+                <dt>Floor</dt>
+                <dd>42</dd>
+                <dt>Agent</dt>
+                <dd>Century Realty</dd>
+            </dl>
+        </article>
+
+        <!-- 4. Hospital — no image, short title, only sub, single desc, tags + dict, no footer -->
+        <article class="article danger shadow corner" id="article-4">
+            <i class="icon-hospital-o"></i>
+            <h3 class="f3">Metro General</h3>
+            <sub>Level 1 Trauma Centre · 24/7</sub>
+            <div>Metro General is the city's primary trauma centre with 800 beds, cardiac ICU, and a dedicated stroke unit. Current A&amp;E wait: 28 min.</div>
+            <div class="tags">
+                <span class="tag">Trauma L1</span>
+                <span class="tag">Cardiac</span>
+                <span class="tag">24/7</span>
+            </div>
+            <dl class="dict">
+                <dt>Beds</dt>
+                <dd>800</dd>
+                <dt>A&amp;E wait</dt>
+                <dd>~28 min</dd>
+                <dt>Phone</dt>
+                <dd>+1 800 555 0100</dd>
+            </dl>
+        </article>
+
+        <!-- 5. Computer Sale — wide landscape, medium title, both sub/sup, single desc, no tags, dict, footer created -->
+        <article class="article safe shadow corner" id="article-5">
+            <i class="icon-laptop"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/250?random=5"></figure>
+            <h3 class="f3">ProBook X1 — Clearance</h3>
+            <sub>Refurbished · Grade A</sub>
+            <sup>43% off</sup>
+            <div>Intel Core i7-12th Gen, 16 GB RAM, 512 GB NVMe SSD. Fully tested with a 12-month warranty. Only 14 units remaining.</div>
+            <dl class="dict">
+                <dt>Original price</dt>
+                <dd>$1,299</dd>
+                <dt>Sale price</dt>
+                <dd>$739</dd>
+                <dt>Stock</dt>
+                <dd>14 units</dd>
+            </dl>
+            <footer>Created 10 Sep 2026</footer>
+        </article>
+
+        <!-- 6. Gov Notice — no image, very long title, only sup, two desc, tags, no dict, footer updated -->
+        <article class="article danger shadow corner" id="article-6">
+            <i class="icon-institution"></i>
+            <h3 class="f3">Scheduled Water Main Maintenance — Temporary Supply Interruption Affecting Zones 4, 7 and 9 This Saturday</h3>
+            <sup>Official Notice</sup>
+            <div>Maintenance will interrupt water supply from 02:00–06:00 on Saturday 14 September. Residents are advised to store sufficient water in advance.</div>
+            <div>Tanker trucks will be stationed at Maple Park and Central Square throughout the maintenance window for emergency supply.</div>
+            <div class="tags">
+                <span class="tag">Official</span>
+                <span class="tag">Zone 4</span>
+                <span class="tag">Zone 7</span>
+                <span class="tag">Zone 9</span>
+                <span class="tag">Water</span>
+            </div>
+            <footer>Updated 12 Sep 2026, 06:30</footer>
+        </article>
+
+        <!-- 7. Weather — square image, short title, both sub/sup, single desc, tags, no dict -->
+        <article class="article tip shadow corner" id="article-7">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=7"></figure>
+            <h3 class="f3">Coastal Storm</h3>
+            <sub>National Weather Service</sub>
+            <sup>Weather Alert</sup>
+            <div>A low-pressure system brings heavy rain and wind gusts up to 80 km/h along the coast this Saturday. Inland areas can expect overcast skies with light showers.</div>
+            <div class="tags">
+                <span class="tag">Storm</span>
+                <span class="tag">80 km/h</span>
+                <span class="tag">Weekend</span>
+            </div>
+        </article>
+
+        <!-- 8. Sport Event — wide landscape, long title, only sub, three desc, no tags, dict + footer -->
+        <article class="article major shadow corner" id="article-8">
+            <i class="icon-trophy"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/220?random=8"></figure>
+            <h3 class="f3">City Marathon 2026 — Full, Half &amp; 10 km Categories Now Open for Registration</h3>
+            <sub>Annual · Downtown Circuit</sub>
+            <div>The city's premier marathon returns with 8,000 participant spots. Early-bird registration ends 30 September.</div>
+            <div>Pace setters provided for 4:00, 4:30, 5:00, and 6:00 finish times. Medical stations every 5 km.</div>
+            <div>Finishers receive a commemorative medal and a post-race recovery pack. Charity fundraising option available at checkout.</div>
+            <dl class="dict">
+                <dt>Date</dt>
+                <dd>15 Nov 2026</dd>
+                <dt>Spots remaining</dt>
+                <dd>2,340 / 8,000</dd>
+                <dt>Entry fee</dt>
+                <dd>From $45</dd>
+            </dl>
+            <footer>Updated 9 Sep 2026</footer>
+        </article>
+
+        <!-- 9. Video Game — portrait image, medium title, no sub/sup, single desc, tags + dict -->
+        <article class="article minor shadow corner" id="article-9">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=9"></figure>
+            <h3 class="f3">Void Frontier — Open World RPG</h3>
+            <div>Explore a 200-hour hand-crafted universe with branching storylines, dynamic faction politics, and fully destructible environments. Multiplayer co-op up to 4 players.</div>
+            <div class="tags">
+                <span class="tag">RPG</span>
+                <span class="tag">Open world</span>
+                <span class="tag">Co-op</span>
+                <span class="tag">Award winner</span>
+            </div>
+            <dl class="dict">
+                <dt>Developer</dt>
+                <dd>Helion Studios</dd>
+                <dt>Rating</dt>
+                <dd>93 / 100 Metacritic</dd>
+                <dt>Price</dt>
+                <dd>$59.99</dd>
+            </dl>
+        </article>
+
+        <!-- 10. Personal Note — no image, 2-word title, only sup, single desc, no tags, no dict, footer created -->
+        <article class="article default shadow corner" id="article-10">
+            <i class="icon-sticky-note-o"></i>
+            <h3 class="f3">Sprint Goals</h3>
+            <sup>Draft</sup>
+            <div>Finish the article component SCSS, write the layout page HTML, register the webpack entry. Review the list-view PR before EOD.</div>
+            <footer>Created 12 Sep 2026, 09:14</footer>
+        </article>
+
+        <!-- 11. Photo Record — wide landscape, short title, both sub/sup, two desc, tags, no dict -->
+        <article class="article safe shadow corner" id="article-11">
+            <i class="icon-camera"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/300?random=11"></figure>
+            <h3 class="f3">Alps Trip — July 2026</h3>
+            <sub>Personal Album · 214 photos</sub>
+            <sup>Memory</sup>
+            <div>Three weeks across Swiss and Austrian Alps. Highlights: Jungfraujoch sunrise and Hallstatt village at golden hour.</div>
+            <div>Spontaneous fondue with strangers at a mountain hut above 2,400 m — the unexpected highlight of the trip.</div>
+            <div class="tags">
+                <span class="tag">Alps</span>
+                <span class="tag">Travel</span>
+                <span class="tag">Hiking</span>
+                <span class="tag">Summer</span>
+            </div>
+        </article>
+
+        <!-- 12. Travel — portrait image, medium title, only sub, single desc, no tags, dict + footer -->
+        <article class="article tip shadow corner" id="article-12">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/550?random=12"></figure>
+            <h3 class="f3">Kyoto in Autumn</h3>
+            <sub>Japan · Nov–Dec</sub>
+            <div>Kyoto's maple season transforms temples and bamboo groves into a fiery canvas of red and gold. Visit Arashiyama at dawn for crowd-free lantern reflections on the Oi River.</div>
+            <dl class="dict">
+                <dt>Best months</dt>
+                <dd>Nov – early Dec</dd>
+                <dt>Avg temp</dt>
+                <dd>8–16°C</dd>
+                <dt>Flight from JFK</dt>
+                <dd>~14 hrs</dd>
+            </dl>
+            <footer>Updated 5 Aug 2026</footer>
+        </article>
+
+        <!-- 13. Job — wide landscape, long title, only sup, two desc, tags + dict -->
+        <article class="article major shadow corner" id="article-13">
+            <i class="icon-briefcase"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=13"></figure>
+            <h3 class="f3">Senior Frontend Engineer — Remote-first · Full-time · Component Library Lead</h3>
+            <sup>Hiring Now</sup>
+            <div>We're looking for a frontend engineer with 5+ years in TypeScript, React, and design systems to lead our component library effort.</div>
+            <div>You'll mentor two junior engineers and collaborate closely with Product and Design to define the next generation of our UI.</div>
+            <div class="tags">
+                <span class="tag">TypeScript</span>
+                <span class="tag">React</span>
+                <span class="tag">Remote</span>
+                <span class="tag">Senior</span>
+            </div>
+            <dl class="dict">
+                <dt>Salary</dt>
+                <dd>$130k–$160k</dd>
+                <dt>Deadline</dt>
+                <dd>30 Sep 2026</dd>
+            </dl>
+        </article>
+
+        <!-- 14. Recipe — square image, short title, both sub/sup, single desc, tags, no dict, footer created -->
+        <article class="article safe shadow corner" id="article-14">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=14"></figure>
+            <h3 class="f3">Brown Butter Pasta</h3>
+            <sub>Italian · 20 min</sub>
+            <sup>Quick &amp; Easy</sup>
+            <div>Silky spaghetti tossed in nutty brown butter, zesty lemon, crispy capers, and a snowfall of Parmesan. Ready in 20 minutes from pantry staples.</div>
+            <div class="tags">
+                <span class="tag">Pasta</span>
+                <span class="tag">Vegetarian</span>
+                <span class="tag">20 min</span>
+            </div>
+            <footer>Created 3 Jul 2026</footer>
+        </article>
+
+        <!-- 15. Movie Review — no image, long title, only sub, three desc, no tags, dict -->
+        <article class="article minor shadow corner" id="article-15">
+            <i class="icon-film"></i>
+            <h3 class="f3">Echoes of Tomorrow — A Time-Loop Thriller That Finally Earns Its Runtime</h3>
+            <sub>Sci-Fi Drama · 2026 · 138 min</sub>
+            <div>Director Naomi Asante delivers a quiet, devastating meditation on regret and memory.</div>
+            <div>Anchored by a career-best performance from Idris Elba, the film trusts silence where lesser sci-fi reaches for spectacle.</div>
+            <div>The third act's structural gambit pays off in a way that rewards attentive viewers — bring a notepad for the first watch.</div>
+            <dl class="dict">
+                <dt>Director</dt>
+                <dd>Naomi Asante</dd>
+                <dt>Runtime</dt>
+                <dd>138 min</dd>
+                <dt>Rotten Tomatoes</dt>
+                <dd>94%</dd>
+                <dt>Verdict</dt>
+                <dd>★ 4.5 / 5</dd>
+            </dl>
+        </article>
+
+        <!-- 16. Music — wide landscape, short title, both sub/sup, single desc, no tags, no dict, footer updated -->
+        <article class="article tip shadow corner" id="article-16">
+            <i class="icon-music"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=16"></figure>
+            <h3 class="f3">Neon Drift</h3>
+            <sub>Synthwave · 12 tracks</sub>
+            <sup>Out Now</sup>
+            <div>SOLÁR's third studio album blends 80s synth textures with modern production clarity. Stand-out track "Meridian" is an eight-minute instrumental suite that rewards headphones.</div>
+            <footer>Updated 8 Sep 2026</footer>
+        </article>
+
+        <!-- 17. Book — portrait image, medium title, only sup, two desc, tags, dict -->
+        <article class="article default shadow corner" id="article-17">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/560?random=17"></figure>
+            <h3 class="f3">The Cartography of Loss</h3>
+            <sup>Booker Prize Shortlist</sup>
+            <div>A fragmented novel told through handwritten maps, letters, and footnotes, tracking three generations of a Congolese family across colonial and post-colonial history.</div>
+            <div>Amara Diallo's prose moves between languages and centuries without losing intimacy — a structural feat as impressive as its emotional one.</div>
+            <div class="tags">
+                <span class="tag">Literary fiction</span>
+                <span class="tag">History</span>
+                <span class="tag">Africa</span>
+                <span class="tag">Shortlisted</span>
+            </div>
+            <dl class="dict">
+                <dt>Author</dt>
+                <dd>Amara Diallo</dd>
+                <dt>Publisher</dt>
+                <dd>Faber &amp; Faber</dd>
+                <dt>Pages</dt>
+                <dd>348</dd>
+            </dl>
+        </article>
+
+        <!-- 18. Fitness — no image, 3-word title, only sub, single desc, tags, no dict, footer created -->
+        <article class="article major shadow corner" id="article-18">
+            <i class="icon-heartbeat"></i>
+            <h3 class="f3">HIIT &amp; Strength</h3>
+            <sub>Studio Apex · 06:30 MWF</sub>
+            <div>45-min high-intensity intervals followed by a 15-min progressive strength circuit. All levels welcome. Bring water and a sweat towel.</div>
+            <div class="tags">
+                <span class="tag">HIIT</span>
+                <span class="tag">Morning</span>
+                <span class="tag">3 spots left</span>
+            </div>
+            <footer>Created 1 Sep 2026</footer>
+        </article>
+
+        <!-- 19. Online Course — wide landscape, long title, both sub/sup, single desc, no tags, dict -->
+        <article class="article safe shadow corner" id="article-19">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/240?random=19"></figure>
+            <h3 class="f3">Data Engineering with dbt &amp; Snowflake — 40-Hour Self-Paced Certificate</h3>
+            <sub>Online · Intermediate</sub>
+            <sup>Bestseller</sup>
+            <div>Covers the modern data stack end-to-end: Snowflake warehousing, dbt transformations, Airflow orchestration, and data quality testing with 4,200 students already enrolled.</div>
+            <dl class="dict">
+                <dt>Hours</dt>
+                <dd>40 hrs</dd>
+                <dt>Price</dt>
+                <dd>$89</dd>
+                <dt>Certificate</dt>
+                <dd>Yes</dd>
+            </dl>
+        </article>
+
+        <!-- 20. Tech News — square image, short title, no sub/sup, two desc, tags, no dict, footer updated -->
+        <article class="article minor shadow corner" id="article-20">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=20"></figure>
+            <h3 class="f3">1,000-Qubit Milestone</h3>
+            <div>A research consortium announced stable operation of a 1,000-logical-qubit processor at room temperature — a threshold many considered a decade away.</div>
+            <div>Peer review is ongoing; independent replication is expected to take 6–18 months.</div>
+            <div class="tags">
+                <span class="tag">Quantum</span>
+                <span class="tag">Hardware</span>
+                <span class="tag">Milestone</span>
+            </div>
+            <footer>Updated 12 Sep 2026, 07:00</footer>
+        </article>
+
+        <!-- 21. Fashion — no image, medium title, only sup, single desc, no tags, no dict, footer created -->
+        <article class="article tip shadow corner" id="article-21">
+            <i class="icon-shopping-bag"></i>
+            <h3 class="f3">Autumn / Winter Sale</h3>
+            <sup>Up to 60% off</sup>
+            <div>End-of-season clearance across outerwear, knitwear, and accessories at Velour Maison. Free shipping on orders over $80. Ends Sunday midnight — no code required.</div>
+            <footer>Created 8 Sep 2026</footer>
+        </article>
+
+        <!-- 22. Car — wide landscape, long title, both sub/sup, three desc, tags + dict -->
+        <article class="article major shadow corner" id="article-22">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/260?random=22"></figure>
+            <h3 class="f3">2024 Tesla Model 3 LR AWD — Midnight Silver, 12,400 km, Full Service History, Certified Pre-owned</h3>
+            <sub>Pre-owned · Single owner</sub>
+            <sup>Certified</sup>
+            <div>560 km range (WLTP). Enhanced Autopilot included with eight-year battery warranty remaining.</div>
+            <div>Home charging kit, floor mats, and two key cards included. No accidents on record.</div>
+            <div>Finance available from $389/month over 60 months with 10% deposit. Delivery available nationwide.</div>
+            <div class="tags">
+                <span class="tag">EV</span>
+                <span class="tag">Autopilot</span>
+                <span class="tag">AWD</span>
+            </div>
+            <dl class="dict">
+                <dt>Price</dt>
+                <dd>$38,500</dd>
+                <dt>Mileage</dt>
+                <dd>12,400 km</dd>
+                <dt>Range</dt>
+                <dd>560 km WLTP</dd>
+                <dt>Finance</dt>
+                <dd>From $389/mo</dd>
+            </dl>
+        </article>
+
+        <!-- 23. Apartment — portrait image, short title, only sub, single desc, no tags, dict, footer updated -->
+        <article class="article minor shadow corner" id="article-23">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/520?random=23"></figure>
+            <h3 class="f3">Studio — Arts Quarter</h3>
+            <sub>Available 1 Oct 2026</sub>
+            <div>Bright 38 m² studio with exposed brick feature wall, open kitchen, and juliet balcony. 5-min walk to the tube. No pets, no smokers.</div>
+            <dl class="dict">
+                <dt>Rent</dt>
+                <dd>£1,450 / month</dd>
+                <dt>Deposit</dt>
+                <dd>£2,900</dd>
+                <dt>Available</dt>
+                <dd>1 Oct 2026</dd>
+            </dl>
+            <footer>Updated 11 Sep 2026</footer>
+        </article>
+
+        <!-- 24. Pet — no image, long title, both sub/sup, two desc, tags, no dict, footer created -->
+        <article class="article safe shadow corner" id="article-24">
+            <i class="icon-paw"></i>
+            <h3 class="f3">Luna — 2-Year-Old Golden Retriever Mix Ready for Her Forever Home</h3>
+            <sub>City Animal Shelter</sub>
+            <sup>Ready to Adopt</sup>
+            <div>House-trained and great with children and other dogs. Loves long walks, fetch, and sleeping at your feet.</div>
+            <div>Spayed, microchipped, and up to date on all vaccinations. Adoption fee covers first vet check.</div>
+            <div class="tags">
+                <span class="tag">Dog</span>
+                <span class="tag">Golden mix</span>
+                <span class="tag">Kid-friendly</span>
+                <span class="tag">Vaccinated</span>
+            </div>
+            <footer>Created 2 Sep 2026</footer>
+        </article>
+
+        <!-- 25. Art — wide landscape, medium title, only sub, three desc, no tags, dict -->
+        <article class="article tip shadow corner" id="article-25">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/280?random=25"></figure>
+            <h3 class="f3">Fractured Light — Photography Exhibition</h3>
+            <sub>The Modern Gallery · 14 Sep – 30 Nov</sub>
+            <div>Forty works by twelve emerging photographers exploring identity, memory, and urban solitude.</div>
+            <div>Long-exposure and infrared techniques give the images a dreamlike quality that holds up under scrutiny.</div>
+            <div>Extended opening hours on Fridays until 21:00. Free entry on Tuesdays with museum membership.</div>
+            <dl class="dict">
+                <dt>Venue</dt>
+                <dd>The Modern Gallery</dd>
+                <dt>Dates</dt>
+                <dd>14 Sep – 30 Nov</dd>
+                <dt>Admission</dt>
+                <dd>$12 / free Tue</dd>
+            </dl>
+        </article>
+
+        <!-- 26. Startup — square image, 2-word title, no sub/sup, single desc, tags, dict, footer created -->
+        <article class="article major shadow corner" id="article-26">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=26"></figure>
+            <h3 class="f3">Lumio</h3>
+            <div>AI-powered meal planning that learns your taste, dietary needs, and budget — generating weekly plans with auto-filled grocery lists. iOS and Android. First month free.</div>
+            <div class="tags">
+                <span class="tag">AI</span>
+                <span class="tag">Food-tech</span>
+                <span class="tag">Freemium</span>
+            </div>
+            <dl class="dict">
+                <dt>Funding</dt>
+                <dd>$1.2 M seed</dd>
+                <dt>Users</dt>
+                <dd>8,400 at launch</dd>
+                <dt>Price</dt>
+                <dd>$9.99 / month</dd>
+            </dl>
+            <footer>Created 10 Sep 2026</footer>
+        </article>
+
+        <!-- 27. Finance — no image, medium title, only sup, two desc, no tags, dict, no footer -->
+        <article class="article danger shadow corner" id="article-27">
+            <i class="icon-bar-chart"></i>
+            <h3 class="f3">Q2 2026 Earnings Report</h3>
+            <sup>Confidential · Internal</sup>
+            <div>Revenue down 8% YoY driven by weaker consumer spending in APAC. EBITDA margin held at 18%.</div>
+            <div>Management reiterating full-year guidance. Cost-reduction programme remains on track for Q4 completion.</div>
+            <dl class="dict">
+                <dt>Revenue</dt>
+                <dd>$214 M (–8% YoY)</dd>
+                <dt>EBITDA margin</dt>
+                <dd>18%</dd>
+                <dt>Guidance</dt>
+                <dd>Maintained</dd>
+            </dl>
+        </article>
+
+        <!-- 28. Legal — portrait image, long title, only sub, single desc, tags, dict, footer updated -->
+        <article class="article danger shadow corner" id="article-28">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/480?random=28"></figure>
+            <h3 class="f3">Notice of Proposed Class Action Settlement — DataPulse Subscribers Jan 2022 to Jun 2025</h3>
+            <sub>Superior Court · Case No. 2026-CV-04471</sub>
+            <div>If you purchased a DataPulse subscription in the specified period you may be entitled to compensation. Claim deadline: 31 Oct 2026.</div>
+            <div class="tags">
+                <span class="tag">Settlement</span>
+                <span class="tag">Class action</span>
+                <span class="tag">Deadline Oct</span>
+            </div>
+            <dl class="dict">
+                <dt>Case</dt>
+                <dd>2026-CV-04471</dd>
+                <dt>Claim deadline</dt>
+                <dd>31 Oct 2026</dd>
+            </dl>
+            <footer>Updated 1 Sep 2026</footer>
+        </article>
+
+        <!-- 29. Medical Alert — wide landscape, short title, both sub/sup, single desc, tags, no dict, no footer -->
+        <article class="article danger shadow corner" id="article-29">
+            <i class="icon-exclamation-triangle"></i>
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=29"></figure>
+            <h3 class="f3">Allergy Recall Alert</h3>
+            <sub>Food Safety Authority</sub>
+            <sup>Urgent Recall</sup>
+            <div>Batch codes A204–A211 of "Harvest Crunch Granola Bars" may contain undeclared peanuts. Do not consume if you have a peanut allergy. Return to point of purchase for a full refund.</div>
+            <div class="tags">
+                <span class="tag">Recall</span>
+                <span class="tag">Peanuts</span>
+                <span class="tag">Urgent</span>
+                <span class="tag">Batches A204–A211</span>
+            </div>
+        </article>
+
+        <!-- 30. Climate — no image, long title, only sub, three desc, no tags, dict, footer created -->
+        <article class="article tip shadow corner" id="article-30">
+            <i class="icon-leaf"></i>
+            <h3 class="f3">Global Surface Temperature Exceeds +1.6°C Above Pre-Industrial Baseline for First Time</h3>
+            <sub>IPCC · Annual Climate Report 2026</sub>
+            <div>The 2026 IPCC annual report confirms a new global temperature record driven primarily by continued fossil fuel emissions.</div>
+            <div>Arctic sea-ice extent reached a record summer minimum; permafrost carbon release is now measurable at regional scale.</div>
+            <div>Mitigation pathways to 1.5°C now require near-immediate elimination of unabated coal power and an 80% drop in methane emissions by 2030.</div>
+            <dl class="dict">
+                <dt>Temp anomaly</dt>
+                <dd>+1.6°C (2026)</dd>
+                <dt>Published</dt>
+                <dd>Sep 2026</dd>
+                <dt>Source</dt>
+                <dd>IPCC AR7</dd>
+            </dl>
+            <footer>Created 5 Sep 2026</footer>
+        </article>
+
+        <!-- 31. Science — portrait image, medium title, both sub/sup, two desc, tags, no dict -->
+        <article class="article minor shadow corner" id="article-31">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=31"></figure>
+            <h3 class="f3">New Antibiotic vs XDR-TB</h3>
+            <sub>University of Cape Town</sub>
+            <sup>Breakthrough</sup>
+            <div>Researchers identified a novel compound — UCT-783 — that kills extensively drug-resistant tuberculosis bacteria in vitro with no detectable cytotoxicity.</div>
+            <div>Phase I human trials are scheduled to begin Q1 2027 at three sites across Sub-Saharan Africa.</div>
+            <div class="tags">
+                <span class="tag">Antibiotic</span>
+                <span class="tag">TB</span>
+                <span class="tag">Phase I 2027</span>
+            </div>
+        </article>
+
+        <!-- 32. Election — no image, short title, no sub/sup, two desc, tags, dict, footer updated -->
+        <article class="article danger shadow corner" id="article-32">
+            <i class="icon-check-square-o"></i>
+            <h3 class="f3">District 7 Result</h3>
+            <div>Councillor Sandra Ortega (Progressive) wins the runoff with 52.4%, defeating incumbent Ray Huang (Conservative).</div>
+            <div>Voter turnout reached 61% — the highest in 16 years, driven by record youth participation.</div>
+            <div class="tags">
+                <span class="tag">Election</span>
+                <span class="tag">District 7</span>
+                <span class="tag">Official</span>
+            </div>
+            <dl class="dict">
+                <dt>Winner</dt>
+                <dd>Sandra Ortega 52.4%</dd>
+                <dt>Turnout</dt>
+                <dd>61%</dd>
+                <dt>Certified</dt>
+                <dd>12 Sep 2026</dd>
+            </dl>
+            <footer>Updated 12 Sep 2026, 23:58</footer>
+        </article>
+
+        <!-- 33. Festival — wide landscape, long title, only sup, single desc, tags, no dict, no footer -->
+        <article class="article tip shadow corner" id="article-33">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/280?random=33"></figure>
+            <h3 class="f3">Lantern Festival at Riverside Park — Free Family Evening with Dragon Dance, Street Food, and Live Music</h3>
+            <sup>This Weekend</sup>
+            <div>Float hundreds of glowing lanterns on the river at dusk while sampling street food from 30 vendors. Traditional dragon dance performance at 20:30.</div>
+            <div class="tags">
+                <span class="tag">Free entry</span>
+                <span class="tag">Family</span>
+                <span class="tag">Street food</span>
+                <span class="tag">Sat–Sun</span>
+            </div>
+        </article>
+
+        <!-- 34. Charity — square image, medium title, both sub/sup, two desc, no tags, dict, footer updated -->
+        <article class="article safe shadow corner" id="article-34">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=34"></figure>
+            <h3 class="f3">Children's Hospital Bake Sale</h3>
+            <sub>Community · Volunteers Welcome</sub>
+            <sup>Fundraiser</sup>
+            <div>Annual bake sale in aid of the Paediatric Wing renovation fund. All proceeds go directly to equipment upgrades.</div>
+            <div>Donations also accepted online. Help us reach our $15,000 goal — $9,240 raised so far!</div>
+            <dl class="dict">
+                <dt>Date</dt>
+                <dd>Sat 20 Sep 2026</dd>
+                <dt>Goal</dt>
+                <dd>$15,000</dd>
+                <dt>Raised so far</dt>
+                <dd>$9,240</dd>
+            </dl>
+            <footer>Updated 11 Sep 2026</footer>
+        </article>
+
+        <!-- 35. Local Business — no image, long title, only sub, single desc, no tags, dict -->
+        <article class="article default shadow corner" id="article-35">
+            <i class="icon-key"></i>
+            <h3 class="f3">Cobbler &amp; Keys — Shoe Repair, Key Cutting &amp; Locksmith Services · Family-owned Since 1971</h3>
+            <sub>Elmwood · Est. 1971</sub>
+            <div>Three generations of shoe repair, key cutting, and lock services in the heart of Elmwood. Same-day service on standard repairs.</div>
+            <dl class="dict">
+                <dt>Hours</dt>
+                <dd>Mon–Sat 08:00–18:00</dd>
+                <dt>Phone</dt>
+                <dd>+1 555 873 2210</dd>
+                <dt>Google rating</dt>
+                <dd>5.0 ★ (480 reviews)</dd>
+            </dl>
+        </article>
+
+        <!-- 36. Podcast — wide landscape, 2-word title, no sub/sup, three desc, tags, no dict, footer created -->
+        <article class="article minor shadow corner" id="article-36">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/210?random=36"></figure>
+            <h3 class="f3">The Insider</h3>
+            <div>Darknet Diaries Ep. 201: Jack Rhysider tells the true story of a sysadmin who spent two years exfiltrating intellectual property for a foreign state actor.</div>
+            <div>The investigation began with a single log-file anomaly flagged by an automated SIEM rule — a reminder that the boring stuff saves companies.</div>
+            <div>Runtime: 58 minutes. Available on Spotify, Apple Podcasts, and wherever you get your podcasts.</div>
+            <div class="tags">
+                <span class="tag">Cybersecurity</span>
+                <span class="tag">True crime</span>
+                <span class="tag">Insider threat</span>
+                <span class="tag">58 min</span>
+            </div>
+            <footer>Created 9 Sep 2026</footer>
+        </article>
+
+        <!-- 37. Software Release — portrait image, medium title, only sup, single desc, no tags, dict, no footer -->
+        <article class="article major shadow corner" id="article-37">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/460?random=37"></figure>
+            <h3 class="f3">Node.js v24 LTS</h3>
+            <sup>Long-Term Support</sup>
+            <div>Built-in WebAssembly GC, native fetch improvements, and a 20% throughput increase on I/O-heavy workloads. Upgrade recommended for all production environments.</div>
+            <dl class="dict">
+                <dt>Version</dt>
+                <dd>24.0.0</dd>
+                <dt>Support until</dt>
+                <dd>Apr 2030</dd>
+                <dt>Breaking changes</dt>
+                <dd>See migration guide</dd>
+            </dl>
+        </article>
+
+        <!-- 38. Gaming Tournament — wide landscape, long title, both sub/sup, two desc, tags, dict, footer updated -->
+        <article class="article tip shadow corner" id="article-38">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/230?random=38"></figure>
+            <h3 class="f3">Void Frontier World Championship 2026 — $500,000 Prize Pool · 64 Teams · Live in Seoul</h3>
+            <sub>Esports · 14–16 Nov 2026</sub>
+            <sup>Registration Open</sup>
+            <div>The inaugural VF World Championship brings together 64 regional finalists for a 3-day live event in Seoul.</div>
+            <div>Qualifying brackets close 30 September. Spectator tickets now available — floor seats already sold out.</div>
+            <div class="tags">
+                <span class="tag">Esports</span>
+                <span class="tag">$500k</span>
+                <span class="tag">Seoul</span>
+                <span class="tag">64 teams</span>
+            </div>
+            <dl class="dict">
+                <dt>Dates</dt>
+                <dd>14–16 Nov 2026</dd>
+                <dt>Prize pool</dt>
+                <dd>$500,000</dd>
+                <dt>Qualifier deadline</dt>
+                <dd>30 Sep 2026</dd>
+            </dl>
+            <footer>Updated 10 Sep 2026</footer>
+        </article>
+
+        <!-- 39. Wedding — square image, medium title, only sub, single desc, no tags, dict, footer created -->
+        <article class="article safe shadow corner" id="article-39">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=39"></figure>
+            <h3 class="f3">Isabel &amp; Thomas — Save the Date</h3>
+            <sub>Provence · 22 March 2027</sub>
+            <div>We're getting married at Château Vieux in Provence. Formal invitations follow in November. Dress code: garden formal.</div>
+            <dl class="dict">
+                <dt>Date</dt>
+                <dd>22 March 2027</dd>
+                <dt>Venue</dt>
+                <dd>Château Vieux, Provence</dd>
+                <dt>RSVP by</dt>
+                <dd>15 Jan 2027</dd>
+            </dl>
+            <footer>Created 1 Sep 2026</footer>
+        </article>
+
+        <!-- 40. Baby Shower — no image, short title, both sub/sup, single desc, tags, no dict, footer updated -->
+        <article class="article tip shadow corner" id="article-40">
+            <i class="icon-child"></i>
+            <h3 class="f3">Welcome Little Mia</h3>
+            <sub>Baby Shower · 28 Sep 2026</sub>
+            <sup>Private Invite</sup>
+            <div>Join us for afternoon tea and games at Claire's place. Gift registry linked separately. RSVP by 21 September — limited to 20 guests.</div>
+            <div class="tags">
+                <span class="tag">Baby shower</span>
+                <span class="tag">Afternoon tea</span>
+                <span class="tag">RSVP needed</span>
+            </div>
+            <footer>Updated 5 Sep 2026</footer>
+        </article>
+
+        <!-- 41. Obituary — wide landscape, long title, only sub, two desc, no tags, dict, no footer -->
+        <article class="article default shadow corner" id="article-41">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/220?random=41"></figure>
+            <h3 class="f3">In Memoriam — George Ellison, Beloved Husband, Father, and Headmaster (1941–2026)</h3>
+            <sub>Passed peacefully 10 Sep 2026</sub>
+            <div>George Ellison passed away at home surrounded by family after a short illness. He served as headmaster of Elmwood Secondary for 24 years and was known for his warmth and fairness.</div>
+            <div>A memorial service will be held at St. Mary's on 18 September at 11:00. All who knew him are welcome. In lieu of flowers, donations to Alzheimer's Research UK are appreciated.</div>
+            <dl class="dict">
+                <dt>Service</dt>
+                <dd>18 Sep 2026, 11:00</dd>
+                <dt>Venue</dt>
+                <dd>St. Mary's Church</dd>
+                <dt>Donations</dt>
+                <dd>Alzheimer's Research UK</dd>
+            </dl>
+        </article>
+
+        <!-- 42. Product Review — portrait image, 4-word title, no sub/sup, single desc, tags, dict, footer created -->
+        <article class="article minor shadow corner" id="article-42">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/440?random=42"></figure>
+            <h3 class="f3">Sony WH-1000XM7 Review</h3>
+            <div>Sony's seventh-generation flagship sets a new standard for noise cancellation. The updated driver delivers richer bass without sacrificing midrange clarity. Battery now lasts 38 hours.</div>
+            <div class="tags">
+                <span class="tag">Headphones</span>
+                <span class="tag">ANC</span>
+                <span class="tag">38-hr battery</span>
+                <span class="tag">★ 4.8 / 5</span>
+            </div>
+            <dl class="dict">
+                <dt>Price</dt>
+                <dd>$349</dd>
+                <dt>Battery</dt>
+                <dd>38 hrs (ANC on)</dd>
+                <dt>Verdict</dt>
+                <dd>Best in class</dd>
+            </dl>
+            <footer>Created 7 Sep 2026</footer>
+        </article>
+
+        <!-- 43. Company Memo — no image, medium title, only sup, single desc, no tags, dict, footer updated -->
+        <article class="article default shadow corner" id="article-43">
+            <i class="icon-file-text-o"></i>
+            <h3 class="f3">Q3 Hiring Freeze</h3>
+            <sup>Confidential · All Staff</sup>
+            <div>Effective immediately, all open positions are paused pending the Q3 financial review. Existing offers already extended will be honoured. Direct questions to your department head.</div>
+            <dl class="dict">
+                <dt>Effective</dt>
+                <dd>Immediately</dd>
+                <dt>Review date</dt>
+                <dd>1 Nov 2026</dd>
+                <dt>Contact</dt>
+                <dd>HR Business Partner</dd>
+            </dl>
+            <footer>Updated 12 Sep 2026</footer>
+        </article>
+
+        <!-- 44. Conference Talk — wide landscape, long title, both sub/sup, two desc, no tags, dict -->
+        <article class="article major shadow corner" id="article-44">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=44"></figure>
+            <h3 class="f3">CSS State of the Art — Container Queries, Cascade Layers &amp; the New Color Function Landscape</h3>
+            <sub>CSSConf 2026 · Track B · 15 Oct</sub>
+            <sup>Featured Talk</sup>
+            <div>A deep-dive into modern CSS features with live demos of real-world performance gains in a production design system.</div>
+            <div>Q&amp;A follows the 45-minute session. Slides published on speaker's site the same evening.</div>
+            <dl class="dict">
+                <dt>Speaker</dt>
+                <dd>Lea Verou</dd>
+                <dt>Date</dt>
+                <dd>15 Oct 2026, 14:30</dd>
+                <dt>Room</dt>
+                <dd>Hall 4, Track B</dd>
+            </dl>
+        </article>
+
+        <!-- 45. Museum — square image, short title, only sub, three desc, tags, no dict, footer created -->
+        <article class="article safe shadow corner" id="article-45">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=45"></figure>
+            <h3 class="f3">Ancient Rome</h3>
+            <sub>Natural History Museum · New East Wing</sub>
+            <div>200 artefacts from everyday Roman life — ceramic vessels, surgical instruments, children's toys, and graffiti casts from Pompeii.</div>
+            <div>The new East Wing doubles the display space and introduces an interactive digital layer synced to each artefact label.</div>
+            <div>Guided audio tour included with museum admission. Schools programme available on weekday mornings.</div>
+            <div class="tags">
+                <span class="tag">Ancient Rome</span>
+                <span class="tag">Pompeii</span>
+                <span class="tag">New wing</span>
+                <span class="tag">Audio tour</span>
+            </div>
+            <footer>Created 1 Sep 2026</footer>
+        </article>
+
+        <!-- 46. Library Event — no image, long title, no sub/sup, single desc, tags, dict, footer updated -->
+        <article class="article default shadow corner" id="article-46">
+            <i class="icon-book"></i>
+            <h3 class="f3">Author Talk &amp; Signing — Amara Diallo Reads from "The Cartography of Loss" at Elmwood Public Library</h3>
+            <div>Join Booker Prize-shortlisted author Amara Diallo for a reading and Q&amp;A. Books available for signing. Reserve your seat — capacity 60.</div>
+            <div class="tags">
+                <span class="tag">Free</span>
+                <span class="tag">Signing</span>
+                <span class="tag">60 seats</span>
+            </div>
+            <dl class="dict">
+                <dt>Date</dt>
+                <dd>18 Sep 2026, 18:30</dd>
+                <dt>Venue</dt>
+                <dd>Elmwood Public Library</dd>
+                <dt>Cost</dt>
+                <dd>Free</dd>
+            </dl>
+            <footer>Updated 9 Sep 2026</footer>
+        </article>
+
+        <!-- 47. Volunteer — portrait image, medium title, only sub, two desc, tags, no dict, no footer -->
+        <article class="article safe shadow corner" id="article-47">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=47"></figure>
+            <h3 class="f3">Beach Clean-up Crew</h3>
+            <sub>Coastal Care · Sat 27 Sep</sub>
+            <div>Help us clear 2 km of coastline ahead of nesting season. Equipment and gloves provided. Meet at the Pier carpark at 08:00.</div>
+            <div>Coffee and breakfast rolls included. All ages welcome — the more the merrier. 8 of 20 spots filled.</div>
+            <div class="tags">
+                <span class="tag">Volunteer</span>
+                <span class="tag">Environment</span>
+                <span class="tag">Family OK</span>
+                <span class="tag">Free breakfast</span>
+            </div>
+        </article>
+
+        <!-- 48. Community Poll — wide landscape, short title, both sub/sup, single desc, no tags, dict, footer updated -->
+        <article class="article minor shadow corner" id="article-48">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=48"></figure>
+            <h3 class="f3">Park Playground Poll</h3>
+            <sub>City Council · Maple Park</sub>
+            <sup>Have Your Say</sup>
+            <div>Choose between three proposed playground designs. Design A: nature-themed timber. Design B: inclusive sensory garden. Design C: sports and fitness equipment. Closes 30 September.</div>
+            <dl class="dict">
+                <dt>Leading option</dt>
+                <dd>Design B (48%)</dd>
+                <dt>Total votes</dt>
+                <dd>1,240</dd>
+                <dt>Closes</dt>
+                <dd>30 Sep 2026</dd>
+            </dl>
+            <footer>Updated 11 Sep 2026</footer>
+        </article>
+
+        <!-- 49. Night Market — square image, 2-word title, no sub/sup, two desc, tags, no dict, footer created -->
+        <article class="article tip shadow corner" id="article-49">
+            <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=49"></figure>
+            <h3 class="f3">Friday Market</h3>
+            <div>Over 60 vendors selling street food, vinyl records, vintage clothing, handmade jewellery, and artisan spirits in the Warehouse District.</div>
+            <div>Live DJ set from 20:00. Dog-friendly. Cash and card accepted. Free entry every week.</div>
+            <div class="tags">
+                <span class="tag">Every Friday</span>
+                <span class="tag">Street food</span>
+                <span class="tag">Vintage</span>
+                <span class="tag">Dog-friendly</span>
+                <span class="tag">Free</span>
+            </div>
+            <footer>Created 4 Sep 2026</footer>
+        </article>
+
+        <!-- 50. Emergency — no image, very long title, both sub/sup, three desc, tags + dict, footer updated -->
+        <article class="article danger shadow corner" id="article-50">
+            <i class="icon-bell"></i>
+            <h3 class="f3">FLASH FLOOD WARNING — Mandatory Evacuation Order for Zone C: Low-lying Streets Must Evacuate Immediately</h3>
+            <sub>Emergency Management · Issued 12 Sep 2026, 14:47</sub>
+            <sup>EMERGENCY</sup>
+            <div>A FLASH FLOOD WARNING is in effect for Zone C. River levels are rising rapidly following 180 mm of rainfall in six hours.</div>
+            <div>Residents in low-lying streets must proceed immediately to the nearest designated shelter. Do not drive through floodwater under any circumstances — turn around, don't drown.</div>
+            <div>Pets are welcome at the Elmwood shelter. Medication and essential documents only — leave immediately, do not delay to pack.</div>
+            <div class="tags">
+                <span class="tag">Flash flood</span>
+                <span class="tag">Zone C</span>
+                <span class="tag">Evacuate NOW</span>
+                <span class="tag">EMERGENCY</span>
+            </div>
+            <dl class="dict">
+                <dt>Zone</dt>
+                <dd>C — Low-lying streets</dd>
+                <dt>Valid until</dt>
+                <dd>12 Sep 2026, 20:00</dd>
+                <dt>Nearest shelter</dt>
+                <dd>Elmwood Community Hall</dd>
+                <dt>Helpline</dt>
+                <dd>1800 EM HELP</dd>
+            </dl>
+            <footer>Updated 12 Sep 2026, 15:02</footer>
+        </article>
+
+    </div>
+</body>
+
+</html>

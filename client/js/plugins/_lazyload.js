@@ -1,5 +1,13 @@
 let defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+function keepRatio(img) {
+	if (!img.hasAttribute('ratio')) {
+		return false;
+	}
+	let value = img.getAttribute('ratio');
+	return value === '' || value === 'true';
+}
 function clean(img) {
+	img.setAttribute('data-src-loaded', '');
 	img.removeAttribute('data-src');
 	img.removeEventListener('load', imgLoad);
 	img.removeEventListener('error', imgError);
@@ -9,7 +17,13 @@ function imgLoad(e) {
 	if (!img) {
 		return;
 	}
-	img.classList.add('img-load-success');
+	if (keepRatio(img)) {
+		let width = img.clientWidth || img.offsetWidth;
+		if (width && img.naturalWidth && img.naturalHeight) {
+			let ratioHeight = (width * img.naturalHeight) / img.naturalWidth;
+			img.style.height = Math.min(ratioHeight, width) + 'px';
+		}
+	}
 	clean(img);
 }
 function imgError(e) {
@@ -73,11 +87,5 @@ export default {
 	init: function ($el) {
 		lazyloadImg($el);
 	},
-	initBefore: function ($el) {
-		let src = $el.getAttribute('src');
-		if (src !== defaultSrc) {
-			$el.getAttribute('src', defaultSrc);
-			$el.getAttribute('data-src', src);
-		}
-	},
+	initBefore: null,
 };
