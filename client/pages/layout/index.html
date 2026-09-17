@@ -7,13 +7,14 @@
     <title>Layout — Article Component</title>
 </head>
 
-<body id="body">
-    <div class="layout">
+<body id="body" class="page-layout" data-role="lazyload">
+    <!-- include:header.html -->
+    <main class="layout">
         <!-- 1. demo — wide landscape, medium title, both sub/sup, single desc, tags + dict, footer created -->
         <article class="article default shadow corner" id="article-1">
             <i class="icon-graduation-cap"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=1"></figure>
-            <h3 class="f3">Demo Article</h3>
+            <header class="f3">Demo Article</header>
             <sub>Est. 1985 · Public School</sub>
             <sup>Education</sup>
             <div>Greenfield Primary serves 600+ students across grades K–6, known for its STEM programme and bilingual curriculum.</div>
@@ -37,7 +38,7 @@
         <article class="article default shadow corner" id="article-1">
             <i class="icon-graduation-cap"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=1"></figure>
-            <h3 class="f3">Greenfield Primary School</h3>
+            <header class="f3">Greenfield Primary School</header>
             <sub>Est. 1985 · Public School</sub>
             <sup>Education</sup>
             <div>Greenfield Primary serves 600+ students across grades K–6, known for its STEM programme and bilingual curriculum.</div>
@@ -62,7 +63,7 @@
         <article class="article major shadow corner" id="article-2">
             <i class="icon-cutlery"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=2"></figure>
-            <h3 class="f3">Sakura Izakaya</h3>
+            <header class="f3">Sakura Izakaya</header>
             <sup>Open Now</sup>
             <div>A cosy izakaya tucked in Midtown offering handcrafted ramen, fresh sushi, and a curated sake selection.</div>
             <div>Weekend omakase available with 48-hr advance booking. Vegan options available on request.</div>
@@ -77,7 +78,7 @@
         <!-- 3. Property — portrait image, long title, both sub/sup, three desc, no tags, dict only -->
         <article class="article minor shadow corner" id="article-3">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/600?random=3"></figure>
-            <h3 class="f3">Skyline Penthouse — 3 Bedroom, 2 Bathroom with Panoramic Harbour View, Floor 42</h3>
+            <header class="f3">Skyline Penthouse — 3 Bedroom, 2 Bathroom with Panoramic Harbour View, Floor 42</header>
             <sub>Harbour District</sub>
             <sup>For Sale</sup>
             <div>Open-plan living spanning 180 m² with floor-to-ceiling glazing and a wrap-around terrace.</div>
@@ -98,7 +99,7 @@
         <!-- 4. Hospital — no image, short title, only sub, single desc, tags + dict, no footer -->
         <article class="article danger shadow corner" id="article-4">
             <i class="icon-hospital-o"></i>
-            <h3 class="f3">Metro General</h3>
+            <header class="f3">Metro General</header>
             <sub>Level 1 Trauma Centre · 24/7</sub>
             <div>Metro General is the city's primary trauma centre with 800 beds, cardiac ICU, and a dedicated stroke unit. Current A&amp;E wait: 28 min.</div>
             <div class="tags">
@@ -120,7 +121,7 @@
         <article class="article safe shadow corner" id="article-5">
             <i class="icon-laptop"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/250?random=5"></figure>
-            <h3 class="f3">ProBook X1 — Clearance</h3>
+            <header class="f3">ProBook X1 — Clearance</header>
             <sub>Refurbished · Grade A</sub>
             <sup>43% off</sup>
             <div>Intel Core i7-12th Gen, 16 GB RAM, 512 GB NVMe SSD. Fully tested with a 12-month warranty. Only 14 units remaining.</div>
@@ -138,7 +139,7 @@
         <!-- 6. Gov Notice — no image, very long title, only sup, two desc, tags, no dict, footer updated -->
         <article class="article danger shadow corner" id="article-6">
             <i class="icon-institution"></i>
-            <h3 class="f3">Scheduled Water Main Maintenance — Temporary Supply Interruption Affecting Zones 4, 7 and 9 This Saturday</h3>
+            <header class="f3">Scheduled Water Main Maintenance — Temporary Supply Interruption Affecting Zones 4, 7 and 9 This Saturday</header>
             <sup>Official Notice</sup>
             <div>Maintenance will interrupt water supply from 02:00–06:00 on Saturday 14 September. Residents are advised to store sufficient water in advance.</div>
             <div>Tanker trucks will be stationed at Maple Park and Central Square throughout the maintenance window for emergency supply.</div>
@@ -155,7 +156,7 @@
         <!-- 7. Weather — square image, short title, both sub/sup, single desc, tags, no dict -->
         <article class="article tip shadow corner" id="article-7">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=7"></figure>
-            <h3 class="f3">Coastal Storm</h3>
+            <header class="f3">Coastal Storm</header>
             <sub>National Weather Service</sub>
             <sup>Weather Alert</sup>
             <div>A low-pressure system brings heavy rain and wind gusts up to 80 km/h along the coast this Saturday. Inland areas can expect overcast skies with light showers.</div>
@@ -170,7 +171,7 @@
         <article class="article major shadow corner" id="article-8">
             <i class="icon-trophy"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/220?random=8"></figure>
-            <h3 class="f3">City Marathon 2026 — Full, Half &amp; 10 km Categories Now Open for Registration</h3>
+            <header class="f3">City Marathon 2026 — Full, Half &amp; 10 km Categories Now Open for Registration</header>
             <sub>Annual · Downtown Circuit</sub>
             <div>The city's premier marathon returns with 8,000 participant spots. Early-bird registration ends 30 September.</div>
             <div>Pace setters provided for 4:00, 4:30, 5:00, and 6:00 finish times. Medical stations every 5 km.</div>
@@ -189,7 +190,7 @@
         <!-- 9. Video Game — portrait image, medium title, no sub/sup, single desc, tags + dict -->
         <article class="article minor shadow corner" id="article-9">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=9"></figure>
-            <h3 class="f3">Void Frontier — Open World RPG</h3>
+            <header class="f3">Void Frontier — Open World RPG</header>
             <div>Explore a 200-hour hand-crafted universe with branching storylines, dynamic faction politics, and fully destructible environments. Multiplayer co-op up to 4 players.</div>
             <div class="tags">
                 <span class="tag">RPG</span>
@@ -210,7 +211,7 @@
         <!-- 10. Personal Note — no image, 2-word title, only sup, single desc, no tags, no dict, footer created -->
         <article class="article default shadow corner" id="article-10">
             <i class="icon-sticky-note-o"></i>
-            <h3 class="f3">Sprint Goals</h3>
+            <header class="f3">Sprint Goals</header>
             <sup>Draft</sup>
             <div>Finish the article component SCSS, write the layout page HTML, register the webpack entry. Review the list-view PR before EOD.</div>
             <footer>Created 12 Sep 2026, 09:14</footer>
@@ -220,7 +221,7 @@
         <article class="article safe shadow corner" id="article-11">
             <i class="icon-camera"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/300?random=11"></figure>
-            <h3 class="f3">Alps Trip — July 2026</h3>
+            <header class="f3">Alps Trip — July 2026</header>
             <sub>Personal Album · 214 photos</sub>
             <sup>Memory</sup>
             <div>Three weeks across Swiss and Austrian Alps. Highlights: Jungfraujoch sunrise and Hallstatt village at golden hour.</div>
@@ -236,7 +237,7 @@
         <!-- 12. Travel — portrait image, medium title, only sub, single desc, no tags, dict + footer -->
         <article class="article tip shadow corner" id="article-12">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/550?random=12"></figure>
-            <h3 class="f3">Kyoto in Autumn</h3>
+            <header class="f3">Kyoto in Autumn</header>
             <sub>Japan · Nov–Dec</sub>
             <div>Kyoto's maple season transforms temples and bamboo groves into a fiery canvas of red and gold. Visit Arashiyama at dawn for crowd-free lantern reflections on the Oi River.</div>
             <dl class="dict">
@@ -254,7 +255,7 @@
         <article class="article major shadow corner" id="article-13">
             <i class="icon-briefcase"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=13"></figure>
-            <h3 class="f3">Senior Frontend Engineer — Remote-first · Full-time · Component Library Lead</h3>
+            <header class="f3">Senior Frontend Engineer — Remote-first · Full-time · Component Library Lead</header>
             <sup>Hiring Now</sup>
             <div>We're looking for a frontend engineer with 5+ years in TypeScript, React, and design systems to lead our component library effort.</div>
             <div>You'll mentor two junior engineers and collaborate closely with Product and Design to define the next generation of our UI.</div>
@@ -275,7 +276,7 @@
         <!-- 14. Recipe — square image, short title, both sub/sup, single desc, tags, no dict, footer created -->
         <article class="article safe shadow corner" id="article-14">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=14"></figure>
-            <h3 class="f3">Brown Butter Pasta</h3>
+            <header class="f3">Brown Butter Pasta</header>
             <sub>Italian · 20 min</sub>
             <sup>Quick &amp; Easy</sup>
             <div>Silky spaghetti tossed in nutty brown butter, zesty lemon, crispy capers, and a snowfall of Parmesan. Ready in 20 minutes from pantry staples.</div>
@@ -290,7 +291,7 @@
         <!-- 15. Movie Review — no image, long title, only sub, three desc, no tags, dict -->
         <article class="article minor shadow corner" id="article-15">
             <i class="icon-film"></i>
-            <h3 class="f3">Echoes of Tomorrow — A Time-Loop Thriller That Finally Earns Its Runtime</h3>
+            <header class="f3">Echoes of Tomorrow — A Time-Loop Thriller That Finally Earns Its Runtime</header>
             <sub>Sci-Fi Drama · 2026 · 138 min</sub>
             <div>Director Naomi Asante delivers a quiet, devastating meditation on regret and memory.</div>
             <div>Anchored by a career-best performance from Idris Elba, the film trusts silence where lesser sci-fi reaches for spectacle.</div>
@@ -311,7 +312,7 @@
         <article class="article tip shadow corner" id="article-16">
             <i class="icon-music"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=16"></figure>
-            <h3 class="f3">Neon Drift</h3>
+            <header class="f3">Neon Drift</header>
             <sub>Synthwave · 12 tracks</sub>
             <sup>Out Now</sup>
             <div>SOLÁR's third studio album blends 80s synth textures with modern production clarity. Stand-out track "Meridian" is an eight-minute instrumental suite that rewards headphones.</div>
@@ -321,7 +322,7 @@
         <!-- 17. Book — portrait image, medium title, only sup, two desc, tags, dict -->
         <article class="article default shadow corner" id="article-17">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/560?random=17"></figure>
-            <h3 class="f3">The Cartography of Loss</h3>
+            <header class="f3">The Cartography of Loss</header>
             <sup>Booker Prize Shortlist</sup>
             <div>A fragmented novel told through handwritten maps, letters, and footnotes, tracking three generations of a Congolese family across colonial and post-colonial history.</div>
             <div>Amara Diallo's prose moves between languages and centuries without losing intimacy — a structural feat as impressive as its emotional one.</div>
@@ -344,7 +345,7 @@
         <!-- 18. Fitness — no image, 3-word title, only sub, single desc, tags, no dict, footer created -->
         <article class="article major shadow corner" id="article-18">
             <i class="icon-heartbeat"></i>
-            <h3 class="f3">HIIT &amp; Strength</h3>
+            <header class="f3">HIIT &amp; Strength</header>
             <sub>Studio Apex · 06:30 MWF</sub>
             <div>45-min high-intensity intervals followed by a 15-min progressive strength circuit. All levels welcome. Bring water and a sweat towel.</div>
             <div class="tags">
@@ -358,7 +359,7 @@
         <!-- 19. Online Course — wide landscape, long title, both sub/sup, single desc, no tags, dict -->
         <article class="article safe shadow corner" id="article-19">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/240?random=19"></figure>
-            <h3 class="f3">Data Engineering with dbt &amp; Snowflake — 40-Hour Self-Paced Certificate</h3>
+            <header class="f3">Data Engineering with dbt &amp; Snowflake — 40-Hour Self-Paced Certificate</header>
             <sub>Online · Intermediate</sub>
             <sup>Bestseller</sup>
             <div>Covers the modern data stack end-to-end: Snowflake warehousing, dbt transformations, Airflow orchestration, and data quality testing with 4,200 students already enrolled.</div>
@@ -375,7 +376,7 @@
         <!-- 20. Tech News — square image, short title, no sub/sup, two desc, tags, no dict, footer updated -->
         <article class="article minor shadow corner" id="article-20">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=20"></figure>
-            <h3 class="f3">1,000-Qubit Milestone</h3>
+            <header class="f3">1,000-Qubit Milestone</header>
             <div>A research consortium announced stable operation of a 1,000-logical-qubit processor at room temperature — a threshold many considered a decade away.</div>
             <div>Peer review is ongoing; independent replication is expected to take 6–18 months.</div>
             <div class="tags">
@@ -389,7 +390,7 @@
         <!-- 21. Fashion — no image, medium title, only sup, single desc, no tags, no dict, footer created -->
         <article class="article tip shadow corner" id="article-21">
             <i class="icon-shopping-bag"></i>
-            <h3 class="f3">Autumn / Winter Sale</h3>
+            <header class="f3">Autumn / Winter Sale</header>
             <sup>Up to 60% off</sup>
             <div>End-of-season clearance across outerwear, knitwear, and accessories at Velour Maison. Free shipping on orders over $80. Ends Sunday midnight — no code required.</div>
             <footer>Created 8 Sep 2026</footer>
@@ -398,7 +399,7 @@
         <!-- 22. Car — wide landscape, long title, both sub/sup, three desc, tags + dict -->
         <article class="article major shadow corner" id="article-22">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/260?random=22"></figure>
-            <h3 class="f3">2024 Tesla Model 3 LR AWD — Midnight Silver, 12,400 km, Full Service History, Certified Pre-owned</h3>
+            <header class="f3">2024 Tesla Model 3 LR AWD — Midnight Silver, 12,400 km, Full Service History, Certified Pre-owned</header>
             <sub>Pre-owned · Single owner</sub>
             <sup>Certified</sup>
             <div>560 km range (WLTP). Enhanced Autopilot included with eight-year battery warranty remaining.</div>
@@ -424,7 +425,7 @@
         <!-- 23. Apartment — portrait image, short title, only sub, single desc, no tags, dict, footer updated -->
         <article class="article minor shadow corner" id="article-23">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/520?random=23"></figure>
-            <h3 class="f3">Studio — Arts Quarter</h3>
+            <header class="f3">Studio — Arts Quarter</header>
             <sub>Available 1 Oct 2026</sub>
             <div>Bright 38 m² studio with exposed brick feature wall, open kitchen, and juliet balcony. 5-min walk to the tube. No pets, no smokers.</div>
             <dl class="dict">
@@ -441,7 +442,7 @@
         <!-- 24. Pet — no image, long title, both sub/sup, two desc, tags, no dict, footer created -->
         <article class="article safe shadow corner" id="article-24">
             <i class="icon-paw"></i>
-            <h3 class="f3">Luna — 2-Year-Old Golden Retriever Mix Ready for Her Forever Home</h3>
+            <header class="f3">Luna — 2-Year-Old Golden Retriever Mix Ready for Her Forever Home</header>
             <sub>City Animal Shelter</sub>
             <sup>Ready to Adopt</sup>
             <div>House-trained and great with children and other dogs. Loves long walks, fetch, and sleeping at your feet.</div>
@@ -458,7 +459,7 @@
         <!-- 25. Art — wide landscape, medium title, only sub, three desc, no tags, dict -->
         <article class="article tip shadow corner" id="article-25">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/280?random=25"></figure>
-            <h3 class="f3">Fractured Light — Photography Exhibition</h3>
+            <header class="f3">Fractured Light — Photography Exhibition</header>
             <sub>The Modern Gallery · 14 Sep – 30 Nov</sub>
             <div>Forty works by twelve emerging photographers exploring identity, memory, and urban solitude.</div>
             <div>Long-exposure and infrared techniques give the images a dreamlike quality that holds up under scrutiny.</div>
@@ -476,7 +477,7 @@
         <!-- 26. Startup — square image, 2-word title, no sub/sup, single desc, tags, dict, footer created -->
         <article class="article major shadow corner" id="article-26">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=26"></figure>
-            <h3 class="f3">Lumio</h3>
+            <header class="f3">Lumio</header>
             <div>AI-powered meal planning that learns your taste, dietary needs, and budget — generating weekly plans with auto-filled grocery lists. iOS and Android. First month free.</div>
             <div class="tags">
                 <span class="tag">AI</span>
@@ -497,7 +498,7 @@
         <!-- 27. Finance — no image, medium title, only sup, two desc, no tags, dict, no footer -->
         <article class="article danger shadow corner" id="article-27">
             <i class="icon-bar-chart"></i>
-            <h3 class="f3">Q2 2026 Earnings Report</h3>
+            <header class="f3">Q2 2026 Earnings Report</header>
             <sup>Confidential · Internal</sup>
             <div>Revenue down 8% YoY driven by weaker consumer spending in APAC. EBITDA margin held at 18%.</div>
             <div>Management reiterating full-year guidance. Cost-reduction programme remains on track for Q4 completion.</div>
@@ -514,7 +515,7 @@
         <!-- 28. Legal — portrait image, long title, only sub, single desc, tags, dict, footer updated -->
         <article class="article danger shadow corner" id="article-28">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/480?random=28"></figure>
-            <h3 class="f3">Notice of Proposed Class Action Settlement — DataPulse Subscribers Jan 2022 to Jun 2025</h3>
+            <header class="f3">Notice of Proposed Class Action Settlement — DataPulse Subscribers Jan 2022 to Jun 2025</header>
             <sub>Superior Court · Case No. 2026-CV-04471</sub>
             <div>If you purchased a DataPulse subscription in the specified period you may be entitled to compensation. Claim deadline: 31 Oct 2026.</div>
             <div class="tags">
@@ -535,7 +536,7 @@
         <article class="article danger shadow corner" id="article-29">
             <i class="icon-exclamation-triangle"></i>
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=29"></figure>
-            <h3 class="f3">Allergy Recall Alert</h3>
+            <header class="f3">Allergy Recall Alert</header>
             <sub>Food Safety Authority</sub>
             <sup>Urgent Recall</sup>
             <div>Batch codes A204–A211 of "Harvest Crunch Granola Bars" may contain undeclared peanuts. Do not consume if you have a peanut allergy. Return to point of purchase for a full refund.</div>
@@ -550,7 +551,7 @@
         <!-- 30. Climate — no image, long title, only sub, three desc, no tags, dict, footer created -->
         <article class="article tip shadow corner" id="article-30">
             <i class="icon-leaf"></i>
-            <h3 class="f3">Global Surface Temperature Exceeds +1.6°C Above Pre-Industrial Baseline for First Time</h3>
+            <header class="f3">Global Surface Temperature Exceeds +1.6°C Above Pre-Industrial Baseline for First Time</header>
             <sub>IPCC · Annual Climate Report 2026</sub>
             <div>The 2026 IPCC annual report confirms a new global temperature record driven primarily by continued fossil fuel emissions.</div>
             <div>Arctic sea-ice extent reached a record summer minimum; permafrost carbon release is now measurable at regional scale.</div>
@@ -569,7 +570,7 @@
         <!-- 31. Science — portrait image, medium title, both sub/sup, two desc, tags, no dict -->
         <article class="article minor shadow corner" id="article-31">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=31"></figure>
-            <h3 class="f3">New Antibiotic vs XDR-TB</h3>
+            <header class="f3">New Antibiotic vs XDR-TB</header>
             <sub>University of Cape Town</sub>
             <sup>Breakthrough</sup>
             <div>Researchers identified a novel compound — UCT-783 — that kills extensively drug-resistant tuberculosis bacteria in vitro with no detectable cytotoxicity.</div>
@@ -584,7 +585,7 @@
         <!-- 32. Election — no image, short title, no sub/sup, two desc, tags, dict, footer updated -->
         <article class="article danger shadow corner" id="article-32">
             <i class="icon-check-square-o"></i>
-            <h3 class="f3">District 7 Result</h3>
+            <header class="f3">District 7 Result</header>
             <div>Councillor Sandra Ortega (Progressive) wins the runoff with 52.4%, defeating incumbent Ray Huang (Conservative).</div>
             <div>Voter turnout reached 61% — the highest in 16 years, driven by record youth participation.</div>
             <div class="tags">
@@ -606,7 +607,7 @@
         <!-- 33. Festival — wide landscape, long title, only sup, single desc, tags, no dict, no footer -->
         <article class="article tip shadow corner" id="article-33">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/280?random=33"></figure>
-            <h3 class="f3">Lantern Festival at Riverside Park — Free Family Evening with Dragon Dance, Street Food, and Live Music</h3>
+            <header class="f3">Lantern Festival at Riverside Park — Free Family Evening with Dragon Dance, Street Food, and Live Music</header>
             <sup>This Weekend</sup>
             <div>Float hundreds of glowing lanterns on the river at dusk while sampling street food from 30 vendors. Traditional dragon dance performance at 20:30.</div>
             <div class="tags">
@@ -620,7 +621,7 @@
         <!-- 34. Charity — square image, medium title, both sub/sup, two desc, no tags, dict, footer updated -->
         <article class="article safe shadow corner" id="article-34">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=34"></figure>
-            <h3 class="f3">Children's Hospital Bake Sale</h3>
+            <header class="f3">Children's Hospital Bake Sale</header>
             <sub>Community · Volunteers Welcome</sub>
             <sup>Fundraiser</sup>
             <div>Annual bake sale in aid of the Paediatric Wing renovation fund. All proceeds go directly to equipment upgrades.</div>
@@ -639,7 +640,7 @@
         <!-- 35. Local Business — no image, long title, only sub, single desc, no tags, dict -->
         <article class="article default shadow corner" id="article-35">
             <i class="icon-key"></i>
-            <h3 class="f3">Cobbler &amp; Keys — Shoe Repair, Key Cutting &amp; Locksmith Services · Family-owned Since 1971</h3>
+            <header class="f3">Cobbler &amp; Keys — Shoe Repair, Key Cutting &amp; Locksmith Services · Family-owned Since 1971</header>
             <sub>Elmwood · Est. 1971</sub>
             <div>Three generations of shoe repair, key cutting, and lock services in the heart of Elmwood. Same-day service on standard repairs.</div>
             <dl class="dict">
@@ -655,7 +656,7 @@
         <!-- 36. Podcast — wide landscape, 2-word title, no sub/sup, three desc, tags, no dict, footer created -->
         <article class="article minor shadow corner" id="article-36">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/210?random=36"></figure>
-            <h3 class="f3">The Insider</h3>
+            <header class="f3">The Insider</header>
             <div>Darknet Diaries Ep. 201: Jack Rhysider tells the true story of a sysadmin who spent two years exfiltrating intellectual property for a foreign state actor.</div>
             <div>The investigation began with a single log-file anomaly flagged by an automated SIEM rule — a reminder that the boring stuff saves companies.</div>
             <div>Runtime: 58 minutes. Available on Spotify, Apple Podcasts, and wherever you get your podcasts.</div>
@@ -671,7 +672,7 @@
         <!-- 37. Software Release — portrait image, medium title, only sup, single desc, no tags, dict, no footer -->
         <article class="article major shadow corner" id="article-37">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/460?random=37"></figure>
-            <h3 class="f3">Node.js v24 LTS</h3>
+            <header class="f3">Node.js v24 LTS</header>
             <sup>Long-Term Support</sup>
             <div>Built-in WebAssembly GC, native fetch improvements, and a 20% throughput increase on I/O-heavy workloads. Upgrade recommended for all production environments.</div>
             <dl class="dict">
@@ -687,7 +688,7 @@
         <!-- 38. Gaming Tournament — wide landscape, long title, both sub/sup, two desc, tags, dict, footer updated -->
         <article class="article tip shadow corner" id="article-38">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/230?random=38"></figure>
-            <h3 class="f3">Void Frontier World Championship 2026 — $500,000 Prize Pool · 64 Teams · Live in Seoul</h3>
+            <header class="f3">Void Frontier World Championship 2026 — $500,000 Prize Pool · 64 Teams · Live in Seoul</header>
             <sub>Esports · 14–16 Nov 2026</sub>
             <sup>Registration Open</sup>
             <div>The inaugural VF World Championship brings together 64 regional finalists for a 3-day live event in Seoul.</div>
@@ -712,7 +713,7 @@
         <!-- 39. Wedding — square image, medium title, only sub, single desc, no tags, dict, footer created -->
         <article class="article safe shadow corner" id="article-39">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=39"></figure>
-            <h3 class="f3">Isabel &amp; Thomas — Save the Date</h3>
+            <header class="f3">Isabel &amp; Thomas — Save the Date</header>
             <sub>Provence · 22 March 2027</sub>
             <div>We're getting married at Château Vieux in Provence. Formal invitations follow in November. Dress code: garden formal.</div>
             <dl class="dict">
@@ -729,7 +730,7 @@
         <!-- 40. Baby Shower — no image, short title, both sub/sup, single desc, tags, no dict, footer updated -->
         <article class="article tip shadow corner" id="article-40">
             <i class="icon-child"></i>
-            <h3 class="f3">Welcome Little Mia</h3>
+            <header class="f3">Welcome Little Mia</header>
             <sub>Baby Shower · 28 Sep 2026</sub>
             <sup>Private Invite</sup>
             <div>Join us for afternoon tea and games at Claire's place. Gift registry linked separately. RSVP by 21 September — limited to 20 guests.</div>
@@ -744,7 +745,7 @@
         <!-- 41. Obituary — wide landscape, long title, only sub, two desc, no tags, dict, no footer -->
         <article class="article default shadow corner" id="article-41">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/220?random=41"></figure>
-            <h3 class="f3">In Memoriam — George Ellison, Beloved Husband, Father, and Headmaster (1941–2026)</h3>
+            <header class="f3">In Memoriam — George Ellison, Beloved Husband, Father, and Headmaster (1941–2026)</header>
             <sub>Passed peacefully 10 Sep 2026</sub>
             <div>George Ellison passed away at home surrounded by family after a short illness. He served as headmaster of Elmwood Secondary for 24 years and was known for his warmth and fairness.</div>
             <div>A memorial service will be held at St. Mary's on 18 September at 11:00. All who knew him are welcome. In lieu of flowers, donations to Alzheimer's Research UK are appreciated.</div>
@@ -761,7 +762,7 @@
         <!-- 42. Product Review — portrait image, 4-word title, no sub/sup, single desc, tags, dict, footer created -->
         <article class="article minor shadow corner" id="article-42">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/440?random=42"></figure>
-            <h3 class="f3">Sony WH-1000XM7 Review</h3>
+            <header class="f3">Sony WH-1000XM7 Review</header>
             <div>Sony's seventh-generation flagship sets a new standard for noise cancellation. The updated driver delivers richer bass without sacrificing midrange clarity. Battery now lasts 38 hours.</div>
             <div class="tags">
                 <span class="tag">Headphones</span>
@@ -783,7 +784,7 @@
         <!-- 43. Company Memo — no image, medium title, only sup, single desc, no tags, dict, footer updated -->
         <article class="article default shadow corner" id="article-43">
             <i class="icon-file-text-o"></i>
-            <h3 class="f3">Q3 Hiring Freeze</h3>
+            <header class="f3">Q3 Hiring Freeze</header>
             <sup>Confidential · All Staff</sup>
             <div>Effective immediately, all open positions are paused pending the Q3 financial review. Existing offers already extended will be honoured. Direct questions to your department head.</div>
             <dl class="dict">
@@ -800,7 +801,7 @@
         <!-- 44. Conference Talk — wide landscape, long title, both sub/sup, two desc, no tags, dict -->
         <article class="article major shadow corner" id="article-44">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=44"></figure>
-            <h3 class="f3">CSS State of the Art — Container Queries, Cascade Layers &amp; the New Color Function Landscape</h3>
+            <header class="f3">CSS State of the Art — Container Queries, Cascade Layers &amp; the New Color Function Landscape</header>
             <sub>CSSConf 2026 · Track B · 15 Oct</sub>
             <sup>Featured Talk</sup>
             <div>A deep-dive into modern CSS features with live demos of real-world performance gains in a production design system.</div>
@@ -818,7 +819,7 @@
         <!-- 45. Museum — square image, short title, only sub, three desc, tags, no dict, footer created -->
         <article class="article safe shadow corner" id="article-45">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=45"></figure>
-            <h3 class="f3">Ancient Rome</h3>
+            <header class="f3">Ancient Rome</header>
             <sub>Natural History Museum · New East Wing</sub>
             <div>200 artefacts from everyday Roman life — ceramic vessels, surgical instruments, children's toys, and graffiti casts from Pompeii.</div>
             <div>The new East Wing doubles the display space and introduces an interactive digital layer synced to each artefact label.</div>
@@ -835,7 +836,7 @@
         <!-- 46. Library Event — no image, long title, no sub/sup, single desc, tags, dict, footer updated -->
         <article class="article default shadow corner" id="article-46">
             <i class="icon-book"></i>
-            <h3 class="f3">Author Talk &amp; Signing — Amara Diallo Reads from "The Cartography of Loss" at Elmwood Public Library</h3>
+            <header class="f3">Author Talk &amp; Signing — Amara Diallo Reads from "The Cartography of Loss" at Elmwood Public Library</header>
             <div>Join Booker Prize-shortlisted author Amara Diallo for a reading and Q&amp;A. Books available for signing. Reserve your seat — capacity 60.</div>
             <div class="tags">
                 <span class="tag">Free</span>
@@ -856,7 +857,7 @@
         <!-- 47. Volunteer — portrait image, medium title, only sub, two desc, tags, no dict, no footer -->
         <article class="article safe shadow corner" id="article-47">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/500?random=47"></figure>
-            <h3 class="f3">Beach Clean-up Crew</h3>
+            <header class="f3">Beach Clean-up Crew</header>
             <sub>Coastal Care · Sat 27 Sep</sub>
             <div>Help us clear 2 km of coastline ahead of nesting season. Equipment and gloves provided. Meet at the Pier carpark at 08:00.</div>
             <div>Coffee and breakfast rolls included. All ages welcome — the more the merrier. 8 of 20 spots filled.</div>
@@ -871,7 +872,7 @@
         <!-- 48. Community Poll — wide landscape, short title, both sub/sup, single desc, no tags, dict, footer updated -->
         <article class="article minor shadow corner" id="article-48">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/800/200?random=48"></figure>
-            <h3 class="f3">Park Playground Poll</h3>
+            <header class="f3">Park Playground Poll</header>
             <sub>City Council · Maple Park</sub>
             <sup>Have Your Say</sup>
             <div>Choose between three proposed playground designs. Design A: nature-themed timber. Design B: inclusive sensory garden. Design C: sports and fitness equipment. Closes 30 September.</div>
@@ -889,7 +890,7 @@
         <!-- 49. Night Market — square image, 2-word title, no sub/sup, two desc, tags, no dict, footer created -->
         <article class="article tip shadow corner" id="article-49">
             <figure><img ratio src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/400/400?random=49"></figure>
-            <h3 class="f3">Friday Market</h3>
+            <header class="f3">Friday Market</header>
             <div>Over 60 vendors selling street food, vinyl records, vintage clothing, handmade jewellery, and artisan spirits in the Warehouse District.</div>
             <div>Live DJ set from 20:00. Dog-friendly. Cash and card accepted. Free entry every week.</div>
             <div class="tags">
@@ -905,7 +906,7 @@
         <!-- 50. Emergency — no image, very long title, both sub/sup, three desc, tags + dict, footer updated -->
         <article class="article danger shadow corner" id="article-50">
             <i class="icon-bell"></i>
-            <h3 class="f3">FLASH FLOOD WARNING — Mandatory Evacuation Order for Zone C: Low-lying Streets Must Evacuate Immediately</h3>
+            <header class="f3">FLASH FLOOD WARNING — Mandatory Evacuation Order for Zone C: Low-lying Streets Must Evacuate Immediately</header>
             <sub>Emergency Management · Issued 12 Sep 2026, 14:47</sub>
             <sup>EMERGENCY</sup>
             <div>A FLASH FLOOD WARNING is in effect for Zone C. River levels are rising rapidly following 180 mm of rainfall in six hours.</div>
@@ -930,7 +931,9 @@
             <footer>Updated 12 Sep 2026, 15:02</footer>
         </article>
 
-    </div>
+    </main>
+    <!-- include:footer.html -->
 </body>
+<!-- include:footerscript.html -->
 
 </html>

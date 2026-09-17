@@ -137,7 +137,7 @@ Builds fact rows (`Est`, `Bd`, `Ba`, sqft, price/sqft, year). When `allAttrs ===
 
 Guard each include; pass `getSrc` / `getHref` from `BaseController.toPage()` model.
 
-List grid: [`demo.ejs`](../server/ejs/demo.ejs) loops `articleComponent.data` and includes `comp_article`.
+List grid: [`demo.ejs`](../server/ejs/demo.ejs) loops `articleComponent.data` and includes `comp_article`. List cards use the shared `.article` markup: `dl.dict` for `attrs` (`dt` = key/`abbr`, `dd` = value/`span`), `figure`/`figcaption` for photo credit, and overlay tags as `.tags-top`.
 
 ---
 

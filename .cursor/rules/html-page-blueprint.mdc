@@ -1,0 +1,33 @@
+---
+description: Semantic HTML page blueprint — header/nav, main/section, article with header/time/footer
+globs: client/pages/**/*.html, server/ejs/**/*.ejs, client/components/**/*.html
+alwaysApply: true
+---
+
+# Semantic HTML page blueprint
+
+When building or editing a page, use this landmark structure. Project extras (`id="body"`, `<!-- include:header.html -->`, `<!-- include:footer.html -->`, `data-role`) sit **on** this tree — they do not replace it.
+
+```
+body
+  header            page chrome (logo + nav)
+    nav > ul > li > a
+  main
+    section#…       one thematic block; heading is h1 then h2…
+      article       one self-contained piece
+        header      title + meta
+          h3
+          p > time[datetime]
+        p           body copy
+        footer      article meta (tags, updated)
+  footer            page chrome
+```
+
+## Rules
+
+- Landmarks: one `header` / `nav` / `main` / page `footer`. Group related articles in `section`, not a bare `div`.
+- Headings: do not skip levels. Page/section use `h1`/`h2`; article titles are `h3` inside `article > header`.
+- Copy is `<p>`, dates are `<time datetime="YYYY-MM-DD">`. Do not use `<div>` for paragraphs or `<sub>`/`<sup>` as metadata.
+- `article > footer` is article meta only; it is not the page footer.
+- IDs are unique. Prefer `section` ids for in-page nav (`#home`, `#blog`).
+- Allowed extras that do not break the tree: `figure`/`img` for media, `dl` for key/value, `ul`/`span.tag` for tags **inside** `article > footer`.

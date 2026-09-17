@@ -21,6 +21,15 @@ export class Page extends Plugin {
 				if (!$el) {
 					$el = document.querySelector('body');
 				}
+				// main() calls page.init() directly (not via Plugin.register), so guard
+				// re-entry ourselves via a dedicated attribute. Kept separate from the
+				// generic `loaded` attribute refreshComponents uses for data-role plugin
+				// dispatch, so other roles (e.g. lazyload) sharing this element's
+				// data-role aren't collaterally blocked from initializing.
+				if ($el.hasAttribute('page-loaded')) {
+					return exportObj;
+				}
+				$el.setAttribute('page-loaded', 1);
 				logInfo('initing');
 				Object.assign(ctx, Page.initCtxByWindow(ctx));
 				Object.assign(ctx, Page.initCtxByUa(ctx));
@@ -31,14 +40,8 @@ export class Page extends Plugin {
 				if (setting && setting.init) {
 					setting.init($el, opt, exportObj);
 				}
-				// main() calls page.init() directly (not via Plugin.register), so register
-				// the instance on body. Otherwise dom.load → refreshComponents re-inits
-				// body[data-role="<page>"] and creates a second Router / click listener.
 				if ($el && exportObj && exportObj._pid) {
 					Plugin.setInstance($el, exportObj);
-					if (!$el.hasAttribute('loaded')) {
-						$el.setAttribute('loaded', 2);
-					}
 				}
 				return exportObj;
 			},
@@ -59,6 +62,9 @@ export class Page extends Plugin {
 
 				if (data) {
 					exportObj.ctx.data = data;
+				}
+				if ($el) {
+					$el.setAttribute('page-loaded', 2);
 				}
 				return exportObj;
 			},
@@ -85,7 +91,7 @@ export class Page extends Plugin {
 	static getWidth() {
 		return window.innerWidth;
 	}
-	static inputing() {
+	static inputting() {
 		let tagName = document.activeElement ? document.activeElement.tagName : '';
 		return ['TEXTAREA', 'INPUT', 'SELECT'].indexOf(tagName) > -1;
 	}
@@ -101,9 +107,7 @@ export class Page extends Plugin {
 	 * @param {Document|Element} [root=document] - Root to scan; defaults to document
 	 */
 	static refreshComponents(root = document) {
-		const list = root.querySelectorAll
-			? Array.from(root.querySelectorAll('[data-role]'))
-			: [];
+		const list = root.querySelectorAll ? Array.from(root.querySelectorAll('[data-role]')) : [];
 		if (root.matches && root.matches('[data-role]')) {
 			list.unshift(root);
 		}
@@ -232,7 +236,7 @@ export class Page extends Plugin {
 		window.addEventListener(
 			'resize',
 			debounce(() => {
-				if (!Page.inputing()) {
+				if (!Page.inputting()) {
 					Page.onResize();
 				}
 			}, 100),

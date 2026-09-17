@@ -229,7 +229,7 @@ sequenceDiagram
 ```mermaid
 flowchart TB
 	subgraph persistent [Long-lived globals]
-		RouterClick[document click handlers Nx if reinited]
+		RouterClick[document click handlers Nx if reinitialed]
 		RouterPop[window popstate handlers Nx]
 		DomLoadHandlers[dom.load bus handlers Nx]
 		DOMHooks[prototype innerHTML outerHTML patches 1x per bundle eval]

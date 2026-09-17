@@ -24,11 +24,11 @@ export class Plugin extends Base {
 			render: null,
 			destroy: null,
 		};
-		const assginSetting = Object.assign(defaultSetting, setting);
-		let plugin = Plugin.getPlugin(assginSetting.name);
-		this.setting = assginSetting;
+		const assignSetting = Object.assign(defaultSetting, setting);
+		let plugin = Plugin.getPlugin(assignSetting.name);
+		this.setting = assignSetting;
 		if (!plugin) {
-			Plugin.register.apply(this, [assginSetting]);
+			Plugin.register.apply(this, [assignSetting]);
 		}
 	}
 	static namespace = 'cui';
@@ -166,7 +166,7 @@ export class Plugin extends Base {
 		return Plugin.instanceMap.get(instanceKey) || null;
 	}
 
-	//todo what if element be removed instance cannot be recly
+	//todo what if element be removed instance cannot be recycled
 	static register(setting) {
 		let plugin = async ($el, options) => {
 			if (!$el) {
@@ -183,11 +183,11 @@ export class Plugin extends Base {
 				exportObj = {};
 			}
 
-			let dependences = null;
+			let dependencies = null;
 			if (setting.dependence) {
-				dependences = await Plugin.dependenceHandler(setting.dependence);
+				dependencies = await Plugin.dependenceHandler(setting.dependence);
 			}
-			await this.init($el, options, exportObj, dependences);
+			await this.init($el, options, exportObj, dependencies);
 			Plugin.setInstance($el, exportObj);
 			return exportObj;
 		};
@@ -202,7 +202,7 @@ export class Plugin extends Base {
 		}
 	}
 	initAfter($el, options, exportObj) {
-		logPluginPhase(this.setting.name, 'inited', $el, options, exportObj);
+		logPluginPhase(this.setting.name, 'initialed', $el, options, exportObj);
 		if (this.setting.initAfter) {
 			trigger(this.setting.initAfter, $el, options, exportObj);
 		}

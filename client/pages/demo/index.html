@@ -8,7 +8,7 @@
     <link rel="icon" href="../../assets/img/favicon.ico" type="image/x-icon">
 </head>
 
-<body id="body" class="page-demo">
+<body id="body" class="page-demo" data-role="lazyload">
     <!-- include:header.html -->
     <nav class="breadcrumb gray" aria-label="breadcrumb">
         <ul>
@@ -37,7 +37,7 @@
     <section class="detail" id="detail">
         <div class="grid grid-xs-1">
             <a href="/demo/index" class="img-bg">
-                <img src="../../assets/images/welcome.webp" alt="Demo" loading="lazy">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="../../assets/images/welcome.webp" alt="Demo" loading="lazy">
             </a>
             <h1 class="h3">Send a Page on Real Estate</h1>
             <div>Welcome to Demo on Real Estate, your trusted destination for buying, selling, and renting real
@@ -57,29 +57,24 @@
     <section class="result">
         <ul>
             <li class="item">
-                <article>
+                <article class="article shadow corner collapsed">
                     <a href="/demo/detail/001" data-id="i001">
                         <address>5678 Oak St, Los Angeles, 90001 CA</address>
                     </a>
-                    <ul>
-                        <li>
-                            <span>$600,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,800</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$214</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$600,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,800</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$214</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/209/209" alt="5678 Oak St, Los Angeles" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/209/209" alt="5678 Oak St, Los Angeles" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -87,30 +82,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/002" data-id="i002">
                         <address>1234 Maple Ave, San Francisco, 94123 CA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$1,200,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,500</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$342</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$1,200,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,500</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$342</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/210/210" alt="1234 Maple Ave, San Francisco" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/210/210" alt="1234 Maple Ave, San Francisco" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -118,30 +107,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/003" data-id="i003">
                         <address>8765 Pine Dr, Austin, 78701 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$450,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>1,800</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$250</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$450,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>1,800</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$250</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/211/211" alt="8765 Pine Dr, Austin" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/211/211" alt="8765 Pine Dr, Austin" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -149,30 +132,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/004" data-id="i004">
                         <address>4321 Birch Ln, Seattle, 98101 WA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$2,300,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>5</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>4.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>5,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$460</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$2,300,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>5</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>4.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>5,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$460</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/212/212" alt="4321 Birch Ln, Seattle" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/212/212" alt="4321 Birch Ln, Seattle" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -180,30 +157,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/005" data-id="i005">
                         <address>5678 Cedar Rd, Denver, 80203 CO</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$800,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$364</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$800,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$364</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/213/213" alt="5678 Cedar Rd, Denver" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/213/213" alt="5678 Cedar Rd, Denver" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -211,30 +182,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/006" data-id="i006">
                         <address>9812 Elm St, Chicago, 60601 IL</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$950,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,100</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$306</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$950,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,100</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$306</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/214/214" alt="9812 Elm St, Chicago" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/214/214" alt="9812 Elm St, Chicago" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -242,30 +207,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/007" data-id="i007">
                         <address>6547 Walnut Ave, Miami, 33101 FL</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$720,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,500</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$288</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$720,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,500</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$288</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/215/215" alt="6547 Walnut Ave, Miami" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/215/215" alt="6547 Walnut Ave, Miami" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -273,30 +232,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/008" data-id="i008">
                         <address>2309 Spruce Blvd, Dallas, 75201 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$670,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$335</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$670,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$335</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/216/216" alt="2309 Spruce Blvd, Dallas" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/216/216" alt="2309 Spruce Blvd, Dallas" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -304,30 +257,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/009" data-id="i009">
                         <address>7777 Cypress Ln, Portland, 97201 OR</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$540,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,400</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$225</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$540,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,400</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$225</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/217/217" alt="7777 Cypress Ln, Portland" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/217/217" alt="7777 Cypress Ln, Portland" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -335,30 +282,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/010" data-id="i010">
                         <address>8890 Redwood Dr, Phoenix, 85001 AZ</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$480,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>1,900</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$252</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$480,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>1,900</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$252</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/218/218" alt="8890 Redwood Dr, Phoenix" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/218/218" alt="8890 Redwood Dr, Phoenix" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -366,30 +307,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/011" data-id="i011">
                         <address>1023 Willow Ct, Boston, 02108 MA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$1,050,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$328</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$1,050,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$328</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/219/219" alt="1023 Willow Ct, Boston" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/219/219" alt="1023 Willow Ct, Boston" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -397,58 +332,48 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/012" data-id="i012">
                         <address>4532 Poplar St, Nashville, 37201 TN</address>
                     </a>
-                    <ul>
-                        <li>
-                            <span>$650,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,400</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$271</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$650,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,400</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$271</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/220/220" alt="4532 Poplar St, Nashville" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/220/220" alt="4532 Poplar St, Nashville" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/013" data-id="i013">
                         <address>3210 Aspen Dr, Atlanta, 30303 GA</address>
                     </a>
-                    <ul>
-                        <li>
-                            <span>$550,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$275</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$550,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$275</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/221/221" alt="3210 Aspen Dr, Atlanta" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/221/221" alt="3210 Aspen Dr, Atlanta" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -456,30 +381,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/014" data-id="i014">
                         <address>4567 Chestnut Ln, Las Vegas, 89109 NV</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$900,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$300</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$900,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$300</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/222/222" alt="4567 Chestnut Ln, Las Vegas" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/222/222" alt="4567 Chestnut Ln, Las Vegas" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -487,30 +406,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/015" data-id="i015">
                         <address>8743 Magnolia Blvd, San Diego, 92101 CA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$750,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$341</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$750,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$341</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/223/223" alt="8743 Magnolia Blvd, San Diego" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/223/223" alt="8743 Magnolia Blvd, San Diego" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -518,30 +431,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/016" data-id="i016">
                         <address>6451 Birchwood Ave, Houston, 77002 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$500,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,800</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$179</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$500,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,800</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$179</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/224/224" alt="6451 Birchwood Ave, Houston" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/224/224" alt="6451 Birchwood Ave, Houston" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -549,30 +456,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/017" data-id="i017">
                         <address>9810 Cherry Rd, Sacramento, 94203 CA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$320,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>1</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>1,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$267</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$320,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>2</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>1</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>1,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$267</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/225/225" alt="9810 Cherry Rd, Sacramento" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/225/225" alt="9810 Cherry Rd, Sacramento" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -580,30 +481,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/018" data-id="i018">
                         <address>2021 Juniper Dr, Orlando, 32801 FL</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$890,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>5</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>4,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$223</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$890,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>5</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>4</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>4,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$223</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/226/226" alt="2021 Juniper Dr, Orlando" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/226/226" alt="2021 Juniper Dr, Orlando" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -611,30 +506,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/019" data-id="i019">
                         <address>1876 Oakwood Dr, Charlotte, 28202 NC</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$460,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,100</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$219</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$460,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,100</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$219</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/227/227" alt="1876 Oakwood Dr, Charlotte" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/227/227" alt="1876 Oakwood Dr, Charlotte" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -642,30 +531,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/020" data-id="i020">
                         <address>3694 Evergreen Ln, Salt Lake City, 84101 UT</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$520,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,300</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$226</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$520,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,300</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$226</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/228/228" alt="3694 Evergreen Ln, Salt Lake City" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/228/228" alt="3694 Evergreen Ln, Salt Lake City" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -673,30 +556,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/021" data-id="i021">
                         <address>1234 Elm St, New York, 10001 NY</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$1,500,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>5</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>4,500</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$333</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$1,500,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>5</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>4</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>4,500</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$333</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/229/229" alt="1234 Elm St, New York" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/229/229" alt="1234 Elm St, New York" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -704,30 +581,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/022" data-id="i022">
                         <address>5678 Pine St, San Jose, 95112 CA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$1,100,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,800</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$289</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$1,100,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,800</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$289</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/230/230" alt="5678 Pine St, San Jose" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/230/230" alt="5678 Pine St, San Jose" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -735,30 +606,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/023" data-id="i023">
                         <address>9101 Maple Ave, Dallas, 75201 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$750,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,500</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$300</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$750,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,500</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$300</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/231/231" alt="9101 Maple Ave, Dallas" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/231/231" alt="9101 Maple Ave, Dallas" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -766,30 +631,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/024" data-id="i024">
                         <address>3456 Oak Dr, Austin, 78701 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$680,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$309</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$680,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$309</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/232/232" alt="3456 Oak Dr, Austin" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/232/232" alt="3456 Oak Dr, Austin" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -797,30 +656,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/025" data-id="i025">
                         <address>7890 Birch Ln, Seattle, 98101 WA</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$2,500,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>6</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>6,000</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$417</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$2,500,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>6</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>6,000</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$417</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/233/233" alt="7890 Birch Ln, Seattle" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/233/233" alt="7890 Birch Ln, Seattle" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -828,30 +681,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/026" data-id="i026">
                         <address>1234 Cedar Rd, Denver, 80203 CO</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$820,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,300</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$357</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$820,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,300</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$357</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/234/234" alt="1234 Cedar Rd, Denver" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/234/234" alt="1234 Cedar Rd, Denver" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -859,30 +706,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/027" data-id="i027">
                         <address>5678 Elm St, Chicago, 60601 IL</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$970,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>4</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>3.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>3,200</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$303</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$970,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>4</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>3.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>3,200</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$303</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/235/235" alt="5678 Elm St, Chicago" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/235/235" alt="5678 Elm St, Chicago" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -890,30 +731,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/028" data-id="i028">
                         <address>6547 Walnut Ave, Miami, 33101 FL</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$740,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2.5</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,600</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$285</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$740,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2.5</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,600</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$285</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/236/236" alt="6547 Walnut Ave, Miami" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/236/236" alt="6547 Walnut Ave, Miami" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -921,30 +756,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/029" data-id="i029">
                         <address>2309 Spruce Blvd, Dallas, 75201 TX</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$690,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,100</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$329</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$690,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,100</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$329</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/237/237" alt="2309 Spruce Blvd, Dallas" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/237/237" alt="2309 Spruce Blvd, Dallas" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>
@@ -952,30 +781,24 @@
             </li>
 
             <li class="item">
-                <article>
+                <article class="article shadow corner">
                     <a href="/demo/detail/030" data-id="i030">
                         <address>7777 Cypress Ln, Portland, 97201 OR</address>
                     </a>
-                    <ul>
-
-                        <li>
-                            <span>$560,000</span> <abbr title="Estimate Price">Est</abbr>
-                        </li>
-                        <li>
-                            <span>3</span> <abbr title="Bedrooms">Bd</abbr>
-                        </li>
-                        <li>
-                            <span>2</span> <abbr title="Bathrooms">Ba</abbr>
-                        </li>
-                        <li>
-                            <span>2,500</span> <abbr title="Lot Size">Sqft</abbr>
-                        </li>
-                        <li>
-                            <span>$224</span> <abbr title="Price Per Sqft">/sqft</abbr>
-                        </li>
-                    </ul>
+                    <dl class="dict singleline">
+                        <dt title="Estimate Price">Est</dt>
+                        <dd>$560,000</dd>
+                        <dt title="Bedrooms">Bd</dt>
+                        <dd>3</dd>
+                        <dt title="Bathrooms">Ba</dt>
+                        <dd>2</dd>
+                        <dt title="Lot Size">Sqft</dt>
+                        <dd>2,500</dd>
+                        <dt title="Price Per Sqft">/sqft</dt>
+                        <dd>$224</dd>
+                    </dl>
                     <figure>
-                        <img src="https://picsum.photos/238/238" alt="7777 Cypress Ln, Portland" loading="lazy">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://picsum.photos/238/238" alt="7777 Cypress Ln, Portland" loading="lazy">
                         <figcaption>Provide By Picsum</figcaption>
                     </figure>
                 </article>

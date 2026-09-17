@@ -4,5 +4,13 @@
 	},
 	"search.exclude": {
 		"**/data/**": true
-	}
+	},
+	"cSpell.words": [
+		"footerscript",
+		"googlemap",
+		"lazyload",
+		"noshrink",
+		"Picsum",
+		"pids"
+	]
 }

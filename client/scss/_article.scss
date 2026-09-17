@@ -1,16 +1,16 @@
-@use './index.scss';
 @use './_mixins.scss' as *;
 
 @include comp-color('article');
 
 .article {
-	--article-size: var(--g4);
-	--article-icon-size: var(--font-size-6);
+	--article-icon-size: var(--g4);
+	--article-icon-font-size: var(--font-size-6);
 	--article-font-weight: var(--font-weight-regular);
 	--article-line-height: var(--line-height-3);
 	--article-gap: var(--g2);
+	--article-animation-time: .4s;
 	// matches the icon mark, so the top-left badge never covers the title
-	--article-padding: var(--article-size);
+	--article-padding: var(--article-icon-size);
 	--article-color-muted: color-mix(in hsl, currentColor 70%, transparent);
 
 	display: flex;
@@ -21,22 +21,22 @@
 
 	color: var(--article-color);
 	background-color: var(--article-color-bg);
-
 	transition:
-		color var(--animation-time) ease,
-		background-color var(--animation-time) ease,
-		box-shadow var(--animation-time) ease,
-		border-radius var(--animation-time) ease,
-		padding var(--animation-time) ease,
-		gap var(--animation-time) ease;
+		color var(--article-animation-time),
+		background-color var(--article-animation-time),
+		box-shadow var(--article-animation-time),
+		border-radius var(--article-animation-time),
+		transform var(--article-animation-time),
+		padding var(--article-animation-time),
+		gap var(--article-animation-time);
 
 	&.small {
-		--article-size: var(--g3);
+		--article-icon-size: var(--g3);
 		--article-gap: var(--g1);
 	}
 
 	&.large {
-		--article-size: var(--g5);
+		--article-icon-size: var(--g5);
 		--article-gap: var(--g3);
 		--article-border-weight: 2px;
 	}
@@ -47,8 +47,8 @@
 		background-color: var(--article-color-active-bg);
 		box-shadow: inset 0 0 0 var(--article-border-weight) var(--article-color-active-border);
 
-		// the card is already inverted, so the mark reverts to the base colours
-		> i {
+		// the card is already inverted, so the mark reverts to the base colors
+		>i {
 			color: var(--article-color);
 			background-color: var(--article-color-bg);
 		}
@@ -74,7 +74,7 @@
 			border-radius: var(--radius-2) var(--radius-2) 0 0;
 		}
 
-		> i {
+		>i {
 			border-radius: var(--radius-2) 0 var(--radius-1) 0;
 		}
 	}
@@ -98,8 +98,8 @@
 
 	// inner elements
 
-	// icon mark — pinned to the top-left corner with inverted colours
-	> i {
+	// icon mark — pinned to the top-left corner with inverted colors
+	>i {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -107,72 +107,152 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--article-size);
-		height: var(--article-size);
-		font-size: var(--article-icon-size);
+		width: var(--article-icon-size);
+		height: var(--article-icon-size);
+		font-size: var(--article-icon-font-size);
 		color: var(--article-color-active);
 		background-color: var(--article-color-active-bg);
 	}
 
 	// frame: bleeds past the card padding, clips the loaded image
-	> figure {
+	>figure {
 		overflow: hidden;
+		position: relative;
 		margin: calc(var(--article-padding) * -1) calc(var(--article-padding) * -1) 0;
 
-		> img {
+		>img {
 			width: 100%;
 			object-fit: cover;
 			display: block;
+			transition: transform var(--article-animation-time), opacity var(--article-animation-time);
+			opacity: 0;
+			filter: saturate(0.5);
+			transform: scale(1.05) translateY(0px);
 		}
 
-		> img[data-src-loaded] {
-			transform-origin: center center;
-			animation: article-img-zoom-out .4s .4s ease-in-out both;
+		>figcaption {
+			position: absolute;
+			font-size: var(--font-size-7);
+			bottom: 0;
+			right: 0;
+			z-index: 2;
+			color: var(--color-bg);
+			padding: var(--g0);
+			background-color: hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.5);
+			border-radius: var(--radius-0) 0 0 0;
+		}
+
+		>img[data-src-loaded] {
+			opacity: 1;
+			filter: saturate(0.5);
+			transform: scale(1.05) translateY(-10px);
 		}
 	}
 
-	> h3 {
+	>div:not(.tags):not(.tags-top) {
+		font-size: var(--article-icon-font-size);
+		line-height: var(--line-height-3);
+	}
+
+	>header,
+	>h3 {
 		margin: 0;
 		font-size: var(--font-size-3);
 		font-weight: var(--font-weight-bold);
 		line-height: var(--line-height-2);
 	}
 
-	> sub,
-	> sup {
+	>sub,
+	>sup {
 		font-size: var(--font-size-6);
 		color: var(--article-color-muted);
 		line-height: var(--line-height-2);
 	}
 
-	> div:not(.tags) {
-		font-size: var(--article-icon-size);
-		line-height: var(--line-height-3);
-	}
-
-	> .tags {
+	>.tags {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--g0);
 	}
 
-	> footer {
+	.tags-top,
+	figcaption {
+		transition: opacity var(--article-animation-time);
+	}
+
+	>footer {
 		font-size: var(--font-size-7);
 		color: var(--article-color-muted);
 	}
+
+	&.collapsed {
+		--article-padding: var(--article-gap);
+		aspect-ratio: 4/3;
+		overflow: hidden;
+
+		>figure {
+			flex: 1;
+
+			>img {
+				height: 100%;
+			}
+		}
+
+		>.dict,
+		>footer,
+		>header,
+		>a {
+			display: block;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+
+			>* {
+				display: inline;
+			}
+
+			>*:nth-child(even) {
+				padding-right: var(--article-gap);
+			}
+		}
+
+		&:hover,
+		&.selected,
+		&:focus-within {
+			>figure {
+				>img[data-src-loaded] {
+					opacity: 1;
+					filter: saturate(1);
+					transform: scale(1) translateY(0px);
+				}
+			}
+
+			.tags-top,
+			figcaption {
+				opacity: 0;
+			}
+
+			transform: translateY(-4px) scale(1.02);
+			box-shadow: 0px 1px 3px 1px var(--color-2);
+		}
+	}
+
+	// @media (prefers-reduced-motion: reduce) {
+	// 	transition: none;
+
+	// 	.tags-top,
+	// 	figcaption {
+	// 		transition: none;
+	// 	}
+
+	// 	>figure {
+	// 		>img {
+	// 			transition: none;
+	// 		}
+	// 	}
+	// }
 }
 
-// image reveal — clipped by the > figure frame above
-@keyframes article-img-zoom-out {
-	from {
-		opacity: 0;
-		transform: scale(1.25);
-	}
-	to {
-		opacity: 1;
-		transform: scale(1);
-	}
-}
 
 // layout container
 .layout {

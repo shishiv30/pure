@@ -1,6 +1,7 @@
-import scss from '../../scss/layout.article.scss';
-import lazyload from '../../js/plugins/_lazyload.js';
+import { main } from '../../js/index.js';
+// eslint-disable-next-line no-unused-vars
+import scss from '../../scss/index.scss';
 
-document.addEventListener('DOMContentLoaded', function () {
-	lazyload.init(document);
-});
+export default (function (win) {
+	main(win);
+})(window);

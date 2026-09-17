@@ -75,7 +75,7 @@ Insert in logical order (e.g. alphabetically or by feature). The config will set
   - After `<body>`: `<!-- include:header.html -->`
   - Before `</body>`: `<!-- include:footer.html -->`
 - Includes are resolved from `client/components/` (e.g. `header.html`, `footer.html`). Do not change the include comment format.
-- Put page content between header and footer. Reuse existing layout classes (e.g. `section`, `panel`, `grid`, `flex`) and components.
+- Put page content between header and footer inside **`<main>`**, with thematic **`<section>`** blocks. Follow `.cursor/rules/html-page-blueprint.mdc` (header/nav, main/section, article with inner header/`time`/footer). Reuse existing layout classes (e.g. `section`, `panel`, `grid`, `flex`) and components.
 
 **`client/pages/<name>/index.js`**
 

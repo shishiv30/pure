@@ -4,8 +4,8 @@ import { Plugin } from './core/plugin.js';
 import { installDOMHooks } from './core/dom.hook.js';
 import { Router } from './core/router.js';
 
-//after page initied, we can use window.exportObj to see the export methods
-//and use Plugin.getInstance($elment,'pluginName') to get the plugin instance
+//after page initiated, we can use window.exportObj to see the export methods
+//and use Plugin.getInstance($el,'pluginName') to get the plugin instance
 //page context is in window.exportObj.ctx
 //page data is in window.exportObj.ctx.data
 installDOMHooks();

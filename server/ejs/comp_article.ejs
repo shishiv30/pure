@@ -1,29 +1,27 @@
 <%_if(article){_%>
-<article>
+<article class="article shadow corner collapsed">
   <a href="<%= getHref(article) %>">
-      <address><%=article.title%></address>
+      <address class="f6 text-gray"><%=article.title%></address>
   </a>
-  <ul>
-    <%_if(article.attrs && article.attrs.length){_%>
+  <%_if(article.attrs && article.attrs.length){_%>
+  <dl class="dict">
     <%_for(var i=0; i<article.attrs.length; i++){_%>
     <%_ const attr = article.attrs[i]; _%>
-    <li>
       <%_if(attr.value){_%>
-      <span <%if(attr.className){_%> class="<%=attr.className%>"<%_}_%>><%=attr.value%></span>
+      <dd<%if(attr.className){%> class="<%=attr.className%>"<%_}_%>><%=attr.value%></dd>
       <%_}_%>
       <%_if(attr.key){_%>
-      <abbr title="<%=attr.desc%>"><%=attr.key%></abbr>
+      <dt<%if(attr.desc){%> title="<%=attr.desc%>"<%_}_%>><%=attr.key%></dt>
       <%_}_%>
-    </li>
     <%_}_%>
-    <%_}_%>
-  </ul>
+  </dl>
+  <%_}_%>
   <figure>
       <img src="<%= article.img || getSrc({ path: '/n_a.svg' }) %>" alt="<%=article.imgAlt%>" loading="lazy" data-role="imgerror">
       <figcaption><%=article.imgTag%></figcaption>
   </figure>
   <%_if(article.tags && article.tags.length){_%>
-  <div class="tags">
+  <div class="tags-top">
     <%_for(var i=0; i<article.tags.length; i++){_%>
     <%_ const tag = article.tags[i]; _%>
     <%_if(tag.text){_%>
