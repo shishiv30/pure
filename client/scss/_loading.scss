@@ -1,6 +1,13 @@
 // img[data-src]         → waiting to enter viewport (skeleton shimmer)
 // img[data-src-loaded]  → load finished; height settles, reveal is per-component
 // img.img-load-error    → error fallback (set alongside data-src-loaded)
+// img[ratio]            → 16:9 until --image-ratio is set from the loaded image
+
+@property --image-ratio {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 1.7778;
+}
 
 img[data-src] {
 	border: none;
@@ -19,6 +26,14 @@ img[data-src] {
 
 img[data-src-loaded] {
 	transition: height .5s ease-in-out;
+}
+
+img[ratio] {
+	--image-ratio: 1.7778;
+	width: 100%;
+	height: auto;
+	aspect-ratio: var(--image-ratio);
+	transition: --image-ratio .5s ease-in-out;
 }
 
 img[data-src-loaded].img-load-error {

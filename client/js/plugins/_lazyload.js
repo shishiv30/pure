@@ -1,29 +1,48 @@
 let defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-function keepRatio(img) {
-	if (!img.hasAttribute('ratio')) {
-		return false;
-	}
-	let value = img.getAttribute('ratio');
-	return value === '' || value === 'true';
-}
 function clean(img) {
 	img.setAttribute('data-src-loaded', '');
 	img.removeAttribute('data-src');
 	img.removeEventListener('load', imgLoad);
 	img.removeEventListener('error', imgError);
 }
+const watched = new WeakSet();
+
+function setImageRatio(img) {
+	if (!img || !img.hasAttribute('ratio') || !img.naturalWidth || !img.naturalHeight) {
+		return;
+	}
+	img.style.setProperty('--image-ratio', String(img.naturalWidth / img.naturalHeight));
+}
+
+function watchImg(img) {
+	if (watched.has(img)) {
+		return;
+	}
+	watched.add(img);
+	const observer = new MutationObserver((records) => {
+		records.forEach((record) => {
+			if (record.attributeName === 'data-src') {
+				loadImg(img);
+				return;
+			}
+			img.addEventListener('load', () => setImageRatio(img), { once: true });
+			if (img.complete) {
+				setImageRatio(img);
+			}
+		});
+	});
+	observer.observe(img, {
+		attributes: true,
+		attributeFilter: ['src', 'data-src'],
+	});
+}
+
 function imgLoad(e) {
 	let img = e.target;
 	if (!img) {
 		return;
 	}
-	if (keepRatio(img)) {
-		let width = img.clientWidth || img.offsetWidth;
-		if (width && img.naturalWidth && img.naturalHeight) {
-			let ratioHeight = (width * img.naturalHeight) / img.naturalWidth;
-			img.style.height = Math.min(ratioHeight, width) + 'px';
-		}
-	}
+	setImageRatio(img);
 	clean(img);
 }
 function imgError(e) {
@@ -74,6 +93,9 @@ function lazyloadImg($el) {
 		root = document;
 	}
 	root.querySelectorAll('[data-src]').forEach((el) => {
+		if (el.hasAttribute('ratio')) {
+			watchImg(el);
+		}
 		if (ignoreLazyLoad(el)) {
 			loadImg(el);
 		} else {

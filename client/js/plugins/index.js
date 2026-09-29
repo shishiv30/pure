@@ -33,6 +33,8 @@ import autoscroller from './_autoscroller.js';
 import sharelink from './_sharelink.js';
 import imgError from './_imgerror.js';
 import listDict from './_listdict.js';
+import layout from './_layout.js';
+import layoutToggle from './_layout-toggle.js';
 
 export default {
 	collapse,
@@ -67,6 +69,8 @@ export default {
 	sharelink,
 	imgError,
 	listDict,
+	layout,
+	'layout-toggle': layoutToggle,
 	// view,
 	// carousel,
 	// scrollspy,

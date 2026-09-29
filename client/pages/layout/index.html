@@ -9,7 +9,13 @@
 
 <body id="body" class="page-layout" data-role="lazyload">
     <!-- include:header.html -->
-    <main class="layout">
+    <nav class="layout-bar" aria-label="Layout mode">
+        <div class="group-btn default">
+            <button type="button" class="active" data-role="layout-toggle" data-target="mylayout" data-model="default">Default</button>
+            <button type="button" data-role="layout-toggle" data-target="mylayout" data-model="horizontal">Horizontal</button>
+        </div>
+    </nav>
+    <main id="mylayout" class="layout" data-role="layout">
         <!-- 1. demo — wide landscape, medium title, both sub/sup, single desc, tags + dict, footer created -->
         <article class="article default shadow corner" id="article-1">
             <i class="icon-graduation-cap"></i>
