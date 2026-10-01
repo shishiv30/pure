@@ -10,9 +10,49 @@
 <body id="body" class="page-layout" data-role="lazyload">
     <!-- include:header.html -->
     <nav class="layout-bar" aria-label="Layout mode">
-        <div class="group-btn default">
-            <button type="button" class="active" data-role="layout-toggle" data-target="mylayout" data-model="default">Default</button>
-            <button type="button" data-role="layout-toggle" data-target="mylayout" data-model="horizontal">Horizontal</button>
+        <div class="group-btn default small">
+            <label for="layout-default">
+                <input id="layout-default" name="layout-model" type="radio" checked="checked" value="default" data-role="layout-toggle" data-target="mylayout" data-model="default" />
+                <span><i class="icon-film"></i> <b class="hidden-xs">Default</b></span>
+            </label>
+            <label for="layout-horizontal">
+                <input id="layout-horizontal" name="layout-model" type="radio" value="horizontal" data-role="layout-toggle" data-target="mylayout" data-model="horizontal" />
+                <span><i class="icon-columns"></i> <b class="hidden-xs">Horizontal</b></span>
+            </label>
+        </div>
+        <div class="group-dropdown close" data-role="groupdropdown" id="article-filter">
+            <ul class="group-dropdown-button small">
+                <li><button type="button" data-target="distance">Distance</button></li>
+                <li><button type="button" data-target="tags">Tags</button></li>
+                <li><button type="button" data-target="title">Title</button></li>
+            </ul>
+            <div class="group-dropdown-list">
+                <div data-id="distance" hidden>
+                    <label for="filter-distance">Distance</label>
+                    <input id="filter-distance" type="range" min="0" max="9" step="1" value="0" data-empty="0">
+                    <div class="distance-scale">
+                        <span>1 mi</span>
+                        <output id="filter-distance-label" for="filter-distance">no limit</output>
+                        <span>no limit</span>
+                    </div>
+                </div>
+                <div data-id="tags" hidden>
+                    <div class="checkbox">
+                        <label for="filter-safe"><input id="filter-safe" type="checkbox" name="article-color" value="safe"><span>safe</span></label>
+                        <label for="filter-danger"><input id="filter-danger" type="checkbox" name="article-color" value="danger"><span>danger</span></label>
+                        <label for="filter-tip"><input id="filter-tip" type="checkbox" name="article-color" value="tip"><span>tip</span></label>
+                        <label for="filter-minor"><input id="filter-minor" type="checkbox" name="article-color" value="minor"><span>minor</span></label>
+                        <label for="filter-major"><input id="filter-major" type="checkbox" name="article-color" value="major"><span>major</span></label>
+                        <label for="filter-default"><input id="filter-default" type="checkbox" name="article-color" value="default"><span>default</span></label>
+                    </div>
+                </div>
+                <div data-id="title" hidden>
+                    <label for="filter-title">Title</label>
+                    <div class="input">
+                        <input id="filter-title" type="text" placeholder="Filter by title">
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
     <main id="mylayout" class="layout" data-role="layout">
@@ -941,5 +981,59 @@
     <!-- include:footer.html -->
 </body>
 <!-- include:footerscript.html -->
+<script>
+	(function () {
+		var miles = ['no limit', '1 mi', '5 mi', '10 mi', '15 mi', '25 mi', '50 mi', '100 mi', '200 mi', '500 mi'];
+		var root = document.getElementById('article-filter');
+		var layout = document.getElementById('mylayout');
+		var distance = document.getElementById('filter-distance');
+		var distanceLabel = document.getElementById('filter-distance-label');
+		if (!root || !layout || !distance) {
+			return;
+		}
+		var distanceHidden = new Set();
+
+		function shuffleHalf() {
+			var articles = Array.prototype.slice.call(layout.querySelectorAll(':scope > .article'));
+			for (var i = articles.length - 1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i + 1));
+				var swap = articles[i];
+				articles[i] = articles[j];
+				articles[j] = swap;
+			}
+			distanceHidden = new Set(articles.slice(0, Math.floor(articles.length / 2)));
+		}
+
+		function apply() {
+			var index = Number(distance.value);
+			distanceLabel.textContent = miles[index] || 'no limit';
+			var colors = Array.prototype.map.call(
+				root.querySelectorAll('input[name="article-color"]:checked'),
+				function (input) { return input.value; },
+			);
+			var query = (document.getElementById('filter-title').value || '').trim().toLowerCase();
+			layout.querySelectorAll(':scope > .article').forEach(function (article) {
+				var passDistance = index === 0 || !distanceHidden.has(article);
+				var passColor = colors.length === 0 || colors.some(function (color) {
+					return article.classList.contains(color);
+				});
+				var title = (article.querySelector('header') || {}).textContent || '';
+				var passTitle = !query || title.toLowerCase().indexOf(query) !== -1;
+				article.hidden = !(passDistance && passColor && passTitle);
+			});
+		}
+
+		distance.addEventListener('input', function () {
+			if (Number(distance.value) === 0) {
+				distanceHidden = new Set();
+			} else {
+				shuffleHalf();
+			}
+			apply();
+		});
+		root.addEventListener('change', apply);
+		root.addEventListener('input', apply);
+	})();
+</script>
 
 </html>

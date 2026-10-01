@@ -35,6 +35,7 @@ import imgError from './_imgerror.js';
 import listDict from './_listdict.js';
 import layout from './_layout.js';
 import layoutToggle from './_layout-toggle.js';
+import groupDropdown from './_groupdropdown.js';
 
 export default {
 	collapse,
@@ -71,6 +72,7 @@ export default {
 	listDict,
 	layout,
 	'layout-toggle': layoutToggle,
+	groupdropdown: groupDropdown,
 	// view,
 	// carousel,
 	// scrollspy,

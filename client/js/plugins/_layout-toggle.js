@@ -7,7 +7,10 @@ export default {
 		model: 'default',
 	},
 	init: function ($el, opt) {
-		$el.addEventListener('click', () => {
+		$el.addEventListener('change', () => {
+			if (!$el.checked) {
+				return;
+			}
 			const target = document.getElementById(opt.target);
 			if (!target) {
 				return;
@@ -17,9 +20,6 @@ export default {
 				return;
 			}
 			layout.setModel(opt.model);
-			document.querySelectorAll(`[data-role~="layout-toggle"][data-target="${opt.target}"]`).forEach((button) => {
-				button.classList.toggle('active', button === $el);
-			});
 		});
 	},
 	initBefore: null,

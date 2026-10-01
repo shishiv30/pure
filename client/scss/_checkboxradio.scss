@@ -6,7 +6,7 @@
 .checkbox {
 	font-weight: var(--checkbox-font-weight);
 	font-size: var(--checkbox-font-size);
-	height: var(--checkbox-size);
+	min-height: var(--checkbox-size);
 	padding: var(--checkbox-gap) var(--g2);
 	min-width: var(--checkbox-size);
 	border-radius: calc(var(--checkbox-size) / 2);
@@ -17,7 +17,7 @@
 .radio {
 	font-weight: var(--radio-font-weight);
 	font-size: var(--radio-font-size);
-	height: var(--radio-size);
+	min-height: var(--radio-size);
 	padding: var(--radio-gap) var(--g2);
 	min-width: var(--radio-size);
 	border-radius: calc(var(--radio-size) / 2);

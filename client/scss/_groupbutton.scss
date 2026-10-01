@@ -19,7 +19,8 @@
 	}
 
 	>label {
-		flex: 1;
+		flex-shrink: 0;
+		flex-grow: 1;
 		overflow: hidden;
 		margin-right: 0;
 		border-color: var(--group-btn-color-border);

@@ -1,18 +1,20 @@
 @use './_var.screen.scss' as *;
-
+@use './_mixins.scss' as *;
+:root {
+	overflow: hidden;
+}
 .layout-bar {
 	position: sticky;
 	top: 0;
 	z-index: 2;
 	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 	justify-content: center;
+	gap: var(--g2);
 	padding: var(--g1) var(--g3);
 	background-color: var(--color-bg);
-
-	.group-btn {
-		width: 280px;
-		max-width: 100%;
-	}
+	@include box-shadow();
 
 	button {
 		flex: 1;
