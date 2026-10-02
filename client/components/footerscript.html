@@ -3,7 +3,8 @@
   (function () {
     var defaultSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     document.querySelectorAll('img').forEach(function (img) {
-      if (img.hasAttribute('fetchpriority')) return;
+
+      if (img.hasAttribute('fetchpriority') || img.closest('[data-images]' || img.hasAttribute('loading')) return;
       var src = img.getAttribute('src');
       if (src && src !== defaultSrc) {
         img.setAttribute('data-src', src);

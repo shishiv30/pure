@@ -106,6 +106,7 @@ export default () => {
 							// Simple include processor for <!-- include:header.html -->
 							return content.replace(/<!--\s*include:([^>]+?)\s*-->/g, (match, includePath) => {
 								const fullPath = path.resolve(__dirname, 'client/components', includePath.trim());
+								loaderContext.addDependency(fullPath);
 								try {
 									return fs.readFileSync(fullPath, 'utf8');
 								} catch (error) {

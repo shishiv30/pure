@@ -7,13 +7,13 @@ dialog.dialog {
 	background-color: var(--color-bg);
 	color: var(--color);
 	border-radius: 5px;
-	box-shadow: 0 8px 32px hsla(var(--color-major-hue), 30%, 10%, 0.25);
+	box-shadow: 0 8px 32px hsla(var(--color-major-default-hue), 30%, 10%, 0.25);
 
 	&::backdrop {
 		background-color: hsla(
-			var(--color-major-hue),
-			var(--color-glb-saturation),
-			var(--color-glb-lightness),
+			var(--color-major-default-hue),
+			var(--color-default-saturation),
+			var(--color-default-lightness),
 			0.75
 		);
 		animation: dialog-backdrop-in 0.28s ease-out;

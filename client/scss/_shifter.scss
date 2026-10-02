@@ -38,7 +38,7 @@
       height: var(--shifter-height);
       padding: var(--g2);
       border-radius: var(--radius-1);
-      box-shadow: 0 2px 6px hsla(var(--color-major-hue), var(--color-glb-saturation), var(--color-glb-lightness), 0.12);
+      box-shadow: 0 2px 6px hsla(var(--color-major-default-hue), var(--color-default-saturation), var(--color-default-lightness), 0.12);
       font-size: var(--font-size-5);
       line-height: var(--line-height-2);
       white-space: nowrap;

@@ -96,7 +96,7 @@ Content-Type: application/json
   "format": "json",
   "data": {
     "default": {
-      "--color-major-hue": "330"
+      "--color-major-default-hue": "330"
     },
     "dark": {
       "--color-major-lightness": "75%"

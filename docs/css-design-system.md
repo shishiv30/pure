@@ -21,8 +21,8 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 
 ```
 第 1 层  原始通道（Channel primitives）      :root
-         --color-major-hue: 165
-         --color-major-saturation: 58%
+         --color-major-default-hue: 165
+         --color-major-default-saturation: 58%
          --color-major-lightness: 23%
                         ↓ hsl() 组装
 第 2 层  语义角色（Semantic roles）          body
@@ -39,19 +39,19 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 
 ```scss
 --color-major: hsl(
-  var(--color-major-hue),
-  var(--color-major-saturation),
+  var(--color-major-default-hue),
+  var(--color-major-default-saturation),
   var(--color-major-lightness)
 );
 ```
 
-直接收益：换肤只需改一个 `--color-major-hue`。`data/comps/theme*.js` 正是这么做的——四套主题（default/blue/pink/yellow）各自只声明 4～6 个通道值，由服务端 `server/ejs/comp_theme.js` 生成内联 `<style>` 注入 `body`：
+直接收益：换肤只需改一个 `--color-major-default-hue`。`data/comps/theme*.js` 正是这么做的——四套主题（default/blue/pink/yellow）各自只声明 4～6 个通道值，由服务端 `server/ejs/comp_theme.js` 生成内联 `<style>` 注入 `body`：
 
 ```js
 // data/comps/theme.js
 default: {
-  '--color-major-hue': '216',
-  '--color-major-saturation': '100%',
+  '--color-major-default-hue': '216',
+  '--color-major-default-saturation': '100%',
   '--color-major-lightness': '50%',
   '--color-major-lightness-l1': '96%',
 }
@@ -248,12 +248,12 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 **全局通道**
 
 ```scss
---color-glb-lightness: 23%;
---color-glb-bg-lightness: 95%;
---color-glb-saturation: 1%;
---color-glb-bg-saturation: 100%;
---color-glb-default-saturation: 100%;
---color-glb-default-lightness: 30%;
+--color-default-lightness: 23%;
+--color-glb-bg-default-lightness: 95%;
+--color-default-saturation: 1%;
+--color-bg-default-saturation: 100%;
+--color-bg-default-saturation: 100%;
+--color-default-lightness: 30%;
 ```
 
 **语义角色（5 个）** — 每个角色 5 个通道 token + 4 个组装 token
@@ -262,7 +262,7 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 |---|---|---|---|---|
 | major | 165 | 58% | 23% | 99% |
 | minor | 169 | 100% | 31% | 99% |
-| safe | 179 | `--color-glb-default-saturation` | 25% | 99% |
+| safe | 179 | `--color-bg-default-saturation` | 25% | 99% |
 | danger | 10 | 同上 | 48% | 99% |
 | tip | 321 | 同上 | 24% | 99% |
 

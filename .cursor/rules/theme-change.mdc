@@ -13,7 +13,7 @@ When the user asks to **change theme**, **add a theme**, or **apply a theme**:
 ## Theme file pattern
 
 - **Location**: `data/comps/theme.js` (default) or `data/comps/theme-<name>.js` (e.g. `data/comps/theme-pink.js`).
-- **Shape**: One default export with exactly two keys, `default` and `dark`, each an object of CSS custom properties (e.g. `'--color-major-hue': '330'`).
+- **Shape**: One default export with exactly two keys, `default` and `dark`, each an object of CSS custom properties (e.g. `'--color-major-default-hue': '330'`).
 - **Reference**: Copy structure from `data/comps/theme.js` or `data/comps/theme-pink.js`; keep the same variable names and add `default` + `dark` blocks with the same semantics (light vs dark mode).
 
 ## Theme naming rule (comps table)
@@ -36,8 +36,8 @@ Example pattern (new theme file):
  */
 export default {
   default: {
-    '--color-major-hue': '…',
-    '--color-major-saturation': '85%',
+    '--color-major-default-hue': '…',
+    '--color-major-default-saturation': '85%',
     '--color-major-lightness': '25%',
     '--color-major-lightness-l1': '96%',
     '--logo': 'url("/assets/images/…")',
@@ -45,9 +45,9 @@ export default {
     '--logo-size': '…',
   },
   dark: {
-    '--color-glb-bg-lightness': '75%',
+    '--color-glb-bg-default-lightness': '75%',
     '--color-glb-bg-l1-lightness': '55%',
-    '--color-glb-lightness': '95%',
+    '--color-default-lightness': '95%',
     '--color-glb-l1-lightness': '100%',
     '--color-major-lightness': '75%',
     '--color-major-lightness-l1': '15%',

@@ -9,8 +9,7 @@
 	overflow: hidden;
 	display: flex;
 	flex-wrap: nowrap;
-	border: 1px solid var(--group-btn-color-border);
-
+  box-shadow: 0 0 0 1px var(--group-btn-color-border);
 	input {
 		&:checked+span {
 			background-color: var(--group-btn-color-border);
