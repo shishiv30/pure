@@ -99,7 +99,7 @@ Content-Type: application/json
       "--color-major-default-hue": "330"
     },
     "dark": {
-      "--color-major-lightness": "75%"
+      "--color-major-default-lightness": "75%"
     }
   }
 }

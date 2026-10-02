@@ -16,23 +16,6 @@
 	--screen-md-max: #{$screen-md-max};
 	--screen-lg-max: #{$screen-lg-max};
 
-	--color-default-lightness: 43%;
-	--color-glb-bg-default-lightness: 95%;
-	--color-default-saturation: 1%;
-	--color-default-saturation-l1: 4%;
-	--color-bg-default-saturation: 1%;
-	--color-bg-default-saturation-l1: 4%;
-	--color-major-default-saturation: 100%;
-	--color-major-default-saturation-l1: 100%;
-	--color-minor-default-saturation: 100%;
-	--color-minor-default-saturation-l1: 100%;
-	--color-safe-default-saturation: 100%;
-	--color-safe-default-saturation-l1: 100%;
-	--color-danger-default-saturation: 100%;
-	--color-danger-default-saturation-l1: 100%;
-	--color-tip-default-saturation: 100%;
-	--color-tip-default-saturation-l1: 100%;
-
 	--color-r0-default-hue: 4;
 	--color-r1-default-hue: 34;
 	--color-r2-default-hue: 54;
@@ -43,37 +26,50 @@
 	--color-r7-default-hue: 224;
 	--color-r8-default-hue: 274;
 	--color-r9-default-hue: 344;
-
 	//NOTE: only the -default- sources live here. the --color-<role>-lightness
 	//aliases are declared on `body` instead, so that a `body.theme-dark`
 	//override of a -default- source actually re-resolves the alias. a var()
 	//in a custom property is substituted against the declaring element, so an
 	//alias declared here would freeze the light value on <html> forever.
-	--color-default-lightness: 25%;
-	--color-default-l1-lightness: 40%;
+	--color-default-lightness: 5%;
+	--color-default-lightness-l1: 40%;
+	--color-default-saturation: 1%;
+	--color-default-saturation-l1: 4%;
 
 	--color-bg-default-lightness: 100%;
-	--color-bg-default-l1-lightness: 90%;
+	--color-bg-default-lightness-l1: 95%;
+	--color-bg-default-saturation: 1%;
+	--color-bg-default-saturation-l1: 4%;
 
-	--color-major-default-hue: 165;
+	--color-major-default-hue: 216;
 	--color-major-default-lightness: 23%;
-	--color-major-default-lightness-l1: 99%;
+	--color-major-default-lightness-l1: 95%;
+	--color-major-default-saturation: 100%;
+	--color-major-default-saturation-l1: 100%;
 
-	--color-minor-default-hue: 169;
+	--color-minor-default-hue: 321;
 	--color-minor-default-lightness: 31%;
-	--color-minor-default-lightness-l1: 99%;
+	--color-minor-default-lightness-l1: 88%;
+	--color-minor-default-saturation: 100%;
+	--color-minor-default-saturation-l1: 100%;
 
 	--color-safe-default-hue: 179;
 	--color-safe-default-lightness: 25%;
-	--color-safe-default-lightness-l1: 99%;
-	
-	--color-danger-default-hue: 10;
-	--color-danger-default-lightness: 48%;
-	--color-danger-default-lightness-l1: 99%;
+	--color-safe-default-lightness-l1: 95%;
+	--color-safe-default-saturation: 100%;
+	--color-safe-default-saturation-l1: 100%;
 
-	--color-tip-default-hue: 321;
-	--color-tip-default-lightness: 24%;
-	--color-tip-default-lightness-l1: 99%;
+	--color-danger-default-hue: 343;
+	--color-danger-default-lightness: 48%;
+	--color-danger-default-lightness-l1: 92%;
+	--color-danger-default-saturation: 100%;
+	--color-danger-default-saturation-l1: 100%;
+
+	--color-tip-default-hue: 45;
+	--color-tip-default-lightness: 34%;
+	--color-tip-default-lightness-l1: 95%;
+	--color-tip-default-saturation: 100%;
+	--color-tip-default-saturation-l1: 100%;
 
 	--logo: url('../assets/img/logo.svg');
 	--logo-bg: url('../assets/img/logo-bg.svg');
@@ -178,23 +174,23 @@ body {
 	--color-major: hsl(var(--color-major-default-hue), var(--color-major-saturation), var(--color-major-lightness));
 	--color-major-l1: hsl(var(--color-major-default-hue), var(--color-major-saturation-l1), var(--color-major-lightness-l1));
 	--color-major-hsl: var(--color-major-default-hue), var(--color-major-saturation), var(--color-major-lightness);
-	--color-major-l1-hsl: var(--color-major-default-hue), var(--color-major-saturation-l1), var(--color-major-lightness-l1);
+	--color-major-hsl-l1: var(--color-major-default-hue), var(--color-major-saturation-l1), var(--color-major-lightness-l1);
 	--color-minor: hsl(var(--color-minor-default-hue), var(--color-minor-saturation), var(--color-minor-lightness));
 	--color-minor-l1: hsl(var(--color-minor-default-hue), var(--color-minor-saturation-l1), var(--color-minor-lightness-l1));
 	--color-minor-hsl: var(--color-minor-default-hue), var(--color-minor-saturation), var(--color-minor-lightness);
-	--color-minor-l1-hsl: var(--color-minor-default-hue), var(--color-minor-saturation-l1), var(--color-minor-lightness-l1);
+	--color-minor-hsl-l1: var(--color-minor-default-hue), var(--color-minor-saturation-l1), var(--color-minor-lightness-l1);
 	--color-safe: hsl(var(--color-safe-default-hue), var(--color-safe-saturation), var(--color-safe-lightness));
 	--color-safe-l1: hsl(var(--color-safe-default-hue), var(--color-safe-saturation-l1), var(--color-safe-lightness-l1));
 	--color-safe-hsl: var(--color-safe-default-hue), var(--color-safe-saturation), var(--color-safe-lightness);
-	--color-safe-l1-hsl: var(--color-safe-default-hue), var(--color-safe-saturation-l1), var(--color-safe-lightness-l1);
+	--color-safe-hsl-l1: var(--color-safe-default-hue), var(--color-safe-saturation-l1), var(--color-safe-lightness-l1);
 	--color-danger: hsl(var(--color-danger-default-hue), var(--color-danger-saturation), var(--color-danger-lightness));
 	--color-danger-l1: hsl(var(--color-danger-default-hue), var(--color-danger-saturation-l1), var(--color-danger-lightness-l1));
 	--color-danger-hsl: var(--color-danger-default-hue), var(--color-danger-saturation), var(--color-danger-lightness);
-	--color-danger-l1-hsl: var(--color-danger-default-hue), var(--color-danger-saturation-l1), var(--color-danger-lightness-l1);
+	--color-danger-hsl-l1: var(--color-danger-default-hue), var(--color-danger-saturation-l1), var(--color-danger-lightness-l1);
 	--color-tip: hsl(var(--color-tip-default-hue), var(--color-tip-saturation), var(--color-tip-lightness));
 	--color-tip-l1: hsl(var(--color-tip-default-hue), var(--color-tip-saturation-l1), var(--color-tip-lightness-l1));
 	--color-tip-hsl: var(--color-tip-default-hue), var(--color-tip-saturation), var(--color-tip-lightness);
-	--color-tip-l1-hsl: var(--color-tip-default-hue), var(--color-tip-saturation-l1), var(--color-tip-lightness-l1);
+	--color-tip-hsl-l1: var(--color-tip-default-hue), var(--color-tip-saturation-l1), var(--color-tip-lightness-l1);
 	--color-link: var(--color-minor);
 	--color-link-hover: var(--color-major);
 
@@ -210,12 +206,12 @@ body {
 	--color-9: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-9-lightness));
 
 	--color-default: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-default-lightness));
-	--color-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-default-l1-lightness));
+	--color-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-default-lightness-l1));
 	--color-default-hsl: var(--color-major-default-hue), var(--color-default-saturation), var(--color-default-lightness);
 	--color-bg-default: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-bg-default-lightness));
-	--color-bg-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-l1-lightness));
+	--color-bg-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-lightness-l1));
 	--color-bg-default-hsl: var(--color-major-default-hue), var(--color-default-saturation), var(--color-bg-default-lightness);
-	--color-border-default: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-l1-lightness));
+	--color-border-default: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-lightness-l1));
 
 	--color: var(--color-default);
 	--color-border: var(--color-border-default);
@@ -260,49 +256,52 @@ body {
 	--selection-background: var(--color-bg);
 	--selection-color: var(--color-default);
 
-	@mixin theme-dark-vars {
-		--logo: url('../assets/img/logo-bg.svg');
+}
 
-		--color-major-default-saturation-l1: 50%;
-		--color-minor-default-saturation-l1: 50%;
-		--color-safe-default-saturation-l1: 80%;
-		--color-danger-default-saturation-l1: 50%;
-		--color-tip-default-saturation-l1: 50%;
-
-		--color-0-lightness: 10%;
-		--color-1-lightness: 20%;
-		--color-2-lightness: 30%;
-		--color-3-lightness: 40%;
-		--color-4-lightness: 50%;
-		--color-5-lightness: 60%;
-		--color-6-lightness: 70%;
-		--color-7-lightness: 80%;
-		--color-8-lightness: 90%;
-		--color-9-lightness: 100%;
-
-		--color-default-lightness: 85%;
-		--color-default-l1-lightness: 20%;
-
-		--color-bg-default-lightness: 10%;
-		--color-bg-default-l1-lightness: 100%;
-
-		--color-major-default-lightness: 60%;
-		--color-major-default-lightness-l1: 15%;
-
-		--color-minor-default-lightness: 50%;
-		--color-minor-default-lightness-l1: 15%;
-
-		--color-safe-default-lightness: 50%;
-		--color-safe-default-lightness-l1: 24%;
-
-		--color-danger-default-lightness: 50%;
-		--color-danger-default-lightness-l1: 15%;
-
-		--color-tip-default-lightness: 50%;
-		--color-tip-default-lightness-l1: 15%;
-	}
-
+:root{
 	@media (prefers-color-scheme: dark) {
-			@include theme-dark-vars;
+		--logo: url('../assets/img/logo-bg.svg');
+	
+		--color-default-lightness: 95%;
+		--color-default-lightness-l1: 60%;
+	
+		--color-bg-default-lightness: 10%;
+		--color-bg-default-lightness-l1: 100%;
+	
+		--color-major-default-lightness: 90%;
+		--color-major-default-lightness-l1: 10%;
+	
+		--color-minor-default-lightness: 90%;
+		--color-minor-default-lightness-l1: 10%;
+	
+		--color-safe-default-lightness: 90%;
+		--color-safe-default-lightness-l1: 10%;
+	
+		--color-danger-default-lightness: 90%;
+		--color-danger-default-lightness-l1: 10%;
+	
+		--color-tip-default-lightness: 90%;
+		--color-tip-default-lightness-l1: 10%;
+	
+		body{
+			--color-0-lightness: 10%;
+			--color-1-lightness: 20%;
+			--color-2-lightness: 30%;
+			--color-3-lightness: 40%;
+			--color-4-lightness: 50%;
+			--color-5-lightness: 60%;
+			--color-6-lightness: 70%;
+			--color-7-lightness: 80%;
+			--color-8-lightness: 90%;
+			--color-9-lightness: 100%;
+			--color: var(--color-default);
+			--color-border: var(--color-border-default);
+			--color-bg: var(--color-bg-default);
+			--color-hover: var(--color-default-l1);
+			--color-border-hover: var(--color-bg-default);
+			--color-bg-hover: var(--color-bg-default-l1);
+			--color-l1: var(--color-default-l1);
+			--color-bg-l1: var(--color-bg-default-l1);
+		}
 	}
 }

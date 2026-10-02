@@ -3,17 +3,17 @@
  */
 export default {
 	default: {
-		'--color-major-hue': '210',
-		'--color-major-saturation': '85%',
-		'--color-major-lightness': '25%',
-		'--color-major-lightness-l1': '96%',
+		'--color-major-default-hue': '210',
+		'--color-major-default-saturation': '85%',
+		'--color-major-default-lightness': '25%',
+		'--color-major-default-lightness-l1': '96%',
 		'--logo': 'url("/assets/images/logo.svg")',
 		'--logo-bg': 'url("/assets/images/logo-bg.svg")',
 		'--logo-size': '60px',
 	},
 	dark: {
-		'--color-major-lightness': '15%',
-		'--color-major-lightness-l1': '75%',
+		'--color-major-default-lightness': '15%',
+		'--color-major-default-lightness-l1': '75%',
 		'--logo': 'url("/assets/images/logo-bg.svg")',
 		'--logo-bg': 'url("/assets/images/logo-bg.svg")',
 	},

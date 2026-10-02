@@ -25,7 +25,7 @@
 	padding: var(--article-padding);
 	position: relative;
 
-	color: var(--article-color);
+	color: var(--color-default);
 	background-color: var(--article-color-bg);
 	transition:
 		color var(--article-animation-time),
@@ -171,7 +171,7 @@
 		}
 
 		>img[data-src-loaded] {
-			transform: scale(1.05) translateY(-10px);
+			transform: scale(1.25) translateY(-5px);
 		}
 
 		>img[data-src-loaded].img-load-error,
@@ -267,7 +267,7 @@
 				opacity: 0;
 			}
 
-			transform: translateY(-4px) scale(1.02);
+			transform: translateY(-5px) scale(1.05);
 			box-shadow: 0px 1px 3px 1px var(--color-2);
 		}
 	}

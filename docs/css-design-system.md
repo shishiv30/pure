@@ -23,7 +23,7 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 第 1 层  原始通道（Channel primitives）      :root
          --color-major-default-hue: 165
          --color-major-default-saturation: 58%
-         --color-major-lightness: 23%
+         --color-major-default-lightness: 23%
                         ↓ hsl() 组装
 第 2 层  语义角色（Semantic roles）          body
          --color-major: hsl(hue, sat, light)
@@ -52,8 +52,8 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 default: {
   '--color-major-default-hue': '216',
   '--color-major-default-saturation': '100%',
-  '--color-major-lightness': '50%',
-  '--color-major-lightness-l1': '96%',
+  '--color-major-default-lightness': '50%',
+  '--color-major-default-lightness-l1': '96%',
 }
 ```
 
@@ -249,7 +249,7 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 
 ```scss
 --color-default-lightness: 23%;
---color-glb-bg-default-lightness: 95%;
+--color-default-l1-lightness: 95%;
 --color-default-saturation: 1%;
 --color-bg-default-saturation: 100%;
 --color-bg-default-saturation: 100%;
@@ -266,7 +266,7 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 | danger | 10 | 同上 | 48% | 99% |
 | tip | 321 | 同上 | 24% | 99% |
 
-每个角色输出四种形态：`--color-X`、`--color-X-l1`、`--color-X-hsl`（裸三元组，供 `hsla()` 加透明度）、`--color-X-l1-hsl`。
+每个角色输出四种形态：`--color-X`、`--color-X-l1`、`--color-X-hsl`（裸三元组，供 `hsla()` 加透明度）、`--color-X-hsl-l1`。
 
 **上下文别名（组件真正读取的层）**
 
@@ -432,7 +432,7 @@ index.scss
 - **Token 分散在三个根作用域且无规则**：`:root`（原始通道）、`html`（z-index）、`body`（组装色 + 间距 + 组件尺寸）。后果：`::backdrop`、`html` 滚动条等 `<body>` 外的上下文**取不到任何颜色 token**。（注意：语义色的 `-lightness` 别名**必须**留在 `body`，见 3.3 的暗色 bug；统一作用域时要把 `-default-` 源一起搬，不能只搬别名。）
 - `_goldenratio.scss` 用硬编码 `992px / 640px / 639px`，与 `_var.screen.scss` 无关。
 - `--logo` 在 SCSS 指向 `../assets/img/`，在 JS 主题指向 `/assets/images/` —— 两套目录。
-- 死 token：`--color-r0..r9`（20 条声明，0 消费）、`--color-0..9`（20 条，0 消费）、`--line-height-1`、`--comp-font-size`、`--comp-max-width`、`--color-disabled`、`--color-glb-bg-l1-lightness`、`--color-glb-l1-lightness`。
+- 死 token：`--color-r0..r9`（20 条声明，0 消费）、`--color-0..9`（20 条，0 消费）、`--line-height-1`、`--comp-font-size`、`--comp-max-width`、`--color-disabled`、`--color-bg-default-l1-lightness`、`--color-default-l1-lightness`。
 - `.csscomb.json` 要求 4 空格缩进 + 双引号，实际代码为 tab + 单引号 —— 配置已失效。
 
 ---
@@ -542,4 +542,3 @@ body.theme-dark { --color-major-default-lightness: 50%; }                 /* 改
 - 全量 token 审计：**未定义却被消费的自定义属性从 27 个降到 0 个**。
 - 自定义属性解析模拟：亮色 / 暗色两种状态下 `body` 上均无 `INVALID` 解析结果。
 
-> 未处理项：§3.2 缺失的 token 类别（阴影 / 动效 / 字距 / 焦点环）、§3.4 的死 token 清理、`_goldenratio.scss` 的硬编码断点、`theme-pink.js`/`theme-yellow.js` 里两个无处定义的 `--color-glb-*-l1-lightness`。这些是设计决策而非 bug，留待流式 token 方案一并处理。
