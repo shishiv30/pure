@@ -50,13 +50,6 @@
 		}
 	}
 
-	.header-menu-list{
-		a {
-			@include hover() {
-				background-color: var(--header-color-bg-hover);
-			}
-		}
-	}
 	&.active {
 		color: var(--header-color-active);
 		background-color: var(--header-color-active-bg);
@@ -82,12 +75,10 @@
 		.header-menu-list {
 			>li>ul {
 				background-color: var(--header-color-active-bg);
-				color: var(--header-color-active);
-			}
-			a {
-				@include hover() {
+				@media screen and (max-width: $screen-xs-max) {
 					background-color: var(--header-color-active-bg-hover);
 				}
+				color: var(--header-color-active);
 			}
 		}
 	}
@@ -157,8 +148,13 @@
 
 .header-menu-list {
 	position: relative;
+	a,
+		button {
+			@include hover-scale('');
+		}
 
 	a {
+		position: relative;
 		height: var(--header-height);
 		padding: var(--g3) var(--g2);
 		display: block;
@@ -166,11 +162,7 @@
 		@include singleline();
 		opacity: 0.95;
 		line-height: var(--line-height-2);
-		transition: background-color 0.2s;
-
-		@include hover() {
-			opacity: 1;
-		}
+		
 
 		&.highlight {
 			position: relative;
@@ -225,7 +217,6 @@
 
 	i {
 		display: block;
-		width: var(--comp-size-3);
 		height: var(--header-height);
 		line-height: var(--header-height);
 		transition: transform 0.25s;
@@ -288,7 +279,10 @@ body:not(.body-expand-header) {
 // small screen
 @media (max-width: $screen-xs-max) {
 	.body-expand-header {
-		overflow: hidden;
+		position: fixed;
+		left: 0;
+		right: 0;
+		width: 100%;
 
 		.header {
 			.header-menu-list {
@@ -397,6 +391,33 @@ body:not(.body-expand-header) {
 					&>li {
 						a {
 							text-align: left;
+						}
+					}
+				}
+
+				&.list>ul {
+					display: block;
+					visibility: hidden;
+					opacity: 0;
+					pointer-events: none;
+					transform: translateY(calc(1px - 0.75rem));
+					transition:
+						opacity 0.2s ease-out,
+						transform 0.2s ease-out,
+						visibility 0s linear 0.2s;
+				}
+
+				&.list {
+					@include hover() {
+						>ul {
+							visibility: visible;
+							opacity: 1;
+							pointer-events: auto;
+							transform: translateY(1px);
+							transition:
+								opacity 0.2s ease-out,
+								transform 0.2s ease-out,
+								visibility 0s;
 						}
 					}
 				}

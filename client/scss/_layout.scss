@@ -10,11 +10,10 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content: center;
-	gap: var(--g2);
-	padding: var(--g1) var(--g3);
+	justify-content: flex-start;
+	gap: var(--g3) var(--g2);
+	padding: var(--g1) var(--g2);
 	background-color: var(--color-bg);
-	@include box-shadow();
 
 	button {
 		flex: 1;

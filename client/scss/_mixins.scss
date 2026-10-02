@@ -261,6 +261,33 @@
 	}
 }
 
+@mixin hover-scale ($position: relative) {
+	@if $position != '' {
+		position: $position;
+	}
+	&::after {
+		transition: transform var(--animation-time) ease-in-out;
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		bottom: 0;
+		opacity: 0.1;
+		transform: scale(0);
+		background-color: var(--color-bg);
+		pointer-events: none;
+	}
+
+	@include hover() {
+		&::after {
+			transform: scale(1);
+		}
+	}
+}
+
 @mixin hidden-scrollbar {
 	-ms-overflow-style: none;
 	overflow: -moz-scrollbars-none;

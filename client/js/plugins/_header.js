@@ -33,11 +33,30 @@ export default {
 		opt.id = guid;
 		let _close = exportObj.addHeaderClose;
 		let _open = exportObj.removeHeaderClose;
+		let savedScrollY = null;
+		let _lockPhoneScroll = function () {
+			if (window.innerWidth >= 640 || savedScrollY !== null) {
+				return;
+			}
+			savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+			document.body.style.top = '-' + savedScrollY + 'px';
+		};
+		let _unlockPhoneScroll = function () {
+			if (savedScrollY === null) {
+				return;
+			}
+			let y = savedScrollY;
+			savedScrollY = null;
+			document.body.style.top = '';
+			window.scrollTo(0, y);
+		};
 		let _show = function () {
+			_lockPhoneScroll();
 			document.body.classList.add('body-expand-header');
 		};
 		let _hide = function () {
 			document.body.classList.remove('body-expand-header');
+			_unlockPhoneScroll();
 			$list.querySelectorAll('li').forEach((e) => {
 				e.classList.remove('hover');
 				e.style.height = '';

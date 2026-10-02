@@ -1,3 +1,4 @@
+@use './_var.screen.scss' as *;
 @use './_mixins.scss' as *;
 
 @include comp-color('group-dropdown-button');
@@ -19,9 +20,10 @@
 		display: none;
 	}
 
-	&.open .group-dropdown-list {
+	&.open .group-dropdown-list,
+	&.closing .group-dropdown-list {
 		display: flex;
-		gap: var(--g4);
+		gap: var(--group-dropdown-button-gap);
 		flex-direction: column;
 		position: absolute;
 		top: 100%;
@@ -29,11 +31,46 @@
 		min-width: 16rem;
 		max-width: 24rem;
 		margin-top: var(--gxs);
-		padding: var(--g2);
+		padding: var(--g3);
 		background-color: var(--color-bg);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-0);
+		transform-origin: top center;
+		transition: left 0.2s ease-out, width 0.2s ease-out;
 		@include box-shadow();
+	}
+
+	&.open .group-dropdown-list {
+		animation: group-dropdown-fly-in 0.2s ease-out;
+	}
+
+	&.closing .group-dropdown-list {
+		pointer-events: none;
+		animation: group-dropdown-fly-out 0.2s ease-out forwards;
+	}
+}
+
+@keyframes group-dropdown-fly-in {
+	from {
+		opacity: 0;
+		transform: translateY(-0.75rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes group-dropdown-fly-out {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(-0.75rem);
 	}
 }
 
@@ -51,6 +88,7 @@
 	}
 
 	button {
+		@include hover-scale();
 		font-size: var(--group-dropdown-button-font-size);
 		font-weight: var(--group-dropdown-button-font-weight);
 		height: var(--group-dropdown-button-size);
@@ -59,10 +97,12 @@
 		cursor: pointer;
 		white-space: nowrap;
 		border-radius: var(--radius-0);
-		&:not(.selected):not(.opened){
+
+		&:not(.selected):not(.opened) {
 			border: var(--group-dropdown-button-border-weight) solid var(--group-dropdown-button-color-border);
 			background-color: var(--group-dropdown-button-color-bg);
 			color: var(--group-dropdown-button-color);
+
 			&:hover {
 				color: var(--group-dropdown-button-color-hover);
 				background-color: var(--group-dropdown-button-color-bg-hover);
@@ -74,6 +114,7 @@
 			color: var(--group-dropdown-button-color-active);
 			background-color: var(--group-dropdown-button-color-active-bg);
 			border-color: var(--group-dropdown-button-color-active-border);
+
 			&:hover {
 				color: var(--group-dropdown-button-color-active-hover);
 				background-color: var(--group-dropdown-button-color-active-bg-hover);
@@ -85,11 +126,26 @@
 			color: var(--group-dropdown-button-color-open);
 			background-color: var(--group-dropdown-button-color-open-bg);
 			border-color: var(--group-dropdown-button-color-open-border);
+
 			&:hover {
 				color: var(--group-dropdown-button-color-open-hover);
 				background-color: var(--group-dropdown-button-color-open-bg-hover);
 				border-color: var(--group-dropdown-button-color-open-border-hover);
 			}
+		}
+	}
+
+	@media screen and (max-width: $screen-xs-max) {
+		gap: 1px;
+		border-radius: var(--radius-0) !important;
+		overflow: hidden;
+		border: 1px solid var(--group-dropdown-button-color-border) !important;
+		&.active{
+			border: 1px solid var(--group-dropdown-button-color-active-border) !important;
+		}
+		button {
+			border: none !important;
+			border-radius: 0 !important;
 		}
 	}
 }
@@ -99,6 +155,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--g1);
+
+		&[hidden] {
+			display: none;
+		}
 	}
 
 	.distance-scale {
@@ -106,10 +166,45 @@
 		justify-content: space-between;
 		font-size: var(--font-size-6);
 	}
-	.checkbox, .radio {
+
+	.checkbox,
+	.radio {
 		display: grid;
-		grid-template-columns:1fr 1fr;
+		grid-template-columns: 1fr 1fr;
 		padding: 0;
 		width: 100%;
+	}
+
+	.radio.icon-picker {
+		width: 18rem;
+		grid-template-columns: repeat(auto-fit, minmax(30px, 50px));
+		justify-content: start;
+		gap: var(--g0);
+
+		label {
+			margin: 0;
+			min-width: 0;
+
+			>span {
+				justify-content: center;
+				width: 100%;
+				min-height: 30px;
+				max-height: 50px;
+				aspect-ratio: 1;
+				border: 1px solid var(--color-border);
+				border-radius: var(--radius-0);
+
+				&::before {
+					content: none;
+					margin: 0;
+				}
+			}
+
+			input:checked+span {
+				color: var(--color-bg);
+				background-color: var(--color);
+				border-color: var(--color);
+			}
+		}
 	}
 }
