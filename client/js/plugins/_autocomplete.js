@@ -2,7 +2,6 @@ import { emit, off, on } from '../core/event.js';
 import guid from '../core/guid.js';
 import { defBool, defEnum } from '../core/def.js';
 const boolStatus = ['input-focus'];
-import { disableScroll, enableScroll } from '../core/scroll.js';
 import { getPathByGeo, geoType } from '../../../helpers/geo.js';
 import debounce from 'lodash/debounce.js';
 
@@ -23,14 +22,12 @@ export default {
 			if (!$container.classList.contains('autocomplete-show')) {
 				document.addEventListener('click', _clickOutside);
 				$container.classList.add('autocomplete-show');
-				disableScroll('autocomplete');
 			}
 		};
 		let _hide = function () {
 			if ($container.classList.contains('autocomplete-show')) {
 				document.removeEventListener('click', _clickOutside);
 				$container.classList.remove('autocomplete-show');
-				enableScroll('autocomplete');
 				opt.selectedIndex = -1;
 			}
 		};

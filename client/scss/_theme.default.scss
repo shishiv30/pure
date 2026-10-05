@@ -47,9 +47,9 @@
 	--color-major-default-saturation: 100%;
 	--color-major-default-saturation-l1: 100%;
 
-	--color-minor-default-hue: 321;
+	--color-minor-default-hue: 280;
 	--color-minor-default-lightness: 31%;
-	--color-minor-default-lightness-l1: 88%;
+	--color-minor-default-lightness-l1: 85%;
 	--color-minor-default-saturation: 100%;
 	--color-minor-default-saturation-l1: 100%;
 
@@ -302,5 +302,48 @@ body {
 			--color-l1: var(--color-default-l1);
 			--color-bg-l1: var(--color-bg-default-l1);
 		}
+		.header.active {
+				--header-color: var(--color-active);
+				--header-color-bg: var(--color-active-bg);
+				--header-color-border: var(--color-active-border);
+				--header-color-hover: var(--color-active-hover);
+				--header-color-bg-hover: var(--color-active-bg-hover);
+				--header-color-border-hover: var(--color-active-border-hover);
+				--header-color-active: var(--color);
+				--header-color-active-bg: var(--color-bg);
+				--header-color-active-border: var(--color-active-border);
+				--header-color-active-hover: var(--color-hover);
+				--header-color-active-bg-hover: var(--color-bg-hover);
+				--header-color-active-border-hover: var(--color-border-hover);
+		}
+
+		.section.inline.active {
+			--section-color: var(--color-active);
+			--section-color-bg: var(--color-active-bg);
+			--section-color-border: var(--color-active-border);
+			--section-color-hover: var(--color-active-hover);
+			--section-color-bg-hover: var(--color-active-bg-hover);
+			--section-color-border-hover: var(--color-active-border-hover);
+			--section-color-active: var(--color);
+			--section-color-active-bg: var(--color-bg);
+			--section-color-active-border: var(--color-active-border);
+			--section-color-active-hover: var(--color-hover);
+			--section-color-active-bg-hover: var(--color-bg-hover);
+			--section-color-active-border-hover: var(--color-border-hover);
+		}
+		.footer.active {
+			--footer-color: var(--color-active);
+			--footer-color-bg: var(--color-active-bg);
+			--footer-color-border: var(--color-active-border);
+			--footer-color-hover: var(--color-active-hover);
+			--footer-color-bg-hover: var(--color-active-bg-hover);
+			--footer-color-border-hover: var(--color-active-border-hover);
+			--footer-color-active: var(--color);
+			--footer-color-active-bg: var(--color-bg);
+			--footer-color-active-border: var(--color-active-border);
+			--footer-color-active-hover: var(--color-hover);
+			--footer-color-active-bg-hover: var(--color-bg-hover);
+			--footer-color-active-border-hover: var(--color-border-hover);
+	}
 	}
 }
