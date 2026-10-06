@@ -4,6 +4,9 @@
 	--animation-time: 0.1s;
 	--cui-font: 'Roboto';
 
+	--color-root-ink: #000;
+	--color-root-paper: #fff;
+
 	//breakpoint mirror: $screen-* are compile-time only, these expose the same
 	//values to var() and to getComputedStyle() in JS. keep both in sync.
 	--screen-xs-min: #{$screen-xs-min};
@@ -16,60 +19,117 @@
 	--screen-md-max: #{$screen-md-max};
 	--screen-lg-max: #{$screen-lg-max};
 
-	--color-r0-default-hue: 4;
-	--color-r1-default-hue: 34;
-	--color-r2-default-hue: 54;
-	--color-r3-default-hue: 84;
-	--color-r4-default-hue: 169;
-	--color-r5-default-hue: 174;
-	--color-r6-default-hue: 204;
-	--color-r7-default-hue: 224;
-	--color-r8-default-hue: 274;
-	--color-r9-default-hue: 344;
-	//NOTE: only the -default- sources live here. the --color-<role>-lightness
+	--color-root-0-lightness: 100%;
+	--color-root-1-lightness: 90%;
+	--color-root-2-lightness: 80%;
+	--color-root-3-lightness: 70%;
+	--color-root-4-lightness: 60%;
+	--color-root-5-lightness: 50%;
+	--color-root-6-lightness: 40%;
+	--color-root-7-lightness: 30%;
+	--color-root-8-lightness: 20%;
+	--color-root-9-lightness: 10%;
+
+	--color-root-r-saturation: 100%;
+	--color-root-r-lightness: 45%;
+	--color-root-r0-hue: 4;
+	--color-root-r1-hue: 34;
+	--color-root-r2-hue: 54;
+	--color-root-r3-hue: 84;
+	--color-root-r4-hue: 169;
+	--color-root-r5-hue: 174;
+	--color-root-r6-hue: 204;
+	--color-root-r7-hue: 224;
+	--color-root-r8-hue: 274;
+	--color-root-r9-hue: 344;
+	//NOTE: only the -root- sources live here. the --color-<role>-lightness
 	//aliases are declared on `body` instead, so that a `body.theme-dark`
-	//override of a -default- source actually re-resolves the alias. a var()
+	//override of a -root- source actually re-resolves the alias. a var()
 	//in a custom property is substituted against the declaring element, so an
 	//alias declared here would freeze the light value on <html> forever.
-	--color-default-lightness: 5%;
-	--color-default-lightness-l1: 40%;
-	--color-default-saturation: 1%;
-	--color-default-saturation-l1: 4%;
+	--color-root-lightness: 5%;
+	--color-root-lightness-l1: 40%;
+	--color-root-saturation: 1%;
+	--color-root-saturation-l1: 4%;
 
-	--color-bg-default-lightness: 100%;
-	--color-bg-default-lightness-l1: 95%;
-	--color-bg-default-saturation: 1%;
-	--color-bg-default-saturation-l1: 4%;
+	--color-root-bg-lightness: 100%;
+	--color-root-bg-lightness-l1: 95%;
+	--color-root-bg-saturation: 1%;
+	--color-root-bg-saturation-l1: 4%;
 
-	--color-major-default-hue: 216;
-	--color-major-default-lightness: 23%;
-	--color-major-default-lightness-l1: 95%;
-	--color-major-default-saturation: 100%;
-	--color-major-default-saturation-l1: 100%;
 
-	--color-minor-default-hue: 280;
-	--color-minor-default-lightness: 31%;
-	--color-minor-default-lightness-l1: 85%;
-	--color-minor-default-saturation: 100%;
-	--color-minor-default-saturation-l1: 100%;
+	--color-root-border-lightness: 80%;
+	--color-root-border-lightness-l1: 45%;
+	--color-root-border-saturation: 1%;
+	--color-root-border-saturation-l1: 4%;
 
-	--color-safe-default-hue: 179;
-	--color-safe-default-lightness: 25%;
-	--color-safe-default-lightness-l1: 95%;
-	--color-safe-default-saturation: 100%;
-	--color-safe-default-saturation-l1: 100%;
+	--color-root-major-hue: 216;
+	--color-root-major-lightness: 23%;
+	--color-root-major-lightness-l1: 95%;
+	--color-root-major-saturation: 100%;
+	--color-root-major-saturation-l1: 100%;
 
-	--color-danger-default-hue: 343;
-	--color-danger-default-lightness: 48%;
-	--color-danger-default-lightness-l1: 92%;
-	--color-danger-default-saturation: 100%;
-	--color-danger-default-saturation-l1: 100%;
+	--color-root-minor-hue: 280;
+	--color-root-minor-lightness: 31%;
+	--color-root-minor-lightness-l1: 85%;
+	--color-root-minor-saturation: 100%;
+	--color-root-minor-saturation-l1: 100%;
 
-	--color-tip-default-hue: 45;
-	--color-tip-default-lightness: 34%;
-	--color-tip-default-lightness-l1: 95%;
-	--color-tip-default-saturation: 100%;
-	--color-tip-default-saturation-l1: 100%;
+	--color-root-safe-hue: 179;
+	--color-root-safe-lightness: 25%;
+	--color-root-safe-lightness-l1: 95%;
+	--color-root-safe-saturation: 100%;
+	--color-root-safe-saturation-l1: 100%;
+
+	--color-root-danger-hue: 343;
+	--color-root-danger-lightness: 48%;
+	--color-root-danger-lightness-l1: 92%;
+	--color-root-danger-saturation: 100%;
+	--color-root-danger-saturation-l1: 100%;
+
+	--color-root-tip-hue: 45;
+	--color-root-tip-lightness: 34%;
+	--color-root-tip-lightness-l1: 95%;
+	--color-root-tip-saturation: 100%;
+	--color-root-tip-saturation-l1: 100%;
+
+	--color-root: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness));
+	--color-root-l1: hsl(var(--color-root-major-hue), var(--color-root-saturation-l1), var(--color-root-lightness-l1));
+	--color-root-hover: color-mix(in hsl, var(--color-root) 75%, var(--color-root-paper));
+	--color-root-l1-hover: color-mix(in hsl, var(--color-root-l1) 75%, var(--color-root-paper));
+
+	--color-root-bg: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation), var(--color-root-bg-lightness));
+	--color-root-bg-l1: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation-l1), var(--color-root-bg-lightness-l1));
+  --color-root-bg-hover: color-mix(in hsl, var(--color-root-bg) 95%, var(--color-root-ink));
+  --color-root-bg-l1-hover: color-mix(in hsl, var(--color-root-bg-l1) 95%, var(--color-root-ink));
+
+	--color-root-border: hsl(var(--color-root-major-hue), var(--color-root-border-saturation), var(--color-root-border-lightness));
+	--color-root-border-l1: hsl(var(--color-root-major-hue), var(--color-root-border-saturation-l1), var(--color-root-border-lightness-l1));
+	--color-root-border-hover: color-mix(in hsl, var(--color-root-border) 80%, var(--color-root-ink));
+	--color-root-border-l1-hover: color-mix(in hsl, var(--color-root-border-l1) 80%, var(--color-root-paper));
+
+
+	--color-root-major: hsl(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness));
+	--color-root-major-l1: hsl(var(--color-root-major-hue), var(--color-root-major-saturation-l1), var(--color-root-major-lightness-l1));
+	--color-root-major-hover: color-mix(in hsl, var(--color-root-major) 80%, var(--color-root-ink));
+	--color-root-major-l1-hover: color-mix(in hsl, var(--color-root-major) 80%, var(--color-root-paper));
+	--color-root-minor: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation), var(--color-root-minor-lightness));
+	--color-root-minor-l1: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation-l1), var(--color-root-minor-lightness-l1));
+	--color-root-minor-hover: color-mix(in hsl, var(--color-root-minor) 80%, var(--color-root-ink));
+	--color-root-minor-l1-hover: color-mix(in hsl, var(--color-root-minor) 80%, var(--color-root-paper));
+	--color-root-safe: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation), var(--color-root-safe-lightness));
+	--color-root-safe-l1: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation-l1), var(--color-root-safe-lightness-l1));
+	--color-root-safe-hover: color-mix(in hsl, var(--color-root-safe) 80%, var(--color-root-ink));
+	--color-root-safe-l1-hover: color-mix(in hsl, var(--color-root-safe) 80%, var(--color-root-paper));
+	--color-root-danger: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation), var(--color-root-danger-lightness));
+	--color-root-danger-l1: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation-l1), var(--color-root-danger-lightness-l1));
+	--color-root-danger-hover: color-mix(in hsl, var(--color-root-danger) 80%, var(--color-root-ink));
+	--color-root-danger-l1-hover: color-mix(in hsl, var(--color-root-danger) 80%, var(--color-root-paper));
+	--color-root-tip: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation), var(--color-root-tip-lightness));
+	--color-root-tip-l1: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation-l1), var(--color-root-tip-lightness-l1));
+	--color-root-tip-hover: color-mix(in hsl, var(--color-root-tip) 80%, var(--color-root-ink));
+	--color-root-tip-l1-hover: color-mix(in hsl, var(--color-root-tip-l1) 80%, var(--color-root-paper));
+
 
 	--logo: url('../assets/img/logo.svg');
 	--logo-bg: url('../assets/img/logo-bg.svg');
@@ -126,109 +186,77 @@
 }
 
 body {
-	--color-0-lightness: 100%;
-	--color-1-lightness: 90%;
-	--color-2-lightness: 80%;
-	--color-3-lightness: 70%;
-	--color-4-lightness: 60%;
-	--color-5-lightness: 50%;
-	--color-6-lightness: 40%;
-	--color-7-lightness: 30%;
-	--color-8-lightness: 20%;
-	--color-9-lightness: 10%;
-
 	//role lightness aliases — must be declared on the same element as the
-	//-default- sources they read, see the NOTE in :root above.
-	--color-major-lightness: var(--color-major-default-lightness);
-	--color-major-lightness-l1: var(--color-major-default-lightness-l1);
-	--color-major-saturation: var(--color-major-default-saturation);
-	--color-major-saturation-l1: var(--color-major-default-saturation-l1);
-	--color-minor-lightness: var(--color-minor-default-lightness);
-	--color-minor-lightness-l1: var(--color-minor-default-lightness-l1);
-	--color-minor-saturation: var(--color-minor-default-saturation);
-	--color-minor-saturation-l1: var(--color-minor-default-saturation-l1);
-	--color-safe-lightness: var(--color-safe-default-lightness);
-	--color-safe-lightness-l1: var(--color-safe-default-lightness-l1);
-	--color-safe-saturation: var(--color-safe-default-saturation);
-	--color-safe-saturation-l1: var(--color-safe-default-saturation-l1);
-	--color-danger-lightness: var(--color-danger-default-lightness);
-	--color-danger-lightness-l1: var(--color-danger-default-lightness-l1);
-	--color-danger-saturation: var(--color-danger-default-saturation);
-	--color-danger-saturation-l1: var(--color-danger-default-saturation-l1);
-	--color-tip-lightness: var(--color-tip-default-lightness);
-	--color-tip-lightness-l1: var(--color-tip-default-lightness-l1);
-	--color-tip-saturation: var(--color-tip-default-saturation);
-	--color-tip-saturation-l1: var(--color-tip-default-saturation-l1);
+	//-root- sources they read, see the NOTE in :root above.
 
-	--color-r0: hsl(var(--color-r0-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r1: hsl(var(--color-r1-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r2: hsl(var(--color-r2-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r3: hsl(var(--color-r3-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r4: hsl(var(--color-r4-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r5: hsl(var(--color-r5-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r6: hsl(var(--color-r6-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r7: hsl(var(--color-r7-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r8: hsl(var(--color-r8-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
-	--color-r9: hsl(var(--color-r9-default-hue), var(--color-bg-default-saturation), var(--color-default-lightness));
+	--color-r0: hsl(var(--color-root-r0-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r1: hsl(var(--color-root-r1-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r2: hsl(var(--color-root-r2-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r3: hsl(var(--color-root-r3-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r4: hsl(var(--color-root-r4-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r5: hsl(var(--color-root-r5-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r6: hsl(var(--color-root-r6-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r7: hsl(var(--color-root-r7-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r8: hsl(var(--color-root-r8-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
+	--color-r9: hsl(var(--color-root-r9-hue), var(--color-root-r-saturation), var(--color-root-r-lightness));
 
-	--color-major: hsl(var(--color-major-default-hue), var(--color-major-saturation), var(--color-major-lightness));
-	--color-major-l1: hsl(var(--color-major-default-hue), var(--color-major-saturation-l1), var(--color-major-lightness-l1));
-	--color-major-hsl: var(--color-major-default-hue), var(--color-major-saturation), var(--color-major-lightness);
-	--color-major-hsl-l1: var(--color-major-default-hue), var(--color-major-saturation-l1), var(--color-major-lightness-l1);
-	--color-minor: hsl(var(--color-minor-default-hue), var(--color-minor-saturation), var(--color-minor-lightness));
-	--color-minor-l1: hsl(var(--color-minor-default-hue), var(--color-minor-saturation-l1), var(--color-minor-lightness-l1));
-	--color-minor-hsl: var(--color-minor-default-hue), var(--color-minor-saturation), var(--color-minor-lightness);
-	--color-minor-hsl-l1: var(--color-minor-default-hue), var(--color-minor-saturation-l1), var(--color-minor-lightness-l1);
-	--color-safe: hsl(var(--color-safe-default-hue), var(--color-safe-saturation), var(--color-safe-lightness));
-	--color-safe-l1: hsl(var(--color-safe-default-hue), var(--color-safe-saturation-l1), var(--color-safe-lightness-l1));
-	--color-safe-hsl: var(--color-safe-default-hue), var(--color-safe-saturation), var(--color-safe-lightness);
-	--color-safe-hsl-l1: var(--color-safe-default-hue), var(--color-safe-saturation-l1), var(--color-safe-lightness-l1);
-	--color-danger: hsl(var(--color-danger-default-hue), var(--color-danger-saturation), var(--color-danger-lightness));
-	--color-danger-l1: hsl(var(--color-danger-default-hue), var(--color-danger-saturation-l1), var(--color-danger-lightness-l1));
-	--color-danger-hsl: var(--color-danger-default-hue), var(--color-danger-saturation), var(--color-danger-lightness);
-	--color-danger-hsl-l1: var(--color-danger-default-hue), var(--color-danger-saturation-l1), var(--color-danger-lightness-l1);
-	--color-tip: hsl(var(--color-tip-default-hue), var(--color-tip-saturation), var(--color-tip-lightness));
-	--color-tip-l1: hsl(var(--color-tip-default-hue), var(--color-tip-saturation-l1), var(--color-tip-lightness-l1));
-	--color-tip-hsl: var(--color-tip-default-hue), var(--color-tip-saturation), var(--color-tip-lightness);
-	--color-tip-hsl-l1: var(--color-tip-default-hue), var(--color-tip-saturation-l1), var(--color-tip-lightness-l1);
+	--color: var(--color-root);
+	--color-border: var(--color-root-border);
+	--color-bg: var(--color-root-bg);
+	--color-hover: var(--color-root-hover);
+	--color-border-hover: var(--color-root-border-hover);
+	--color-bg-hover: var(--color-root-bg-hover);
+
+	--color-l1: var(--color-root-l1);
+	--color-border-l1: var(--color-root-border-l1);
+	--color-bg-l1: var(--color-root-bg-l1);
+	--color-l1-hover: var(--color-root-l1-hover);
+	--color-border-l1-hover: var(--color-root-border-l1-hover);
+	--color-bg-l1-hover: var(--color-root-bg-l1-hover);
+
+	--color-active: var(--color-root-bg);
+	--color-active-border: var(--color-root-border);
+	--color-active-bg: var(--color-root);
+	--color-active-hover: var(--color-root-bg-hover);
+	--color-active-bg-hover: var(--color-root-hover);
+	--color-active-border-hover: var(--color-root-border-hover);
+	--color-disabled: var(--color-root-l1);
+
+	--color-major: var(--color-root-major);
+	--color-major-l1: var(--color-root-major-l1);
+	--color-major-hover: var(--color-root-major-hover);
+	--color-major-l1-hover: var(--color-root-major-l1-hover);
+	--color-minor: var(--color-root-minor);
+	--color-minor-l1: var(--color-root-minor-l1);
+	--color-minor-hover: var(--color-root-minor-hover);
+	--color-minor-l1-hover: var(--color-root-minor-l1-hover);
+	--color-safe: var(--color-root-safe);
+	--color-safe-l1: var(--color-root-safe-l1);
+	--color-safe-hover: var(--color-root-safe-hover);
+	--color-safe-l1-hover: var(--color-root-safe-l1-hover);
+	--color-danger: var(--color-root-danger);
+	--color-danger-l1: var(--color-root-danger-l1);
+	--color-danger-hover: var(--color-root-danger-hover);
+	--color-danger-l1-hover: var(--color-root-danger-l1-hover);
+	--color-tip: var(--color-root-tip);
+	--color-tip-l1: var(--color-root-tip-l1);
+	--color-tip-hover: var(--color-root-tip-hover);
+	--color-tip-l1-hover: var(--color-root-tip-l1-hover);
+
 	--color-link: var(--color-minor);
 	--color-link-hover: var(--color-major);
 
-	--color-0: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-0-lightness));
-	--color-1: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-1-lightness));
-	--color-2: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-2-lightness));
-	--color-3: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-3-lightness));
-	--color-4: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-4-lightness));
-	--color-5: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-5-lightness));
-	--color-6: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-6-lightness));
-	--color-7: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-7-lightness));
-	--color-8: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-8-lightness));
-	--color-9: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-9-lightness));
+	--color-0: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-0-lightness));
+	--color-1: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-1-lightness));
+	--color-2: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-2-lightness));
+	--color-3: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-3-lightness));
+	--color-4: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-4-lightness));
+	--color-5: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-5-lightness));
+	--color-6: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-6-lightness));
+	--color-7: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-7-lightness));
+	--color-8: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-8-lightness));
+	--color-9: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-9-lightness));
 
-	--color-default: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-default-lightness));
-	--color-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-default-lightness-l1));
-	--color-default-hsl: var(--color-major-default-hue), var(--color-default-saturation), var(--color-default-lightness);
-	--color-bg-default: hsl(var(--color-major-default-hue), var(--color-default-saturation), var(--color-bg-default-lightness));
-	--color-bg-default-l1: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-lightness-l1));
-	--color-bg-default-hsl: var(--color-major-default-hue), var(--color-default-saturation), var(--color-bg-default-lightness);
-	--color-border-default: hsl(var(--color-major-default-hue), var(--color-default-saturation-l1), var(--color-bg-default-lightness-l1));
-
-	--color: var(--color-default);
-	--color-border: var(--color-border-default);
-	--color-bg: var(--color-bg-default);
-	--color-hover: var(--color-default-l1);
-	--color-border-hover: var(--color-bg-default);
-	--color-bg-hover: var(--color-bg-default-l1);
-	--color-l1: var(--color-default-l1);
-	--color-bg-l1: var(--color-bg-default-l1);
-
-	--color-active: var(--color-bg-default);
-	--color-active-bg: var(--color-default);
-	--color-active-border: var(--color-default);
-	--color-active-hover: var(--color-bg-default);
-	--color-active-bg-hover: var(--color-default);
-	--color-active-border-hover: var(--color-default);
-	--color-disabled: var(--color-default-l1);
 
 	--section-gap-x: var(--g3);
 	//keep in sync with the `.normal` branch of gap-size() in _mixins.scss
@@ -254,96 +282,63 @@ body {
 	--comp-line-height: var(--line-height-3);
 
 	--selection-background: var(--color-bg);
-	--selection-color: var(--color-default);
+	--selection-color: var(--color-root);
 
 }
 
 :root{
 	@media (prefers-color-scheme: dark) {
 		--logo: url('../assets/img/logo-bg.svg');
-	
-		--color-default-lightness: 95%;
-		--color-default-lightness-l1: 60%;
-	
-		--color-bg-default-lightness: 10%;
-		--color-bg-default-lightness-l1: 100%;
-		--color-major-default-lightness: 90%;
-		--color-major-default-lightness-l1: 10%;
+		--color-root-lightness: 95%;
+		--color-root-lightness-l1: 60%;
+		--color-root-bg-lightness: 10%;
+		--color-root-bg-lightness-l1: 100%;
+		--color-root-major-lightness: 90%;
+		--color-root-major-lightness-l1: 10%;
 
-		--color-minor-default-lightness: 90%;
-		--color-minor-default-lightness-l1: 10%;
-	
-		--color-safe-default-lightness: 90%;
-		--color-safe-default-lightness-l1: 10%;
-	
-		--color-danger-default-lightness: 90%;
-		--color-danger-default-lightness-l1: 10%;
-	
-		--color-tip-default-lightness: 90%;
-		--color-tip-default-lightness-l1: 10%;
-	
-		body{
-			--color-0-lightness: 10%;
-			--color-1-lightness: 20%;
-			--color-2-lightness: 30%;
-			--color-3-lightness: 40%;
-			--color-4-lightness: 50%;
-			--color-5-lightness: 60%;
-			--color-6-lightness: 70%;
-			--color-7-lightness: 80%;
-			--color-8-lightness: 90%;
-			--color-9-lightness: 100%;
-			--color: var(--color-default);
-			--color-border: var(--color-border-default);
-			--color-bg: var(--color-bg-default);
-			--color-hover: var(--color-default-l1);
-			--color-border-hover: var(--color-bg-default);
-			--color-bg-hover: var(--color-bg-default-l1);
-			--color-l1: var(--color-default-l1);
-			--color-bg-l1: var(--color-bg-default-l1);
-		}
-		.header.active {
-				--header-color: var(--color-active);
-				--header-color-bg: var(--color-active-bg);
-				--header-color-border: var(--color-active-border);
-				--header-color-hover: var(--color-active-hover);
-				--header-color-bg-hover: var(--color-active-bg-hover);
-				--header-color-border-hover: var(--color-active-border-hover);
-				--header-color-active: var(--color);
-				--header-color-active-bg: var(--color-bg);
-				--header-color-active-border: var(--color-active-border);
-				--header-color-active-hover: var(--color-hover);
-				--header-color-active-bg-hover: var(--color-bg-hover);
-				--header-color-active-border-hover: var(--color-border-hover);
-		}
+		--color-root-minor-lightness: 90%;
+		--color-root-minor-lightness-l1: 10%;
+		--color-root-safe-lightness: 90%;
+		--color-root-safe-lightness-l1: 10%;
+		--color-root-danger-lightness: 90%;
+		--color-root-danger-lightness-l1: 10%;
+		--color-root-tip-lightness: 90%;
+		--color-root-tip-lightness-l1: 10%;
 
-		.section.inline.active {
-			--section-color: var(--color-active);
-			--section-color-bg: var(--color-active-bg);
-			--section-color-border: var(--color-active-border);
-			--section-color-hover: var(--color-active-hover);
-			--section-color-bg-hover: var(--color-active-bg-hover);
-			--section-color-border-hover: var(--color-active-border-hover);
-			--section-color-active: var(--color);
-			--section-color-active-bg: var(--color-bg);
-			--section-color-active-border: var(--color-active-border);
-			--section-color-active-hover: var(--color-hover);
-			--section-color-active-bg-hover: var(--color-bg-hover);
-			--section-color-active-border-hover: var(--color-border-hover);
+		--color-root-0-lightness: 10%;
+		--color-root-1-lightness: 20%;
+		--color-root-2-lightness: 30%;
+		--color-root-3-lightness: 40%;
+		--color-root-4-lightness: 50%;
+		--color-root-5-lightness: 60%;
+		--color-root-6-lightness: 70%;
+		--color-root-7-lightness: 80%;
+		--color-root-8-lightness: 90%;
+		--color-root-9-lightness: 100%;
+
+		#body{
+			.header.active {
+				--header-color: var(--color);
+				--header-color-bg: var(--color-bg);
+				--header-color-border: var(--color-border);
+				--header-color-hover: var(--color-hover);
+				--header-color-bg-hover: var(--color-bg-hover);
+				--header-color-border-hover: var(--color-border-hover);
+				.input {
+					--input-color: var(--color-bg);
+					--input-color-bg: var(--color);
+				}
+			}
+			.section.active{
+				--section-color: var(--color);
+				--section-color-bg: var(--color-bg);
+			}
+			.panel.active{
+				--panel-color: var(--color);
+				--panel-color-bg: var(--color-bg);
+			}
 		}
-		.footer.active {
-			--footer-color: var(--color-active);
-			--footer-color-bg: var(--color-active-bg);
-			--footer-color-border: var(--color-active-border);
-			--footer-color-hover: var(--color-active-hover);
-			--footer-color-bg-hover: var(--color-active-bg-hover);
-			--footer-color-border-hover: var(--color-active-border-hover);
-			--footer-color-active: var(--color);
-			--footer-color-active-bg: var(--color-bg);
-			--footer-color-active-border: var(--color-active-border);
-			--footer-color-active-hover: var(--color-hover);
-			--footer-color-active-bg-hover: var(--color-bg-hover);
-			--footer-color-active-border-hover: var(--color-border-hover);
 	}
-	}
+
+
 }

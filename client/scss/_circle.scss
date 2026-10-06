@@ -23,12 +23,9 @@
 	box-shadow: inset 0 0 0 var(--circle-border-weight) var(--circle-color-border);
 
 	&[disabled] {
-		--color: var(--color-default-l1) !important;
-		--color-bg: var(--color-bg-default-l1) !important;
-		--color-border: var(--color-default-l1) !important;
-		--color-active: var(--color-default-l1) !important;
-		--color-active-bg: var(--color-bg-default-l1) !important;
-		--color-active-border: var(--color-default-l1) !important;
+		--color: var(--color-root-l1) !important;
+		--color-bg: var(--color-root-bg-l1) !important;
+		--color-border: var(--color-root-l1) !important;
 	}
 
 	&,
@@ -44,18 +41,5 @@
 		color: var(--circle-color-hover);
 		background-color: var(--circle-color-bg-hover);
 		box-shadow: inset 0 0 0 var(--circle-border-weight) var(--circle-color-border-hover);
-	}
-
-	&.active {
-		color: var(--circle-color-active);
-		background-color: var(--circle-color-active-bg);
-		box-shadow: inset 0 0 0 var(--circle-border-weight) var(--circle-color-active-border);
-
-		&:active,
-		&:hover {
-			color: var(--circle-color-active-hover);
-			background-color: var(--circle-color-active-bg-hover);
-			box-shadow: inset 0 0 0 var(--circle-border-weight) var(--circle-color-active-border-hover);
-		}
 	}
 }

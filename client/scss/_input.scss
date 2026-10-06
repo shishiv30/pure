@@ -4,7 +4,6 @@
 @include comp-size('input');
 
 .input {
-	--input-color-border: var(--color-l1);
 	--input-placeholder-color: color-mix(in hsl, var(--input-color) 80%, var(--input-color-bg));
 	position: relative;
 	display: block;

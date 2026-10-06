@@ -39,17 +39,4 @@
 		background-color: var(--tab-color-bg-hover);
 		box-shadow: inset 0 0 0 var(--tab-border-weight) var(--tab-color-border-hover);
 	}
-
-	&.active {
-		color: var(--tab-color-active);
-		background-color: var(--tab-color-active-bg);
-		box-shadow: inset 0 0 0 var(--tab-border-weight) var(--tab-color-active-border);
-
-		&:active,
-		&:hover {
-			color: var(--tab-color-active-hover);
-			background-color: var(--tab-color-active-bg-hover);
-			box-shadow: inset 0 0 0 var(--tab-border-weight) var(--tab-color-active-border-hover);
-		}
-	}
 }

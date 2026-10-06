@@ -21,11 +21,6 @@
 		background: transparent;
 		color: inherit;
 		cursor: pointer;
-
-		&.active {
-			background-color: var(--group-btn-color-active-bg, var(--color-major));
-			color: var(--group-btn-color-active, var(--color-bg));
-		}
 	}
 }
 

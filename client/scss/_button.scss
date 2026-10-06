@@ -9,15 +9,12 @@
 	justify-content: center;
 	cursor: pointer;
 	@include singleline();
-	@include hover-scale();
+	@include hover-scale(var(--color-bg-hover));
 
 	&[disabled] {
-		--color: var(--color-default-l1) !important;
-		--color-bg: var(--color-bg-default-l1) !important;
-		--color-border: var(--color-default-l1) !important;
-		--color-active: var(--color-default-l1) !important;
-		--color-active-bg: var(--color-bg-default-l1) !important;
-		--color-active-border: var(--color-default-l1) !important;
+		--color: var(--color-root-l1) !important;
+		--color-bg: var(--color-root-bg-l1) !important;
+		--color-border: var(--color-root-l1) !important;
 	}
 
 	&.loading {
@@ -37,12 +34,6 @@
 	background-color: var(--btn-color-bg);
 	box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 
-	&.active {
-		color: var(--btn-color-active);
-		background-color: var(--btn-color-active-bg);
-		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border);
-	}
-
 	&,
 	&:link,
 	&:visited {
@@ -53,19 +44,6 @@
 
 	&:active,
 	&:hover {
-		background-color: var(--btn-color-bg-hover);
 		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border-hover);
-	}
-
-	&.active {
-		color: var(--btn-color-active);
-		background-color: var(--btn-color-active-bg);
-		box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border);
-
-		&:active,
-		&:hover {
-			background-color: var(--btn-color-active-bg-hover);
-			box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-active-border-hover);
-		}
 	}
 }

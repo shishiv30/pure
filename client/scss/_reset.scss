@@ -85,12 +85,6 @@ body {
 		color: var(--selection-color);
 	}
 
-	&.theme-auto {
-		@media (prefers-color-scheme: dark) {
-			color-scheme: dark;
-		}
-	}
-
 	&.theme-dark {
 		color-scheme: dark;
 	}

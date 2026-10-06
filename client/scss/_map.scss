@@ -28,7 +28,7 @@
 
 	&.on .pin,
 	.pin:hover {
-		box-shadow: 0 0 0 5px hsla(var(--color-minor-default-hue), var(--color-minor-default-saturation), var(--color-minor-lightness), 0.35);
+		box-shadow: 0 0 0 5px hsla(var(--color-root-minor-hue), var(--color-root-minor-saturation), var(--color-root-minor-lightness), 0.35);
 		background-color: var(--color-minor);
 		z-index: var(--ui-pin-hover-index);
 	}

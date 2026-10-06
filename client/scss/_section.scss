@@ -18,11 +18,6 @@
 		padding-right: var(--section-gap-x);
 		color: var(--section-color);
 		background-color: var(--section-color-bg);
-
-		&.active {
-			color: var(--section-color-active);
-			background-color: var(--section-color-active-bg);
-		}
 	}
 }
 
@@ -69,7 +64,7 @@
 		margin: 10vh auto;
 		max-width: max(80dvw, 320px);
 		padding: 10vh 5vw;
-		background-color: hsla(var(--color-major-hsl), 0.5);
+		background-color: hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 0.5);
 		color: var(--color-major-l1);
 		border-radius: var(--radius-2);
 
@@ -155,7 +150,7 @@
 					>div {
 						padding-right: var(--g4);
 						padding-left: var(--g4);
-						background: linear-gradient(to left, hsla(var(--color-major-hsl), 0) 40%, hsla(var(--color-major-hsl), 1) 80%);
+						background: linear-gradient(to left, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 0) 40%, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 1) 80%);
 					}
 				}
 
@@ -163,7 +158,7 @@
 					>div {
 						padding-left: calc(100% - 380px);
 						padding-right: var(--g4);
-						background: linear-gradient(to right, hsla(var(--color-major-hsl), 0) 40%, hsla(var(--color-major-hsl), 1) 80%);
+						background: linear-gradient(to right, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 0) 40%, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 1) 80%);
 					}
 				}
 			}
@@ -184,7 +179,7 @@
 					padding-top: var(--radius-4);
 					padding-bottom: var(--radius-4);
 					width: 100%;
-					background: linear-gradient(to bottom, hsla(var(--color-major-hsl), 0) 0%, hsla(var(--color-major-hsl), 1) 70%);
+					background: linear-gradient(to bottom, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 0) 0%, hsla(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness), 1) 70%);
 					border-radius: 0 0 var(--radius-4) var(--radius-4);
 				}
 

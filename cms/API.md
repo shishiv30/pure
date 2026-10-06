@@ -96,10 +96,10 @@ Content-Type: application/json
   "format": "json",
   "data": {
     "default": {
-      "--color-major-default-hue": "330"
+      "--color-root-major-hue": "330"
     },
     "dark": {
-      "--color-major-default-lightness": "75%"
+      "--color-root-major-lightness": "75%"
     }
   }
 }

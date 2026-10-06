@@ -544,8 +544,8 @@ BaseController (Server-Side)
     └─ Inject into &lt;head&gt;
     ↓
 CSS Custom Properties
-    ├─ --color-major-default-hue
-    ├─ --color-major-default-saturation
+    ├─ --color-root-major-hue
+    ├─ --color-root-major-saturation
     └─ --color-major-lightness
     ↓
 Page Automatically Applies Theme</code></pre>
@@ -559,14 +559,14 @@ Page Automatically Applies Theme</code></pre>
 					<pre><code class="javascript">// data/comps/theme.js
 export default {
   default: {
-    '--color-major-default-hue': '140',           // Hue (0-360)
-    '--color-major-default-saturation': '85%',    // Saturation
+    '--color-root-major-hue': '140',           // Hue (0-360)
+    '--color-root-major-saturation': '85%',    // Saturation
     '--color-major-lightness': '25%',     // Lightness
     '--logo': 'url("/assets/images/logo.svg")',
   },
   dark: {
-    '--color-default-lightness-l1': '75%',    // Dark background
-    '--color-default-lightness': '95%',       // Dark text
+    '--color-root-lightness-l1': '75%',    // Dark background
+    '--color-root-lightness': '95%',       // Dark text
   },
 };</code></pre>
 				</div>
@@ -584,7 +584,7 @@ export default {
       data: {
         theme: {
           default: {
-            '--color-major-default-hue': '200',  // Override global theme
+            '--color-root-major-hue': '200',  // Override global theme
           },
         },
       },
@@ -713,7 +713,7 @@ const heroData = {
 					<p><strong>Scenario:</strong> Create pages with different themes for different brands</p>
 					<pre><code class="javascript">// Global Theme (data/comps/theme.js)
 export default {
-  default: { '--color-major-default-hue': '140' }, // Green theme
+  default: { '--color-root-major-hue': '140' }, // Green theme
 };
 
 // Brand A Page
@@ -722,7 +722,7 @@ export default {
     return {
       data: {
         theme: {
-          default: { '--color-major-default-hue': '200' }, // Blue theme
+          default: { '--color-root-major-hue': '200' }, // Blue theme
         },
       },
     };
@@ -735,7 +735,7 @@ export default {
     return {
       data: {
         theme: {
-          default: { '--color-major-default-hue': '4' }, // Red theme
+          default: { '--color-root-major-hue': '4' }, // Red theme
         },
       },
     };

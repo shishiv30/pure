@@ -21,9 +21,9 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 
 ```
 第 1 层  原始通道（Channel primitives）      :root
-         --color-major-default-hue: 165
-         --color-major-default-saturation: 58%
-         --color-major-default-lightness: 23%
+         --color-root-major-hue: 165
+         --color-root-major-saturation: 58%
+         --color-root-major-lightness: 23%
                         ↓ hsl() 组装
 第 2 层  语义角色（Semantic roles）          body
          --color-major: hsl(hue, sat, light)
@@ -39,21 +39,21 @@ Pure 的样式系统不依赖任何 CSS 框架（无 Tailwind、无 CSS-in-JS）
 
 ```scss
 --color-major: hsl(
-  var(--color-major-default-hue),
-  var(--color-major-default-saturation),
+  var(--color-root-major-hue),
+  var(--color-root-major-saturation),
   var(--color-major-lightness)
 );
 ```
 
-直接收益：换肤只需改一个 `--color-major-default-hue`。`data/comps/theme*.js` 正是这么做的——四套主题（default/blue/pink/yellow）各自只声明 4～6 个通道值，由服务端 `server/ejs/comp_theme.js` 生成内联 `<style>` 注入 `body`：
+直接收益：换肤只需改一个 `--color-root-major-hue`。`data/comps/theme*.js` 正是这么做的——四套主题（default/blue/pink/yellow）各自只声明 4～6 个通道值，由服务端 `server/ejs/comp_theme.js` 生成内联 `<style>` 注入 `body`：
 
 ```js
 // data/comps/theme.js
 default: {
-  '--color-major-default-hue': '216',
-  '--color-major-default-saturation': '100%',
-  '--color-major-default-lightness': '50%',
-  '--color-major-default-lightness-l1': '96%',
+  '--color-root-major-hue': '216',
+  '--color-root-major-saturation': '100%',
+  '--color-root-major-lightness': '50%',
+  '--color-root-major-lightness-l1': '96%',
 }
 ```
 
@@ -63,24 +63,28 @@ default: {
 
 组件永不直接读全局 token，而是读自己的 `--<comp>-*`；而 `--<comp>-*` 又指向上下文别名 `--color` / `--color-bg`。于是任何祖先元素改写 `--color` 就能整片改道，无需增加选择器特异性。
 
-`_mixins.scss:7-23` 的 `comp-color($name)` 为每个组件批量盖出 13 个 token：
+`comp-color($name)` keeps one set of `--<comp>-color*` tokens. `.active` points that same set at the active palette, so components do not restyle color, background, or border inside `&.active`.
 
 ```scss
 @mixin comp-color($name) {
   .#{$name} {
-    --#{$name}-color: var(--color);
-    --#{$name}-color-bg: var(--color-bg);
-    --#{$name}-color-border: var(--color-border);
-    --#{$name}-color-hover: var(--color-hover);
-    --#{$name}-color-bg-hover: var(--color-bg-hover);
-    --#{$name}-color-border-hover: var(--color-border-hover);
-    --#{$name}-color-active: var(--color-active);
-    --#{$name}-color-active-bg: var(--color-active-bg);
-    --#{$name}-color-active-border: var(--color-active-border);
-    --#{$name}-color-active-hover: var(--color-active-hover);
-    --#{$name}-color-active-bg-hover: var(--color-active-bg-hover);
-    --#{$name}-color-active-border-hover: var(--color-active-border-hover);
     --#{$name}-border-weight: 1px;
+    &:not(.active) {
+      --#{$name}-color: var(--color);
+      --#{$name}-color-bg: var(--color-bg);
+      --#{$name}-color-border: var(--color-border);
+      --#{$name}-color-hover: var(--color-hover);
+      --#{$name}-color-border-hover: var(--color-border-hover);
+      --#{$name}-color-bg-hover: var(--color-bg-hover);
+    }
+    &.active {
+      --#{$name}-color: var(--color-active);
+      --#{$name}-color-bg: var(--color-active-bg);
+      --#{$name}-color-border: var(--color-active-border);
+      --#{$name}-color-hover: var(--color-active-hover);
+      --#{$name}-color-bg-hover: var(--color-active-bg-hover);
+      --#{$name}-color-border-hover: var(--color-active-border-hover);
+    }
   }
 }
 ```
@@ -88,8 +92,8 @@ default: {
 配套的 `color()` mixin（`_mixins.scss:62-141`）定义 7 个语义类 `.default .gray .major .minor .danger .safe .tip`，每个类重写 `--color` 系别名，并用 `color-mix()` 自动派生 hover 态：
 
 ```scss
---color-hover: color-mix(in srgb, var(--color) 90%, var(--color-default));
---color-bg-hover: color-mix(in srgb, var(--color-bg) 90%, var(--color-bg-default));
+--color-hover: color-mix(in srgb, var(--color) 90%, var(--color-root));
+--color-bg-hover: color-mix(in srgb, var(--color-bg) 90%, var(--color-root-bg));
 ```
 
 `_header.scss:28-72` 是该原则最完整的示范——深色 header 直接把子组件 token 接到自己的 token 上，输入框与按钮自动反色：
@@ -248,12 +252,12 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 **全局通道**
 
 ```scss
---color-default-lightness: 23%;
---color-default-l1-lightness: 95%;
---color-default-saturation: 1%;
---color-bg-default-saturation: 100%;
---color-bg-default-saturation: 100%;
---color-default-lightness: 30%;
+--color-root-lightness: 23%;
+--color-root-l1-lightness: 95%;
+--color-root-saturation: 1%;
+--color-root-bg-saturation: 100%;
+--color-root-bg-saturation: 100%;
+--color-root-lightness: 30%;
 ```
 
 **语义角色（5 个）** — 每个角色 5 个通道 token + 4 个组装 token
@@ -262,26 +266,25 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 |---|---|---|---|---|
 | major | 165 | 58% | 23% | 99% |
 | minor | 169 | 100% | 31% | 99% |
-| safe | 179 | `--color-bg-default-saturation` | 25% | 99% |
+| safe | 179 | `--color-root-bg-saturation` | 25% | 99% |
 | danger | 10 | 同上 | 48% | 99% |
 | tip | 321 | 同上 | 24% | 99% |
 
-每个角色输出四种形态：`--color-X`、`--color-X-l1`、`--color-X-hsl`（裸三元组，供 `hsla()` 加透明度）、`--color-X-hsl-l1`。
 
 **上下文别名（组件真正读取的层）**
 
 ```scss
---color:               var(--color-default);
---color-bg:            var(--color-bg-default);
---color-border:        var(--color-border-default);
---color-hover:         var(--color-default-l1);
---color-bg-hover:      var(--color-bg-default-l1);
---color-l1:            var(--color-default-l1);
---color-bg-l1:         var(--color-bg-default-l1);
---color-active:        var(--color-bg-default);
---color-active-bg:     var(--color-default);
---color-active-border: var(--color-default);
---color-disabled:      var(--color-default-l1);
+--color:               var(--color-root);
+--color-bg:            var(--color-root-bg);
+--color-border:        var(--color-root-border);
+--color-hover:         var(--color-root-l1);
+--color-bg-hover:      var(--color-root-bg-l1);
+--color-l1:            var(--color-root-l1);
+--color-bg-l1:         var(--color-root-bg-l1);
+--color-active:        var(--color-root-bg);
+--color-active-bg:     var(--color-root);
+--color-active-border: var(--color-root);
+--color-disabled:      var(--color-root-l1);
 ```
 
 **中性阶** `--color-0..9`（明度 100% → 10%，步长 10%）+ 彩虹阶 `--color-r0..r9`（10 个固定色相）。二者当前均**无消费者**。
@@ -290,7 +293,7 @@ box-shadow: inset 0 0 0 var(--btn-border-weight) var(--btn-color-border);
 
 ```scss
 --selection-background: color-mix(in srgb, var(--color-major) 40%, var(--color-bg));
---selection-color: var(--color-default);
+--selection-color: var(--color-root);
 ```
 
 ### 2.5 组件尺寸 Component
@@ -412,8 +415,8 @@ index.scss
 
 | 位置 | 问题 | 状态 |
 |---|---|---|
-| `_theme.default.scss` | `--color-default-lightness: 750%` —— 应为 `75%` | ✅ |
-| `_theme.default.scss` | 暗色模式重写 `--color-major-default-lightness`，但 `--color-major-lightness` 的别名已在 `:root` 解析完毕，**major/minor/safe/danger/tip 五个语义色在暗色下实际不变暗** | ✅ |
+| `_theme.default.scss` | `--color-root-lightness: 750%` —— 应为 `75%` | ✅ |
+| `_theme.default.scss` | 暗色模式重写 `--color-root-major-lightness`，但 `--color-major-lightness` 的别名已在 `:root` 解析完毕，**major/minor/safe/danger/tip 五个语义色在暗色下实际不变暗** | ✅ |
 | `_button.scss` `_input.scss` 等 7 处 | 消费 `var(--<comp>-font-weight)`，但 `comp-size()` 从不产出该 token | ✅ |
 | `_typograph.scss` `_mixins.scss` | 消费 `--font-weight-light`，从未定义 → `.text-light` 为空操作 | ✅ |
 | `_font.roboto.scss` | `font-weight: 700` 指向 `Roboto-Regular.woff2`，浏览器视其为真粗体并**跳过合成** → 粗体与常规完全同形 | ✅ |
@@ -429,10 +432,10 @@ index.scss
 
 ### 3.4 一致性问题
 
-- **Token 分散在三个根作用域且无规则**：`:root`（原始通道）、`html`（z-index）、`body`（组装色 + 间距 + 组件尺寸）。后果：`::backdrop`、`html` 滚动条等 `<body>` 外的上下文**取不到任何颜色 token**。（注意：语义色的 `-lightness` 别名**必须**留在 `body`，见 3.3 的暗色 bug；统一作用域时要把 `-default-` 源一起搬，不能只搬别名。）
+- **Token 分散在三个根作用域且无规则**：`:root`（原始通道）、`html`（z-index）、`body`（组装色 + 间距 + 组件尺寸）。后果：`::backdrop`、`html` 滚动条等 `<body>` 外的上下文**取不到任何颜色 token**。（注意：语义色的 `-lightness` 别名**必须**留在 `body`，见 3.3 的暗色 bug；统一作用域时要把 `-root-` 源一起搬，不能只搬别名。）
 - `_goldenratio.scss` 用硬编码 `992px / 640px / 639px`，与 `_var.screen.scss` 无关。
 - `--logo` 在 SCSS 指向 `../assets/img/`，在 JS 主题指向 `/assets/images/` —— 两套目录。
-- 死 token：`--color-r0..r9`（20 条声明，0 消费）、`--color-0..9`（20 条，0 消费）、`--line-height-1`、`--comp-font-size`、`--comp-max-width`、`--color-disabled`、`--color-bg-default-l1-lightness`、`--color-default-l1-lightness`。
+- 死 token：`--color-r0..r9`（20 条声明，0 消费）、`--color-0..9`（20 条，0 消费）、`--line-height-1`、`--comp-font-size`、`--comp-max-width`、`--color-disabled`、`--color-root-bg-l1-lightness`、`--color-root-l1-lightness`。
 - `.csscomb.json` 要求 4 空格缩进 + 双引号，实际代码为 tab + 单引号 —— 配置已失效。
 
 ---
@@ -479,13 +482,13 @@ index.scss
 根因是 CSS 自定义属性的一条规则：`var()` 在自定义属性中的替换发生在**声明它的那个元素**上、级联结束之后。原代码把别名放在 `:root`：
 
 ```scss
-:root { --color-major-lightness: var(--color-major-default-lightness); }  /* 在 html 上就冻结成亮色 23% */
-body.theme-dark { --color-major-default-lightness: 50%; }                 /* 改的是 body，已经晚了 */
+:root { --color-major-lightness: var(--color-root-major-lightness); }  /* 在 html 上就冻结成亮色 23% */
+body.theme-dark { --color-root-major-lightness: 50%; }                 /* 改的是 body，已经晚了 */
 ```
 
 `body` 继承到的是 html 算好的 `23%`，暗色覆盖对 major/minor/safe/danger/tip **全部无效**。
 
-修复：把 10 条 `--color-<role>-lightness` / `-lightness-l1` 别名从 `:root` 移到 `body`，与 `-default-` 源同处一个元素，级联后别名才会重新解析。`:root` 与 `body` 两处都留了注释说明原因。
+修复：把 10 条 `--color-<role>-lightness` / `-lightness-l1` 别名从 `:root` 移到 `body`，与 `-root-` 源同处一个元素，级联后别名才会重新解析。`:root` 与 `body` 两处都留了注释说明原因。
 
 模拟解析验证（`body.theme-dark`）：
 
@@ -514,7 +517,7 @@ body.theme-dark { --color-major-default-lightness: 50%; }                 /* 改
 
 | 原引用 | 改为 | 处数 |
 |---|---|---|
-| `var(--color-f)` | `var(--color-bg-default)` | 4 |
+| `var(--color-f)` | `var(--color-root-bg)` | 4 |
 | `var(--color-link-default)` | `var(--color-link)` | 3 |
 | `var(--head--color-active-border)` | `var(--header-color-active-border)` | 1 |
 | `content: var(--icon-*)` | `content: $icon-*` | 7 |

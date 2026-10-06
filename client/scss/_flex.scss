@@ -94,18 +94,18 @@
 	}
 
 	&.top {
-		align-content: start;
+		align-items: start;
 	}
 
 	&.middle {
-		align-content: center;
+		align-items: center;
 	}
 
 	&.baseline {
-		align-content: baseline;
+		align-items: baseline;
 	}
 
 	&.bottom {
-		align-content: end;
+		align-items: end;
 	}
 }

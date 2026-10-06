@@ -88,7 +88,7 @@
 	}
 
 	button {
-		@include hover-scale();
+		@include hover-scale(var(--group-dropdown-button-color-bg-hover));
 		font-size: var(--group-dropdown-button-font-size);
 		font-weight: var(--group-dropdown-button-font-weight);
 		height: var(--group-dropdown-button-size);
@@ -111,14 +111,14 @@
 		}
 
 		&.selected {
-			color: var(--group-dropdown-button-color-active);
-			background-color: var(--group-dropdown-button-color-active-bg);
-			border-color: var(--group-dropdown-button-color-active-border);
+			color: var(--group-dropdown-button-color-bg);
+			background-color: var(--group-dropdown-button-color);
+			border-color: var(--group-dropdown-button-color-border);
 
 			&:hover {
-				color: var(--group-dropdown-button-color-active-hover);
-				background-color: var(--group-dropdown-button-color-active-bg-hover);
-				border-color: var(--group-dropdown-button-color-active-border-hover);
+				color: var(--group-dropdown-button-color-bg-hover);
+				background-color: var(--group-dropdown-button-color-hover);
+				border-color: var(--group-dropdown-button-color-border-hover);
 			}
 		}
 
@@ -140,9 +140,6 @@
 		border-radius: var(--radius-0) !important;
 		overflow: hidden;
 		border: 1px solid var(--group-dropdown-button-color-border) !important;
-		&.active{
-			border: 1px solid var(--group-dropdown-button-color-active-border) !important;
-		}
 		button {
 			border: none !important;
 			border-radius: 0 !important;

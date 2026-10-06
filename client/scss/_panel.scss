@@ -21,14 +21,7 @@
 	color: var(--panel-color);
 	background-color: var(--panel-color-bg);
 
-	&.active {
-		color: var(--panel-color-active);
-		background-color: var(--panel-color-active-bg);
-	}
 	&.outline {
-		&.active {
-			box-shadow: inset 0 0 0 var(--panel-border-weight) var(--panel-color-active-border);
-		}
 		box-shadow: inset 0 0 0 var(--panel-border-weight) var(--panel-color-border);
 	}
 }

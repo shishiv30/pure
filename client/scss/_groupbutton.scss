@@ -52,8 +52,8 @@
 
 	input {
 		&:checked+span {
-			color: var(--group-btn-color-active);
-			background-color: var(--group-btn-color-active-bg);
+			color: var(--group-btn-color-bg);
+			background-color: var(--group-btn-color);
 		}
 	}
 
