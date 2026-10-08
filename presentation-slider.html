@@ -87,7 +87,7 @@ Page Complete ✅</code></pre></div></div><div class="slide"><div class="slide-c
 // - template: client/pages/about/index.html
 // - filename: about.html</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Page File Structure</h2><pre><code>client/pages/about/
 ├── index.html          # Page HTML (includes header/footer)
-└── index.js            # Page entry (imports main and scss)</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Server-Side Page Creation</h2><pre><code class="javascript">// server/configs/aboutPage.js
+└── index.js            # Page entry (imports main and scss)</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Server-Side Page Creation</h2><pre><code class="javascript">// server/controllers/aboutPage.js
 export default {
   name: 'about',
   seo: function() {
@@ -112,23 +112,23 @@ BaseController (Server-Side)
     └─ Inject into &lt;head&gt;
     ↓
 CSS Custom Properties
-    ├─ --color-major-hue
-    ├─ --color-major-saturation
+    ├─ --color-root-major-hue
+    ├─ --color-root-major-saturation
     └─ --color-major-lightness
     ↓
 Page Automatically Applies Theme</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Theme Data Structure</h2><pre><code class="javascript">// data/comps/theme.js
 export default {
   default: {
-    '--color-major-hue': '140',           // Hue (0-360)
-    '--color-major-saturation': '85%',    // Saturation
+    '--color-root-major-hue': '140',           // Hue (0-360)
+    '--color-root-major-saturation': '85%',    // Saturation
     '--color-major-lightness': '25%',     // Lightness
     '--logo': 'url("/assets/images/logo.svg")',
   },
   dark: {
-    '--color-glb-bg-lightness': '75%',    // Dark background
-    '--color-glb-lightness': '95%',       // Dark text
+    '--color-root-lightness-l1': '75%',    // Dark background
+    '--color-root-lightness': '95%',       // Dark text
   },
-};</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Page-Level Theme Override</h2><pre><code class="javascript">// server/configs/demoPage.js
+};</code></pre></div></div><div class="slide"><div class="slide-content fade-in"><h2>Page-Level Theme Override</h2><pre><code class="javascript">// server/controllers/demoPage.js
 export default {
   name: 'demo',
   get: async function() {
@@ -136,7 +136,7 @@ export default {
       data: {
         theme: {
           default: {
-            '--color-major-hue': '200',  // Override global theme
+            '--color-root-major-hue': '200',  // Override global theme
           },
         },
       },
@@ -188,7 +188,7 @@ const heroData = {
 &lt;/section&gt;
 &lt;%_ } _%&gt;</code></pre><p><strong>Benefits:</strong> Data-view separation, reusable across pages, easy updates</p></div></div><div class="slide"><div class="slide-content fade-in"><h2>Case Study 2: Multi-Page Theme Switching</h2><p><strong>Scenario:</strong> Create pages with different themes for different brands</p><pre><code class="javascript">// Global Theme (data/comps/theme.js)
 export default {
-  default: { '--color-major-hue': '140' }, // Green theme
+  default: { '--color-root-major-hue': '140' }, // Green theme
 };
 
 // Brand A Page
@@ -197,7 +197,7 @@ export default {
     return {
       data: {
         theme: {
-          default: { '--color-major-hue': '200' }, // Blue theme
+          default: { '--color-root-major-hue': '200' }, // Blue theme
         },
       },
     };
@@ -210,7 +210,7 @@ export default {
     return {
       data: {
         theme: {
-          default: { '--color-major-hue': '4' }, // Red theme
+          default: { '--color-root-major-hue': '4' }, // Red theme
         },
       },
     };
