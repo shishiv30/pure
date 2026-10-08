@@ -3,6 +3,8 @@ import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import config from './server/config.js';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { pathnameFromHostUrl, prefixRootRelativeUrls } from './helpers/htmlPath.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,6 +57,23 @@ export default (env) => {
 			new WorkboxPlugin.InjectManifest({
 				swSrc: './sw.js',
 			}),
+			// Root-relative href/src (e.g. /layout.html) stay valid under a subpath
+			// such as https://*.github.io/pure/ — ./ links break when the address changes.
+			{
+				apply(compiler) {
+					const base = pathnameFromHostUrl(String(publicPath).replace(/\/$/, ''));
+					if (!base) return;
+					compiler.hooks.compilation.tap('PrefixRootRelativeHtml', (compilation) => {
+						HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap(
+							'PrefixRootRelativeHtml',
+							(data) => {
+								data.html = prefixRootRelativeUrls(data.html, base);
+								return data;
+							},
+						);
+					});
+				},
+			},
 		],
 	});
 };
