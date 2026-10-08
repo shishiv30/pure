@@ -17,12 +17,12 @@
 </script>
 <%_if(data){_%>
   <script type="text/javascript">
-    // Load saved theme preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('theme-dark');
-    } else if (savedTheme === 'light') {
-      document.body.classList.remove('theme-dark');
+    // Load saved theme preference (auto follows the system)
+    var savedTheme = localStorage.getItem('theme');
+    var themeClass = savedTheme === 'dark' ? 'theme-dark' : (savedTheme === 'light' ? 'theme-light' : '');
+    if (themeClass) {
+      document.documentElement.classList.add(themeClass);
+      document.body.classList.add(themeClass);
     }
   </script>
   <script>

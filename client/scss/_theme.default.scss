@@ -286,8 +286,7 @@ body {
 
 }
 
-:root{
-	@media (prefers-color-scheme: dark) {
+@mixin theme-dark-tokens {
 		--logo: url('../assets/img/logo-bg.svg');
 		--color-root-lightness: 95%;
 		--color-root-lightness-l1: 60%;
@@ -338,7 +337,16 @@ body {
 				--panel-color-bg: var(--color-bg);
 			}
 		}
+}
+
+:root {
+	@media (prefers-color-scheme: dark) {
+		&:not(.theme-light) {
+			@include theme-dark-tokens;
+		}
 	}
 
-
+	&.theme-dark {
+		@include theme-dark-tokens;
+	}
 }
