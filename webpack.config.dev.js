@@ -1,3 +1,4 @@
+import webpack from 'webpack';
 import baseConfig from './webpack.config.base.js';
 import { merge } from 'webpack-merge';
 import path from 'path';
@@ -24,6 +25,9 @@ export default (env) => {
 			clean: true,
 		},
 		plugins: [
+			new webpack.DefinePlugin({
+				__APP_BASE__: JSON.stringify(''),
+			}),
 			new CleanupHotUpdatePlugin({
 				outputPath: path.resolve(__dirname, 'dist'),
 			}),

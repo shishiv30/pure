@@ -29,3 +29,51 @@ export function pathnameFromHostUrl(hostUrl) {
 		return '';
 	}
 }
+
+/**
+ * Site base from webpack publicPath (`/` → '', `https://host/pure/` → `/pure`).
+ * @param {string} publicPath
+ * @returns {string}
+ */
+export function appBaseFromPublicPath(publicPath) {
+	if (!publicPath || publicPath === '/') return '';
+	if (publicPath.startsWith('/')) {
+		const pathOnly = publicPath.replace(/\/$/, '');
+		return pathOnly === '' ? '' : pathOnly;
+	}
+	return pathnameFromHostUrl(String(publicPath).replace(/\/$/, ''));
+}
+
+/**
+ * Drop a deploy base so route regexes stay rooted at `/demo/...`.
+ * `/pure/demo/tx` + `/pure` → `/demo/tx`. Unknown bases are left unchanged.
+ * @param {string} pathname
+ * @param {string} base
+ * @returns {string}
+ */
+export function stripAppBase(pathname, base) {
+	if (!pathname || !base || base === '/') return pathname || '';
+	const normalized = (base.startsWith('/') ? base : `/${base}`).replace(/\/$/, '');
+	if (pathname === normalized) return '/';
+	if (pathname.startsWith(`${normalized}/`)) {
+		return pathname.slice(normalized.length);
+	}
+	return pathname;
+}
+
+/**
+ * Put the deploy base back on an app path for history and hrefs.
+ * Paths that already include the base are unchanged.
+ * @param {string} pathname
+ * @param {string} base
+ * @returns {string}
+ */
+export function withAppBase(pathname, base) {
+	if (!pathname || !base || base === '/') return pathname || '';
+	const normalized = (base.startsWith('/') ? base : `/${base}`).replace(/\/$/, '');
+	if (pathname === normalized || pathname.startsWith(`${normalized}/`)) {
+		return pathname;
+	}
+	if (!pathname.startsWith('/')) return pathname;
+	return `${normalized}${pathname}`;
+}

@@ -1,10 +1,15 @@
+import webpack from 'webpack';
 import baseConfig from './webpack.config.base.js';
 import { merge } from 'webpack-merge';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import config from './server/config.js';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { pathnameFromHostUrl, prefixRootRelativeUrls } from './helpers/htmlPath.js';
+import {
+	appBaseFromPublicPath,
+	pathnameFromHostUrl,
+	prefixRootRelativeUrls,
+} from './helpers/htmlPath.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +24,7 @@ export default (env) => {
 	const publicPath = config.cdnHost && config.cdnHost !== config.appHost
 		? `${String(config.cdnHost)}/`
 		: '/';
+	const appBase = appBaseFromPublicPath(publicPath);
 	return merge(baseConfig(env), {
 		mode: config.webpackMode,
 		devtool: config.webpackDevtool,
@@ -34,6 +40,9 @@ export default (env) => {
 		},
 		// recordsPath: path.join(__dirname, 'records.json'),
 		plugins: [
+			new webpack.DefinePlugin({
+				__APP_BASE__: JSON.stringify(appBase),
+			}),
 			new CleanupHotUpdatePlugin({
 				outputPath: path.resolve(__dirname, 'dist'),
 			}),

@@ -12,6 +12,9 @@
  *
  * @see docs/client-js-lifecycle.md (map: client-boot)
  *
+ * Deploy folder (`/pure`, `/subdomain`) is stripped before `reg` / `path` match
+ * and restored when writing history, so route patterns stay rooted at `/`.
+ *
  * @typedef {'push' | 'replace' | 'goto'} NavigationMethod
  *
  * @typedef {Object} RouteState
@@ -29,7 +32,16 @@
  * @property {'demo'} [linkScope] When `demo`, only same-origin `/demo/` links
  *   are intercepted (except `/demo/sitemap`). Omit to intercept every
  *   same-origin path `getInternalPath` can parse.
+ * @property {string} [basePath] Deploy folder (`/pure`). Rules match the path
+ *   after this prefix. Defaults to `__APP_BASE__` from the webpack publicPath.
  */
+
+import { stripAppBase, withAppBase } from '../../../helpers/htmlPath.js';
+
+/** @returns {string} */
+function definedAppBase() {
+	return typeof __APP_BASE__ === 'string' ? __APP_BASE__ : '';
+}
 
 export class Router {
 	/** @type {Router|null} */
@@ -45,6 +57,7 @@ export class Router {
 		}
 		this.rules = rules;
 		this.options = options;
+		this.basePath = options.basePath != null ? options.basePath : definedAppBase();
 		/** @type {RouteState|null} */
 		this.currentRouter = null;
 		this._onPopstate = null;
@@ -89,10 +102,12 @@ export class Router {
 				return;
 			}
 			this.currentRouter = state;
+			const browserPath = withAppBase(state.pathname, this.basePath);
+			state.pathname = browserPath;
 			if (method === 'push') {
-				window.history.pushState({ pathname: state.pathname }, '', state.pathname);
+				window.history.pushState({ pathname: browserPath }, '', browserPath);
 			} else if (method === 'replace') {
-				window.history.replaceState({ pathname: state.pathname }, null, state.pathname);
+				window.history.replaceState({ pathname: browserPath }, null, browserPath);
 			}
 		} catch (error) {
 			console.error('Navigation error:', error);
@@ -145,10 +160,11 @@ export class Router {
 		if (this.options.linkScope !== 'demo') {
 			return true;
 		}
-		if (!internalPath.startsWith('/demo/')) {
+		const appPath = stripAppBase(internalPath, this.basePath);
+		if (!appPath.startsWith('/demo/')) {
 			return false;
 		}
-		if (internalPath.startsWith('/demo/sitemap')) {
+		if (appPath.startsWith('/demo/sitemap')) {
 			return false;
 		}
 		if (e && (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) {
@@ -249,20 +265,21 @@ export class Router {
 		if (!pathname) {
 			return;
 		}
+		const appPath = stripAppBase(pathname, this.basePath);
 		let toRule = null;
 		let params = null;
 		for (let i = 0; i < this.rules.length; i++) {
 			let rule = this.rules[i];
 			if (rule.reg instanceof RegExp) {
-				if (rule.reg.test(pathname)) {
+				if (rule.reg.test(appPath)) {
 					toRule = rule;
-					params = pathname.match(rule.reg);
+					params = appPath.match(rule.reg);
 					if (params && params.length > 1) {
 						params = params.slice(1); // remove the full match
 					}
 					break;
 				}
-			} else if (rule.path === pathname) {
+			} else if (rule.path === appPath) {
 				toRule = rule;
 				break;
 			}
