@@ -71,13 +71,32 @@ export default (env) => {
 			{
 				apply(compiler) {
 					const base = pathnameFromHostUrl(String(publicPath).replace(/\/$/, ''));
-					if (!base) return;
 					compiler.hooks.compilation.tap('PrefixRootRelativeHtml', (compilation) => {
-						HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap(
-							'PrefixRootRelativeHtml',
-							(data) => {
-								data.html = prefixRootRelativeUrls(data.html, base);
-								return data;
+						if (base) {
+							HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap(
+								'PrefixRootRelativeHtml',
+								(data) => {
+									data.html = prefixRootRelativeUrls(data.html, base);
+									return data;
+								},
+							);
+						}
+						// GitHub Pages has no rewrite: /pure/demo/ny/new-york is not a file.
+						// 404.html is the demo shell so the client router can match that URL.
+						if (!base) return;
+						compilation.hooks.processAssets.tap(
+							{
+								name: 'DemoSpaFallback',
+								stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+							},
+							() => {
+								const demo = compilation.getAsset('demo.html');
+								if (!demo) return;
+								if (compilation.getAsset('404.html')) {
+									compilation.updateAsset('404.html', demo.source);
+								} else {
+									compilation.emitAsset('404.html', demo.source);
+								}
 							},
 						);
 					});
