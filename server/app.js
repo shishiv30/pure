@@ -28,6 +28,7 @@ session(app);
 
 app.use((req, res, next) => {
 	res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+	res.append('Link', '</llms.txt>; rel="describedby"');
 	next();
 });
 

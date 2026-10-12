@@ -129,8 +129,27 @@ export default () => {
 						to: path.resolve(__dirname, 'dist/images'),
 						noErrorOnMissing: true,
 					},
+					{
+						from: path.resolve(__dirname, 'llms.txt'),
+						to: path.resolve(__dirname, 'dist/llms.txt'),
+					},
 				],
 			}),
+			{
+				apply(compiler) {
+					compiler.hooks.compilation.tap('LlmsTxtLink', (compilation) => {
+						HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap('LlmsTxtLink', (data) => {
+							if (!data.html.includes('rel="describedby"')) {
+								data.html = data.html.replace(
+									/<head[^>]*>/i,
+									'$&\n<link rel="describedby" href="/llms.txt">',
+								);
+							}
+							return data;
+						});
+					});
+				},
+			},
 		],
 	};
 };

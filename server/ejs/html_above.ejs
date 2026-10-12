@@ -8,6 +8,7 @@
     <%= seo.title || 'Page Title' %>
   </title>
   <meta name="description" content="<%= seo.desc || 'Page Description' %>">
+  <link rel="describedby" href="/llms.txt">
   <%_if(meta.preload && meta.preload.length){for(var i=0; i<meta.preload.length; i++){_%>
     <link rel="preload" href="<%=meta.preload[i].href%>" as="<%=meta.preload[i].as%>">
     <%_} }_%>

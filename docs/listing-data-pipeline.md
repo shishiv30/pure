@@ -53,11 +53,29 @@ Example: [`server/controllers/demo.js`](../server/controllers/demo.js).
 
 `demo.get()` runs in parallel:
 
-- `searchHouse(geo)` — nearby listings (grid)
+- `searchHouse(geo)` — nearby listings (grid). `demo.get()` passes no filter, so the body is only `input` and `searchType`.
 - `getPropertyListingInfoById(prId)` — primary listing (detail)
 - `getPropertyHistoryById(prId)` — histories (detail)
 
 Imported from `server/routes/api.soa.property.js` (not an internal HTTP hop to `/api/soa`).
+
+`searchHouse` posts to `POST /listings/nearbysearch/v2`. `getSearchInputByGeo` picks the first matching method (5):
+
+| Order | Required geo fields | `input` |
+|-------|---------------------|---------|
+| 1 | zipcode + state | `{zipcode} {state}` |
+| 2 | neighborhood + city + state | `{neighborhood} {city} {state}` |
+| 3 | city + state | `{city} {state}` |
+| 4 | county + state | `{county} {state}` |
+| 5 | state | `{state}` |
+
+`searchType` is `geo.type` uppercased. App types in `helpers/geo.js` are `state`, `city`, `county`, `zipcode`, `neighborhood`, and `address`. There is no address branch in `getSearchInputByGeo`; an address geo falls through the table above or sends an empty `input`.
+
+Optional filters are applied only when `searchHouse(geo, filter)` receives a filter object (`POST /soa/property/searchHouse` body `filter`). `getFilterByPayloadFilter` copies these payload fields (pagination and sort included):
+
+`minPrice`, `maxPrice`, `minBed`, `maxBed`, `minBath`, `maxBath`, `propertyTypes`, `minSqft`, `maxSqft`, `minLot`, `maxLot`, `minYear`, `maxYear`, `minDom`, `maxDom`, `minHoa`, `maxHoa`, `attributesTags` (`pool` and `garage` also set their own flags), `isNewListingsOnly`, `isReducedPrice`, `isVirtualTourLinkOnly`, `hasVideo`, `isNewConstruction`, `isDistressed`, `isOpenHousesOnly`, `movotoListing`, `hasPhoto`, `sortColumn` + `sortOrder`, `searchPropertyStatus` (`FOR_RENT`, `INACTIVE` with optional `soldDateRange`, `ACTIVE`), `schoolRequest` (first school only), `pageIndex`, `maxCountPerPage`, and the viewport quartet `maxLat` / `minLat` / `maxLng` / `minLng`.
+
+That is 33 payload fields. Template keys that stay at their defaults and are not read from the payload include `fixerupper` and `propertyCriteriaLuxuryHome`.
 
 ### Auth
 

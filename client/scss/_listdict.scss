@@ -4,23 +4,22 @@
 	width: 100%;
 	margin: var(--g1) auto;
 	display: grid;
-	grid-template-columns:  1fr 1fr;
-	gap: var(--g2);
+	grid-template-columns: max-content 1fr max-content 1fr;
+	column-gap: var(--g1);
+	row-gap: var(--g2);
 
 	> li {
-		width: 100%;
-		border-bottom: 1px solid var(--color-border);
-		display: flex;
-		flex-wrap: wrap;
+		grid-column: span 2;
+		display: grid;
+		grid-template-columns: subgrid;
 		align-items: baseline;
-		gap: var(--gxs) var(--g1);
+		border-bottom: 1px solid var(--color-border);
 		margin-bottom: 0;
 		padding-bottom: var(--g1);
 		line-height: normal;
 	}
 
 	.key {
-		flex: 0 0 30%;
 		min-width: 0;
 		text-decoration: none;
 		cursor: help;
@@ -28,7 +27,7 @@
 	}
 
 	.value {
-		flex: 1 1 auto;
+		min-width: 0;
 		display: flex;
 		align-items: baseline;
 		text-align: end;

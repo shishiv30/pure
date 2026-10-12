@@ -1,0 +1,33 @@
+# Pure
+
+> Server-rendered real-estate demo. Search is a path under `/demo/`, not a query string. Read this file before building a search URL.
+
+Pages that cover this site link it with `rel="describedby"` (`/llms.txt`). On GitHub Pages the site lives under `/pure/`, so the same file is `/pure/llms.txt` and every search path below is prefixed with `/pure`. The `/pure` segment is the deploy folder, not part of the search.
+
+## How to search
+
+Build a path with `getPathByGeo` in `helpers/geo.js`. Lowercase the state code. Turn spaces into hyphens. Strip a trailing word `city` or `county` from those names.
+
+- State: `/demo/{state}` — `/demo/tx`
+- County: `/demo/{state}/{county}_county` — `/demo/tx/harris_county`
+- City: `/demo/{state}/{city}` — `/demo/tx/houston`
+- Zip: `/demo/{state}/{zip}` — `/demo/tx/77002`
+- Neighborhood: `/demo/{state}/{city}/{neighborhood}_neighborhood`
+- Address: `/demo/{state}/{city}/{address}_address`
+
+`/demo` and `/demo/` redirect to `/demo/sitemap`. Sitemap drills down: `/demo/sitemap`, `/demo/sitemap/{state}`, `/demo/sitemap/{state}/{county}_county`, `/demo/sitemap/{state}/{city}`.
+
+A property detail URL is `/demo/detail/{state}/{zip}/{propertyId}`. A map URL is `/demo/{state}/{slug}/@{lat},{lng}`.
+
+Those pages call nearby search with only `input` and `searchType`. `searchType` is the geo type in uppercase (`STATE`, `COUNTY`, `CITY`, `ZIPCODE`, `NEIGHBORHOOD`, `ADDRESS`). `input` is the first match of: `{zip} {state}`, `{neighborhood} {city} {state}`, `{city} {state}`, `{county} {state}`, `{state}`. An address has no input line of its own.
+
+Price, beds, baths, and the other filters are not URL parameters. They are a JSON body on `POST /soa/property/searchHouse`. The demo HTML pages do not send that body.
+
+## Docs
+
+- [Search URL routes](https://github.com/shishiv30/pure/blob/main/docs/routes-reference.md): Demo path table
+- [Search input and filters](https://github.com/shishiv30/pure/blob/main/docs/listing-data-pipeline.md): Five input methods and the 33 filter fields
+
+## Optional
+
+- [Demo page lifecycle](https://github.com/shishiv30/pure/blob/main/docs/demo-tx-lifecycle.md): What `/demo/tx` runs on the server and in the browser

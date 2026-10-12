@@ -228,7 +228,7 @@ Same `demo.get()` + `toData` envelope as detail. Exists for JSON consumers; **de
 
 | Function | SOA target (approx.) | On `/demo/tx` SSR |
 |----------|----------------------|-------------------|
-| `searchHouse(geo)` | `POST …/listings/nearbysearch/v2` | Yes |
+| `searchHouse(geo)` | `POST …/listings/nearbysearch/v2` — geo `input` only; no filter. Five input methods and the 33 optional filter fields are in [`listing-data-pipeline.md`](listing-data-pipeline.md). | Yes |
 | `getPropertyListingInfoById` | `GET …/properties/{id}/primary-listing` | No |
 | `getPropertyHistoryById` | `GET …/properties/{id}/histories` | No |
 

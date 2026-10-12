@@ -120,7 +120,7 @@
 			transition:
 				transform var(--article-animation-time),
 				--image-ratio .5s ease-in-out;
-			transform: scale(1.05) translateY(0px);
+			transform: scale(1.02) translateY(0px);
 		}
 
 		>img[data-src] {
@@ -254,7 +254,7 @@
 				opacity: 0;
 			}
 
-			transform: translateY(-5px) scale(1.05);
+			transform: translateY(-5px) scale(1.02);
 			box-shadow: 0px 1px 3px 1px var(--color-2);
 		}
 	}

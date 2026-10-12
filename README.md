@@ -2,6 +2,8 @@
 
 Lightweight UI framework and server-rendered app built with pure JavaScript, SCSS, and Express.
 
+Agents: read [`llms.txt`](llms.txt) before building a search URL. The site serves that file at `/llms.txt` and points to it with `rel="describedby"`.
+
 ## Source of Truth
 
 This README is a practical entry point. **Start with [`docs/index.md`](docs/index.md)** (map catalog), then:
