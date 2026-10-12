@@ -98,12 +98,12 @@
             border-radius: var(--g0);
             background: linear-gradient(
                 90deg,
-                var(--color-bg-l1) 0%,
-                var(--color-l1) 50%,
-                var(--color-bg-l1) 100%
+                var(--color-bg) 0%,
+                var(--color-bg-l1) 50%,
+                var(--color-bg) 100%
             );
             background-size: 200% 100%;
-            animation: detail-skeleton-shimmer 0.5s infinite;
+            animation: detail-skeleton-shimmer 1s infinite;
         }
 
         h1.demo-title:empty {

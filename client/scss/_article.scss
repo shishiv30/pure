@@ -130,11 +130,11 @@
 			background-image: linear-gradient(
 				90deg,
 				var(--color-bg) 0%,
-				var(--color) 50%,
+				var(--color-bg-l1) 50%,
 				var(--color-bg) 100%
 			);
 			background-size: 200% 100%;
-			animation: lazyload-shimmer 10s ease-in-out infinite;
+			animation: lazyload-shimmer 1s ease-in-out infinite;
 		}
 
 		>figcaption {
