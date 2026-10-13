@@ -3,6 +3,7 @@ const router = express.Router();
 import BaseController from '../controllers/index.js';
 import { fetchPropertiesImagesFromSOA } from '../controllers/demo.js';
 import { getGeoByPath } from '../../helpers/geo.js';
+import { getFilterByQuery } from '../../helpers/filter.js';
 import { mapSOADataListToArticles } from '../../helpers/article.js';
 import { searchHouse } from './api.soa.property.js';
 
@@ -150,7 +151,7 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *     summary: Demo property search by geo path (JSON)
  *     description: |
  *       Resolves a Pure geo path via `getGeoByPath`, searches nearby listings through SOA
- *       (`searchHouse`), and returns article cards for the demo SPA (`mapSOADataListToArticles`).
+ *       (`searchHouse` with the request query via `getFilterByQuery`), and returns article cards for the demo SPA (`mapSOADataListToArticles`).
  *       Same listing data as the demo HTML search page; path uses our geo format (not SOA slugs).
  *     parameters:
  *       - in: path
@@ -276,7 +277,7 @@ router.get('/demo/search/:path(*)', async (req, res) => {
 			res.status(400).json({ error: 'Invalid geo path' });
 			return;
 		}
-		const nearbyProperties = await searchHouse(geo);
+		const nearbyProperties = await searchHouse(geo, getFilterByQuery(req.query));
 		let articles = [];
 		let totalCount = 0;
 		if (nearbyProperties && nearbyProperties.listings && nearbyProperties.listings.length > 0) {

@@ -2,6 +2,7 @@
  * Client SPA router (click + popstate).
  *
  * Boot: `init()` listens for click/popstate, then `replace(location.pathname)`.
+ * History updates keep `location.search` so listing filters stay in the URL.
  * Click → `push` (`loading`, then `pushState`). Back/forward → `goto` (`loading`
  * only; the browser already changed the URL). `replace` syncs the current URL.
  *
@@ -87,6 +88,18 @@ export class Router {
 		return '';
 	}
 
+	splitTarget(path) {
+		const noHash = path.split('#')[0];
+		const queryAt = noHash.indexOf('?');
+		if (queryAt === -1) {
+			return { pathname: noHash, search: undefined };
+		}
+		return {
+			pathname: noHash.slice(0, queryAt) || '/',
+			search: noHash.slice(queryAt),
+		};
+	}
+
 	/**
 	 * Run the matched rule's `loading`, then update history for `push`/`replace`.
 	 * `goto` does not touch history — popstate already changed the URL.
@@ -105,11 +118,14 @@ export class Router {
 			}
 			this.currentRouter = state;
 			const browserPath = withAppBase(state.pathname, this.basePath);
+			const search = state.search || '';
+			const historyUrl = `${browserPath}${search}`;
 			state.pathname = browserPath;
+			state.search = search;
 			if (method === 'push') {
-				window.history.pushState({ pathname: browserPath }, '', browserPath);
+				window.history.pushState({ pathname: browserPath, search }, '', historyUrl);
 			} else if (method === 'replace') {
-				window.history.replaceState({ pathname: browserPath }, null, browserPath);
+				window.history.replaceState({ pathname: browserPath, search }, null, historyUrl);
 			}
 		} catch (error) {
 			console.error('Navigation error:', error);
@@ -118,19 +134,28 @@ export class Router {
 
 	/**
 	 * In-app navigation. `loading` runs before `pushState`.
+	 * A path with `?` sets the query. A path without `?` keeps the current query.
 	 * @param {string} path
 	 */
 	async push(path) {
 		if (this._destroyed) {
 			return;
 		}
-		if (this.currentRouter && this.currentRouter.pathname === path) {
+		const target = this.splitTarget(path);
+		const search = target.search !== undefined ? target.search : window.location.search || '';
+		if (
+			this.currentRouter &&
+			stripAppBase(this.currentRouter.pathname, this.basePath) ===
+				stripAppBase(target.pathname, this.basePath) &&
+			(this.currentRouter.search || '') === search
+		) {
 			return;
 		}
-		let state = this.routerTo(path);
+		let state = this.routerTo(target.pathname);
 		if (!state || this._destroyed) {
 			return;
 		}
+		state.search = search;
 		await this.navigate(state, 'push');
 	}
 
@@ -142,13 +167,21 @@ export class Router {
 		if (this._destroyed) {
 			return;
 		}
-		if (this.currentRouter && this.currentRouter.pathname === path) {
+		const target = this.splitTarget(path);
+		const search = target.search !== undefined ? target.search : window.location.search || '';
+		if (
+			this.currentRouter &&
+			stripAppBase(this.currentRouter.pathname, this.basePath) ===
+				stripAppBase(target.pathname, this.basePath) &&
+			(this.currentRouter.search || '') === search
+		) {
 			return;
 		}
-		let state = this.routerTo(path);
+		let state = this.routerTo(target.pathname);
 		if (!state || this._destroyed) {
 			return;
 		}
+		state.search = search;
 		await this.navigate(state, 'replace');
 	}
 
@@ -185,11 +218,11 @@ export class Router {
 		this._onPopstate = (e) => {
 			const pathname =
 				(e.state && e.state.pathname) || window.location.pathname || '';
+			const search = window.location.search || '';
 			if (
 				this.currentRouter &&
-				e.state &&
-				e.state.pathname &&
-				this.currentRouter.pathname === e.state.pathname
+				this.currentRouter.pathname === pathname &&
+				(this.currentRouter.search || '') === search
 			) {
 				return;
 			}
@@ -197,6 +230,7 @@ export class Router {
 			if (!state) {
 				return;
 			}
+			state.search = search;
 			this.navigate(state, 'goto');
 		};
 		this._onClick = (e) => {

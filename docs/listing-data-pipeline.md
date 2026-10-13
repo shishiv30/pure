@@ -53,7 +53,7 @@ Example: [`server/controllers/demo.js`](../server/controllers/demo.js).
 
 `demo.get()` runs in parallel:
 
-- `searchHouse(geo)` — nearby listings (grid). `demo.get()` passes no filter, so the body is only `input` and `searchType`.
+- `searchHouse(geo, filter)` — nearby listings (grid). `demo.get()` builds `filter` from the page query via `getFilterByQuery` (`helpers/filter.js`) and merges those SOA fields onto the body.
 - `getPropertyListingInfoById(prId)` — primary listing (detail)
 - `getPropertyHistoryById(prId)` — histories (detail)
 
@@ -71,7 +71,7 @@ Imported from `server/routes/api.soa.property.js` (not an internal HTTP hop to `
 
 `searchType` is `geo.type` uppercased. App types in `helpers/geo.js` are `state`, `city`, `county`, `zipcode`, `neighborhood`, and `address`. There is no address branch in `getSearchInputByGeo`; an address geo falls through the table above or sends an empty `input`.
 
-Optional filters are applied only when `searchHouse(geo, filter)` receives a filter object (`POST /soa/property/searchHouse` body `filter`). `getFilterByPayloadFilter` copies these payload fields (pagination and sort included):
+`searchHouse(geo, filter)` copies the filter object onto the nearby-search body (`input` and `searchType` stay). Demo pages pass the SOA field set from `helpers/filter.js`. `getFilterByPayloadFilter` still maps this wider payload field list into the older internal filter shape (pagination and sort included):
 
 `minPrice`, `maxPrice`, `minBed`, `maxBed`, `minBath`, `maxBath`, `propertyTypes`, `minSqft`, `maxSqft`, `minLot`, `maxLot`, `minYear`, `maxYear`, `minDom`, `maxDom`, `minHoa`, `maxHoa`, `attributesTags` (`pool` and `garage` also set their own flags), `isNewListingsOnly`, `isReducedPrice`, `isVirtualTourLinkOnly`, `hasVideo`, `isNewConstruction`, `isDistressed`, `isOpenHousesOnly`, `movotoListing`, `hasPhoto`, `sortColumn` + `sortOrder`, `searchPropertyStatus` (`FOR_RENT`, `INACTIVE` with optional `soldDateRange`, `ACTIVE`), `schoolRequest` (first school only), `pageIndex`, `maxCountPerPage`, and the viewport quartet `maxLat` / `minLat` / `maxLng` / `minLng`.
 

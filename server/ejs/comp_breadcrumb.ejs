@@ -1,4 +1,7 @@
+<%_ const showBreadcrumbNav = typeof breadcrumbWrap === 'undefined' || breadcrumbWrap; _%>
+<%_ if (showBreadcrumbNav) { _%>
 <nav class="breadcrumb" aria-label="breadcrumb">
+<%_ } _%>
   <%_if(breadcrumb && breadcrumb.links && breadcrumb.links.length){_%>
     <ul>
       <%_ for(var i=0; i<breadcrumb.links.length; i++) { _%>
@@ -16,4 +19,6 @@
         <%_}_%>
     </ul>
     <%_}_%>
+<%_ if (showBreadcrumbNav) { _%>
 </nav>
+<%_ } _%>

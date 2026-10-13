@@ -1,0 +1,54 @@
+<%_ const fields = (typeof filter !== 'undefined' && filter && filter.fields) ? filter.fields : []; _%>
+<div class="group-dropdown close" data-role="groupdropdown" id="listing-filter">
+  <ul class="group-dropdown-button small">
+    <%_ fields.forEach(function (field) { _%>
+      <li><button type="button" data-target="<%= field.id %>"><%= field.label %></button></li>
+    <%_ }); _%>
+  </ul>
+  <div class="group-dropdown-list">
+    <%_ fields.forEach(function (field) { _%>
+      <div data-id="<%= field.id %>" hidden>
+        <%_ if (field.type === 'range') { _%>
+          <div
+            class="range-slider"
+            data-role="rangeslider"
+            data-key="<%= field.id %>"
+            data-format="<%= field.format %>"
+            data-stops="<%= field.stops %>"
+            data-min-index="<%= field.minIndex %>"
+            data-max-index="<%= field.maxIndex %>"
+          >
+            <div class="range-slider-track">
+              <div class="range-slider-fill"></div>
+              <button type="button" class="range-slider-node" data-edge="min" aria-label="<%= field.label %> min"></button>
+              <button type="button" class="range-slider-node" data-edge="max" aria-label="<%= field.label %> max"></button>
+            </div>
+            <div class="distance-scale">
+              <span><%= field.scaleMin %></span>
+              <output></output>
+              <span><%= field.scaleMax %></span>
+            </div>
+            <input type="hidden" data-key="<%= field.id %>" data-edge="min" value="">
+            <input type="hidden" data-key="<%= field.id %>" data-edge="max" value="">
+          </div>
+        <%_ } else { _%>
+          <div class="<%= field.type === 'single' ? 'radio' : 'checkbox' %><%= field.cols === 1 ? ' cols-1' : '' %>">
+            <%_ field.options.forEach(function (option) { _%>
+              <label for="filter-<%= field.id %>-<%= option.value || 'default' %>">
+                <input
+                  id="filter-<%= field.id %>-<%= option.value || 'default' %>"
+                  type="<%= field.type === 'single' ? 'radio' : 'checkbox' %>"
+                  name="<%= option.name %>"
+                  value="<%= option.value %>"
+                  <% if (option.checked) { %>checked<% } %>
+                  <% if (option.disabled) { %>disabled<% } %>
+                >
+                <span><%= option.label %></span>
+              </label>
+            <%_ }); _%>
+          </div>
+        <%_ } _%>
+      </div>
+    <%_ }); _%>
+  </div>
+</div>

@@ -5,8 +5,13 @@ import { emit } from '../../js/core/event.js';
 import {
 	createDemoSpaRegExp,
 	DEMO_SPA_ROUTES,
+	matchDemoSpaRoute,
 } from '../../../helpers/routes/demoSpaRoutes.js';
 import { buildDemoSpaInnerHtml } from './detailSpa.js';
+import { getQueryStringByFilter } from '../../../helpers/filter.js';
+import { getPathByGeo } from '../../../helpers/geo.js';
+import nearbyTpl from '../../../server/ejs/comp_demo_nearby.ejs';
+import { renderEjsTemplate } from '../../js/core/renderEjs.js';
 import '../../scss/demo.scss';
 
 const boolStatus = ['lock', 'collapse', 'menu'];
@@ -369,9 +374,165 @@ function revealPlaceholder(html, isCurrent) {
 	});
 }
 
+function readListingFilter(root) {
+	const filter = {};
+	const edges = { price: {}, bed: {}, bath: {} };
+	root.querySelectorAll('.range-slider input[type="hidden"][data-key]').forEach((input) => {
+		const key = input.dataset.key;
+		const edge = input.dataset.edge;
+		if (!edges[key] || (edge !== 'min' && edge !== 'max')) {
+			return;
+		}
+		if (input.value === '') {
+			return;
+		}
+		edges[key][edge] = Number(input.value);
+	});
+	if (edges.price.min !== undefined) {
+		filter.minPrice = edges.price.min;
+	}
+	if (edges.price.max !== undefined) {
+		filter.maxPrice = edges.price.max;
+	}
+	if (edges.bed.min !== undefined) {
+		filter.minBed = edges.bed.min;
+	}
+	if (edges.bed.max !== undefined) {
+		filter.maxBed = edges.bed.max;
+	}
+	if (edges.bath.min !== undefined) {
+		filter.minBath = edges.bath.min;
+	}
+	if (edges.bath.max !== undefined) {
+		filter.maxBath = edges.bath.max;
+	}
+
+	const types = [...root.querySelectorAll('input[name="propertyType[]"]:checked')].map(
+		(input) => input.value,
+	);
+	if (types.length) {
+		filter.propertyTypes = types.map((value) => value.toUpperCase());
+	}
+
+	const status = root.querySelector('input[name="propertyStatus[]"]:checked');
+	if (status && status.value === 'sold') {
+		filter.searchPropertyStatus = 'INACTIVE';
+	} else if (status && status.value === 'rental') {
+		filter.searchPropertyStatus = 'FOR_RENT';
+	}
+
+	const photo = root.querySelector('input[name="photo"]');
+	if (photo && photo.checked) {
+		filter.hasPhoto = true;
+	}
+	const construction = root.querySelector('input[name="construction"]');
+	if (construction && construction.checked && !construction.disabled) {
+		filter.isNewConstruction = true;
+	}
+	const openhouse = root.querySelector('input[name="openhouse"]');
+	if (openhouse && openhouse.checked && !openhouse.disabled) {
+		filter.isOpenHousesOnly = true;
+	}
+	return filter;
+}
+
+let listingRequestId = 0;
+
+function sameListingPath(left, right) {
+	if (!left || !right) {
+		return false;
+	}
+	return left === right || left.endsWith(right) || right.endsWith(left);
+}
+
+function listingGeoPath() {
+	const matched = matchDemoSpaRoute(window.location.pathname);
+	if (matched?.id === 'geo' && matched.params.tail) {
+		return matched.params.tail.replace(/^\/+/, '');
+	}
+	if (matched?.id === 'map' && matched.params.state && matched.params.geoSlug) {
+		return `${matched.params.state}/${matched.params.geoSlug}`;
+	}
+	const geo = window.context?.geo;
+	return geo ? getPathByGeo(geo) || '' : '';
+}
+
+async function refreshListing(to) {
+	const requestId = ++listingRequestId;
+	const geoPath = listingGeoPath();
+	if (!geoPath) {
+		return;
+	}
+	const url = `/api/demo/search/${geoPath}${to.search || ''}`;
+	const response = await fetch(url, { headers: { Accept: 'application/json' } });
+	if (!response.ok || requestId !== listingRequestId) {
+		return;
+	}
+	const payload = await response.json();
+	if (requestId !== listingRequestId) {
+		return;
+	}
+	const articles = Array.isArray(payload.articles) ? payload.articles : [];
+	const html = articles.length
+		? renderEjsTemplate(
+			nearbyTpl,
+			{ articleComponent: { data: articles } },
+			window.context || {},
+		)
+		: '';
+	const current = document.querySelector(demoSpaNearbySel);
+	if (html) {
+		const wrap = document.createElement('div');
+		wrap.innerHTML = html.trim();
+		const next = wrap.querySelector(demoSpaNearbySel);
+		if (next && current) {
+			current.replaceWith(next);
+		} else if (next) {
+			const anchor =
+				document.querySelector(demoSpaRootSel) || document.querySelector('nav.listing-nav');
+			if (anchor) {
+				anchor.insertAdjacentElement('afterend', next);
+			}
+		}
+	} else if (current) {
+		current.remove();
+	}
+	emit('dom.load');
+}
+
+function bindListingFilter() {
+	const root = document.getElementById('listing-filter');
+	if (!root || root.dataset.bound === 'true') {
+		return;
+	}
+	root.dataset.bound = 'true';
+
+	root.addEventListener('change', () => {
+		const current = new URLSearchParams(window.location.search);
+		const next = new URLSearchParams(getQueryStringByFilter(readListingFilter(root)));
+		['size', 'index', 'schoolId'].forEach((key) => {
+			if (current.has(key)) {
+				next.set(key, current.get(key));
+			}
+		});
+		const search = next.toString();
+		const nextUrl = search ? `${window.location.pathname}?${search}` : window.location.pathname;
+		const currentUrl = `${window.location.pathname}${window.location.search}`;
+		if (nextUrl !== currentUrl) {
+			const router = Router.active;
+			if (router) {
+				router.push(nextUrl);
+				return;
+			}
+			window.location.assign(nextUrl);
+		}
+	});
+}
+
 let demo = {
 	name: 'demo',
 	init: function ($el, opt, exportObj) {
+		bindListingFilter();
 		boolStatus.forEach((name) => {
 			defBool(name, $el, opt, exportObj);
 		});
@@ -520,37 +681,55 @@ let demo = {
 			[
 				{
 					reg: createDemoSpaRegExp('detail'),
-					loading: async (to, _from, method) => {
-						const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
-						// Initial SSR replace already painted detail; popstate/push must still update.
+					loading: async (to, from, method) => {
 						if (method === 'replace') {
 							return null;
 						}
-						const detailLoaded = await exportObj.updateDetail(propertyId);
-						if (detailLoaded == null) {
-							return null;
+						const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
+						const sameDetail =
+							from &&
+							from.params &&
+							from.params[DEMO_SPA_ROUTES.detail.prIdParamIndex] === propertyId;
+						if (!sameDetail) {
+							const detailLoaded = await exportObj.updateDetail(propertyId);
+							if (detailLoaded == null) {
+								return null;
+							}
+							if (detailLoaded) {
+								exportObj.switchToDetail();
+							} else {
+								restoreGridSnapshots();
+								exportObj.switchToGrid();
+							}
 						}
-						if (detailLoaded) {
-							exportObj.switchToDetail();
-						} else {
-							restoreGridSnapshots();
-							exportObj.switchToGrid();
-						}
+						await refreshListing(to);
 						return null;
 					},
 				},
 				{
 					reg: createDemoSpaRegExp('map'),
-					loading: async () => {
+					loading: async (to, _from, method) => {
 						exportObj.switchToMap();
+						if (method !== 'replace') {
+							await refreshListing(to);
+						}
 						return null;
 					},
 				},
 				{
 					reg: createDemoSpaRegExp('geo'),
-					loading: async () => {
-						restoreGridSnapshots();
-						exportObj.switchToGrid();
+					loading: async (to, from, method) => {
+						if (method === 'replace') {
+							restoreGridSnapshots();
+							exportObj.switchToGrid();
+							return null;
+						}
+						const pathChanged = !from || !sameListingPath(from.pathname, to.pathname);
+						if (pathChanged) {
+							restoreGridSnapshots();
+							exportObj.switchToGrid();
+						}
+						await refreshListing(to);
 						return null;
 					},
 				},

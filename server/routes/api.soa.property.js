@@ -654,8 +654,8 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
 		input: getSearchInputByGeo(geo),
 		searchType: geo?.type?.toUpperCase(),
 	};
-	if (filter) {
-		Object.assign(body, getPayloadByFilter(filter));
+	if (filter && typeof filter === 'object') {
+		Object.assign(body, filter);
 	}
 	return body;
 }
@@ -680,7 +680,7 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
  *                 additionalProperties: true
  *               filter:
  *                 type: object
- *                 description: Optional search filters mapped by getFilterByPayloadFilter.
+ *                 description: Nearby-search filter fields merged onto the SOA body.
  *                 additionalProperties: true
  *             description: searchHouse wrapper payload.
  *           example:
@@ -689,12 +689,13 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
  *               state: TX
  *               type: city
  *             filter:
- *               pageSize: 5
  *               pageIndex: 1
+ *               maxCountPerPage: 5
  *               minPrice: 100000
  *               minBed: 1
  *               minBath: 2
  *               propertyTypes: ['SINGLE_FAMILY', 'CONDO']
+ *               hasPhoto: true
  *     responses:
  *       200:
  *         description: Nearby search results (structure from Property SOA)

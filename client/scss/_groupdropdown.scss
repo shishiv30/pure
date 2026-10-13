@@ -172,6 +172,10 @@
 		width: 100%;
 	}
 
+	.cols-1 {
+		grid-template-columns: 1fr;
+	}
+
 	.radio.icon-picker {
 		width: 18rem;
 		grid-template-columns: repeat(auto-fit, minmax(30px, 50px));

@@ -7,7 +7,16 @@
   <%- include('comp_header') %>
 <% } %>
 
-<%- include('comp_breadcrumb') %>
+<nav class="listing-nav" aria-label="Listing">
+  <div class="breadcrumb">
+    <%- include('comp_breadcrumb', { breadcrumbWrap: false }) %>
+  </div>
+  <div class="filter">
+    <%_ if (data.filterComponent) { _%>
+      <%- include(data.filterComponent.template, { filter: data.filterComponent.data }) %>
+    <%_ } _%>
+  </div>
+</nav>
 
 <% if (data.detail) { %>
   <%- include('comp_article_detail', { detail: data.detail, getSrc, getHref }) %>

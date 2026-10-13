@@ -36,6 +36,7 @@ import listDict from './_listdict.js';
 import layout from './_layout.js';
 import layoutToggle from './_layout-toggle.js';
 import groupDropdown from './_groupdropdown.js';
+import rangeSlider from './_rangeslider.js';
 import theme from './_theme.js';
 
 export default {
@@ -73,7 +74,8 @@ export default {
 	listDict,
 	layout,
 	'layout-toggle': layoutToggle,
-	groupdropdown: groupDropdown,
+	groupdropdown: 	groupDropdown,
+	rangeSlider,
 	theme,
 	// view,
 	// carousel,

@@ -19,6 +19,8 @@ import { createArticleComponent } from '../ejs/comp_article.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { getImgCdnUrl } from '../../helpers/url.js';
+import { getFilterByQuery } from '../../helpers/filter.js';
+import { createFilterComponent } from '../ejs/comp_filter.js';
 
 export async function fetchPropertiesImagesFromSOA(url) {
 	try {
@@ -103,6 +105,7 @@ export default {
 			...payload,
 			geo,
 			prId,
+			filter: getFilterByQuery(req.query),
 		};
 	},
 	preload: function (_req, model) {
@@ -113,11 +116,11 @@ export default {
 		return [{ as: 'image', href }];
 	},
 	get: async function (payload) {
-		const { geo, prId } = payload || {};
+		const { geo, prId, filter } = payload || {};
 		const welcomeImage = getImgCdnUrl(config.cdnHost, '/welcome.webp');
 
 		let [nearbyRaw, listingRaw, historiesRaw] = await Promise.all([
-			geo ? searchHouse(geo) : Promise.resolve(null),
+			geo ? searchHouse(geo, filter) : Promise.resolve(null),
 			prId ? getPropertyListingInfoById(prId) : Promise.resolve(null),
 			prId ? getPropertyHistoryById(prId) : Promise.resolve(null),
 		]);
@@ -132,6 +135,7 @@ export default {
 		}
 
 		const articleComponent = createArticleComponent(articles);
+		const filterComponent = createFilterComponent(filter);
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const seo = buildDetailSeo(detail) || getSeo(geo);
@@ -140,6 +144,7 @@ export default {
 			seo,
 			geo,
 			articleComponent,
+			filterComponent,
 			articleTotalCount,
 			headerComponent,
 			footerComponent,
