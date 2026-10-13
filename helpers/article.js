@@ -260,12 +260,19 @@ export function mapPropertyDetailToArticle(soaListing, historiesRaw = null) {
 		return null;
 	}
 	const card = mapPropertyToArticle(metadata, true);
-
+	const tags = Array.isArray(card.tags) ? card.tags.slice() : [];
+	const geo = metadata.geo;
+	if (geo?.city) {
+		tags.push({ text: String(geo.city), className: 'default' });
+	}
+	if (geo?.zipcode) {
+		tags.push({ text: String(geo.zipcode), className: 'default' });
+	}
 
 	return {
 		metadata,
 		title: card.title,
-		tags: mapTagsToComp(card.tags),
+		tags: mapTagsToComp(tags),
 		album: mapAlbumToComp(metadata.photos, card.title || ''),
 		paragraph: mapParagraphToComp(metadata.description),
 		record: mapRecordToComp(card.attrs),

@@ -411,9 +411,20 @@ let demo = {
 			return true;
 		}
 
+		const detailPlaceholderHtml = [
+			'<h1 class="demo-title"></h1>',
+			'<div class="filter demo-detail-tags"></div>',
+			'<div class="slider demo-slider"></div>',
+			'<div class="demo-detail-description"></div>',
+			'<div class="demo-detail-block"></div>',
+			'<div class="demo-detail-block"></div>',
+			'<div class="demo-detail-block"></div>',
+		].join('');
+
 		exportObj.updateDetail = function (prId) {
 			if (detailAbort) {
 				detailAbort.abort();
+				detailAbort = null;
 			}
 			detailAbort = new AbortController();
 			const { signal } = detailAbort;
@@ -424,18 +435,14 @@ let demo = {
 			const body = detailRoot ? detailRoot.querySelector('.detail-body') : null;
 			const skeletonAt = Date.now();
 			let showedSkeleton = false;
-			if (body && body.childElementCount && shownId && shownId !== prId) {
+			const switching =
+				body &&
+				body.childElementCount &&
+				(body.classList.contains('placeholder') || !shownId || shownId !== prId);
+			if (switching) {
 				showedSkeleton = true;
 				body.className = 'placeholder detail-body grid grid-xs-1';
-				body.innerHTML = [
-					'<h1 class="demo-title"></h1>',
-					'<div class="filter demo-detail-tags"></div>',
-					'<div class="slider demo-slider"></div>',
-					'<div class="demo-detail-description"></div>',
-					'<div class="demo-detail-block"></div>',
-					'<div class="demo-detail-block"></div>',
-					'<div class="demo-detail-block"></div>',
-				].join('');
+				body.innerHTML = detailPlaceholderHtml;
 			}
 			const holdSkeleton = () => {
 				if (!showedSkeleton) {
@@ -456,7 +463,7 @@ let demo = {
 				})
 				.then((envelope) => {
 					if (requestId !== detailRequestId) {
-						return false;
+						return null;
 					}
 					if (!envelope || envelope.code !== 200 || envelope.error) {
 						throw new Error(
@@ -468,7 +475,7 @@ let demo = {
 				})
 				.then(async (envelope) => {
 					if (!envelope || requestId !== detailRequestId) {
-						return false;
+						return null;
 					}
 					const root =
 						document.querySelector(demoSpaRootSel) ||
@@ -484,6 +491,9 @@ let demo = {
 					const revealed = showedSkeleton
 						? await revealPlaceholder(html, () => requestId === detailRequestId)
 						: false;
+					if (requestId !== detailRequestId) {
+						return null;
+					}
 					if (revealed || (!showedSkeleton && html && injectDemoSpaHtml(html))) {
 						if (window.context && envelope.data) {
 							Object.assign(window.context, envelope.data);
@@ -495,7 +505,7 @@ let demo = {
 				})
 				.catch((err) => {
 					if (err && err.name === 'AbortError') {
-						return false;
+						return null;
 					}
 					// eslint-disable-next-line no-console
 					console.error('updateDetail', err);
@@ -517,6 +527,9 @@ let demo = {
 							return null;
 						}
 						const detailLoaded = await exportObj.updateDetail(propertyId);
+						if (detailLoaded == null) {
+							return null;
+						}
 						if (detailLoaded) {
 							exportObj.switchToDetail();
 						} else {

@@ -250,6 +250,10 @@ describe('mapPropertyDetailToArticle', () => {
 			},
 		);
 		assert.equal(detail.title, '101 Mel St');
+		assert.deepEqual(detail.tags.items.slice(-2), [
+			{ text: 'Winters', className: 'default' },
+			{ text: '79567', className: 'default' },
+		]);
 		assert.equal(detail.paragraph.text, 'Spacious home on a quiet street.');
 		assert.equal(detail.album.images.length, 2);
 		assert.equal(detail.album.alt, detail.title);

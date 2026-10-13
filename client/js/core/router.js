@@ -63,6 +63,7 @@ export class Router {
 		this._onPopstate = null;
 		this._onClick = null;
 		this._destroyed = false;
+		this._navId = 0;
 		this.init();
 		Router.active = this;
 	}
@@ -96,9 +97,10 @@ export class Router {
 		if (!state || this._destroyed) {
 			return;
 		}
+		const navId = ++this._navId;
 		try {
 			await this.loading(state, method);
-			if (this._destroyed) {
+			if (this._destroyed || navId !== this._navId) {
 				return;
 			}
 			this.currentRouter = state;
