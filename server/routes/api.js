@@ -206,8 +206,8 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
  *                       title:
  *                         type: string
- *                         description: Display address (same as imgAlt)
- *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
+ *                         description: Street address only
+ *                         example: "101 Mel St"
  *                       path:
  *                         type: string
  *                         description: Demo SPA detail route

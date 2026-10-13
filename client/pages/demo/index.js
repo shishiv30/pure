@@ -358,6 +358,9 @@ function revealPlaceholder(html, isCurrent) {
 			return false;
 		}
 		body.classList.remove('placeholder');
+		body.querySelectorAll('.demo-detail-block').forEach((node) => {
+			node.remove();
+		});
 		Array.from(nextBody.children).forEach((node) => {
 			node.classList.add('detail-reveal');
 			body.appendChild(node);
@@ -429,6 +432,9 @@ let demo = {
 					'<div class="filter demo-detail-tags"></div>',
 					'<div class="slider demo-slider"></div>',
 					'<div class="demo-detail-description"></div>',
+					'<div class="demo-detail-block"></div>',
+					'<div class="demo-detail-block"></div>',
+					'<div class="demo-detail-block"></div>',
 				].join('');
 			}
 			const holdSkeleton = () => {

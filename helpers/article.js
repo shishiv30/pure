@@ -188,7 +188,7 @@ export function mapPropertyToArticle(property, isFull = false) {
 		img: Array.isArray(property.photos) ? property.photos[0] : undefined,
 		imgTag: officeListName,
 		imgAlt: displayAddress,
-		title: displayAddress,
+		title: geo?.address ? String(geo.address) : '',
 		path: `/demo/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.prId}`,
 		tags,
 		attrs,

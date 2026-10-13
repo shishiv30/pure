@@ -59,6 +59,7 @@
         top: var(--header-height);
         transition: transform 0.5s;
         transform: translateY(0%);
+        box-shadow: 0px 1px 3px hsla(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness), 0.5);
     }
 
     .detail {
@@ -77,6 +78,8 @@
     }
 
     .detail-body {
+        padding-top: var(--g2);
+        padding-bottom: var(--g2);
         transition: transform 0.5s ease-in-out;
     }
 
@@ -93,7 +96,7 @@
         h1.demo-title:empty,
         .demo-detail-tags:empty,
         .demo-slider:empty,
-        .demo-detail-description:empty {
+        .demo-detail-block:empty {
             display: block;
             border-radius: var(--g0);
             background: linear-gradient(
@@ -107,18 +110,45 @@
         }
 
         h1.demo-title:empty {
-            height: var(--font-size-3);
+            height: var(--demo-title-height);
             width: 62%;
         }
 
         .demo-detail-tags:empty {
-            height: calc(var(--font-size-6) + var(--g0) * 2);
+            height: var(--demo-detail-tags-height);
             width: 40%;
             border-radius: var(--g1);
         }
 
+        .demo-slider:empty {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            height: auto;
+        }
+
         .demo-detail-description:empty {
-            height: calc(var(--font-size-6) * 1.5 * 4);
+            --line: var(--demo-detail-description-line-height);
+            --gap: var(--demo-detail-description-gap);
+            display: block;
+            width: 100%;
+            height: calc(10 * var(--line) + 9 * var(--gap));
+            background: linear-gradient(
+                90deg,
+                var(--color-bg) 0%,
+                var(--color-bg-l1) 50%,
+                var(--color-bg) 100%
+            );
+            background-size: 200% 100%;
+            animation: detail-skeleton-shimmer 1s infinite;
+            mask-image: repeating-linear-gradient(
+                to bottom,
+                #000 0 var(--line),
+                transparent var(--line) calc(var(--line) + var(--gap))
+            );
+        }
+
+        .demo-detail-block:empty {
+            height: var(--demo-detail-block-height);
             width: 100%;
         }
     }
@@ -307,14 +337,32 @@
         }
     }
 }
-.demo-detail-description{
+.demo-title {
+    --demo-title-height: 30px;
+}
+
+.demo-detail-tags {
+    --demo-detail-tags-height: 25.5px;
+}
+
+.demo-detail-description {
+    --demo-detail-description-line-height: 14px;
+    --demo-detail-description-gap: 6px;
     line-height: 1.5;
 }
+
 .demo-slider {
+    --demo-slider-height: 400px;
+    max-height: var(--demo-slider-height);
+    border-radius: var(--g0);
     width: 100%;
     aspect-ratio: 16 / 9;
     height: auto;
+    overflow: hidden;
+}
 
+.demo-detail-block {
+    --demo-detail-block-height: 400px;
 }
 
 .filter {
