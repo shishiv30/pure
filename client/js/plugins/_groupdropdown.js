@@ -5,7 +5,7 @@ function controlHasValue(el) {
 		return false;
 	}
 	if (el.type === 'checkbox' || el.type === 'radio') {
-		return el.checked;
+		return el.checked && (el.type !== 'radio' || String(el.value || '').trim() !== '');
 	}
 	if (el.type === 'range' && el.dataset.empty != null) {
 		return el.value !== el.dataset.empty;
@@ -15,6 +15,22 @@ function controlHasValue(el) {
 
 function panelHasValue(panel) {
 	return [...panel.querySelectorAll(CONTROLS)].some(controlHasValue);
+}
+
+function clearControl(el) {
+	if (el.disabled) {
+		return;
+	}
+	if (el.type === 'checkbox' || el.type === 'radio') {
+		el.checked = false;
+		return;
+	}
+	if (el.type === 'range' && el.dataset.empty != null) {
+		el.value = el.dataset.empty;
+		el.dispatchEvent(new Event('input', { bubbles: true }));
+		return;
+	}
+	el.value = '';
 }
 
 export default {
@@ -31,7 +47,79 @@ export default {
 			if (!bar) {
 				return;
 			}
-			bar.classList.toggle('active', buttons.some((button) => button.classList.contains('selected')));
+			bar.classList.toggle('changed', buttons.some((button) => button.classList.contains('selected')));
+		}
+
+		const panelValue = new Map();
+
+		function kindRoot(panel, name) {
+			if (panel.classList.contains(name)) {
+				return panel;
+			}
+			return panel.querySelector(`.${name}`);
+		}
+
+		function choiceText(el) {
+			const label = el.closest('label');
+			const span = label && label.querySelector('span');
+			const text = span ? span.textContent : (label ? label.textContent : el.value);
+			return String(text || '').trim();
+		}
+
+		function emptyRadioLabel(panel) {
+			const choice = kindRoot(panel, 'radio');
+			if (!choice || kindRoot(panel, 'icon-picker')) {
+				return '';
+			}
+			const checked = [...choice.querySelectorAll('input:checked')]
+				.find((el) => String(el.value || '').trim() === '');
+			return checked ? choiceText(checked) : '';
+		}
+
+		function readPanelValue(panel) {
+			if (!panelHasValue(panel)) {
+				return { value: '', label: emptyRadioLabel(panel), html: false };
+			}
+			const iconPicker = kindRoot(panel, 'icon-picker');
+			if (iconPicker) {
+				const checked = iconPicker.querySelector('input:checked');
+				const className = checked ? String(checked.value || '').trim() : '';
+				const value = /^[\w-]+$/.test(className) ? `<i class="${className}"></i>` : '';
+				return { value, label: value, html: true };
+			}
+			const choice = kindRoot(panel, 'checkbox') || kindRoot(panel, 'radio');
+			if (choice) {
+				const value = [...choice.querySelectorAll('input:checked')]
+					.filter(controlHasValue)
+					.map(choiceText)
+					.filter(Boolean)
+					.join(', ');
+				return { value, label: value, html: false };
+			}
+			const output = panel.querySelector('output');
+			if (output) {
+				const value = output.textContent.trim();
+				return { value, label: value, html: false };
+			}
+			const value = [...panel.querySelectorAll(CONTROLS)]
+				.filter(controlHasValue)
+				.map((el) => String(el.value || '').trim())
+				.filter(Boolean)
+				.join(', ');
+			return { value, label: value, html: false };
+		}
+
+		function emitValueChange(panel) {
+			const next = readPanelValue(panel);
+			const prev = panelValue.get(panel);
+			if (prev && prev.value === next.value && prev.label === next.label && prev.html === next.html) {
+				return;
+			}
+			panelValue.set(panel, next);
+			panel.dispatchEvent(new CustomEvent('valuechange', {
+				bubbles: true,
+				detail: next,
+			}));
 		}
 
 		function syncSelected(id) {
@@ -41,7 +129,12 @@ export default {
 				syncBar();
 				return;
 			}
-			button.classList.toggle('selected', panelHasValue(panel));
+			const selected = panelHasValue(panel);
+			button.classList.toggle('selected', selected);
+			const reset = button.parentElement && button.parentElement.querySelector('.group-dropdown-reset');
+			if (reset) {
+				reset.hidden = !selected;
+			}
 			syncBar();
 		}
 
@@ -106,6 +199,7 @@ export default {
 				$el.classList.add('close');
 				return;
 			}
+			list.querySelectorAll('[data-id]').forEach((panel) => emitValueChange(panel));
 			$el.classList.remove('open');
 			$el.classList.add('closing');
 			list.addEventListener('animationend', onFlyOut);
@@ -152,9 +246,45 @@ export default {
 		exportObj.close = close;
 
 		buttons.forEach((button) => {
+			const reset = document.createElement('button');
+			reset.type = 'button';
+			reset.className = 'group-dropdown-reset';
+			reset.setAttribute('aria-label', 'Reset');
+			reset.hidden = true;
+			button.insertAdjacentElement('afterend', reset);
+			reset.addEventListener('click', (event) => {
+				event.stopPropagation();
+				const panel = list && list.querySelector(`[data-id="${button.dataset.target}"]`);
+				if (!panel) {
+					return;
+				}
+				panel.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
+			});
 			button.addEventListener('click', (event) => {
 				event.stopPropagation();
 				open(button);
+			});
+			if (button.dataset.label === 'false' || !list) {
+				return;
+			}
+			const panel = list.querySelector(`[data-id="${button.dataset.target}"]`);
+			if (!panel) {
+				return;
+			}
+			const original = button.textContent;
+			const keyed = !!panel.querySelector('[data-role="rangeslider"], input[type="range"], input[type="number"]');
+			panel.addEventListener('valuechange', (event) => {
+				const { value, label, html } = event.detail;
+				const shown = label || value;
+				if (!shown) {
+					button.textContent = original;
+					return;
+				}
+				if (html) {
+					button.innerHTML = shown;
+					return;
+				}
+				button.textContent = keyed ? `${original}: ${shown}` : shown;
 			});
 		});
 
@@ -170,8 +300,36 @@ export default {
 				const id = panel.dataset.id;
 				panel.addEventListener('input', () => syncSelected(id));
 				panel.addEventListener('change', () => syncSelected(id));
+				panel.addEventListener('reset', (event) => {
+					if (event.target !== panel) {
+						return;
+					}
+					const slider = panel.querySelector('[data-role="rangeslider"]');
+					panel.querySelectorAll(CONTROLS).forEach((el) => {
+						if (!slider || !slider.contains(el)) {
+							clearControl(el);
+						}
+					});
+					if (slider) {
+						slider.dispatchEvent(new CustomEvent('reset'));
+					}
+					syncSelected(id);
+					emitValueChange(panel);
+					panel.dispatchEvent(new Event('change', { bubbles: true }));
+				});
 				syncSelected(id);
 			});
+			window.setTimeout(() => {
+				list.querySelectorAll('[data-id]').forEach((panel) => {
+					syncSelected(panel.dataset.id);
+					const next = readPanelValue(panel);
+					if (next.value || next.label) {
+						emitValueChange(panel);
+						return;
+					}
+					panelValue.set(panel, next);
+				});
+			}, 0);
 		}
 
 		$el.addEventListener('focusout', (event) => {

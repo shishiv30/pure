@@ -39,6 +39,17 @@ function handleSoaError(res, error) {
  *     tags:
  *       - SOA School
  */
+export async function getSchoolBaseInfo(schoolId, query = {}) {
+	const id = schoolId == null ? '' : String(schoolId).trim();
+	if (!id) {
+		throw new Error('schoolId is required');
+	}
+	const domain = getSchoolApiDomain();
+	return fetchFromSoa(domain, 'GET', '/baseInfo', {
+		query: { ...query, id },
+	});
+}
+
 export async function getNearbySchoolsByLocation(latLng, query = {}) {
 	const domain = getSchoolApiDomain();
 	const path = `/property/locations/${latLng}/assignedSchools`;

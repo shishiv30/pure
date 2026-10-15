@@ -52,15 +52,13 @@ describe('getFilterByQuery', () => {
 		assert.equal(active.isNewConstruction, true);
 	});
 
-	test('reads size, index, and schoolId', () => {
+	test('reads size and index', () => {
 		const filter = getFilterByQuery({
 			size: '12',
 			index: '2',
-			schoolId: 'abc 123',
 		});
 		assert.equal(filter.maxCountPerPage, 12);
 		assert.equal(filter.pageIndex, 2);
-		assert.equal(filter.schoolId, 'abc 123');
 	});
 });
 
@@ -78,7 +76,6 @@ describe('getQueryByFilter', () => {
 			isOpenHousesOnly: true,
 			maxCountPerPage: 12,
 			pageIndex: 2,
-			schoolId: 'abc 123',
 		});
 		assert.equal(query.price, '222_3333');
 		assert.equal(query.bed, '_3');
@@ -90,7 +87,6 @@ describe('getQueryByFilter', () => {
 		assert.equal(query.openhouse, undefined);
 		assert.equal(query.size, '12');
 		assert.equal(query.index, '2');
-		assert.equal(query.schoolId, 'abc 123');
 	});
 
 	test('query string repeats multi-select keys', () => {

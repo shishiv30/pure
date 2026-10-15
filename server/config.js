@@ -26,7 +26,6 @@ let config = {
 	mode: NODE_ENV,
 
 	// API Configuration
-	soaApiDomain: process.env.SOA_API_DOMAIN || '',
 	geoareaApiDomain: (process.env.GEOAREA_API_DOMAIN || '').replace(/\/$/, ''),
 	/**
 	 * Property SOA only:  shared SOA key.

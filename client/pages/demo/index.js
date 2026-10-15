@@ -500,17 +500,37 @@ async function refreshListing(to) {
 	emit('dom.load');
 }
 
+const OFF_MARKET_STATUS = new Set(['sold', 'rental']);
+const OFF_MARKET_TAGS = ['construction', 'openhouse'];
+
+function syncTagAvailability(root) {
+	const status = root.querySelector('input[name="propertyStatus[]"]:checked');
+	const offMarket = !!(status && OFF_MARKET_STATUS.has(status.value));
+	OFF_MARKET_TAGS.forEach((name) => {
+		const input = root.querySelector(`input[name="${name}"]`);
+		if (!input) {
+			return;
+		}
+		input.disabled = offMarket;
+		if (offMarket) {
+			input.checked = false;
+		}
+	});
+}
+
 function bindListingFilter() {
 	const root = document.getElementById('listing-filter');
 	if (!root || root.dataset.bound === 'true') {
 		return;
 	}
 	root.dataset.bound = 'true';
+	syncTagAvailability(root);
 
 	root.addEventListener('change', () => {
+		syncTagAvailability(root);
 		const current = new URLSearchParams(window.location.search);
 		const next = new URLSearchParams(getQueryStringByFilter(readListingFilter(root)));
-		['size', 'index', 'schoolId'].forEach((key) => {
+		['size', 'index'].forEach((key) => {
 			if (current.has(key)) {
 				next.set(key, current.get(key));
 			}

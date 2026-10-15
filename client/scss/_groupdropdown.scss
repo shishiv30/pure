@@ -1,5 +1,6 @@
 @use './_var.screen.scss' as *;
 @use './_mixins.scss' as *;
+@use './_var.icon.scss' as *;
 
 @include comp-color('group-dropdown-button');
 @include comp-size('group-dropdown-button');
@@ -84,17 +85,62 @@
 	gap: var(--g1);
 
 	>li {
+		position: relative;
 		flex-shrink: 0;
 	}
 
-	button {
-		@include hover-scale(var(--group-dropdown-button-color-bg-hover));
+	.group-dropdown-reset {
+		position: absolute;
+		top: var(--group-dropdown-button-border-weight);
+		right: var(--group-dropdown-button-border-weight);
+		bottom: var(--group-dropdown-button-border-weight);
+		z-index: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--group-dropdown-button-size);
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: var(--group-dropdown-button-color-hover);
+		cursor: pointer;
+
+		&::before {
+			@include icon();
+			content: $icon-refresh;
+			font-size: var(--font-size-6);
+			line-height: 1;
+			display: inline-block;
+			color: var(--group-dropdown-button-color-bg);
+			transition: transform var(--animation-time) ease-out;
+		}
+
+		&:hover {
+			background: var(--group-dropdown-button-color-open-bg-hover);
+
+			&::before {
+				color: var(--group-dropdown-button-color-bg-hover);
+				transform: rotate(90deg);
+			}
+		}
+
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	button:not(.group-dropdown-reset) {
+		@include hover-scale(var(--color-bg-hover));
 		font-size: var(--group-dropdown-button-font-size);
 		font-weight: var(--group-dropdown-button-font-weight);
 		height: var(--group-dropdown-button-size);
 		line-height: var(--group-dropdown-button-line-height);
 		padding: 0 var(--g2);
 		cursor: pointer;
+		max-width: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		white-space: nowrap;
 		border-radius: var(--radius-0);
 
@@ -114,6 +160,7 @@
 			color: var(--group-dropdown-button-color-bg);
 			background-color: var(--group-dropdown-button-color);
 			border-color: var(--group-dropdown-button-color-border);
+			padding-right: calc(var(--group-dropdown-button-size) + var(--group-dropdown-button-border-weight) + var(--g1));
 
 			&:hover {
 				color: var(--group-dropdown-button-color-bg-hover);

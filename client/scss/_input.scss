@@ -43,7 +43,7 @@
 		line-height: var(--input-line-height);
 		color: var(--input-color);
 		background-color: var(--input-color-bg);
-		border-radius: var(--radius-0);
+		border-radius: var(--input-radius);
 	}
 
 	>i,
@@ -68,7 +68,7 @@
 		color: var(--input-color);
 		border-color: transparent;
 		box-shadow: none;
-		border-radius: var(--radius-0);
+		border-radius: var(--input-radius);
 	}
 
 	&.left {
@@ -125,4 +125,16 @@
 			z-index: 9
 		}
 	}
+}
+
+.input .suggestion-list:not(.active) {
+	--suggestion-list-color-bg: var(--input-color-bg);
+	--suggestion-list-color: var(--input-color);
+	--suggestion-list-color-border: var(--input-color-border);
+	--suggestion-list-color-hover: var(--input-color-hover);
+	--suggestion-list-color-bg-hover: var(--input-color-bg-hover);
+	--suggestion-list-color-border-hover: var(--input-color-border-hover);
+	--suggestion-list-color-active: var(--input-color-active);
+	--suggestion-list-color-bg-active: var(--input-color-bg-active);
+	--suggestion-list-color-border-active: var(--input-color-border-active);
 }

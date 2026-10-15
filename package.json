@@ -16,7 +16,7 @@
 		"docker:run": "./run-container.sh",
 		"start": "npx cross-env NODE_ENV=production node server/app.js",
 		"deploy-gh": "node deploy",
-		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/demo.get.test.js server/routes/__tests__/demoGeoRedirect.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/demoSpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
+		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/demo.get.test.js server/routes/__tests__/demoGeoRedirect.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/demoSpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/geo.school.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
 		"test:basecontroller": "node --test server/controllers/__tests__/basecontroller.config.test.js",
 		"test:lighthouse": "npm run build-docker:dev && node scripts/run-lighthouse.js",
 		"lint": "eslint helpers/geo.js helpers/routes/ client/js/core/router.js client/js/index.js helpers/property.js helpers/article.js",
@@ -24,6 +24,9 @@
 		"review:staged": "cursor-agent --force --output-format=text --print 'Review the staged changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursor/rules/ and .cursor/background.json. Provide concise, actionable feedback.'",
 		"clean": "rm -rf dist",
 		"clean:hot-updates": "node scripts/cleanup-hot-updates.js",
+		"soa-proxy:on": "node scripts/soa-reverse-proxy.js on",
+		"soa-proxy:off": "node scripts/soa-reverse-proxy.js off",
+		"soa-proxy:status": "node scripts/soa-reverse-proxy.js status",
 		"prebuild": "npm run clean"
 	},
 	"repository": {

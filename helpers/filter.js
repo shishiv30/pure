@@ -150,12 +150,6 @@ export function getFilterByQuery(query = {}) {
 		filter.pageIndex = pageIndex;
 	}
 
-	const schoolRaw = Array.isArray(source.schoolId) ? source.schoolId[0] : source.schoolId;
-	const schoolId = schoolRaw == null ? '' : String(schoolRaw).trim();
-	if (schoolId) {
-		filter.schoolId = schoolId;
-	}
-
 	return filter;
 }
 
@@ -208,9 +202,6 @@ export function getQueryByFilter(filter = {}) {
 	}
 	if (source.pageIndex !== undefined && source.pageIndex !== null && source.pageIndex !== '') {
 		query.index = String(source.pageIndex);
-	}
-	if (source.schoolId) {
-		query.schoolId = String(source.schoolId);
 	}
 
 	return query;

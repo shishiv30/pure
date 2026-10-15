@@ -39,7 +39,6 @@ fi
 PORT=${PORT:-3000}
 DOMAIN=${DOMAIN:-localhost}
 SESSION_SECRET=${SESSION_SECRET:-dev-session-secret-change-in-production}
-SOA_API_DOMAIN=${SOA_API_DOMAIN:-}
 DOCKER_PORT=${DOCKER_PORT:-3002}
 DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-$([ "$NODE_ENV" = "development" ] && echo "development" || echo "production")}
 # build-docker:dev → CDN_HOST = DOMAIN:DOCKER_PORT; build-docker:prod → CDN_HOST from .env.production
@@ -59,7 +58,6 @@ echo "📡 Docker build target: $DOCKER_BUILD_TARGET (development → build:dev,
 echo "📡 Docker Port: $DOCKER_PORT"
 echo "🔧 Server Port: $PORT"
 echo "🌐 Domain: $DOMAIN"
-echo "🔗 SOA API: $SOA_API_DOMAIN"
 if [ -n "$CDN_HOST" ]; then
 	echo "☁️  CDN HOST: $CDN_HOST"
 fi
@@ -103,7 +101,6 @@ echo "🔧 Configuration loaded from environment variables:"
 echo "  - NODE_ENV: $NODE_ENV"
 echo "  - PORT: $PORT"
 echo "  - DOMAIN: $DOMAIN"
-echo "  - SOA_API_DOMAIN: $SOA_API_DOMAIN"
 echo ""
 echo "💡 Port Configuration:"
 echo "  - Docker external port: $DOCKER_PORT (localhost:$DOCKER_PORT)"

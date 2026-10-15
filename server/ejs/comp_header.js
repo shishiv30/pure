@@ -42,6 +42,9 @@ function getHeaderData(linkTableOverride) {
 			url: `${APP_HOST}/api/geo`,
 			keys: 'type',
 			type: 'city',
+			autocomplete: 'off',
+			autocorrect: 'off',
+			spellcheck: false,
 		},
 		menu: Array.isArray(links) ? buildMenuFromLinks(links) : buildMenuFromLinks(linkTable),
 	};

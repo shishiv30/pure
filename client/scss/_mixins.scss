@@ -20,7 +20,7 @@
 			--#{$name}-color-bg: var(--color);
 			--#{$name}-color-border: var(--color-border);
 			--#{$name}-color-hover: var(--color-bg-hover);
-			--#{$name}-color-bg-hover: var(--color-bg);
+			--#{$name}-color-bg-hover: var(--color-hover);
 			--#{$name}-color-border-hover: var(--color-border-hover);
 		}
 	}
@@ -38,6 +38,7 @@
 			--#{$name}-size: var(--comp-size-3);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-width: #{$width};
+			--#{$name}-radius: var(--radius-1);
 		}
 
 		&.tiny {
@@ -45,6 +46,7 @@
 			--#{$name}-font-size: var(--font-size-6);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-size: var(--comp-size-1);
+			--#{$name}-radius: var(--radius-0);
 		}
 
 		&.small {
@@ -52,6 +54,7 @@
 			--#{$name}-font-size: var(--font-size-5);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-size: var(--comp-size-2);
+			--#{$name}-radius: var(--radius-0);
 		}
 
 		&.large {
@@ -60,6 +63,7 @@
 			--#{$name}-size: var(--comp-size-4);
 			--#{$name}-line-height: var(--line-height-3);
 			--#{$name}-border-weight: 2px;
+			--#{$name}-radius: var(--radius-2);
 		}
 	}
 }
@@ -257,7 +261,7 @@
 		width: 100%;
 		height: 100%;
 		bottom: 0;
-		opacity: 0.1;
+		opacity: 0.2;
 		transform: scale(0);
 		background-color: $base-color;
 		pointer-events: none;

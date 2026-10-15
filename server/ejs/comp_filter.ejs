@@ -34,9 +34,9 @@
         <%_ } else { _%>
           <div class="<%= field.type === 'single' ? 'radio' : 'checkbox' %><%= field.cols === 1 ? ' cols-1' : '' %>">
             <%_ field.options.forEach(function (option) { _%>
-              <label for="filter-<%= field.id %>-<%= option.value || 'default' %>">
+              <label for="filter-<%= field.id %>-<%= option.name %>-<%= option.value || 'default' %>">
                 <input
-                  id="filter-<%= field.id %>-<%= option.value || 'default' %>"
+                  id="filter-<%= field.id %>-<%= option.name %>-<%= option.value || 'default' %>"
                   type="<%= field.type === 'single' ? 'radio' : 'checkbox' %>"
                   name="<%= option.name %>"
                   value="<%= option.value %>"

@@ -132,6 +132,12 @@ export default {
 			window.addEventListener('pointerup', onPointerUp);
 		}
 
+		$el.addEventListener('reset', () => {
+			minIndex = 0;
+			maxIndex = last;
+			place();
+		});
+
 		minNode.addEventListener('pointerdown', (event) => startDrag('min', event));
 		maxNode.addEventListener('pointerdown', (event) => startDrag('max', event));
 		track.addEventListener('pointerdown', (event) => {

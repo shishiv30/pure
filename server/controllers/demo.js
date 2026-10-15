@@ -22,43 +22,6 @@ import { getImgCdnUrl } from '../../helpers/url.js';
 import { getFilterByQuery } from '../../helpers/filter.js';
 import { createFilterComponent } from '../ejs/comp_filter.js';
 
-export async function fetchPropertiesImagesFromSOA(url) {
-	try {
-		if (!url) {
-			throw new Error('Url is required');
-		}
-		const response = await fetch(
-			`${config.soaApiDomain}/api/v/property/photo/?url=${encodeURIComponent(url)}`,
-		);
-		if (!response.ok) {
-			throw new Error(`SOA API request failed: ${response.status} ${response.statusText}`);
-		}
-		const result = await response.json();
-		let images = [];
-		if (result.data && result.data.length > 0) {
-			images = result.data.reduce((acc, curr) => {
-				if (curr.photos && curr.photos.length > 0) {
-					let urls = curr.photos.map((e) => {
-						let url = e.url;
-						if (/.webp$/.test(url)) {
-							url = url.replace(/(_[a-z])?.webp$/, '_p.webp');
-						}
-						return url;
-					});
-					acc = acc.concat(urls);
-				}
-				return acc;
-			}, []);
-		} else {
-			throw new Error('No images found, result:', result);
-		}
-		return images;
-	} catch (error) {
-		console.error('Error fetching property images:', error);
-		return [];
-	}
-}
-
 function getSeo(geo) {
 	const label = geo ? getGeoDisplayText(geo).trim() : '';
 	const place = label || 'Demo';
@@ -131,7 +94,7 @@ export default {
 		let articleTotalCount = 0;
 		if (nearbyRaw && nearbyRaw.listings && nearbyRaw.listings.length > 0) {
 			articles = mapSOADataListToArticles(nearbyRaw.listings);
-			articleTotalCount = nearbyRaw.articleTotalCount;
+			articleTotalCount = nearbyRaw.articleTotalCount ?? nearbyRaw.totalCount ?? 0;
 		}
 
 		const articleComponent = createArticleComponent(articles);
@@ -151,7 +114,6 @@ export default {
 			welcomeImage,
 			cdnHost: config.cdnHost,
 			appHost: config.appHost,
-			soaApiDomain: config.soaApiDomain,
 			detail,
 		};
 	},

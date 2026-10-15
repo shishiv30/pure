@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { useCms } from './utils/cmsData.js';
 import cors from 'cors';
+import { runWithSoaLogs } from './controllers/realestate.js';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig.js';
@@ -30,6 +31,10 @@ app.use((req, res, next) => {
 	res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 	res.append('Link', '</llms.txt>; rel="describedby"');
 	next();
+});
+
+app.use((req, res, next) => {
+	runWithSoaLogs(() => next());
 });
 
 /* routes: static first so /page/index.html serves saved HTML; then dynamic routes */

@@ -1,4 +1,16 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import config from '../config.js';
+
+const soaRequestStore = new AsyncLocalStorage();
+
+export function runWithSoaLogs(next) {
+	soaRequestStore.run({ curls: [] }, next);
+}
+
+export function getSoaLogs() {
+	const store = soaRequestStore.getStore();
+	return { curls: store ? store.curls.slice() : [] };
+}
 
 /**
  * Default headers for Geoarea SOA API. Uses X-MData-Key from config (SOA_API_KEY).
@@ -92,18 +104,28 @@ export async function fetchFromGeoarea(method, path, options = {}) {
 		return null;
 	}
 }
-function logCurlForSoa(urlStr, init) {
+function curlForSoa(urlStr, init) {
 	let curl = `curl -X ${init.method}`;
-	Object.entries(init.headers).forEach(([k, v]) => {
-		curl += ` -H "${k}: ${v}"`;
+	Object.entries(init.headers).forEach(([name, value]) => {
+		const shown = /key|token|authorization/i.test(name) ? '***' : value;
+		curl += ` -H "${name}: ${shown}"`;
 	});
 	if (init.body) {
-		// Escape double quotes for JSON body for the curl command
 		const safeBody = init.body.replace(/"/g, '\\"');
 		curl += ` -d "${safeBody}"`;
 	}
 	curl += ` "${urlStr}"`;
-	console.info(curl);
+	return curl;
+}
+
+function recordSoaCurl(curl) {
+	const store = soaRequestStore.getStore();
+	if (store) {
+		store.curls.push(curl);
+	}
+	if (process.env.NODE_ENV === 'development') {
+		console.info(curl);
+	}
 }
 /**
  * Call any SOA API by base URL, method and path. Uses X-MData-Key from config (SOA_API_KEY).
@@ -140,12 +162,7 @@ export async function fetchFromSoa(baseUrl, method, path, options = {}) {
 		if (options.body != null && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
 			init.body = JSON.stringify(options.body);
 		}
-		// INSERT_YOUR_CODE
-		// If it's development environment, print equivalent curl command
-	
-		if (process.env.NODE_ENV === 'development') {
-			logCurlForSoa(urlStr, init);
-		}
+		recordSoaCurl(curlForSoa(urlStr, init));
 		const response = await fetch(urlStr, init);
 		if (!response.ok) {
 			//todo debug why error

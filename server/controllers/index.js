@@ -15,6 +15,7 @@ import pageConfig from './page.js';
 import { getBreadcrumbByGeo } from '../../helpers/geo.js';
 import { getThemeInlineCss } from '../ejs/comp_theme.js';
 import { getHref, getSrc } from '../../helpers/url.js';
+import { getSoaLogs } from './realestate.js';
 import { getStaticHtmlPath, saveStaticHtml } from '../utils/staticHtml.js';
 import fs from 'fs';
 import mime from 'mime';
@@ -216,6 +217,9 @@ export default class BaseController {
 		}
 		try {
 			let data = await this.config.get(payload);
+			if (data && typeof data === 'object' && !Array.isArray(data)) {
+				data.logs = getSoaLogs();
+			}
 			return { code: 200, data: data };
 		} catch (error) {
 			return this.exceptionDataHandler(error, payload);
@@ -252,6 +256,9 @@ export default class BaseController {
 		}
 		model.appHost = model.meta?.appHost || '';
 		model.cdnHost = model.meta?.cdnHost || '';
+		if (model.data && typeof model.data === 'object' && !Array.isArray(model.data)) {
+			model.data.logs = getSoaLogs();
+		}
 		model.getHref = (item) => getHref(item, model.appHost);
 		model.getSrc = (img) => getSrc(img, model.cdnHost);
 		this.res.render(`${this.config.name}.ejs`, model, (err, html) => {

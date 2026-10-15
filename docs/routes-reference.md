@@ -50,6 +50,7 @@ Handler: `BaseController(req, res, 'demo')` → [`server/controllers/demo.js`](.
 | `/demo/sitemap` | State sitemap | — |
 | `/demo/sitemap/:state` | City/county sitemap | `state` |
 | `/demo/detail/:state/:zip/:prId` | Property detail (SSR) | Sets `req.query.geoPath`, `req.query.prId` |
+| `/demo/:state/:city/:id_school` | Homes inside that school boundary | School id is the `baseInfo` id (NCES id works). Search is `POST /listings/schools/v2` |
 | `/demo/:state/:geoSlug/@lat,lng` | Map view (client SPA) | Server uses geo catch-all |
 | `/demo/:geoPath(*)` | Geo grid (catch-all) | Canonical redirect when path normalizes |
 

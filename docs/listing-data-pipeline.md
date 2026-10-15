@@ -69,7 +69,9 @@ Imported from `server/routes/api.soa.property.js` (not an internal HTTP hop to `
 | 4 | county + state | `{county} {state}` |
 | 5 | state | `{state}` |
 
-`searchType` is `geo.type` uppercased. App types in `helpers/geo.js` are `state`, `city`, `county`, `zipcode`, `neighborhood`, and `address`. There is no address branch in `getSearchInputByGeo`; an address geo falls through the table above or sends an empty `input`.
+`searchType` is `geo.type` uppercased. App types in `helpers/geo.js` are `state`, `city`, `county`, `zipcode`, `neighborhood`, `address`, and `school`. There is no address branch in `getSearchInputByGeo`; an address geo falls through the table above or sends an empty `input`.
+
+A school path `/demo/{state}/{city}/{id}_school` does not use nearby search. `searchHouse` loads `GET /baseInfo?id={id}` on the school API, then posts `POST /listings/schools/v2` with `searchType: SCHOOL` and `schoolRequest: [{ schoolId, schoolBoundaryId }]`. `schoolId` in that body is the school service id from `baseInfo`, and `schoolBoundaryId` is `baseInfo.boundaryId`. The path `{id}` is the `baseInfo` query id (an NCES id is accepted).
 
 `searchHouse(geo, filter)` copies the filter object onto the nearby-search body (`input` and `searchType` stay). Demo pages pass the SOA field set from `helpers/filter.js`. `getFilterByPayloadFilter` still maps this wider payload field list into the older internal filter shape (pagination and sort included):
 

@@ -1,16 +1,19 @@
 @use './_mixins.scss' as *;
 
+@include comp-color('suggestion-list');
+@include comp-size('suggestion-list');
 .suggestion-list {
   display: none;
   position: absolute;
   width: 100%;
-  background: var(--color);
+  background-color: var(--suggestion-list-color-bg);
+  color: var(--suggestion-list-color);
 
   line-height: 2;
   overflow-y: auto;
   overflow-x: hidden;
   @include hidden-scrollbar();
-  border-radius: 0 0 var(--radius-2) var(--radius-2);
+  border-radius: 0 0 var(--suggestion-list-radius) var(--suggestion-list-radius);
 }
 
 .suggestion-list:empty {
@@ -21,19 +24,28 @@
   .suggestion-list {
     display: block;
   }
+  &.input{
+    input {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
 }
 
 .suggestion-item {
-  padding: var(--g0) var(--g2);
+  padding: var(--g1) var(--g2);
   cursor: pointer;
-  border-top: var(--color-hover) 1px solid;
+  border-top: var(--suggestion-list-color-border) 1px solid;
   cursor: pointer;
 
   &:hover {
-    background: var(--color-hover);
+    font-weight: var(--font-weight-bold);
+    color: var(--suggestion-list-color-hover);
+    background: var(--suggestion-list-color-bg-hover);
   }
 
   &.selected {
-    background: var(--color-hover);
+    font-weight: var(--font-weight-bold);
+    background: var(--color-bg-l1);
   }
 }

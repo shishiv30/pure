@@ -1,7 +1,6 @@
 import express from 'express';
 const router = express.Router();
 import BaseController from '../controllers/index.js';
-import { fetchPropertiesImagesFromSOA } from '../controllers/demo.js';
 import { getGeoByPath } from '../../helpers/geo.js';
 import { getFilterByQuery } from '../../helpers/filter.js';
 import { mapSOADataListToArticles } from '../../helpers/article.js';
@@ -349,53 +348,6 @@ router.get('/demo/:geoPath(*)', async (req, res) => {
 	const controller = new BaseController(req, res, 'demo');
 	const result = await controller.get();
 	controller.toData(result);
-});
-
-/**
- * @swagger
- * /properties-images/{url}:
- *   get:
- *     summary: Get properties images by url
- *     description: Retrieve property images from SOA API based on url.
- *     parameters:
- *       - in: path
- *         name: url
- *         required: true
- *         examples:
- *           url:
- *             summary: Url encoded
- *             value: austin-tx%2F4831-trail-crest-cir-austin-tx-78735%2Fpid_u0y0bh54nh%2F
- *             description: encoded Url of the property
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: List of properties images
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: string
- *                 properties:
- *                   path:
- *                     type: string
- *                     description: Image path
- *     tags:
- *       - Properties
- */
-router.get('/properties-images/:url(*)', async (req, res) => {
-	try {
-		const { url } = req.params;
-		if (!url) {
-			throw new Error('Url is required');
-		}
-		const imageUrls = await fetchPropertiesImagesFromSOA(url);
-		res.json(imageUrls);
-	} catch (error) {
-		console.error('Error fetching properties:', error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
 });
 
 export default router;

@@ -105,7 +105,7 @@ Promise.all([
 → detail = null
 → articles = mapSOADataListToArticles(nearbyRaw.listings) or []
 → return { seo, geo, articleComponent, articleTotalCount, headerComponent,
-           footerComponent, welcomeImage, cdnHost, appHost, soaApiDomain, detail }
+           footerComponent, welcomeImage, cdnHost, appHost, detail }
 ```
 
 SOA helpers live in [`server/routes/api.soa.property.js`](../server/routes/api.soa.property.js). Failed SOA (`fetchFromSoa` → `null`) yields **empty articles**, still **HTTP 200** for HTML (no throw).
@@ -166,7 +166,8 @@ SOA helpers live in [`server/routes/api.soa.property.js`](../server/routes/api.s
   headerComponent: { name, template, data },
   footerComponent: { name, template, data },
   welcomeImage: string,   // absolute CDN URL
-  cdnHost, appHost, soaApiDomain: string,
+  cdnHost, appHost: string,
+  logs: { curls: string[] },
   detail: null
 }
 ```

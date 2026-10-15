@@ -64,7 +64,7 @@
         transition: transform 0.5s;
         transform: translateY(0%);
         box-shadow: 0px 1px 3px hsla(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness), 0.5);
-        background-color: var(--breadcrumb-color-bg);
+        background-color: var(--color-bg);
 
         > .breadcrumb {
             position: static;

@@ -99,6 +99,7 @@ export const geoType = {
 	zipcode: 'zipcode',
 	address: 'address',
 	neighborhood: 'neighborhood',
+	school: 'school',
 };
 
 export function getGeoCityByCityState(city, state) {
@@ -152,6 +153,10 @@ export function getGeoByPath(_path) {
 		geo.type = geoType.neighborhood;
 		geo.neighborhood = segments[2].replace(/_neighborhood$/i, '').replace(/-/g, ' ');
 		return geo;
+	} else if (segments[2].endsWith('_school')) {
+		geo.type = geoType.school;
+		geo.schoolId = segments[2].replace(/_school$/i, '');
+		return geo;
 	}
 
 	geo.type = geoType.city;
@@ -193,6 +198,13 @@ export function getAddressPath(address, city, state) {
 	return `${stateCode}/${cityCode}/${addressCode}_address`;
 }
 
+export function getSchoolPath(schoolId, city, state) {
+	let stateCode = state.toLowerCase();
+	let cityName = city.replace(/\s+city$/i, '').trim();
+	let cityCode = cityName.toLowerCase().replace(/\s+/g, '-');
+	return `${stateCode}/${cityCode}/${schoolId}_school`;
+}
+
 export function getNeighborhoodPath(neighborhood, city, state) {
 	let stateCode = state.toLowerCase();
 	// Remove "City" suffix if present for city
@@ -216,6 +228,8 @@ export function getPathByGeo(geo) {
 		return getNeighborhoodPath(geo.neighborhood, geo.city, geo.state);
 	} else if (geo.type === geoType.address) {
 		return getAddressPath(geo.address, geo.city, geo.state);
+	} else if (geo.type === geoType.school) {
+		return getSchoolPath(geo.schoolId, geo.city, geo.state);
 	}
 	return null;
 }
@@ -370,6 +384,12 @@ export function getBreadcrumbByGeo(geo, _path) {
 				href: `${path}/${getNeighborhoodPath(geo.neighborhood, geo.city, geo.state)}`,
 			});
 		}
+		if (geo.schoolId) {
+			data.push({
+				text: geo.schoolName || geo.schoolId,
+				href: `${path}/${getSchoolPath(geo.schoolId, geo.city, geo.state)}`,
+			});
+		}
 		if (geo.zipcode) {
 			data.push({
 				text: geo.zipcode,
@@ -388,7 +408,10 @@ export function getGeoDisplayText(geo) {
 		return '';
 	}
 
-	if (geo.address) {
+	if (geo.type === geoType.school && geo.schoolId) {
+		const label = geo.schoolName || geo.schoolId;
+		return `${label}, ${geo.city}, ${geo.state}`;
+	} else if (geo.address) {
 		const stateZip = [geo.state, geo.zipcode].filter(Boolean).join(' ').trim();
 		const locality = [geo.city, geo.county, stateZip].filter(Boolean).join(', ');
 		if (locality) {

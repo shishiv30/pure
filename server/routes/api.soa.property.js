@@ -1,6 +1,7 @@
 import express from 'express';
 import config from '../config.js';
 import { fetchFromSoa } from '../controllers/realestate.js';
+import { getSchoolBaseInfo } from './api.soa.school.js';
 
 const router = express.Router();
 router.use(express.json());
@@ -714,6 +715,28 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
  *       - SOA Property
  */
 export async function searchHouse(geo, filter = null, query = {}) {
+	if (geo?.type === 'school' && geo.schoolId) {
+		const school = await getSchoolBaseInfo(geo.schoolId);
+		if (!school?.id || !school?.boundaryId) {
+			return { listings: [], totalCount: 0 };
+		}
+		if (!geo.schoolName && school.name) {
+			geo.schoolName = school.name;
+		}
+		const body = getSearchHousePayload(geo, filter);
+		body.input = String(geo.schoolId);
+		body.searchType = 'SCHOOL';
+		body.schoolRequest = [
+			{
+				schoolId: String(school.id),
+				schoolBoundaryId: school.boundaryId,
+			},
+		];
+		return proxyToPropertyPath('POST', '/listings/schools/v2', {
+			body,
+			query,
+		});
+	}
 	const body = getSearchHousePayload(geo, filter);
 	return proxyToPropertyPath('POST', '/listings/nearbysearch/v2', {
 		body,
