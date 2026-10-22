@@ -1,0 +1,37 @@
+@use './_mixins.scss' as *;
+
+.pagination {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--g2);
+	padding: var(--g4) var(--g3);
+
+	>ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: var(--g1);
+	}
+
+	.btn {
+		min-width: var(--btn-size);
+	}
+
+	span.btn[disabled] {
+		cursor: default;
+		opacity: 0.5;
+	}
+}
+
+.pagination-summary {
+	margin: 0;
+	opacity: 0.7;
+	font-size: var(--font-size-7);
+}
+
+.pagination-gap {
+	padding: 0 var(--g0);
+	opacity: 0.6;
+}

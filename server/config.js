@@ -53,6 +53,8 @@ let config = {
 
 	// App
 	appName: process.env.APP_NAME || 'Pure',
+	/** Secret for ?llm=on|off. Unset = only the CLI (npm run llms:on|off) can toggle llms.txt. */
+	llmsToggleKey: process.env.LLMS_TOGGLE_KEY || '',
 
 	// Host: when CDN_HOST unset, fall back to appHost (so assets follow the same origin/port as links).
 	// Docker sets CDN_HOST/APP_HOST in run-docker.sh.

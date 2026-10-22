@@ -1,0 +1,67 @@
+@use './_mixins.scss' as *;
+
+.dropdown-button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	background: var(--color-bg);
+
+	> a:not(.dropdown-button-caret) {
+		@include singleline();
+		padding: var(--g1) var(--g2);
+		padding-right: calc(var(--g2) + var(--comp-size-1));
+		font-size: var(--font-size-6);
+	}
+
+	.dropdown-button-caret {
+		@include center-y();
+		right: var(--g1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--comp-size-1);
+		height: var(--comp-size-3);
+		color: var(--color);
+
+		i {
+			transition: transform 0.2s ease-in-out;
+		}
+	}
+
+	.dropdown-button-list {
+		display: none;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 10;
+		min-width: 100%;
+		background: var(--color-bg);
+		box-shadow: 0 1px 3px hsla(
+			var(--color-root-major-hue),
+			var(--color-root-saturation),
+			var(--color-root-lightness),
+			0.4
+		);
+
+		> a {
+			display: block;
+			padding: var(--g1) var(--g2);
+			white-space: nowrap;
+			font-size: var(--font-size-6);
+
+			&:hover {
+				background: var(--color-bg-l1);
+			}
+		}
+	}
+
+	&.open {
+		.dropdown-button-caret i {
+			transform: rotate(-180deg);
+		}
+
+		.dropdown-button-list {
+			display: block;
+		}
+	}
+}

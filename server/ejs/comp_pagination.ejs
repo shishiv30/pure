@@ -1,0 +1,31 @@
+<%_ if (pagination && pagination.pages > 1) { _%>
+<nav class="pagination" aria-label="Pages">
+	<p class="pagination-summary"><%= pagination.from.toLocaleString('en-US') %>–<%= pagination.to.toLocaleString('en-US') %> of <%= pagination.total.toLocaleString('en-US') %></p>
+	<ul>
+		<li>
+			<%_ if (pagination.prev) { _%>
+			<a class="btn default small" href="<%= pagination.prev.href %>" rel="prev" aria-label="Previous page"><i class="icon-angle-left" aria-hidden="true"></i></a>
+			<%_ } else { _%>
+			<span class="btn default small" disabled aria-hidden="true"><i class="icon-angle-left"></i></span>
+			<%_ } _%>
+		</li>
+		<%_ for (var i = 0; i < pagination.items.length; i++) { _%>
+			<%_ const item = pagination.items[i]; _%>
+			<%_ if (item.gap) { _%>
+			<li class="pagination-gap" aria-hidden="true">…</li>
+			<%_ } else if (item.current) { _%>
+			<li><span class="btn major active small" aria-current="page"><%= item.page %></span></li>
+			<%_ } else { _%>
+			<li><a class="btn default small" href="<%= item.href %>" aria-label="Page <%= item.page %>"><%= item.page %></a></li>
+			<%_ } _%>
+		<%_ } _%>
+		<li>
+			<%_ if (pagination.next) { _%>
+			<a class="btn default small" href="<%= pagination.next.href %>" rel="next" aria-label="Next page"><i class="icon-angle-right" aria-hidden="true"></i></a>
+			<%_ } else { _%>
+			<span class="btn default small" disabled aria-hidden="true"><i class="icon-angle-right"></i></span>
+			<%_ } _%>
+		</li>
+	</ul>
+</nav>
+<%_ } _%>

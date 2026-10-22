@@ -1,5 +1,29 @@
 <%_ if (articleComponent && articleComponent.data && articleComponent.data.length) { _%>
 <section class="result">
+	<header class="listing-title">
+		<h2><%= typeof geoLabel !== 'undefined' && geoLabel ? geoLabel : '' %></h2>
+		<%_ const options = (typeof sortOptions !== 'undefined' && sortOptions) ? sortOptions : []; _%>
+		<%_ let selected = null; _%>
+		<%_ for (var s = 0; s < options.length; s++) { _%>
+			<%_ if (options[s].selected) { selected = options[s]; } _%>
+		<%_ } _%>
+		<%_ if (!selected && options.length) { selected = options[0]; } _%>
+		<%_ if (selected) { _%>
+		<div class="dropdown-button listing-sort" data-role="dropdownbutton">
+			<a href="<%= selected.href %>"><%= selected.label %></a>
+			<a class="dropdown-button-caret" href="javascript:;" aria-label="Open sort">
+				<i class="icon-angle-down" aria-hidden="true"></i>
+			</a>
+			<div class="dropdown-button-list">
+				<%_ for (var t = 0; t < options.length; t++) { _%>
+					<%_ if (options[t] !== selected) { _%>
+					<a href="<%= options[t].href %>"><%= options[t].label %></a>
+					<%_ } _%>
+				<%_ } _%>
+			</div>
+		</div>
+		<%_ } _%>
+	</header>
 	<ul>
 		<%_ for (var i = 0; i < articleComponent.data.length; i++) { _%>
 			<%_ const article = articleComponent.data[i]; _%>
@@ -8,5 +32,8 @@
 			</li>
 		<%_ } _%>
 	</ul>
+	<%_ if (typeof paginationComponent !== 'undefined' && paginationComponent && paginationComponent.data) { _%>
+		<%- include('comp_pagination', { pagination: paginationComponent.data }) %>
+	<%_ } _%>
 </section>
 <%_ } _%>

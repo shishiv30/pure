@@ -53,7 +53,7 @@
     }
 
     .listing-nav {
-        z-index: calc(var(--ui-header-index) - 1);
+        z-index: var(--ui-listing-nav-index);
         grid-area: breadcrumb;
         position: sticky;
         top: var(--header-height);
@@ -61,8 +61,7 @@
         align-items: center;
         justify-content: space-between;
         gap: var(--g1);
-        transition: transform 0.5s;
-        transform: translateY(0%);
+        transition: top 0.5s;
         box-shadow: 0px 1px 3px hsla(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness), 0.5);
         background-color: var(--color-bg);
 
@@ -200,7 +199,7 @@
     }
 
     .result {
-        margin-top: var(--g4);
+        margin-top: var(--g3);
         grid-area: result;
     }
 
@@ -313,6 +312,11 @@
                 @include hidden-scrollbar();
                 overflow-x: auto;
 
+                // Results are a sideways strip here; paging belongs to the grid view
+                .pagination {
+                    display: none;
+                }
+
                 >ul {
                     display: flex;
                     flex-wrap: nowrap;
@@ -334,7 +338,7 @@
             }
 
             .listing-nav {
-                transform: none;
+                top: var(--header-height);
             }
 
             .detail {
@@ -399,6 +403,30 @@
 }
 
 .result {
+    >.listing-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--g2);
+        padding: 0 var(--g3);
+        margin-bottom: var(--g2);
+
+        >h2 {
+            margin: 0;
+            min-width: 0;
+            font-size: var(--font-size-4);
+            font-weight: var(--font-weight-bold, 600);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        >.listing-sort {
+            width: auto;
+            flex: 0 0 auto;
+        }
+    }
+
     >ul {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(calc(var(--item-width) - var(--g2)*2), 1fr));
@@ -412,7 +440,7 @@
 
 .scroll-down {
     .listing-nav {
-        transform: translateY(calc(var(--header-height) * -1));
+        top: 0;
     }
 
     .menu {

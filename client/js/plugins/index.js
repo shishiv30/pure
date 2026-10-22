@@ -35,6 +35,7 @@ import imgError from './_imgerror.js';
 import listDict from './_listdict.js';
 import layout from './_layout.js';
 import layoutToggle from './_layout-toggle.js';
+import dropdownbutton from './_dropdownbutton.js';
 import groupDropdown from './_groupdropdown.js';
 import rangeSlider from './_rangeslider.js';
 import theme from './_theme.js';
@@ -46,7 +47,7 @@ export default {
 	// datatable,
 	modal,
 	dialog,
-	// dropdownbutton,
+	dropdownbutton,
 	form,
 	// gridtable,
 	header,

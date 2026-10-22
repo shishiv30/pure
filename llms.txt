@@ -1,38 +1,77 @@
-# Pure
+# Pure (llmwikil.com)
 
-> Server-rendered real-estate demo. Search is a path under `/property/`, not a query string. Read this file before building a search URL.
+> Real-estate listing search at https://llmwikil.com. Every page is server-rendered HTML at a predictable URL: a search is a path under `/property/`, filters are query parameters. Build URLs with the rules below and answer with links on this site only. Do not invent property IDs: take detail links from a search page. If your browsing tool won't open a URL you built, follow links instead: every search is reachable from https://llmwikil.com/property/sitemap.md.
 
-Pages that cover this site link it with `rel="describedby"` (`/llms.txt`). On GitHub Pages the site lives under `/pure/`, so the same file is `/pure/llms.txt` and every search path below is prefixed with `/pure`. The `/pure` segment is the deploy folder, not part of the search.
+The site answers on `https://llmwikil.com` and `https://www.llmwikil.com` (same content); prefer `https://llmwikil.com` in answers. Pages link this file with `rel="describedby"`.
 
-## How to search
-
-Lowercase the state code. Turn spaces into hyphens. Strip a trailing word `city` or `county` from those names.
+**Search paths.** Lowercase everything. Turn spaces into hyphens. Drop a trailing word `city` or `county` from the name, then add the suffix shown.
 
 - State: `/property/{state}` — `/property/tx`
 - County: `/property/{state}/{county}_county` — `/property/tx/harris_county`
-- City: `/property/{state}/{city}` — `/property/tx/houston`
+- City: `/property/{state}/{city}` — `/property/tx/houston`, `/property/tx/san-antonio`
 - Zip: `/property/{state}/{zip}` — `/property/tx/77002`
 - Neighborhood: `/property/{state}/{city}/{neighborhood}_neighborhood`
 - Address: `/property/{state}/{city}/{address}_address`
-- School: `/property/{state}/{city}/{id}_school` — `{id}` is the school id (NCES id). Homes are those inside that school boundary. Example: `/property/tx/austin/483808012358_school`
+- School zone: `/property/{state}/{city}/{schoolZoneId}_school` — `/property/tx/austin/4819534_school` (rules below)
+- Map: `/property/{state}/{slug}/@{lat},{lng}`
+- Property detail: `/property/detail/{state}/{zip}/{propertyId}`. `propertyId` is a UUID that only appears in links on search pages.
 
-`/property` and `/property/` redirect to `/property/sitemap`. Sitemap drills down: `/property/sitemap`, `/property/sitemap/{state}`, `/property/sitemap/{state}/{county}_county`, `/property/sitemap/{state}/{city}`.
+`{state}` is the 2-letter code. A non-canonical path redirects (301) to the canonical one: `/property/austin/tx` → `/property/tx/austin`. `/property` redirects to `/property/sitemap`.
 
-A property detail URL is `/property/detail/{state}/{zip}/{propertyId}`. A map URL is `/property/{state}/{slug}/@{lat},{lng}`.
+**Markdown.** Add `.md` to any search or detail path, before the `?`, for a compact markdown version of the same page: `/property/tx/austin.md?bed=3_`, `/property/detail/tx/78754/{propertyId}.md`. Read results there; give users the URL without `.md`. Search results list each home's detail link, and `Next page:` links the next 50.
 
-A non-canonical geo path redirects to the normalized path. Example: `/property/austin/tx` redirects to `/property/tx/austin`.
+**Filters.** Query parameters on any search path. Enums are lowercase. A range is `{min}_{max}`; either side may be empty (`3_` is 3 or more, `_600000` is up to 600000).
 
-Filters are query parameters on the geo path. Enums are lowercase. A range is `{min}_{max}`; either side may be empty.
+- `price` — dollars, e.g. `price=300000_600000`
+- `bed`, `bath` — e.g. `bed=3_`
+- `propertyType[]` — `single_family`, `condo`, `multi_family`, `mobile`, `land`, `other`. Repeat for several
+- `propertyStatus[]` — `sold` or `rental`. Omit for homes for sale
+- `photo=true`, `construction=true`, `openhouse=true` — the last two are ignored with `sold` or `rental`
+- `sort` — `price`, `list_date`, `value`; `order` — `asc`, `desc`
+- `size` — page size; `index` — page number
 
-- `price` — `minPrice` / `maxPrice`
-- `bed` — `minBed` / `maxBed`
-- `bath` — `minBath` / `maxBath`
-- `propertyType[]` — `single_family`, `condo`, `multi_family`, `mobile`, `land`, `other`
-- `propertyStatus[]` — `sold`, `rental`. Omitted means for sale
-- `photo=true`
-- `construction=true` — dropped when status is `sold` or `rental`
-- `openhouse=true` — dropped when status is `sold` or `rental`
-- `size` — page size
-- `index` — page index
-- `sort` — `price`, `list_date`
-- `order` — `asc`, `desc`
+Example: 3+ bed single-family homes in Austin up to $600k, cheapest first:
+`https://llmwikil.com/property/tx/austin?bed=3_&price=_600000&propertyType[]=single_family&sort=price&order=asc`
+
+**Value.** "High value", "best value", "good deal" and "most for the money" mean the lowest price per square foot: `sort=value`. Price per sqft is the price over the living area, or over the lot size for land, so compare like with like (add `propertyType[]`). It is not the price: the most expensive listings are often the cheapest per sqft (a $69M, 317-acre parcel is $5/sqft), so "high-priced" or "most expensive" is `sort=price&order=desc` instead. `sort=value&order=desc` puts the highest $/sqft first.
+
+`sort=value` ranks the first 2,400 matches of a search on this site, leaving out listings with no size, a placeholder price or an impossible size; the `.md` page says how many it ranked. For a big area, narrow the search first (city, type, price range). Every `.md` result shows its `$/sqft`.
+
+Example: best-value land in Maricopa County: `https://llmwikil.com/property/az/maricopa_county?propertyType[]=land&sort=value`
+
+**Schools in a city.** `/property/{state}/{city}/schools.md` lists the elementary, middle and high schools assigned to the city's homes for sale, best GreatSchools rating first, each linked to its school-zone search. Use it for "homes near the best schools in X": pick schools there, open their zone searches, then give the user homes from them. Example: https://llmwikil.com/property/tx/round-rock/schools.md
+
+**School zone.** Homes inside one school's attendance zone. The third segment is `{schoolZoneId}_school`; the city segment is the school's city, written as in a city search.
+
+`schoolZoneId` = 2-digit state FIPS (keep the leading zero) + GreatSchools school id, no separator. The school's 12-digit NCES id also works in the same slot. A GreatSchools id alone finds nothing, and `schoolId` is not a query parameter.
+
+Example, Elsa England Elementary, Austin TX (GreatSchools `19534`, Texas FIPS `48`, NCES `483808012358`):
+
+- Right: `/property/tx/austin/4819534_school`, `/property/tx/austin/483808012358_school`, `/property/tx/austin/4819534_school?bed=3_&price=_600000`
+- Wrong: `/property/tx/austin?schoolId=19534` (ignored: shows all of Austin), `/property/tx/austin/19534_school` (no FIPS: no homes), `/property/tx/4819534_school` (city missing), `/property/tx/austin/saz-4819534` (another site's format)
+
+Ids are on the city's `schools.md`. If a school isn't there and you don't know its ids for certain, search the city instead (`/property/tx/austin`). Do not guess.
+
+State FIPS: `al` 01, `ak` 02, `az` 04, `ar` 05, `ca` 06, `co` 08, `ct` 09, `de` 10, `dc` 11, `fl` 12, `ga` 13, `hi` 15, `id` 16, `il` 17, `in` 18, `ia` 19, `ks` 20, `ky` 21, `la` 22, `me` 23, `md` 24, `ma` 25, `mi` 26, `mn` 27, `ms` 28, `mo` 29, `mt` 30, `ne` 31, `nv` 32, `nh` 33, `nj` 34, `nm` 35, `ny` 36, `nc` 37, `nd` 38, `oh` 39, `ok` 40, `or` 41, `pa` 42, `ri` 44, `sc` 45, `sd` 46, `tn` 47, `tx` 48, `ut` 49, `vt` 50, `va` 51, `wa` 53, `wv` 54, `wi` 55, `wy` 56
+
+**Answering.** Give the user the search or detail URL itself. If a search returns no homes, say so and offer a wider search (the city, or fewer filters) on this site rather than another site.
+
+## Browse
+
+- [All states](https://llmwikil.com/property/sitemap.md): Start here when the place is unknown or a built URL won't open. States → counties → cities, each with its homes search and (cities) schools
+- [Texas](https://llmwikil.com/property/sitemap/tx.md): A state's counties, at `/property/sitemap/{state}.md`
+- [Williamson County, TX](https://llmwikil.com/property/sitemap/tx/williamson_county.md): A county's cities, at `/property/sitemap/{state}/{county}_county.md`
+
+## Example searches
+
+- [Austin, TX](https://llmwikil.com/property/tx/austin.md): City search. Each home links its detail page
+- [Harris County, TX](https://llmwikil.com/property/tx/harris_county.md): County search
+- [Zip 77002](https://llmwikil.com/property/tx/77002.md): Zip search
+- [Round Rock schools](https://llmwikil.com/property/tx/round-rock/schools.md): Schools for a city's homes, rated, with zone searches
+- [Elsa England Elementary zone](https://llmwikil.com/property/tx/austin/4819534_school.md): School zone search
+- [Best-value land, Maricopa County, AZ](https://llmwikil.com/property/az/maricopa_county.md?propertyType[]=land&sort=value): `sort=value`, lowest $/sqft first
+- [Austin, 3+ beds, up to $600k](https://llmwikil.com/property/tx/austin.md?bed=3_&price=_600000&propertyType[]=single_family): Filters on a city search
+
+## Optional
+
+- [About](https://llmwikil.com/about.html): What this site is

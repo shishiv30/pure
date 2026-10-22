@@ -2,8 +2,10 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
 	getFilterByQuery,
+	getListingSortOptions,
 	getQueryByFilter,
 	getQueryStringByFilter,
+	searchWithSort,
 	toSoaSearchFilter,
 } from '../filter.js';
 
@@ -129,6 +131,46 @@ describe('getQueryByFilter', () => {
 			propertyTypes: ['SINGLE_FAMILY_HOUSE'],
 		});
 		assert.deepEqual(query['propertyType[]'], ['single_family']);
+	});
+});
+
+describe('getListingSortOptions', () => {
+	test('marks default when sort is empty', () => {
+		const options = getListingSortOptions({});
+		assert.equal(options[0].value, '');
+		assert.equal(options[0].selected, true);
+		assert.equal(options.filter((row) => row.selected).length, 1);
+	});
+
+	test('selects price low to high from current filter', () => {
+		const options = getListingSortOptions({
+			sortColumn: 'PRICE',
+			sortOrder: 'ASC',
+		});
+		const current = options.find((row) => row.selected);
+		assert.equal(current.value, 'price-asc');
+		assert.equal(current.label, 'Price: low to high');
+	});
+
+	test('builds hrefs that swap sort and drop index', () => {
+		const options = getListingSortOptions(
+			{ sortColumn: 'PRICE', sortOrder: 'ASC' },
+			{ path: '/property/tx/austin', search: '?bed=3_&sort=price&order=asc&index=2' },
+		);
+		const newest = options.find((row) => row.value === 'list_date-desc');
+		assert.equal(newest.href, '/property/tx/austin?bed=3_&sort=list_date&order=desc');
+		const def = options.find((row) => row.value === '');
+		assert.equal(def.href, '/property/tx/austin?bed=3_');
+	});
+});
+
+describe('searchWithSort', () => {
+	test('sets sort and order and drops index', () => {
+		assert.equal(
+			searchWithSort('?bed=3_&index=2', 'price', 'desc'),
+			'?bed=3_&sort=price&order=desc',
+		);
+		assert.equal(searchWithSort('sort=price&order=asc', '', ''), '');
 	});
 });
 

@@ -59,7 +59,8 @@ const FLAG_FIELDS = [
 	{ key: 'openhouse', soa: 'isOpenHousesOnly' },
 ];
 
-const SORT_COLUMNS = ['price', 'list_date'];
+/** `value` = best value first (lowest $/sqft), ranked on our server: server/utils/valueSort.js */
+const SORT_COLUMNS = ['price', 'list_date', 'value'];
 const SORT_COLUMN_SET = new Set(SORT_COLUMNS);
 const SORT_ORDERS = ['asc', 'desc'];
 const SORT_ORDER_SET = new Set(SORT_ORDERS);
@@ -323,6 +324,77 @@ export function getQueryStringByFilter(filter = {}) {
 
 export const FILTER_SORT_COLUMNS = SORT_COLUMNS;
 export const FILTER_SORT_ORDERS = SORT_ORDERS;
+
+/** Dropdown rows for listing sort. `value` is `sort-order`, or '' for SOA default. */
+export const LISTING_SORT_OPTIONS = [
+	{ sort: '', order: '', label: 'Default' },
+	{ sort: 'price', order: 'asc', label: 'Price: low to high' },
+	{ sort: 'price', order: 'desc', label: 'Price: high to low' },
+	{ sort: 'list_date', order: 'desc', label: 'Newest' },
+	{ sort: 'list_date', order: 'asc', label: 'Oldest' },
+	{ sort: 'value', order: 'asc', label: 'Best value' },
+];
+
+function listingSortValue(sort, order) {
+	if (!sort) {
+		return '';
+	}
+	return order ? `${sort}-${order}` : sort;
+}
+
+/**
+ * Replace `sort` / `order` and drop `index` so a new sort starts at page 1.
+ * @param {string} search
+ * @param {string} sort
+ * @param {string} order
+ * @returns {string} query with leading `?`, or ''
+ */
+export function searchWithSort(search, sort, order) {
+	const params = new URLSearchParams(String(search || '').replace(/^\?/, ''));
+	params.delete('index');
+	if (!sort) {
+		params.delete('sort');
+		params.delete('order');
+	} else {
+		params.set('sort', sort);
+		if (order) {
+			params.set('order', order);
+		} else {
+			params.delete('order');
+		}
+	}
+	const s = params.toString();
+	return s ? `?${s}` : '';
+}
+
+/**
+ * @param {Record<string, unknown>} [filter]
+ * @param {{ path?: string, search?: string }} [page]
+ * @returns {Array<{ value: string, label: string, sort: string, order: string,
+ *   selected: boolean, href: string }>}
+ */
+export function getListingSortOptions(filter = {}, page = {}) {
+	const sort = String(filter.sortColumn || '')
+		.trim()
+		.toLowerCase();
+	const order = String(filter.sortOrder || '')
+		.trim()
+		.toLowerCase();
+	const currentSort = SORT_COLUMN_SET.has(sort) ? sort : '';
+	const currentOrder = SORT_ORDER_SET.has(order) ? order : '';
+	const current = listingSortValue(currentSort, currentOrder);
+	const path = page.path || '';
+	const search = page.search || '';
+	return LISTING_SORT_OPTIONS.map((opt) => {
+		const value = listingSortValue(opt.sort, opt.order);
+		return {
+			...opt,
+			value,
+			selected: value === current,
+			href: `${path}${searchWithSort(search, opt.sort, opt.order)}`,
+		};
+	});
+}
 export const FILTER_PROPERTY_TYPES = PROPERTY_TYPES;
 export const FILTER_PROPERTY_STATUSES = [
 	{ value: '', label: 'For sale' },

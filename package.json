@@ -16,7 +16,8 @@
 		"docker:run": "./run-container.sh",
 		"start": "npx cross-env NODE_ENV=production node server/app.js",
 		"deploy-gh": "node deploy",
-		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/property.get.test.js server/routes/__tests__/propertyGeoRedirect.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/propertySpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/geo.school.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
+		"deploy:nas": "bash scripts/deploy-nas.sh",
+		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/property.get.test.js server/routes/__tests__/propertyGeoRedirect.test.js server/routes/__tests__/propertyMarkdown.test.js server/routes/__tests__/valueSort.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/propertySpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/pagination.test.js helpers/__tests__/geo.school.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
 		"test:basecontroller": "node --test server/controllers/__tests__/basecontroller.config.test.js",
 		"test:property-search": "node --test --test-timeout=1200000 server/routes/__tests__/propertySearchLive.test.js",
 		"test:lighthouse": "npm run build-docker:dev && node scripts/run-lighthouse.js",
@@ -28,6 +29,9 @@
 		"soa-proxy:on": "node scripts/soa-reverse-proxy.js on",
 		"soa-proxy:off": "node scripts/soa-reverse-proxy.js off",
 		"soa-proxy:status": "node scripts/soa-reverse-proxy.js status",
+		"llms:on": "node scripts/llms-toggle.js on",
+		"llms:off": "node scripts/llms-toggle.js off",
+		"llms:status": "node scripts/llms-toggle.js status",
 		"prebuild": "npm run clean"
 	},
 	"repository": {

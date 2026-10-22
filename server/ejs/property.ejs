@@ -26,7 +26,14 @@
 
 
 <%_ if (data.articleComponent) { _%>
-  <%- include('comp_property_nearby', { articleComponent: data.articleComponent, getHref, getSrc }) %>
+  <%- include('comp_property_nearby', {
+    articleComponent: data.articleComponent,
+    paginationComponent: data.paginationComponent,
+    geoLabel: data.geoLabel,
+    sortOptions: data.sortOptions,
+    getHref,
+    getSrc,
+  }) %>
 <%_ } _%>
 
 <%- include('html_menu') %>

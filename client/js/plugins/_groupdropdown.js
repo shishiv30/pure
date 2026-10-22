@@ -180,7 +180,13 @@ export default {
 		}
 
 		function onFlyOut(event) {
-			if (event.target !== list || event.animationName !== 'group-dropdown-fly-out') {
+			if (event.target !== list) {
+				return;
+			}
+			if (
+				event.animationName !== 'group-dropdown-fly-out' &&
+				event.animationName !== 'group-dropdown-sheet-out'
+			) {
 				return;
 			}
 			hideList();

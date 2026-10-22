@@ -13,3 +13,4 @@ soa-fetch-agent-d552bd.ndjson
 # BMAD Cursor skills (local agent tooling; not application source)
 .cursor/skills/bmad-*/
 _bmad/
+.llms-off

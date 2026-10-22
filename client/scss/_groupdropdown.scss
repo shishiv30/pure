@@ -49,6 +49,35 @@
 		pointer-events: none;
 		animation: group-dropdown-fly-out 0.2s ease-out forwards;
 	}
+
+	@media screen and (max-width: $screen-xs-max) and (orientation: portrait) {
+		&.open .group-dropdown-list,
+		&.closing .group-dropdown-list {
+			position: fixed;
+			top: auto;
+			right: 0;
+			bottom: 0;
+			left: 0 !important;
+			z-index: var(--ui-dropdown-index);
+			width: auto !important;
+			min-width: 0;
+			max-width: none;
+			max-height: 50vh;
+			margin-top: 0;
+			overflow: auto;
+			border-radius: var(--radius-0) var(--radius-0) 0 0;
+			transform-origin: bottom center;
+			box-shadow: 0 0 0 100svh hsla(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness), 0.5);
+		}
+
+		&.open .group-dropdown-list {
+			animation-name: group-dropdown-sheet-in;
+		}
+
+		&.closing .group-dropdown-list {
+			animation-name: group-dropdown-sheet-out;
+		}
+	}
 }
 
 @keyframes group-dropdown-fly-in {
@@ -72,6 +101,30 @@
 	to {
 		opacity: 0;
 		transform: translateY(-0.75rem);
+	}
+}
+
+@keyframes group-dropdown-sheet-in {
+	from {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes group-dropdown-sheet-out {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(100%);
 	}
 }
 
@@ -213,6 +266,7 @@
 	.radio {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		gap: var(--g1);
 		padding: 0;
 		width: 100%;
 	}

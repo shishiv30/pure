@@ -3,6 +3,7 @@ import config from '../config.js';
 import { fetchFromSoa } from '../controllers/realestate.js';
 import { getSchoolBaseInfo } from './api.soa.school.js';
 import { toSoaSearchFilter } from '../../helpers/filter.js';
+import { searchHouseByValue, VALUE_SORT } from '../utils/valueSort.js';
 
 const router = express.Router();
 router.use(express.json());
@@ -716,6 +717,14 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
  *       - SOA Property
  */
 export async function searchHouse(geo, filter = null, query = {}) {
+	// SOA has no $/sqft sort: rank a pool of results here (see server/utils/valueSort.js)
+	if (filter?.sortColumn === VALUE_SORT) {
+		return searchHouseByValue((f) => searchHouseOnce(geo, f, query), geo, filter);
+	}
+	return searchHouseOnce(geo, filter, query);
+}
+
+async function searchHouseOnce(geo, filter = null, query = {}) {
 	if (geo?.type === 'school' && geo.schoolId) {
 		const school = await getSchoolBaseInfo(geo.schoolId);
 		if (!school?.id || !school?.boundaryId) {

@@ -3,6 +3,8 @@ import compression from 'compression';
 import router from './routes/index.js';
 import session from './middleware/session.js';
 import geo from './middleware/geo.js';
+import llms from './middleware/llms.js';
+import agentLog from './middleware/agentLog.js';
 import config from './config.js';
 import { uploadStaticHtmlToS3 } from './utils/uploadStaticHtmlS3.js';
 import path from 'path';
@@ -29,9 +31,14 @@ session(app);
 
 app.use((req, res, next) => {
 	res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-	res.append('Link', '</llms.txt>; rel="describedby"');
 	next();
 });
+
+/* log AI agent / crawler requests (docker logs pure | grep '\[agent\]') */
+app.use(agentLog);
+
+/* llms.txt on/off switch (before static, so it can hide dist/llms.txt) */
+app.use(llms);
 
 app.use((req, res, next) => {
 	runWithSoaLogs(() => next());

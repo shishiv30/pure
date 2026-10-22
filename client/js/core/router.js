@@ -70,17 +70,17 @@ export class Router {
 	}
 
 	/**
-	 * Pathname for a same-origin href, or `''` (let the browser handle it).
+	 * Pathname (+ the href's own query, if any) for a same-origin href, or `''` (let the
+	 * browser handle it). Keeping the query lets `?index=2` links (pagination) navigate;
+	 * an href without one still keeps the current query (see `push`).
 	 * @param {string} path
 	 * @returns {string}
 	 */
 	getInternalPath(path) {
 		try {
-			if (path.indexOf(window.location.origin) === 0) {
-				return new URL(path).pathname;
-			}
-			if (path.indexOf('/') === 0) {
-				return new URL(path, window.location.origin).pathname;
+			if (path.indexOf(window.location.origin) === 0 || path.indexOf('/') === 0) {
+				const url = new URL(path, window.location.origin);
+				return url.pathname + url.search;
 			}
 		} catch {
 			return '';

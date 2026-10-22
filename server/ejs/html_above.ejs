@@ -8,7 +8,12 @@
     <%= seo.title || 'Page Title' %>
   </title>
   <meta name="description" content="<%= seo.desc || 'Page Description' %>">
+  <%_if(locals.llmsOn !== false){_%>
   <link rel="describedby" href="/llms.txt">
+  <%_}_%>
+  <%_if(locals.markdownUrl){_%>
+  <link rel="alternate" type="text/markdown" href="<%= locals.markdownUrl %>">
+  <%_}_%>
   <%_if(meta.preload && meta.preload.length){for(var i=0; i<meta.preload.length; i++){_%>
     <link rel="preload" href="<%=meta.preload[i].href%>" as="<%=meta.preload[i].as%>">
     <%_} }_%>

@@ -86,6 +86,24 @@ Common conventions:
 - Toggle CSS classes for state changes rather than inline styles where possible.
 - Use core event helpers instead of ad-hoc global listeners.
 
+### `dropdownbutton`
+
+Caret-triggered list. The first child `<a>` is the current label; other choices are in `.dropdown-button-list`. Class `open` shows the list. `javascript:;` items swap into the label; real `href`s navigate.
+
+```html
+<div class="dropdown-button" data-role="dropdownbutton">
+  <a href="?sort=price&amp;order=asc">Price: low to high</a>
+  <a class="dropdown-button-caret" href="javascript:;" aria-label="Open sort">
+    <i class="icon-angle-down" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-button-list">
+    <a href="?sort=price&amp;order=desc">Price: high to low</a>
+  </div>
+</div>
+```
+
+Listing sort uses this in [`server/ejs/comp_property_nearby.ejs`](server/ejs/comp_property_nearby.ejs).
+
 ### `list-dict` (key/value grid)
 
 Responsive definition list for property facts and similar data.

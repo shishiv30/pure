@@ -19,8 +19,9 @@ import { createArticleComponent } from '../ejs/comp_article.js';
 import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { getImgCdnUrl } from '../../helpers/url.js';
-import { getFilterByQuery } from '../../helpers/filter.js';
+import { getFilterByQuery, getListingSortOptions } from '../../helpers/filter.js';
 import { createFilterComponent } from '../ejs/comp_filter.js';
+import { createPaginationComponent } from '../ejs/comp_pagination.js';
 
 function getSeo(geo) {
 	const label = geo ? getGeoDisplayText(geo).trim() : '';
@@ -64,11 +65,14 @@ export default {
 			geo = getGeoCityByIp(ip);
 		}
 
+		const q = req.originalUrl.indexOf('?');
 		return {
 			...payload,
 			geo,
 			prId,
 			filter: getFilterByQuery(req.query),
+			// Search list pages only; a detail page's nearby list doesn't page
+			listPage: prId ? null : { path: req.path.replace(/\/+$/, ''), search: q >= 0 ? req.originalUrl.slice(q) : '' },
 		};
 	},
 	preload: function (_req, model) {
@@ -79,7 +83,7 @@ export default {
 		return [{ as: 'image', href }];
 	},
 	get: async function (payload) {
-		const { geo, prId, filter } = payload || {};
+		const { geo, prId, filter, listPage } = payload || {};
 		const welcomeImage = getImgCdnUrl(config.cdnHost, '/welcome.webp');
 
 		let [nearbyRaw, listingRaw, historiesRaw] = await Promise.all([
@@ -99,6 +103,20 @@ export default {
 
 		const articleComponent = createArticleComponent(articles);
 		const filterComponent = createFilterComponent(filter);
+		const geoLabel = geo ? getGeoDisplayText(geo).trim() : '';
+		const sortOptions = getListingSortOptions(filter, {
+			path: listPage?.path || '',
+			search: listPage?.search || '',
+		});
+		const paginationComponent = listPage
+			? createPaginationComponent({
+					total: articleTotalCount,
+					path: listPage.path,
+					search: listPage.search,
+					index: filter?.pageIndex,
+					size: filter?.maxCountPerPage,
+				})
+			: null;
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
 		const seo = buildDetailSeo(detail) || getSeo(geo);
@@ -106,8 +124,11 @@ export default {
 		return {
 			seo,
 			geo,
+			geoLabel,
+			sortOptions,
 			articleComponent,
 			filterComponent,
+			paginationComponent,
 			articleTotalCount,
 			headerComponent,
 			footerComponent,
@@ -115,6 +136,7 @@ export default {
 			cdnHost: config.cdnHost,
 			appHost: config.appHost,
 			detail,
+			valueSort: nearbyRaw?.valueSort || null,
 		};
 	},
 };

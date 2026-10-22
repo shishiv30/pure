@@ -8,8 +8,9 @@ import {
 	matchPropertySpaRoute,
 } from '../../../helpers/routes/propertySpaRoutes.js';
 import { buildPropertySpaInnerHtml } from './detailSpa.js';
-import { getQueryStringByFilter } from '../../../helpers/filter.js';
-import { getPathByGeo } from '../../../helpers/geo.js';
+import { getListingSortOptions, getQueryStringByFilter } from '../../../helpers/filter.js';
+import { getGeoDisplayText, getPathByGeo } from '../../../helpers/geo.js';
+import { getPagination } from '../../../helpers/pagination.js';
 import nearbyTpl from '../../../server/ejs/comp_property_nearby.ejs';
 import { renderEjsTemplate } from '../../js/core/renderEjs.js';
 import '../../scss/property.scss';
@@ -457,6 +458,8 @@ function listingGeoPath() {
 	return geo ? getPathByGeo(geo) || '' : '';
 }
 
+let lastListingSearch = window.location.search;
+
 async function refreshListing(to) {
 	const requestId = ++listingRequestId;
 	const geoPath = listingGeoPath();
@@ -477,10 +480,29 @@ async function refreshListing(to) {
 		window.context.logs = payload.logs || { curls: payload.curls };
 	}
 	const articles = Array.isArray(payload.articles) ? payload.articles : [];
+	const query = new URLSearchParams(to.search || '');
+	const pagination = getPagination({
+		total: payload.totalCount,
+		path: to.pathname,
+		search: to.search || '',
+		index: query.get('index'),
+		size: query.get('size'),
+	});
 	const html = articles.length
 		? renderEjsTemplate(
 			nearbyTpl,
-			{ articleComponent: { data: articles } },
+			{
+				articleComponent: { data: articles },
+				paginationComponent: { data: pagination },
+				geoLabel: getGeoDisplayText(window.context?.geo).trim(),
+				sortOptions: getListingSortOptions(
+					{
+						sortColumn: query.get('sort'),
+						sortOrder: query.get('order'),
+					},
+					{ path: to.pathname, search: to.search || '' },
+				),
+			},
 			window.context || {},
 		)
 		: '';
@@ -501,6 +523,12 @@ async function refreshListing(to) {
 	} else if (current) {
 		current.remove();
 	}
+	// A pagination click lands at the bottom of the list: bring the new page's top into view
+	const pageChanged = (from) => (new URLSearchParams(from || '').get('index') || '1') !== (query.get('index') || '1');
+	if (pageChanged(lastListingSearch)) {
+		document.querySelector(propertySpaNearbySel)?.scrollIntoView({ block: 'start' });
+	}
+	lastListingSearch = to.search || '';
 	emit('dom.load');
 }
 
@@ -522,6 +550,23 @@ function syncTagAvailability(root) {
 	});
 }
 
+function listingUrlFromSearch(search) {
+	return search ? `${window.location.pathname}?${search}` : window.location.pathname;
+}
+
+function pushListingUrl(nextUrl) {
+	const currentUrl = `${window.location.pathname}${window.location.search}`;
+	if (nextUrl === currentUrl) {
+		return;
+	}
+	const router = Router.active;
+	if (router) {
+		router.push(nextUrl);
+		return;
+	}
+	window.location.assign(nextUrl);
+}
+
 function bindListingFilter() {
 	const root = document.getElementById('listing-filter');
 	if (!root || root.dataset.bound === 'true') {
@@ -534,22 +579,13 @@ function bindListingFilter() {
 		syncTagAvailability(root);
 		const current = new URLSearchParams(window.location.search);
 		const next = new URLSearchParams(getQueryStringByFilter(readListingFilter(root)));
-		['size', 'index'].forEach((key) => {
+		// Keep page size and sort; a new filter starts again at page 1 (no `index`)
+		['size', 'sort', 'order'].forEach((key) => {
 			if (current.has(key)) {
 				next.set(key, current.get(key));
 			}
 		});
-		const search = next.toString();
-		const nextUrl = search ? `${window.location.pathname}?${search}` : window.location.pathname;
-		const currentUrl = `${window.location.pathname}${window.location.search}`;
-		if (nextUrl !== currentUrl) {
-			const router = Router.active;
-			if (router) {
-				router.push(nextUrl);
-				return;
-			}
-			window.location.assign(nextUrl);
-		}
+		pushListingUrl(listingUrlFromSearch(next.toString()));
 	});
 }
 

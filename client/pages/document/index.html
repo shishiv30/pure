@@ -441,9 +441,52 @@
   <section class="section large">
     <div class="panel fixed fixed-max-xs grid grid-xs-1">
       <h2 class="f3">ChatGPT</h2>
-      <p>A float button (<code>data-role="chatgpt"</code>) opens ChatGPT in a new tab
-        with this page URL and <code>/llms.txt</code> as context. Global chrome also
-        includes one at the bottom-right of the page.</p>
+      <p>A float button (<code>data-role="chatgpt"</code>) opens a panel with a text box.
+        Submitting opens ChatGPT in a new tab with the typed text as the prompt, plus this
+        page URL and <code>/llms.txt</code> as context. Global chrome also includes one at
+        the bottom-right of the page.</p>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Dropdown button</h2>
+      <p>Caret opens a list (<code>data-role="dropdownbutton"</code>). The first link is the
+        current label; other choices live in <code>.dropdown-button-list</code>.</p>
+      <div class="dropdown-button" data-role="dropdownbutton">
+        <a href="javascript:;">Default</a>
+        <a class="dropdown-button-caret" href="javascript:;" aria-label="Open options">
+          <i class="icon-angle-down" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-button-list">
+          <a href="javascript:;">Price: low to high</a>
+          <a href="javascript:;">Price: high to low</a>
+          <a href="javascript:;">Newest</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section large">
+    <div class="panel fixed fixed-max-xs grid grid-xs-1">
+      <h2 class="f3">Pagination</h2>
+      <p>Server: <code>createPaginationComponent({ total, path, search, index, size })</code>
+        from <code>server/ejs/comp_pagination.js</code>, rendered by <code>comp_pagination.ejs</code>.
+        Client: <code>getPagination()</code> from <code>helpers/pagination.js</code> builds the same
+        model. Pages are 1-based in the <code>index</code> query parameter; page 1 drops it. Shows
+        first, last and the pages next to the current one. Below: page 7 of 20.</p>
+      <nav class="pagination" aria-label="Pages">
+        <p class="pagination-summary">301–350 of 963</p>
+        <ul>
+          <li><a class="btn default small" href="?index=6" rel="prev" aria-label="Previous page"><i class="icon-angle-left" aria-hidden="true"></i></a></li>
+          <li><a class="btn default small" href="?" aria-label="Page 1">1</a></li>
+          <li class="pagination-gap" aria-hidden="true">…</li>
+          <li><a class="btn default small" href="?index=6" aria-label="Page 6">6</a></li>
+          <li><span class="btn major active small" aria-current="page">7</span></li>
+          <li><a class="btn default small" href="?index=8" aria-label="Page 8">8</a></li>
+          <li class="pagination-gap" aria-hidden="true">…</li>
+          <li><a class="btn default small" href="?index=20" aria-label="Page 20">20</a></li>
+          <li><a class="btn default small" href="?index=8" rel="next" aria-label="Next page"><i class="icon-angle-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </nav>
     </div>
   </section>
   <section class="section large">

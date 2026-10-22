@@ -12,7 +12,16 @@ export function buildPropertySpaInnerHtml(data) {
 	}
 	const detailHtml = renderEjsTemplate(detailTpl, { detail: data.detail }, data);
 	const nearbyHtml = data.articleComponent?.data?.length
-		? renderEjsTemplate(nearbyTpl, { articleComponent: data.articleComponent }, data)
+		? renderEjsTemplate(
+			nearbyTpl,
+			{
+				articleComponent: data.articleComponent,
+				paginationComponent: data.paginationComponent,
+				geoLabel: data.geoLabel,
+				sortOptions: data.sortOptions,
+			},
+			data,
+		)
 		: '';
 	return detailHtml + nearbyHtml;
 }

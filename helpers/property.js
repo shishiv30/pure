@@ -80,12 +80,24 @@ export function normalizeGroupedFeatures(groupedFeatures) {
  * @returns {unknown}
  */
 function resolveSoaListingPrice(listing) {
-	if(listing.listingStatus.name === 'SOLD') {
+	if(listing.listingStatus?.name === 'SOLD') {
 		return listing.soldPrice || listing.closePrice;
-	} else if (listing.listingStatus.name !== 'ACTIVE' && listing.listingStatus.name !== 'PENDING') {
+	} else if (listing.listingStatus?.name !== 'ACTIVE' && listing.listingStatus?.name !== 'PENDING') {
 		return listing.closePrice || listing.soldPrice || listing.listPrice;
 	}
 	return listing.listPrice;
+}
+
+/**
+ * Price per square foot of a raw SOA listing: living area, else lot size (land).
+ * Null when size or price is missing.
+ * @param {Record<string, unknown>} listing
+ * @returns {number|null}
+ */
+export function getSoaPricePerSqft(listing) {
+	const area = Number(listing?.sqftTotal || listing?.lotSizeSqft);
+	const price = Number(resolveSoaListingPrice(listing || {}));
+	return area > 0 && price > 0 ? price / area : null;
 }
 
 /**

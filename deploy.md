@@ -21,10 +21,12 @@ All in the account that owns the NAS tunnel. The dashboard moved Tunnels under *
 - DNS: Cloudflare created the CNAMEs to `80c27026-cede-4f9b-bca7-ff46baea2c9d.cfargotunnel.com` automatically.
 - SSL/TLS: **Full**. Origin is HTTP on 3002.
 - Security → Settings: **Bot Fight Mode off**.
-- **Browser integrity check stays on (intentional).** It returns 403 with `error code: 1010` to `Python-urllib` and similar user agents. Accepted: ChatGPT-User, GPTBot and browsers get 200. To allow urllib later, turn it off or add a configuration rule for `/llms.txt` and `/property/*`.
+- **Browser integrity check stays on site-wide**, but a Configuration Rule **`AI agents: skip browser integrity check`** turns it off for `(http.request.uri.path in {"/llms.txt" "/robots.txt"}) or starts_with(http.request.uri.path, "/property")`. Without the rule, `Python-urllib` and similar agents get 403 with `error code: 1010`. Rules → Configuration Rules → the rule → Browser Integrity Check: **Off** → Deploy.
 - Rules → Response Header Transform Rule **`CORS for static assets`**: sets `Access-Control-Allow-Origin: *` on `llmwikil.com` static files (`woff2 woff ttf css js svg png jpg jpeg webp ico`). Both `www.` and root pages load CSS and fonts from `https://llmwikil.com`, so `www` pages need this to load fonts. The app's own CORS list only allows `APP_HOST`, and Cloudflare caching ignores `Vary: Origin`, so a static `*` is used instead.
 
 ## Rebuild and redeploy on the NAS
+
+**One command:** `npm run deploy:nas` (next patch version) or `npm run deploy:nas -- 1.1.0`. It runs [`scripts/deploy-nas.sh`](scripts/deploy-nas.sh): syncs every tracked and untracked non-gitignored file (uncommitted changes included) to `~/pure`, builds with the build args below, recreates the container with its existing env, then checks llms.txt on both hosts and `/property/sitemap` for 200. Needs `NAS_HOST`, `NAS_USER`, `NAS_PASSWORD`, `NAS_SSH_PORT` in `.env.local` and `sshpass`. The manual steps below are what it does.
 
 Source copy: `~/pure` on the NAS (not a git repo; copy changed files over with `scp -O -P 88`). On the NAS, `sudo` needs the full path `/usr/local/bin/docker`.
 
@@ -36,11 +38,36 @@ cd ~/pure && sudo /usr/local/bin/docker build --target production --build-arg PO
 
 Then recreate the container with the same runtime env (`APP_HOST`/`CDN_HOST=https://llmwikil.com`, API domains, `SOA_API_KEY`), `--restart unless-stopped -p 3002:3000`. Check: `docker run --rm pure:<version> grep -o 'url([^)]*font[^)]*)' /app/dist/property.min.css` shows `/font.…` paths.
 
-Current: `pure:1.0.3` (favicon fixed to `/images/favicon.ico`). `pure-1.0.1` is kept stopped for rollback.
+Current: `pure:1.0.13` (pagination under /property search results; router keeps a link's query). 1.0.12: (`sort=value`: lowest $/sqft first, ranked on the server; llms.txt defines "high value"). 1.0.11: (markdown sitemaps, `/property/{state}/{city}/schools.md`, `[agent]` request log, versioned page JS/CSS). 1.0.10: (markdown `.md` versions of /property search and detail pages; ChatGPT panel: drag-select and IME Enter fixes, shorter prompt). 1.0.9: llms.txt rewritten to the llmstxt.org v2 format. 1.0.8: first `deploy:nas` run. 1.0.7: llms.txt off returns 503, chat button prompt uses a fresh llms.txt URL. 1.0.6: chat button panel. `pure-1.0.1` is kept stopped for rollback. Container env also needs `LLMS_TOGGLE_KEY`.
+
+### SOA data via the Mac proxy
+
+The NAS cannot reach the `*.prod.aws.us-west-2.ojocore.com` SOA hosts directly. Listing data goes through `scripts/soa-reverse-proxy.js` on the Mac (`npm run soa-proxy:on`, port 8787). The container's five API domains point at it:
+
+```
+PROPERTY_API_DOMAIN=http://192.168.50.149:8787/property
+GEOAREA_API_DOMAIN=http://192.168.50.149:8787/geoarea
+SCHOOL_API_DOMAIN=http://192.168.50.149:8787/school
+USER_API_DOMAIN=http://192.168.50.149:8787/user
+POI_API_DOMAIN=http://192.168.50.149:8787/poi
+```
+
+The Mac must be on, on the LAN, with the proxy running. If the Mac's IP changes (check `ipconfig getifaddr en0`), recreate the container with the new IP; a DHCP reservation for the Mac avoids this. Test from the NAS: `sudo /usr/local/bin/docker exec pure wget -qS -O /dev/null http://192.168.50.149:8787/geoarea/` → `401` means the proxy and upstream are reachable.
+
+## llms.txt on/off switch
+
+When off, `/llms.txt` returns 503 with `Retry-After: 60` (not 404: ChatGPT's fetcher caches a 404 and keeps returning it after the switch is back on) and server-rendered pages drop the `Link`/`<link rel="describedby">` to it. Pages prebuilt at build time (`/`, `/about`) keep their `<link>`, which points at the 503. The chat button adds `?v=<timestamp>` to the llms.txt URL in its prompt, so ChatGPT always fetches a fresh copy. It takes effect immediately, with no restart. State is the flag file `/app/.llms-off` in the container. Recreating the container resets it to **on**.
+
+- URL, from anywhere: `https://llmwikil.com/?llm=status` is public. `?llm=on` and `?llm=off` need the key `LLMS_TOGGLE_KEY` (in `.env.local` and in the container env). Wrong or missing key → 403.
+  ```bash
+  curl -H "X-Llms-Key: $LLMS_TOGGLE_KEY" 'https://llmwikil.com/?llm=off'
+  ```
+  In a browser: `https://llmwikil.com/?llm=off&key=<key>`. A key in the URL can end up in browser history and logs, so the header is safer.
+- Command, on the NAS: `sudo /usr/local/bin/docker exec pure npm run llms:off`. The same works with `llms:on` and `llms:status`. Locally: `npm run llms:off`.
 
 ## Verify
 
-Expected: 200 for the first three, 403 (1010) for urllib. Body of `llms.txt` uses `/property/`, not `/demo/`.
+Expected: 200 for all four. Body of `llms.txt` uses `/property/`, not `/demo/`.
 
 ```bash
 curl -sS -o /dev/null -w '%{http_code}\n' https://llmwikil.com/llms.txt

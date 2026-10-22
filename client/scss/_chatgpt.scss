@@ -5,3 +5,36 @@
 	z-index: var(--ui-chatgpt-index);
 	text-decoration: none;
 }
+
+.chatgpt-panel {
+	position: fixed;
+	right: var(--g3);
+	bottom: calc(var(--g3) * 5);
+	z-index: var(--ui-chatgpt-index);
+	width: min(24rem, calc(100vw - var(--g3) * 2));
+	display: flex;
+	flex-direction: column;
+	gap: var(--g2);
+	box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
+
+	&[hidden] {
+		display: none;
+	}
+
+	textarea {
+		width: 100%;
+		min-height: 5rem;
+		resize: vertical;
+		padding: var(--g2);
+		border: none;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+	}
+}
+
+.chatgpt-panel-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--g2);
+}

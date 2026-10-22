@@ -24,6 +24,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const queryGroupKey = ['utm', 'hack'];
+/** Changes on every server start (= every deploy), so browsers drop cached page JS/CSS. */
+const ASSET_VERSION = Date.now().toString(36);
 
 const routeConfigs = [
 	geo,
@@ -134,8 +136,8 @@ export default class BaseController {
 			path: this.req.path,
 			origin: origin,
 			preload: preload,
-			css: assetPath(`/${assetName}.min.css`),
-			js: assetPath(`/${assetName}.min.js`),
+			css: assetPath(`/${assetName}.min.css?v=${ASSET_VERSION}`),
+			js: assetPath(`/${assetName}.min.js?v=${ASSET_VERSION}`),
 			pageType: `page-${this.config.name}`,
 			cdnHost: cdnBase,
 			appHost: serverConfig.appHost,
