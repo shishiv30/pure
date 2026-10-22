@@ -7,6 +7,9 @@
 # Needs NAS_HOST, NAS_USER, NAS_PASSWORD, NAS_SSH_PORT in .env.local, and sshpass (brew install sshpass).
 # Syncs tracked + untracked, non-gitignored files (uncommitted changes included) into ~/pure on the NAS.
 # The new container keeps the old one's runtime env. Recreating resets the llms.txt switch to on.
+# After the live checks pass, old pure:x.y.z images are removed: the newest KEEP_IMAGES stay, plus
+# any image a container still uses (the stopped rollback container pure-1.0.1 → pure:1.0.1).
+# Non-version tags such as pure:latest are left alone.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -19,6 +22,8 @@ for v in HOST USER_ PORT SSHPASS; do
 	[ -n "${!v}" ] || { echo "Missing NAS_${v%_} in .env.local" >&2; exit 1; }
 done
 command -v sshpass >/dev/null || { echo "sshpass not found: brew install sshpass" >&2; exit 1; }
+
+KEEP_IMAGES=3
 
 SSH_OPTS=(-p "$PORT" -o StrictHostKeyChecking=no -o LogLevel=ERROR)
 nas() { sshpass -e ssh "${SSH_OPTS[@]}" "$USER_@$HOST" "$@"; }
@@ -62,4 +67,15 @@ for url in https://llmwikil.com/llms.txt https://www.llmwikil.com/llms.txt https
 	echo "  $code $url"
 	[ "$code" = 200 ] || fail=1
 done
-[ "$fail" = 0 ] && echo "✔ pure:$VERSION is live" || { echo "✘ Some checks failed" >&2; exit 1; }
+[ "$fail" = 0 ] || { echo "✘ Some checks failed; old images kept for rollback" >&2; exit 1; }
+echo "✔ pure:$VERSION is live"
+
+echo "▶ Removing old images (keeping newest $KEEP_IMAGES and any a container uses)"
+nas_docker "IN_USE=\$(S ps -a --format '{{.Image}}')
+	S images pure --format '{{.Tag}}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\$' | sort -V | head -n -$KEEP_IMAGES |
+	while read -r T; do
+		if printf '%s\n' \"\$IN_USE\" | grep -qx \"pure:\$T\"; then echo \"  keep pure:\$T (used by a container)\"; continue; fi
+		S rmi \"pure:\$T\" >/dev/null && echo \"  removed pure:\$T\"
+	done
+	S image prune -f >/dev/null
+	echo \"  left: \$(S images pure --format '{{.Tag}}' | sort -V | tr '\n' ' ')\""

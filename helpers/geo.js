@@ -852,3 +852,17 @@ export function mapSoaItemToGeo(item) {
 	if (zip) return mapSoaZipcodeToGeo(item);
 	return mapSoaStateToGeo(item);
 }
+
+/**
+ * Display text for titles: path-derived geo is lowercase (`austin, tx`) → `Austin, TX`;
+ * a county gets its "County" (`Harris County, TX`).
+ * @param {object} geo
+ * @returns {string}
+ */
+export function getGeoTitleText(geo) {
+	let name = getGeoDisplayText(geo).trim();
+	if (geo?.type === 'county' && geo.county && !/county/i.test(name)) {
+		name = name.replace(geo.county, `${geo.county} county`);
+	}
+	return name.replace(/\b[a-z]/g, (c) => c.toUpperCase()).replace(/\b([a-z]{2})$/i, (st) => st.toUpperCase());
+}

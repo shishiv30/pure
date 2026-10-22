@@ -23,8 +23,8 @@ export default {
 		const cityName = model?.data?.cityName || 'City';
 		const stateName = model?.data?.stateName || 'State';
 		return {
-			title: `${cityName}, ${stateName} Zipcodes Sitemap`,
-			desc: `Browse all zipcodes in ${cityName}, ${stateName}.`,
+			title: `Homes for sale in ${cityName}, ${stateName} by zip code | Pure`,
+			desc: model?.data?.intro || `Browse all zipcodes in ${cityName}, ${stateName}.`,
 			keywords: `sitemap, zipcodes, ${cityName}, ${stateName}`,
 		};
 	},
@@ -72,8 +72,9 @@ export default {
 
 		return {
 			title: `${cityName} Zipcodes`,
+			intro: `Zip codes and neighborhoods in ${cityName}, ${stateCode}. Each one links its homes for sale.`,
 			cityName,
-			stateName,
+			stateName: stateCode,
 			stateCode,
 			breadcrumb,
 			headerComponent,

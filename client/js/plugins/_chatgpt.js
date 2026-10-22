@@ -1,7 +1,8 @@
 /**
  * ChatGPT float button: toggles a prompt panel. Submitting opens chatgpt.com in a
- * new tab with the typed text as the prompt, plus a one-line context: answer with
- * links on this site per /llms.txt, and the current page (its .md twin if any).
+ * new tab with the typed text as the prompt, plus a short context: answer with
+ * links on this site per /llms.txt, as web pages (not .md twins) carrying the user's
+ * filters, and the current page (its .md twin if any).
  * Without JS the button is a plain link to chatgpt.com.
  */
 
@@ -22,7 +23,7 @@ function getPageUrl() {
 function getChatGptUrl(text) {
 	const context =
 		'Answer with links on ' + location.host + ' only, built per ' + getLlmsUrl() +
-		'. Current page: ' + getPageUrl();
+		'. Link the web pages, never .md URLs, with my filters in the search URL. Current page: ' + getPageUrl();
 	const prompt = text ? text + '\n\n' + context : context;
 	return 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
 }

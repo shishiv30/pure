@@ -10,10 +10,9 @@ export default {
 	name: 'property-sitemap',
 	assetName: 'property',
 	seo: function (req, model) {
-		const title = model?.data?.title || 'States Sitemap';
 		return {
-			title,
-			desc: 'Browse all states.',
+			title: 'Homes for sale by state | Pure',
+			desc: model?.data?.intro || 'Browse all states.',
 			keywords: 'sitemap, states',
 		};
 	},
@@ -32,6 +31,7 @@ export default {
 
 		return {
 			title: 'States Sitemap',
+			intro: 'Pure lists homes for sale, sold homes and rentals across the US from MLS listings. Pick a state to browse its counties and cities, or search any place at /property/{state}/{city}.',
 			breadcrumb,
 			headerComponent,
 			footerComponent,

@@ -25,8 +25,8 @@ export default {
 	seo: function (req, model) {
 		const stateName = model?.data?.stateName || 'State';
 		return {
-			title: `${stateName} Counties Sitemap`,
-			desc: `Browse all counties in ${stateName}.`,
+			title: `Homes for sale in ${stateName} by county | Pure`,
+			desc: model?.data?.intro || `Browse all counties in ${stateName}.`,
 			keywords: `sitemap, counties, ${stateName}`,
 		};
 	},
@@ -63,6 +63,7 @@ export default {
 
 		return {
 			title: `${stateName} Counties`,
+			intro: `Counties in ${stateName}. Open a county for its cities, then a city for its zip codes and neighborhoods.`,
 			stateName,
 			stateCode,
 			breadcrumb,

@@ -91,13 +91,13 @@ describe('sendSchoolsMarkdown', () => {
 });
 
 describe('sendSitemapMarkdown', () => {
-	test('city entries link their homes and schools', () => {
+	test('city entries link their homes web page first, then md, schools and browse', () => {
 		const res = fakeRes();
 		sendSitemapMarkdown(fakeReq('/property/sitemap/tx/williamson_county'), res, {
 			title: 'Williamson County Cities',
 			linksComponent: { data: [{ href: 'https://llmwikil.com/property/sitemap/tx/round-rock', text: 'Round Rock' }] },
 		});
 		assert.match(res.body, /^# Williamson County Cities\n/);
-		assert.match(res.body, /- \[Round Rock\]\(\S*\/property\/tx\/round-rock\.md\): homes · schools: \S*\/property\/tx\/round-rock\/schools\.md/);
+		assert.match(res.body, /- \[Round Rock\]\(\S*\/property\/tx\/round-rock\) \(\[md\]\(\S*\/property\/tx\/round-rock\.md\)\) · schools: \S*\/property\/tx\/round-rock\/schools\.md/);
 	});
 });

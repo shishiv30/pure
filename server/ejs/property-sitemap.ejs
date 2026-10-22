@@ -11,6 +11,7 @@
                   <h1 class="f3 text-bold text-center">
                     <%= data.title || 'States Sitemap' %>
                   </h1>
+                  <%- include('comp_sitemap_intro', { intro: data.intro }) %>
                   <%_ const linksComponent=data.linksComponent; _%>
                     <%_ if (linksComponent && linksComponent.data && linksComponent.data.length) { _%>
                       <%- include(linksComponent.template, { links: linksComponent.data, getHref, getSrc }) %>

@@ -23,8 +23,8 @@ export default {
 		const countyName = model?.data?.countyName || 'County';
 		const stateName = model?.data?.stateName || 'State';
 		return {
-			title: `${countyName}, ${stateName} Cities Sitemap`,
-			desc: `Browse all cities in ${countyName}, ${stateName}.`,
+			title: `Homes for sale in ${countyName}, ${stateName} by city | Pure`,
+			desc: model?.data?.intro || `Browse all cities in ${countyName}, ${stateName}.`,
 			keywords: `sitemap, cities, ${countyName}, ${stateName}`,
 		};
 	},
@@ -76,8 +76,9 @@ export default {
 
 		return {
 			title: `${countyName} Cities`,
+			intro: `Cities in ${countyName}, ${stateCode}. Open a city for its zip codes and neighborhoods, or search its homes at /property/${stateCode.toLowerCase()}/{city}.`,
 			countyName,
-			stateName,
+			stateName: stateCode,
 			stateCode,
 			breadcrumb,
 			headerComponent,

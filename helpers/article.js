@@ -302,10 +302,10 @@ export function buildDetailSeo(detail) {
 	const title = detail.title || '';
 	const description = detail.paragraph?.text || '';
 	return {
-		title: `${title}${statusLabel ? ` | ${statusLabel}` : ''} - demo`,
+		title: `${title}${statusLabel ? ` | ${statusLabel}` : ''} | Pure`,
 		description,
 		desc: description,
-		keywords: `${title}${statusLabel ? `, ${statusLabel}` : ''}, demo`,
+		keywords: `${title}${statusLabel ? `, ${statusLabel}` : ''}, real estate`,
 	};
 }
 

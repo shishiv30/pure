@@ -78,6 +78,13 @@
             margin-left: auto;
             justify-content: flex-end;
             overflow: visible;
+            min-width: 0;
+
+            // Let the group dropdown shrink so it collapses to the arrow on overflow.
+            > .group-dropdown {
+                flex-shrink: 1;
+                min-width: 0;
+            }
         }
     }
 

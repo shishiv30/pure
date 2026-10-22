@@ -4,7 +4,7 @@
  * route's model; HTML pages point here with `rel="alternate" type="text/markdown"`.
  */
 import { formatNumber } from '../../client/js/core/format.js';
-import { getGeoDisplayText } from '../../helpers/geo.js';
+import { getGeoTitleText } from '../../helpers/geo.js';
 import { getFilterByQuery, getQueryByFilter } from '../../helpers/filter.js';
 import serverConfig from '../config.js';
 
@@ -65,14 +65,7 @@ function factsLine(meta) {
 		.join(' · ');
 }
 
-/** Path-derived geo text is lowercase (`austin, tx`): `Austin, TX`. */
-function placeName(geo) {
-	let name = getGeoDisplayText(geo).trim();
-	if (geo?.type === 'county' && geo.county && !/county/i.test(name)) {
-		name = name.replace(geo.county, `${geo.county} county`);
-	}
-	return name.replace(/\b[a-z]/g, (c) => c.toUpperCase()).replace(/\b([a-z]{2})$/i, (st) => st.toUpperCase());
-}
+const placeName = getGeoTitleText;
 
 /** Card tags as words: `Open house`, `Price down $10K`, `New`. */
 function tagText(tag) {
@@ -112,7 +105,7 @@ function searchMarkdown(req, data) {
 	const filterText = describeFilter(query);
 	lines.push(
 		`> ${articleTotalCount ? formatNumber(articleTotalCount) : 'No'} homes match${filterText ? ` (${filterText})` : ''}. ` +
-			`Web page: ${siteUrl(htmlPath + searchOf(req))}`,
+			`Give users this web page, not the \`.md\`: ${siteUrl(htmlPath + searchOf(req))}`,
 		'',
 	);
 	if (data.valueSort) {
@@ -166,7 +159,7 @@ function detailMarkdown(req, data) {
 	const lines = [`# ${text(detail.title)}`, ''];
 
 	const summary = [statusName(meta), factsLine(meta)].filter(Boolean).join(' · ');
-	lines.push(`> ${summary ? `${summary}. ` : ''}Web page: ${siteUrl(htmlPath)}`, '');
+	lines.push(`> ${summary ? `${summary}. ` : ''}Give users this web page, not the \`.md\`: ${siteUrl(htmlPath)}`, '');
 
 	const records = detail.record?.items || [];
 	if (records.length) {
@@ -280,26 +273,32 @@ export function sendSchoolsMarkdown(req, res, geo, result) {
 	return res.send(lines.join('\n').replace(/\n+$/, '') + '\n');
 }
 
+/** `[Name](web page) ([md](twin))`: the web page is what users get, the twin is for reading. */
+function searchLink(name, path) {
+	return `[${name}](${siteUrl(path)}) ([md](${siteUrl(`${path}.md`)}))`;
+}
+
 /**
- * Sitemap link → markdown line. City and county entries point straight at their home
- * searches (and a city's schools), so an agent can reach any search by following links.
+ * Sitemap link → markdown line. Each place links its home search web page first, so an
+ * agent that answers by copying links hands users the page, not the `.md` twin; the
+ * sitemap's own browse links (`.md`) follow, so any search is reachable by following links.
  */
 function sitemapLine({ href, text: label }) {
 	const path = String(href || '').replace(/^https?:\/\/[^/]+/, '');
 	const name = text(label);
 	let m;
 	if ((m = path.match(/^\/property\/sitemap\/([a-z]{2})$/i))) {
-		return `- [${name}](${siteUrl(`${path}.md`)}): counties · homes: ${siteUrl(`/property/${m[1]}.md`)}`;
+		return `- ${searchLink(name, `/property/${m[1]}`)} · counties: ${siteUrl(`${path}.md`)}`;
 	}
 	if ((m = path.match(/^\/property\/sitemap\/([a-z]{2})\/([^/]+_county)$/i))) {
-		return `- [${name}](${siteUrl(`${path}.md`)}): cities · homes: ${siteUrl(`/property/${m[1]}/${m[2]}.md`)}`;
+		return `- ${searchLink(name, `/property/${m[1]}/${m[2]}`)} · cities: ${siteUrl(`${path}.md`)}`;
 	}
 	if ((m = path.match(/^\/property\/sitemap\/([a-z]{2})\/([^/]+)$/i))) {
 		const city = `/property/${m[1]}/${m[2]}`;
-		return `- [${name}](${siteUrl(`${city}.md`)}): homes · schools: ${siteUrl(`${city}/schools.md`)} · zips and neighborhoods: ${siteUrl(`${path}.md`)}`;
+		return `- ${searchLink(name, city)} · schools: ${siteUrl(`${city}/schools.md`)} · zips and neighborhoods: ${siteUrl(`${path}.md`)}`;
 	}
 	if (path.startsWith('/property/')) {
-		return `- [${name}](${siteUrl(`${path}.md`)})`;
+		return `- ${searchLink(name, path)}`;
 	}
 	return null;
 }
@@ -314,7 +313,9 @@ export function sendSitemapMarkdown(req, res, data) {
 	const lines = [
 		`# ${text(data?.title || 'Sitemap')}`,
 		'',
-		`> Browse to a place, then open its homes (\`.md\` search results) or, for a city, its schools. URL rules: ${siteUrl('/llms.txt')}`,
+		'> Each place links its homes-for-sale web page; read its listings from the `md` link. ' +
+			'Give users the web page, never a `.md` URL, with their filters as query parameters, e.g. ' +
+			`${siteUrl('/property/tx/austin?bed=3_&bath=2_&price=_500000')}. URL rules: ${siteUrl('/llms.txt')}`,
 		'',
 		...links,
 	];

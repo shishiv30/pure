@@ -42,12 +42,66 @@ export default {
 		const bar = $el.querySelector('.group-dropdown-button');
 		const buttons = [...$el.querySelectorAll('.group-dropdown-button button[data-target]')];
 		let hideTimer = 0;
+		let arrow = null;
+		let overflowFrame = 0;
+
+		if (bar && list) {
+			list.id = list.id || `${$el.id || 'group-dropdown'}-list`;
+			const item = document.createElement('li');
+			item.className = 'group-dropdown-more';
+			item.hidden = true;
+			arrow = document.createElement('button');
+			arrow.type = 'button';
+			arrow.className = 'group-dropdown-arrow';
+			arrow.setAttribute('aria-label', 'All filters');
+			arrow.setAttribute('aria-expanded', 'false');
+			arrow.setAttribute('aria-controls', list.id);
+			item.appendChild(arrow);
+			bar.appendChild(item);
+			list.querySelectorAll('[data-id]').forEach((panel) => {
+				const button = buttons.find((el) => el.dataset.target === panel.dataset.id);
+				if (!button) {
+					return;
+				}
+				const title = document.createElement('div');
+				title.className = 'group-dropdown-title';
+				title.textContent = button.textContent.trim();
+				panel.insertAdjacentElement('afterbegin', title);
+			});
+		}
+
+		// Show every button inline when they fit; otherwise keep only the selected ones
+		// plus the arrow, which opens all panels at once.
+		function checkOverflow() {
+			if (!arrow) {
+				return;
+			}
+			const items = buttons.map((button) => button.closest('li') || button);
+			items.forEach((item) => item.classList.remove('collapsed'));
+			arrow.parentElement.hidden = true;
+			const overflow = bar.scrollWidth > bar.clientWidth + 1;
+			if (overflow) {
+				buttons.forEach((button, index) => {
+					items[index].classList.toggle('collapsed', !button.classList.contains('selected'));
+				});
+				arrow.parentElement.hidden = false;
+			} else if ($el.classList.contains('all') && $el.classList.contains('open')) {
+				close();
+			}
+			$el.classList.toggle('overflow', overflow);
+		}
+
+		function scheduleOverflow() {
+			window.cancelAnimationFrame(overflowFrame);
+			overflowFrame = window.requestAnimationFrame(checkOverflow);
+		}
 
 		function syncBar() {
 			if (!bar) {
 				return;
 			}
 			bar.classList.toggle('changed', buttons.some((button) => button.classList.contains('selected')));
+			scheduleOverflow();
 		}
 
 		const panelValue = new Map();
@@ -140,7 +194,7 @@ export default {
 
 		function showPanel(id) {
 			list.querySelectorAll('[data-id]').forEach((panel) => {
-				panel.hidden = panel.dataset.id !== id;
+				panel.hidden = id != null && panel.dataset.id !== id;
 			});
 		}
 
@@ -171,7 +225,7 @@ export default {
 			}
 			window.clearTimeout(hideTimer);
 			list.removeEventListener('animationend', onFlyOut);
-			$el.classList.remove('closing');
+			$el.classList.remove('closing', 'all');
 			$el.classList.add('close');
 			list.querySelectorAll('[data-id]').forEach((panel) => {
 				panel.hidden = true;
@@ -198,10 +252,18 @@ export default {
 			$el.classList.remove('closing');
 		}
 
+		function setOpened(button) {
+			buttons.forEach((item) => item.classList.toggle('opened', item === button));
+			if (arrow) {
+				arrow.classList.toggle('opened', arrow === button);
+				arrow.setAttribute('aria-expanded', String(arrow === button));
+			}
+		}
+
 		function close() {
-			buttons.forEach((button) => button.classList.remove('opened'));
+			setOpened(null);
 			if (!list || !$el.classList.contains('open')) {
-				$el.classList.remove('open', 'closing');
+				$el.classList.remove('open', 'closing', 'all');
 				$el.classList.add('close');
 				return;
 			}
@@ -224,14 +286,15 @@ export default {
 			if ($el.classList.contains('closing')) {
 				cancelHide();
 			}
-			buttons.forEach((item) => item.classList.remove('opened'));
-			button.classList.add('opened');
+			const all = button === arrow;
+			setOpened(button);
 			$el.classList.add('open');
 			$el.classList.remove('close');
+			$el.classList.toggle('all', all);
 			if (switching) {
 				const prevWidth = list.offsetWidth;
 				const prevLeft = list.offsetLeft;
-				showPanel(button.dataset.target);
+				showPanel(all ? null : button.dataset.target);
 				list.style.transition = 'none';
 				list.style.width = 'auto';
 				const nextWidth = list.offsetWidth;
@@ -244,12 +307,15 @@ export default {
 				list.style.left = `${nextLeft}px`;
 				return;
 			}
-			showPanel(button.dataset.target);
+			showPanel(all ? null : button.dataset.target);
 			placeList(button);
 		}
 
 		exportObj.open = open;
 		exportObj.close = close;
+		exportObj.arrow = arrow;
+		exportObj.checkOverflow = checkOverflow;
+		exportObj._cancelOverflow = () => window.cancelAnimationFrame(overflowFrame);
 
 		buttons.forEach((button) => {
 			const reset = document.createElement('button');
@@ -306,7 +372,15 @@ export default {
 			list.querySelectorAll('[data-id]').forEach((panel) => {
 				const id = panel.dataset.id;
 				panel.addEventListener('input', () => syncSelected(id));
-				panel.addEventListener('change', () => syncSelected(id));
+				panel.addEventListener('change', (event) => {
+					syncSelected(id);
+					// In the all-filters view, picking a choice closes the list.
+					const choice = event.target.matches && event.target.matches('input[type="radio"], input[type="checkbox"]');
+					if (choice && $el.classList.contains('all') && $el.classList.contains('open')) {
+						close();
+						arrow.focus();
+					}
+				});
 				panel.addEventListener('reset', (event) => {
 					if (event.target !== panel) {
 						return;
@@ -353,6 +427,53 @@ export default {
 	setOptionsBefore: null,
 	setOptionsAfter: null,
 	initBefore: null,
-	initAfter: null,
-	destroyBefore: null,
+	initAfter: function ($el, opt, exportObj) {
+		const arrow = exportObj.arrow;
+		if (!arrow) {
+			return;
+		}
+		exportObj._arrowHandler = function (e) {
+			e.stopPropagation();
+			exportObj.open(arrow);
+		};
+		exportObj._keyHandler = function (e) {
+			if (e.key !== 'Escape' || !$el.classList.contains('open')) {
+				return;
+			}
+			const opened = $el.querySelector('.group-dropdown-button .opened');
+			exportObj.close();
+			if (opened) {
+				opened.focus();
+			}
+		};
+		exportObj._outsideHandler = function (e) {
+			if ($el.classList.contains('open') && !$el.contains(e.target)) {
+				exportObj.close();
+			}
+		};
+		exportObj._resizeObserver = new ResizeObserver(() => exportObj.checkOverflow());
+		exportObj._resizeObserver.observe($el);
+		arrow.addEventListener('click', exportObj._arrowHandler);
+		$el.addEventListener('keydown', exportObj._keyHandler);
+		document.addEventListener('pointerdown', exportObj._outsideHandler);
+		exportObj.checkOverflow();
+	},
+	destroyBefore: function ($el, opt, exportObj) {
+		if (exportObj._cancelOverflow) {
+			exportObj._cancelOverflow();
+		}
+		if (exportObj._resizeObserver) {
+			exportObj._resizeObserver.disconnect();
+			exportObj._resizeObserver = null;
+		}
+		if (exportObj.arrow && exportObj._arrowHandler) {
+			exportObj.arrow.removeEventListener('click', exportObj._arrowHandler);
+		}
+		if (exportObj._keyHandler) {
+			$el.removeEventListener('keydown', exportObj._keyHandler);
+		}
+		if (exportObj._outsideHandler) {
+			document.removeEventListener('pointerdown', exportObj._outsideHandler);
+		}
+	},
 };
