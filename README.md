@@ -12,11 +12,12 @@ This README is a practical entry point. **Start with [`docs/index.md`](docs/inde
 - `docs/folder-ownership.md` — what each folder may contain
 - `client.md` for client architecture and plugin lifecycle
 - `docs/client-js-lifecycle.md` for bundle boot, Router contract (`push` / `replace` / `goto`), `dom.load` (demo SPA)
-- `docs/demo-tx-lifecycle.md` for `/demo/tx` end-to-end
+- `docs/property-tx-lifecycle.md` for `/property/tx` end-to-end
 - `server.md` for server routing/controller/data flow
 - `docs/listing-data-pipeline.md` for SOA → metadata → comps → EJS/SPA
 - `docs/css-design-system.md` for SCSS tokens, theme aliases, and CSS custom-property rules
 - `build-system.md` for webpack and build/deploy
+- `deploy.md` for NAS + Cloudflare (`llmwikil.com`, `/llms.txt`)
 - `cms/API.md` for CMS page/comp/theme APIs
 - `.cursor/background.json` for AI/agent path and helper reference
 
@@ -98,7 +99,7 @@ Default Docker access URL: `http://localhost:3002`
 
 ## Testing and Quality
 
-- Test suite: `npm run test` — helper mapping tests, BaseController config, geo/dialog scripts, `htmlPath`, demo geo redirect
+- Test suite: `npm run test` — helper mapping tests, BaseController config, geo/dialog scripts, `htmlPath`, listing geo redirect
 - BaseController tests only: `npm run test:basecontroller`
 - Lighthouse (UI perf only, not e2e): `npm run test:lighthouse`
 - Lint: `npm run lint` — ESLint on geo helpers, route manifests, SOA property modules, listing mappers, client boot/router (config: `.eslintrc.cjs`)
@@ -149,7 +150,7 @@ GitHub workflow `.github/workflows/cursor-code-review.yml` currently triggers on
 Defined in `webpack.config.base.page.js`:
 
 - `animation`
-- `demo`
+- `property`
 - `index`
 - `3d`
 - `about`
@@ -166,6 +167,8 @@ Defined in `webpack.config.base.page.js`:
 - API layer combines app endpoints (`/api/*`) and SOA proxy routes (`/api/soa/*`).
 - CMS content is consumed with fallback to local data when CMS health is unavailable.
 - **`data/`** holds default, mock, and sample structures; **`helpers/`** holds transforms and path/URL mapping (listing pipeline: `docs/listing-data-pipeline.md`). Convention: `.cursor/background.json` (`data_folder`); renames: `.cursor/rules/rename-or-move-file.mdc`.
+
+NAS + Cloudflare publish: [`deploy.md`](deploy.md).
 
 ## License
 

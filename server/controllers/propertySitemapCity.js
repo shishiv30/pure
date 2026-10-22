@@ -4,14 +4,14 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 
-const SITEMAP_BASE = '/demo/sitemap';
+const SITEMAP_BASE = '/property/sitemap';
 
 export default {
-	name: 'demo-sitemap-city',
-	assetName: 'demo',
+	name: 'property-sitemap-city',
+	assetName: 'property',
 	beforeGet: function (req, payload) {
-		// Extract state and city from path (e.g., /demo/sitemap/ca/los-angeles)
-		const pathMatch = req.path.match(/^\/demo\/sitemap\/([a-z]{2})\/([^\/]+)$/i);
+		// Extract state and city from path (e.g., /property/sitemap/ca/los-angeles)
+		const pathMatch = req.path.match(/^\/property\/sitemap\/([a-z]{2})\/([^\/]+)$/i);
 		if (pathMatch) {
 			const stateCode = pathMatch[1].toUpperCase();
 			const cityCode = pathMatch[2].replace(/-/g, ' ');
@@ -51,7 +51,7 @@ export default {
 		const geo = getGeoByPath(`${stateCode.toLowerCase()}`);
 		const stateName = geo?.state || stateCode;
 
-		const zipcodeLinks = getZipcodesForSitemap(cityName, stateCode, '/demo', geoData.zipcode);
+		const zipcodeLinks = getZipcodesForSitemap(cityName, stateCode, '/property', geoData.zipcode);
 		const linksComponent = createLinksComponent(zipcodeLinks);
 		const headerComponent = createHeaderComponent();
 		const footerComponent = createFooterComponent();
@@ -60,9 +60,9 @@ export default {
 		const cityGeo = { state: stateCode, city: cityName, type: 'city' };
 		const breadcrumb = getBreadcrumbByGeo(cityGeo, SITEMAP_BASE);
 		if (breadcrumb && breadcrumb.links) {
-			// Replace first link to point to /demo/sitemap
-			breadcrumb.links[0] = { text: 'Home', href: '/demo' };
-			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/demo/sitemap' });
+			// Replace first link to point to /property/sitemap
+			breadcrumb.links[0] = { text: 'Home', href: '/property' };
+			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/property/sitemap' });
 			// Last item is current (no href)
 			const lastLink = breadcrumb.links[breadcrumb.links.length - 1];
 			if (lastLink) {

@@ -81,7 +81,7 @@ export default (env) => {
 								},
 							);
 						}
-						// GitHub Pages has no rewrite: /pure/demo/ny/new-york is not a file.
+						// GitHub Pages has no rewrite: /pure/property/ny/new-york is not a file.
 						// 404.html is the demo shell so the client router can match that URL.
 						if (!base) return;
 						compilation.hooks.processAssets.tap(

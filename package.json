@@ -1,6 +1,6 @@
 {
 	"name": "pure",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "try to made light performance first ui framework",
 	"main": "index.js",
 	"type": "module",
@@ -16,8 +16,9 @@
 		"docker:run": "./run-container.sh",
 		"start": "npx cross-env NODE_ENV=production node server/app.js",
 		"deploy-gh": "node deploy",
-		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/demo.get.test.js server/routes/__tests__/demoGeoRedirect.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/demoSpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/geo.school.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
+		"test": "node test-geo-mapping.js && node test-auto-detection.js && node test-dialog-plugin.js && node --test server/controllers/__tests__/basecontroller.config.test.js server/controllers/__tests__/property.get.test.js server/routes/__tests__/propertyGeoRedirect.test.js helpers/__tests__/property.test.js helpers/__tests__/datetime.test.js helpers/__tests__/htmlPath.test.js helpers/__tests__/propertySpaRoutes.test.js helpers/__tests__/filter.test.js helpers/__tests__/geo.school.test.js helpers/__tests__/ejsRenderContext.test.js helpers/__tests__/ejsClientRender.test.js",
 		"test:basecontroller": "node --test server/controllers/__tests__/basecontroller.config.test.js",
+		"test:property-search": "node --test --test-timeout=1200000 server/routes/__tests__/propertySearchLive.test.js",
 		"test:lighthouse": "npm run build-docker:dev && node scripts/run-lighthouse.js",
 		"lint": "eslint helpers/geo.js helpers/routes/ client/js/core/router.js client/js/index.js helpers/property.js helpers/article.js",
 		"review": "cursor-agent --force --output-format=text --print 'Review the uncommitted changes in this repository. Focus on code quality, best practices, potential bugs, and adherence to project standards defined in .cursor/rules/ and .cursor/background.json. Provide concise, actionable feedback.'",

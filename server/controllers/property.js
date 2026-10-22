@@ -36,7 +36,7 @@ function getSeo(geo) {
 }
 
 export default {
-	name: 'demo',
+	name: 'property',
 	seo: function (_req, model) {
 		const fromGet = model?.data?.seo;
 		if (fromGet && typeof fromGet === 'object') {

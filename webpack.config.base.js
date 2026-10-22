@@ -133,6 +133,10 @@ export default () => {
 						from: path.resolve(__dirname, 'llms.txt'),
 						to: path.resolve(__dirname, 'dist/llms.txt'),
 					},
+					{
+						from: path.resolve(__dirname, 'robots.txt'),
+						to: path.resolve(__dirname, 'dist/robots.txt'),
+					},
 				],
 			}),
 			{

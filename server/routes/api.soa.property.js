@@ -2,6 +2,7 @@ import express from 'express';
 import config from '../config.js';
 import { fetchFromSoa } from '../controllers/realestate.js';
 import { getSchoolBaseInfo } from './api.soa.school.js';
+import { toSoaSearchFilter } from '../../helpers/filter.js';
 
 const router = express.Router();
 router.use(express.json());
@@ -656,7 +657,7 @@ function getSearchHousePayload(geo, filter = { pageSize: 50, pageIndex: 1 }) {
 		searchType: geo?.type?.toUpperCase(),
 	};
 	if (filter && typeof filter === 'object') {
-		Object.assign(body, filter);
+		Object.assign(body, toSoaSearchFilter(filter));
 	}
 	return body;
 }

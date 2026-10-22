@@ -4,7 +4,7 @@
 
 Mounted from `server/routes/index.js`:
 
-- Page/default routes: `default.js`, `demo.js`, `sitemap.js`, `page.js`
+- Page/default routes: `default.js`, `property.js`, `sitemap.js`, `page.js`
 - API routes: `/api` -> `api.js`
 - SOA proxy routes: `/api/soa` -> `api.soa.js`
 
@@ -31,34 +31,34 @@ Owned by `server/routes/api.soa.js` and mounted children:
 - Specific prefixes are mounted before fallback handlers to prevent broad matches from shadowing specific endpoints.
 - SOA routes are intended as adapters/proxies to upstream services with selective normalization.
 
-## Demo routes (HTML + JSON parity)
+## Property listing routes (HTML + JSON parity)
 
-Sitemap HTML routes are defined in [`server/routes/demo.js`](../server/routes/demo.js).
+Sitemap HTML routes are defined in [`server/routes/property.js`](../server/routes/property.js).
 
-**SPA URL patterns** (detail, map, geo grid) are the single source of truth in [`helpers/routes/demoSpaRoutes.js`](../helpers/routes/demoSpaRoutes.js), used by:
+**SPA URL patterns** (detail, map, geo grid) are the single source of truth in [`helpers/routes/propertySpaRoutes.js`](../helpers/routes/propertySpaRoutes.js), used by:
 
-- [`server/routes/demo.js`](../server/routes/demo.js) — `detail` and `geo` handlers (map URLs use `geo` on the server)
-- [`client/pages/demo/index.js`](../client/pages/demo/index.js) — client `Router` rules (`detail`, `map`, `geo`)
+- [`server/routes/property.js`](../server/routes/property.js) — `detail` and `geo` handlers (map URLs use `geo` on the server)
+- [`client/pages/property/index.js`](../client/pages/property/index.js) — client `Router` rules (`detail`, `map`, `geo`)
 - Client `Router` `push` / `replace` / `goto` contract: [`docs/client-js-lifecycle.md`](client-js-lifecycle.md#4-client-router-contract)
 
-When changing demo SPA URL shapes, update `demoSpaRoutes.js` and its tests first.
+When changing listing SPA URL shapes, update `propertySpaRoutes.js` and its tests first.
 
-Handler: `BaseController(req, res, 'demo')` → [`server/controllers/demo.js`](../server/controllers/demo.js).
+Handler: `BaseController(req, res, 'property')` → [`server/controllers/property.js`](../server/controllers/property.js).
 
 | Route pattern | Purpose | Query / params |
 |---------------|---------|----------------|
-| `/demo/sitemap` | State sitemap | — |
-| `/demo/sitemap/:state` | City/county sitemap | `state` |
-| `/demo/detail/:state/:zip/:prId` | Property detail (SSR) | Sets `req.query.geoPath`, `req.query.prId` |
-| `/demo/:state/:city/:id_school` | Homes inside that school boundary | School id is the `baseInfo` id (NCES id works). Search is `POST /listings/schools/v2` |
-| `/demo/:state/:geoSlug/@lat,lng` | Map view (client SPA) | Server uses geo catch-all |
-| `/demo/:geoPath(*)` | Geo grid (catch-all) | Canonical redirect when path normalizes |
+| `/property/sitemap` | State sitemap | — |
+| `/property/sitemap/:state` | City/county sitemap | `state` |
+| `/property/detail/:state/:zip/:prId` | Property detail (SSR) | Sets `req.query.geoPath`, `req.query.prId` |
+| `/property/:state/:city/:id_school` | Homes inside that school boundary | School id is the `baseInfo` id (NCES id works). Search is `POST /listings/schools/v2` |
+| `/property/:state/:geoSlug/@lat,lng` | Map view (client SPA) | Server uses geo catch-all |
+| `/property/:geoPath(*)` | Geo grid (catch-all) | Canonical redirect when path normalizes |
 
-JSON (same `demo.get()` model, `toData`):
+JSON (same `property.get()` model, `toData`):
 
 | Method | Path | Notes |
 |--------|------|--------|
-| `GET` | `/api/demo/detail/:prId` | SPA detail fetch; optional `geoPath` query |
+| `GET` | `/api/property/detail/:prId` | SPA detail fetch; optional `geoPath` query |
 
 SOA transport for demo: direct imports from `server/routes/api.soa.property.js` inside the controller (not an internal hop to `/api/soa`). HTTP proxy for external clients: `/api/soa/property/*`.
 

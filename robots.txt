@@ -1,0 +1,22 @@
+User-agent: GPTBot
+Allow: /llms.txt
+Allow: /property/
+
+User-agent: ChatGPT-User
+Allow: /llms.txt
+Allow: /property/
+
+User-agent: OAI-SearchBot
+Allow: /llms.txt
+Allow: /property/
+
+User-agent: ClaudeBot
+Allow: /llms.txt
+Allow: /property/
+
+User-agent: PerplexityBot
+Allow: /llms.txt
+Allow: /property/
+
+User-agent: *
+Allow: /

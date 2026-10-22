@@ -14,18 +14,48 @@ function formatStop(stop, price) {
 		return 'no max';
 	}
 	const number = Number(stop);
-	if (!price) {
-		return String(number);
+	let text = String(number);
+	if (price) {
+		if (number >= 1000000) {
+			const millions = number / 1000000;
+			text = Number.isInteger(millions) ? `${millions}m` : `${millions.toFixed(1)}m`;
+		} else if (number >= 1000) {
+			const thousands = number / 1000;
+			text = Number.isInteger(thousands) ? `${thousands}k` : `${thousands.toFixed(1)}k`;
+		}
+		return `$${text}`;
 	}
-	if (number >= 1000000) {
-		const millions = number / 1000000;
-		return Number.isInteger(millions) ? `${millions}m` : `${millions.toFixed(1)}m`;
+	return text;
+}
+
+function formatRangeLabel(minStop, maxStop, price, key) {
+	const hasMin = minStop !== 'no_min';
+	const hasMax = maxStop !== 'no_max';
+	const minText = formatStop(minStop, price);
+	const maxText = formatStop(maxStop, price);
+	if (key === 'bed' || key === 'bath') {
+		const unit = key === 'bed' ? 'bd' : 'ba';
+		if (hasMin && !hasMax) {
+			return key === 'bath' ? `${minText}+${unit}` : `${minText}+ ${unit}`;
+		}
+		if (!hasMin && hasMax) {
+			return `>${maxText} ${unit}`;
+		}
+		if (hasMin && hasMax) {
+			return `${minText}-${maxText} ${unit}`;
+		}
+		return '';
 	}
-	if (number >= 1000) {
-		const thousands = number / 1000;
-		return Number.isInteger(thousands) ? `${thousands}k` : `${thousands.toFixed(1)}k`;
+	if (hasMin && !hasMax) {
+		return `${minText}+`;
 	}
-	return String(number);
+	if (!hasMin && hasMax) {
+		return `> ${maxText}`;
+	}
+	if (hasMin && hasMax) {
+		return `${minText} – ${maxText}`;
+	}
+	return '';
 }
 
 export default {
@@ -40,6 +70,7 @@ export default {
 			return;
 		}
 		const price = $el.dataset.format === 'price';
+		const key = $el.dataset.key || '';
 		const last = stops.length - 1;
 		let minIndex = Number($el.dataset.minIndex);
 		let maxIndex = Number($el.dataset.maxIndex);
@@ -78,7 +109,7 @@ export default {
 			const minStop = stops[minIndex];
 			const maxStop = stops[maxIndex];
 			if (output) {
-				output.textContent = `${formatStop(minStop, price)} – ${formatStop(maxStop, price)}`;
+				output.textContent = formatRangeLabel(minStop, maxStop, price, key);
 			}
 			if (minInput) {
 				minInput.value = minStop === 'no_min' ? '' : String(minStop);

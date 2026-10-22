@@ -7,7 +7,7 @@ export const pageConfig = {
 			static: true,
 		},
 		{
-			name: 'demo',
+			name: 'property',
 		},
 		{
 			name: 'index',

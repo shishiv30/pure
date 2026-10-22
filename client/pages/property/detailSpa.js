@@ -1,12 +1,12 @@
 import detailTpl from '../../../server/ejs/comp_article_detail.ejs';
-import nearbyTpl from '../../../server/ejs/comp_demo_nearby.ejs';
+import nearbyTpl from '../../../server/ejs/comp_property_nearby.ejs';
 import { renderEjsTemplate } from '../../js/core/renderEjs.js';
 
 /**
  * @param {object} data — demo `get()` model (window.context or API `data` field)
  * @returns {string}
  */
-export function buildDemoSpaInnerHtml(data) {
+export function buildPropertySpaInnerHtml(data) {
 	if (!data?.detail) {
 		return '';
 	}

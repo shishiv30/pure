@@ -24,19 +24,19 @@ describe('htmlPath', () => {
 	});
 
 	test('stripAppBase and withAppBase round-trip a deploy prefix', () => {
-		assert.equal(stripAppBase('/pure/demo/tx/houston', '/pure'), '/demo/tx/houston');
-		assert.equal(stripAppBase('/subdomain/demo/detail/tx/a/b', '/subdomain'), '/demo/detail/tx/a/b');
-		assert.equal(stripAppBase('/demo/tx', '/pure'), '/demo/tx');
+		assert.equal(stripAppBase('/pure/property/tx/houston', '/pure'), '/property/tx/houston');
+		assert.equal(stripAppBase('/subdomain/property/detail/tx/a/b', '/subdomain'), '/property/detail/tx/a/b');
+		assert.equal(stripAppBase('/property/tx', '/pure'), '/property/tx');
 		assert.equal(stripAppBase('/purely/demo', '/pure'), '/purely/demo');
-		assert.equal(withAppBase('/demo/tx', '/pure'), '/pure/demo/tx');
-		assert.equal(withAppBase('/pure/demo/tx', '/pure'), '/pure/demo/tx');
+		assert.equal(withAppBase('/property/tx', '/pure'), '/pure/property/tx');
+		assert.equal(withAppBase('/pure/property/tx', '/pure'), '/pure/property/tx');
 	});
 
 	test('prefixRootRelativeUrls adds base path to root-relative href/src', () => {
 		const html =
-			'<a href="/demo/tx">x</a><img src="/images/a.png"><a href="./local.html">y</a>';
+			'<a href="/property/tx">x</a><img src="/images/a.png"><a href="./local.html">y</a>';
 		const out = prefixRootRelativeUrls(html, '/pure');
-		assert.match(out, /href="\/pure\/demo\/tx"/);
+		assert.match(out, /href="\/pure\/property\/tx"/);
 		assert.match(out, /src="\/pure\/images\/a\.png"/);
 		assert.match(out, /href="\.\/local\.html"/);
 	});

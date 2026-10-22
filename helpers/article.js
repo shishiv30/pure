@@ -136,46 +136,46 @@ export function mapPropertyToArticle(property, isFull = false) {
 	const daysOnMarket = property.daysOnMarket;
 	const officeListName = property.officeListName;
 
-	let tags = [];
+	const statusUpper = status.toUpperCase();
+	const tags = [];
+	const openHouses = property.openHouses;
+	const hasOpenHouse = Array.isArray(openHouses) && openHouses.length > 0;
+	const dom = daysOnMarket != null ? parseInt(String(daysOnMarket), 10) : NaN;
+	const isNew = dom === 0 || (Number.isFinite(dom) && dom <= 7);
 
-	switch (status.toUpperCase()) {
-		case 'ACTIVE': {
-			const openHouse = property.openHouses;
-			const dom = daysOnMarket;
-			if (openHouse && openHouse.length > 0) {
-				tags.push({ className: 'major active', text: 'Open House' });
-			} else if ((dom && parseInt(dom, 10) <= 7) || dom === 0) {
-				tags.push({ className: 'major active', text: 'New' });
-			} else {
-				tags.push({ className: 'major active', text: 'For Sale' });
-			}
-			break;
-		}
-		case 'PENDING':
-			tags.push({
-				text: 'Pending',
-				className: 'tip',
-			});
-			break;
+	// Order: Open House > Sold/status > price change > New
+	if (hasOpenHouse) {
+		tags.push({ className: 'major active', text: 'Open' });
+	}
+	switch (statusUpper) {
 		case 'SOLD':
-			tags.push({ className: 'minor', text: 'Sold' });
+			tags.push({ className: 'active', text: 'Sold' });
 			break;
-
+		case 'PENDING':
+			tags.push({ text: 'Pending', className: 'tip' });
+			break;
 		case 'OFF_MARKET':
 			tags.push({ className: 'minor', text: 'Off Market' });
 			break;
-
 		case 'REMOVED':
 			tags.push({ className: 'minor', text: 'Removed' });
 			break;
 	}
-
-	if (property.priceChange && status.toUpperCase() === 'ACTIVE') {
-		if (property.priceChange > 0) {
-			tags.push({ className: 'safe', text: `Increased ${formatPrice(property.priceChange)}` });
-		} else if (property.priceChange < 0) {
-			tags.push({ className: 'danger', text: `Reduced ${formatPrice(Math.abs(property.priceChange))}` });
-		}
+	if (property.priceChange > 0) {
+		tags.push({
+			className: 'safe',
+			icon: 'arrow-circle-up',
+			text: formatPrice(property.priceChange),
+		});
+	} else if (property.priceChange < 0) {
+		tags.push({
+			className: 'danger',
+			icon: 'arrow-circle-down',
+			text: formatPrice(Math.abs(property.priceChange)),
+		});
+	}
+	if (isNew) {
+		tags.push({ className: 'safe active', text: 'New' });
 	}
 
 	let attrs = mapPropertyToAttrs(property, isFull);
@@ -188,8 +188,8 @@ export function mapPropertyToArticle(property, isFull = false) {
 		img: Array.isArray(property.photos) ? property.photos[0] : undefined,
 		imgTag: officeListName,
 		imgAlt: displayAddress,
-		title: geo?.address ? String(geo.address) : '',
-		path: `/demo/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.prId}`,
+		title: displayAddress,
+		path: `/property/detail/${geo?.state?.toLowerCase()}/${geo.zipcode}/${property.prId}`,
 		tags,
 		attrs,
 	};

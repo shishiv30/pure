@@ -4,9 +4,9 @@
  * For converting between path formats (e.g. geo slug vs SOA), use helpers/path.js.
  *
  * Definitions (DB + data files use path; render time builds href/src):
- * - path: path-only, no domain, always starts with "/" (e.g. /welcome/point0.jpeg, /demo/ny/new-york).
+ * - path: path-only, no domain, always starts with "/" (e.g. /welcome/point0.jpeg, /property/ny/new-york).
  *         Stored in DB and data/; used for images and links.
- * - href: full URL with domain for <a> links (e.g. https://example.com/demo/ny). Built at render
+ * - href: full URL with domain for <a> links (e.g. https://example.com/property/ny). Built at render
  *         from appHost + path. Use getHref(item) to resolve.
  * - src:  full URL with domain for <img> (e.g. https://cdn.example.com/images/welcome/point0.jpeg).
  *         Built at render via getImgCdnUrl(cdnHost, path). Use getSrc(img) to resolve.

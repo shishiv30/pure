@@ -4,11 +4,11 @@ import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 import config from '../config.js';
 
-const SITEMAP_BASE = '/demo/sitemap';
+const SITEMAP_BASE = '/property/sitemap';
 
 export default {
-	name: 'demo-sitemap',
-	assetName: 'demo',
+	name: 'property-sitemap',
+	assetName: 'property',
 	seo: function (req, model) {
 		const title = model?.data?.title || 'States Sitemap';
 		return {
@@ -25,7 +25,7 @@ export default {
 
 		const breadcrumb = {
 			links: [
-				{ text: 'Home', href: '/demo' },
+				{ text: 'Home', href: '/property' },
 				{ text: 'Sitemap', href: '' },
 			],
 		};

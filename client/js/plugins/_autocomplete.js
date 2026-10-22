@@ -43,7 +43,7 @@ export default {
 
 		let _selectSuggestion = function (item) {
 			if (item) {
-				window.location.href = `/demo/${getPathByGeo(item)}`;
+				window.location.href = `/property/${getPathByGeo(item)}`;
 			}
 		};
 		let _updateSuggestion = function (data) {

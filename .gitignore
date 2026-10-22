@@ -3,6 +3,8 @@ node_modules
 *.log
 records.json
 report.html
+reports/demo-search-*.md
+reports/demo-search-*.json
 /dist
 /client/assets/video
 .env.local

@@ -1,9 +1,9 @@
 import { isValidStateCode } from '../../helpers/geo.js';
 
 /**
- * Normalize tail captured after `/demo` (no leading slash; strip trailing slashes).
+ * Normalize tail captured after `/property` (no leading slash; strip trailing slashes).
  */
-export function normalizeDemoPathCapture(pathCapture) {
+export function normalizePropertyPathCapture(pathCapture) {
 	return String(pathCapture || '')
 		.replace(/^\/+/, '')
 		.replace(/\/+$/, '');
@@ -38,18 +38,18 @@ export function toNeighborhoodPathSegment(hoodSegment) {
 }
 
 /**
- * Alternate geo URL shapes → canonical `/demo/...` path for 301.
+ * Alternate geo URL shapes → canonical `/property/...` path for 301.
  *
- * - /demo/austin/tx → /demo/tx/austin
- * - /demo/austin-tx → /demo/tx/austin
- * - /demo/san-mateo-county-ca → /demo/ca/san-mateo_county
- * - /demo/san-mateo-ca/neighborhood-slug → /demo/ca/san-mateo/neighborhood-slug_neighborhood
+ * - /property/austin/tx → /property/tx/austin
+ * - /property/austin-tx → /property/tx/austin
+ * - /property/san-mateo-county-ca → /property/ca/san-mateo_county
+ * - /property/san-mateo-ca/neighborhood-slug → /property/ca/san-mateo/neighborhood-slug_neighborhood
  *
- * @param {string} demoTail - Capture after `/demo` (may start with /)
+ * @param {string} demoTail - Capture after `/property` (may start with /)
  * @returns {string|null} pathname starting with /demo, or null
  */
-export function getCanonicalDemoGeoRedirectPath(demoTail) {
-	const raw = normalizeDemoPathCapture(demoTail);
+export function getCanonicalPropertyGeoRedirectPath(demoTail) {
+	const raw = normalizePropertyPathCapture(demoTail);
 	if (!raw) return null;
 
 	const segments = raw.split('/').filter(Boolean);
@@ -65,15 +65,15 @@ export function getCanonicalDemoGeoRedirectPath(demoTail) {
 		const soaCity = parseSoaCityStateSegment(a);
 		if (soaCity && !isValidStateCode(b)) {
 			const hood = toNeighborhoodPathSegment(b);
-			return `/demo/${soaCity.state}/${soaCity.citySlug}/${hood}`;
+			return `/property/${soaCity.state}/${soaCity.citySlug}/${hood}`;
 		}
 		const aLower = a.toLowerCase();
 		const bLower = b.toLowerCase();
 		if (isValidStateCode(b) && !isValidStateCode(a) && !parseSoaCityStateSegment(a)) {
-			return `/demo/${bLower}/${aLower}`;
+			return `/property/${bLower}/${aLower}`;
 		}
 		if(hasTrimmed) {
-			return `/demo/${segments[0]}/${segments[1]}`;
+			return `/property/${segments[0]}/${segments[1]}`;
 		}
 		return null;
 	}
@@ -84,16 +84,16 @@ export function getCanonicalDemoGeoRedirectPath(demoTail) {
 		if (county && isValidStateCode(county[2])) {
 			const state = county[2].toLowerCase();
 			const countyBase = county[1].toLowerCase();
-			return `/demo/${state}/${countyBase}_county`;
+			return `/property/${state}/${countyBase}_county`;
 		}
 		const city = one.match(/^(.+)-([a-zA-Z]{2})$/);
 		if (city && isValidStateCode(city[2]) && !one.includes('-county-')) {
 			const state = city[2].toLowerCase();
 			const citySlug = city[1].toLowerCase();
-			return `/demo/${state}/${citySlug}`;
+			return `/property/${state}/${citySlug}`;
 		}
 		if(hasTrimmed) {
-			return `/demo/${segments[0]}`;
+			return `/property/${segments[0]}`;
 		}
 		return null;
 	}

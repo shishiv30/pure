@@ -30,8 +30,8 @@
  *   (any|Promise<any>)} [loading]
  *
  * @typedef {Object} RouterOptions
- * @property {'demo'} [linkScope] When `demo`, only same-origin `/demo/` links
- *   are intercepted (except `/demo/sitemap`). Omit to intercept every
+ * @property {'property'} [linkScope] When `property`, only same-origin `/property/` links
+ *   are intercepted (except `/property/sitemap`). Omit to intercept every
  *   same-origin path `getInternalPath` can parse.
  * @property {string} [basePath] Deploy folder (`/pure`). Rules match the path
  *   after this prefix. Defaults to `__APP_BASE__` from the webpack publicPath.
@@ -191,15 +191,15 @@ export class Router {
 	 * @param {Element} [target]
 	 * @returns {boolean} `true` to intercept (preventDefault + push)
 	 */
-	shouldHandleDemoLink(internalPath, e, target) {
-		if (this.options.linkScope !== 'demo') {
+	shouldHandlePropertyLink(internalPath, e, target) {
+		if (this.options.linkScope !== 'property') {
 			return true;
 		}
 		const appPath = stripAppBase(internalPath, this.basePath);
-		if (!appPath.startsWith('/demo/')) {
+		if (!appPath.startsWith('/property/')) {
 			return false;
 		}
-		if (appPath.startsWith('/demo/sitemap')) {
+		if (appPath.startsWith('/property/sitemap')) {
 			return false;
 		}
 		if (e && (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) {
@@ -247,7 +247,7 @@ export class Router {
 					return;
 				}
 
-				if (!this.shouldHandleDemoLink(internalPath, e, target)) {
+				if (!this.shouldHandlePropertyLink(internalPath, e, target)) {
 					return;
 				}
 

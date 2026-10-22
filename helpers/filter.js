@@ -6,7 +6,6 @@
 const PROPERTY_TYPES = [
 	'single_family',
 	'condo',
-	'townhouse',
 	'multi_family',
 	'mobile',
 	'land',
@@ -15,15 +14,38 @@ const PROPERTY_TYPES = [
 
 const PROPERTY_TYPE_SET = new Set(PROPERTY_TYPES);
 
+/** URL type → nearbysearch/v2 listingType.name */
+const PROPERTY_TYPE_TO_SOA = {
+	single_family: 'SINGLE_FAMILY_HOUSE',
+	condo: 'CONDO',
+	multi_family: 'MULTI_FAMILY',
+	mobile: 'MOBILE',
+	land: 'LAND',
+	other: 'OTHER',
+};
+
+const SOA_TO_PROPERTY_TYPE = {
+	SINGLE_FAMILY_HOUSE: 'single_family',
+	SINGLE_FAMILY: 'single_family',
+	CONDO: 'condo',
+	MULTI_FAMILY: 'multi_family',
+	MOBILE: 'mobile',
+	LAND: 'land',
+	OTHER: 'other',
+};
+
 const STATUS_TO_SOA = {
 	sold: 'INACTIVE',
-	rental: 'FOR_RENT',
+	rental: 'RENTAL',
 };
 
 const SOA_TO_STATUS = {
 	INACTIVE: 'sold',
+	RENTAL: 'rental',
 	FOR_RENT: 'rental',
 };
+
+const SOA_FLAG_KEYS = ['hasPhoto', 'isNewConstruction', 'isOpenHousesOnly'];
 
 const RANGE_FIELDS = [
 	{ key: 'price', min: 'minPrice', max: 'maxPrice' },
@@ -36,6 +58,20 @@ const FLAG_FIELDS = [
 	{ key: 'construction', soa: 'isNewConstruction' },
 	{ key: 'openhouse', soa: 'isOpenHousesOnly' },
 ];
+
+const SORT_COLUMNS = ['price', 'list_date'];
+const SORT_COLUMN_SET = new Set(SORT_COLUMNS);
+const SORT_ORDERS = ['asc', 'desc'];
+const SORT_ORDER_SET = new Set(SORT_ORDERS);
+
+function firstString(source, key) {
+	const raw = source[key];
+	const value = Array.isArray(raw) ? raw[0] : raw;
+	if (value == null || value === '') {
+		return '';
+	}
+	return String(value).trim().toLowerCase();
+}
 
 function asList(query, key) {
 	const raw = query[`${key}[]`] !== undefined ? query[`${key}[]`] : query[key];
@@ -93,7 +129,48 @@ function parseNumber(value) {
 }
 
 function isOffMarket(status) {
-	return status === 'INACTIVE' || status === 'FOR_RENT';
+	return status === 'INACTIVE' || status === 'FOR_RENT' || status === 'RENTAL';
+}
+
+function urlPropertyType(value) {
+	const raw = String(value || '').trim();
+	if (!raw) {
+		return '';
+	}
+	const fromSoa = SOA_TO_PROPERTY_TYPE[raw.toUpperCase()];
+	if (fromSoa) {
+		return fromSoa;
+	}
+	const lower = raw.toLowerCase();
+	return PROPERTY_TYPE_SET.has(lower) ? lower : '';
+}
+
+/**
+ * Nearby-search v2: SINGLE_FAMILY_HOUSE, RENTAL, and 1/0 flags (boolean true yields null).
+ * @param {Record<string, unknown>} [filter]
+ * @returns {Record<string, unknown>}
+ */
+export function toSoaSearchFilter(filter = {}) {
+	const source = filter && typeof filter === 'object' ? filter : {};
+	const out = { ...source };
+	if (Array.isArray(out.propertyTypes) && out.propertyTypes.length) {
+		out.propertyTypes = out.propertyTypes.map((value) => {
+			const urlType = urlPropertyType(value);
+			if (urlType && PROPERTY_TYPE_TO_SOA[urlType]) {
+				return PROPERTY_TYPE_TO_SOA[urlType];
+			}
+			return String(value).trim().toUpperCase();
+		});
+	}
+	if (out.searchPropertyStatus === 'FOR_RENT') {
+		out.searchPropertyStatus = 'RENTAL';
+	}
+	for (const key of SOA_FLAG_KEYS) {
+		if (out[key] === true) {
+			out[key] = 1;
+		}
+	}
+	return out;
 }
 
 /**
@@ -150,6 +227,15 @@ export function getFilterByQuery(query = {}) {
 		filter.pageIndex = pageIndex;
 	}
 
+	const sortColumn = firstString(source, 'sort');
+	if (SORT_COLUMN_SET.has(sortColumn)) {
+		filter.sortColumn = sortColumn.toUpperCase();
+	}
+	const sortOrder = firstString(source, 'order');
+	if (SORT_ORDER_SET.has(sortOrder)) {
+		filter.sortOrder = sortOrder.toUpperCase();
+	}
+
 	return filter;
 }
 
@@ -175,9 +261,7 @@ export function getQueryByFilter(filter = {}) {
 	}
 
 	if (Array.isArray(source.propertyTypes) && source.propertyTypes.length) {
-		const values = source.propertyTypes
-			.map((value) => String(value).trim().toLowerCase())
-			.filter((value) => PROPERTY_TYPE_SET.has(value));
+		const values = source.propertyTypes.map(urlPropertyType).filter(Boolean);
 		if (values.length) {
 			query['propertyType[]'] = values;
 		}
@@ -204,6 +288,19 @@ export function getQueryByFilter(filter = {}) {
 		query.index = String(source.pageIndex);
 	}
 
+	const sortColumn = String(source.sortColumn || '')
+		.trim()
+		.toLowerCase();
+	if (SORT_COLUMN_SET.has(sortColumn)) {
+		query.sort = sortColumn;
+	}
+	const sortOrder = String(source.sortOrder || '')
+		.trim()
+		.toLowerCase();
+	if (SORT_ORDER_SET.has(sortOrder)) {
+		query.order = sortOrder;
+	}
+
 	return query;
 }
 
@@ -224,6 +321,8 @@ export function getQueryStringByFilter(filter = {}) {
 	return params.toString();
 }
 
+export const FILTER_SORT_COLUMNS = SORT_COLUMNS;
+export const FILTER_SORT_ORDERS = SORT_ORDERS;
 export const FILTER_PROPERTY_TYPES = PROPERTY_TYPES;
 export const FILTER_PROPERTY_STATUSES = [
 	{ value: '', label: 'For sale' },

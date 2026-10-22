@@ -81,7 +81,8 @@ export function createFilterComponent(filter = {}) {
 	const status =
 		source.searchPropertyStatus === 'INACTIVE'
 			? 'sold'
-			: source.searchPropertyStatus === 'FOR_RENT'
+			: source.searchPropertyStatus === 'FOR_RENT' ||
+				  source.searchPropertyStatus === 'RENTAL'
 				? 'rental'
 				: '';
 	const offMarket = status === 'sold' || status === 'rental';

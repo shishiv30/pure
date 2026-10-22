@@ -246,7 +246,7 @@ export function getStatesForSitemap(basePath) {
 /**
  * Returns all counties for a state as sitemap links.
  * @param {string} stateCode - State code (e.g. 'CA')
- * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {string} basePath - Base path (e.g. '/property/sitemap'), no trailing slash
  * @param {Array} countiesData - Array of county data from geo cache
  * @returns {{ href: string, text: string }[]}
  */
@@ -282,7 +282,7 @@ export function getCountiesForSitemap(stateCode, basePath, countiesData) {
  * Returns all cities for a county as sitemap links.
  * @param {string} countyName - County name (e.g. 'Los Angeles')
  * @param {string} stateCode - State code (e.g. 'CA')
- * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {string} basePath - Base path (e.g. '/property/sitemap'), no trailing slash
  * @param {Array} citiesData - Array of city data from geo cache
  * @returns {{ href: string, text: string }[]}
  */
@@ -320,7 +320,7 @@ export function getCitiesForSitemap(countyName, stateCode, basePath, citiesData)
  * Returns all zipcodes for a city as sitemap links.
  * @param {string} cityName - City name (e.g. 'Los Angeles')
  * @param {string} stateCode - State code (e.g. 'CA')
- * @param {string} basePath - Base path (e.g. '/demo/sitemap'), no trailing slash
+ * @param {string} basePath - Base path (e.g. '/property/sitemap'), no trailing slash
  * @param {Array} zipcodesData - Array of zipcode data from geo cache
  * @returns {{ href: string, text: string }[]}
  */

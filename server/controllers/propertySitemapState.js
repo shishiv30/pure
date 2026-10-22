@@ -9,14 +9,14 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 
-const SITEMAP_BASE = '/demo/sitemap';
+const SITEMAP_BASE = '/property/sitemap';
 
 export default {
-	name: 'demo-sitemap-state',
-	assetName: 'demo',
+	name: 'property-sitemap-state',
+	assetName: 'property',
 	beforeGet: function (req, payload) {
-		// Extract state code from path (e.g., /demo/sitemap/ca -> ca)
-		const pathMatch = req.path.match(/^\/demo\/sitemap\/([a-z]{2})$/i);
+		// Extract state code from path (e.g., /property/sitemap/ca -> ca)
+		const pathMatch = req.path.match(/^\/property\/sitemap\/([a-z]{2})$/i);
 		if (pathMatch) {
 			return { stateCode: pathMatch[1].toUpperCase() };
 		}
@@ -51,9 +51,9 @@ export default {
 		const geo = { state: stateCode, type: 'state' };
 		const breadcrumb = getBreadcrumbByGeo(geo, SITEMAP_BASE);
 		if (breadcrumb && breadcrumb.links) {
-			// Replace first link to point to /demo/sitemap
-			breadcrumb.links[0] = { text: 'Home', href: '/demo' };
-			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/demo/sitemap' });
+			// Replace first link to point to /property/sitemap
+			breadcrumb.links[0] = { text: 'Home', href: '/property' };
+			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/property/sitemap' });
 			// Last item is current (no href)
 			const lastLink = breadcrumb.links[breadcrumb.links.length - 1];
 			if (lastLink) {

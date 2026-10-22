@@ -32,7 +32,7 @@ Router composition in `server/routes/index.js`:
 
 - Page and HTML routes via:
   - `default.js`
-  - `demo.js`
+  - `property.js`
   - `sitemap.js`
   - `page.js`
 - API routes:
@@ -62,7 +62,7 @@ flowchart TD
 
 `server/controllers/index.js` (`BaseController`) orchestrates config-driven behavior and registers route configs.
 
-Other modules in `server/controllers/*` (route configs, e.g. `demo.js`, `page.js`) commonly define:
+Other modules in `server/controllers/*` (route configs, e.g. `property.js`, `page.js`) commonly define:
 
 - `name`
 - `beforeGet(payload)` (optional)
@@ -80,7 +80,7 @@ Other modules in `server/controllers/*` (route configs, e.g. `demo.js`, `page.js
 | SEO / breadcrumb / theme | yes | no |
 | `getHref` / `getSrc` on model | yes | no |
 
-Both call the same `config.get()`. Example: demo SSR and `GET /api/demo/detail/:prId` share [`server/controllers/demo.js`](server/controllers/demo.js).
+Both call the same `config.get()`. Example: demo SSR and `GET /api/property/detail/:prId` share [`server/controllers/property.js`](server/controllers/property.js).
 
 Listing SOA → metadata → comp models: [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md).
 
@@ -123,8 +123,8 @@ Defaults:
 Included in `npm run test`:
 
 - `server/controllers/__tests__/basecontroller.config.test.js` — BaseController / `toPage` contract
-- `server/controllers/__tests__/demo.get.test.js` — demo `get()` return shape (no SOA when no `prId`)
-- `server/routes/__tests__/demoGeoRedirect.test.js` — demo geo canonical redirect
+- `server/controllers/__tests__/property.get.test.js` — demo `get()` return shape (no SOA when no `prId`)
+- `server/routes/__tests__/propertyGeoRedirect.test.js` — demo geo canonical redirect
 - `helpers/__tests__/property.test.js` — SOA metadata and detail comp mappers
 - `helpers/__tests__/datetime.test.js`
 - `helpers/__tests__/htmlPath.test.js`

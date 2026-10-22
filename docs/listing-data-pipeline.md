@@ -2,7 +2,7 @@
 
 Canonical guide for how **SOA Property listings** flow through Pure: raw API → **metadata** → **comp UI models** → EJS (SSR) or JSON (SPA). Use the **demo page** as the reference implementation.
 
-Normative coding rules: [`.cursor/rules/project-standards.mdc`](../.cursor/rules/project-standards.mdc). SOA HTTP reference: [`soa-api.md`](soa-api.md). Full `/demo/tx` build → SSR → client timeline: [`demo-tx-lifecycle.md`](demo-tx-lifecycle.md).
+Normative coding rules: [`.cursor/rules/project-standards.mdc`](../.cursor/rules/project-standards.mdc). SOA HTTP reference: [`soa-api.md`](soa-api.md). Full `/property/tx` build → SSR → client timeline: [`property-tx-lifecycle.md`](property-tx-lifecycle.md).
 
 ## Three layers (do not mix)
 
@@ -35,7 +35,7 @@ flowchart LR
 
 After calling `mapPropertyDetailToArticle(listingRaw, historiesRaw)` (or list mappers), controllers must use **`metadata`**, **`detail.*` comp fields**, and **`buildDetailSeo(detail)`** only — not raw `listingRaw` for SEO, EJS, or business logic.
 
-Example: [`server/controllers/demo.js`](../server/controllers/demo.js).
+Example: [`server/controllers/property.js`](../server/controllers/property.js).
 
 ---
 
@@ -45,15 +45,15 @@ Example: [`server/controllers/demo.js`](../server/controllers/demo.js).
 
 | Path | Purpose | Key files |
 |------|---------|-----------|
-| **SSR HTML** | Full demo pages | `server/routes/demo.js` → `BaseController('demo')` → `server/controllers/demo.js` |
-| **JSON API** | SPA detail fetch | `GET /api/demo/detail/:prId` in `server/routes/api.js` → same `demo.get()` → `toData()` |
+| **SSR HTML** | Full listing pages | `server/routes/property.js` → `BaseController('property')` → `server/controllers/property.js` |
+| **JSON API** | SPA detail fetch | `GET /api/property/detail/:prId` in `server/routes/api.js` → same `property.get()` → `toData()` |
 | **HTTP proxy** | External/tools call SOA verbatim | `/api/soa/property/*` → `server/routes/api.soa.property.js` → `fetchFromSoa()` in `server/controllers/realestate.js` |
 
 ### Demo controller SOA calls
 
-`demo.get()` runs in parallel:
+`property.get()` runs in parallel:
 
-- `searchHouse(geo, filter)` — nearby listings (grid). `demo.get()` builds `filter` from the page query via `getFilterByQuery` (`helpers/filter.js`) and merges those SOA fields onto the body.
+- `searchHouse(geo, filter)` — nearby listings (grid). `property.get()` builds `filter` from the page query via `getFilterByQuery` (`helpers/filter.js`) and merges those SOA fields onto the body.
 - `getPropertyListingInfoById(prId)` — primary listing (detail)
 - `getPropertyHistoryById(prId)` — histories (detail)
 
@@ -71,9 +71,9 @@ Imported from `server/routes/api.soa.property.js` (not an internal HTTP hop to `
 
 `searchType` is `geo.type` uppercased. App types in `helpers/geo.js` are `state`, `city`, `county`, `zipcode`, `neighborhood`, `address`, and `school`. There is no address branch in `getSearchInputByGeo`; an address geo falls through the table above or sends an empty `input`.
 
-A school path `/demo/{state}/{city}/{id}_school` does not use nearby search. `searchHouse` loads `GET /baseInfo?id={id}` on the school API, then posts `POST /listings/schools/v2` with `searchType: SCHOOL` and `schoolRequest: [{ schoolId, schoolBoundaryId }]`. `schoolId` in that body is the school service id from `baseInfo`, and `schoolBoundaryId` is `baseInfo.boundaryId`. The path `{id}` is the `baseInfo` query id (an NCES id is accepted).
+A school path `/property/{state}/{city}/{id}_school` does not use nearby search. `searchHouse` loads `GET /baseInfo?id={id}` on the school API, then posts `POST /listings/schools/v2` with `searchType: SCHOOL` and `schoolRequest: [{ schoolId, schoolBoundaryId }]`. `schoolId` in that body is the school service id from `baseInfo`, and `schoolBoundaryId` is `baseInfo.boundaryId`. The path `{id}` is the `baseInfo` query id (an NCES id is accepted).
 
-`searchHouse(geo, filter)` copies the filter object onto the nearby-search body (`input` and `searchType` stay). Demo pages pass the SOA field set from `helpers/filter.js`. `getFilterByPayloadFilter` still maps this wider payload field list into the older internal filter shape (pagination and sort included):
+`searchHouse(geo, filter)` copies `toSoaSearchFilter(filter)` onto the nearby-search body (`input` and `searchType` stay). That maps `single_family` → `SINGLE_FAMILY_HOUSE`, `FOR_RENT` → `RENTAL`, and boolean photo/construction/open-house flags to `1` (v2 returns null for `true`). Demo pages pass the SOA field set from `helpers/filter.js`. `getFilterByPayloadFilter` still maps this wider payload field list into the older internal filter shape (pagination and sort included):
 
 `minPrice`, `maxPrice`, `minBed`, `maxBed`, `minBath`, `maxBath`, `propertyTypes`, `minSqft`, `maxSqft`, `minLot`, `maxLot`, `minYear`, `maxYear`, `minDom`, `maxDom`, `minHoa`, `maxHoa`, `attributesTags` (`pool` and `garage` also set their own flags), `isNewListingsOnly`, `isReducedPrice`, `isVirtualTourLinkOnly`, `hasVideo`, `isNewConstruction`, `isDistressed`, `isOpenHousesOnly`, `movotoListing`, `hasPhoto`, `sortColumn` + `sortOrder`, `searchPropertyStatus` (`FOR_RENT`, `INACTIVE` with optional `soldDateRange`, `ACTIVE`), `schoolRequest` (first school only), `pageIndex`, `maxCountPerPage`, and the viewport quartet `maxLat` / `minLat` / `maxLng` / `minLng`.
 
@@ -113,7 +113,9 @@ mapSOADataListToArticles(soaListings)
   → mapPropertyToArticle(metadata)
 ```
 
-Article shape: `title`, `path`, `tags`, `attrs`, `img`, `metadata` (embedded).
+Article shape: `title` (full address from `getGeoDisplayText`), `path`, `tags`, `attrs`, `img`, `metadata` (embedded).
+
+List/detail tags stack in this order: **Open** (`major active`) → **price change** up (`safe`, `icon-arrow-circle-up` + amount) / down (`danger`, `icon-arrow-circle-down` + amount) → **New** (`safe active`, DOM ≤ 7) → **Sold** (`active`). Other statuses (`Pending`, `Off Market`, `Removed`) still append after that. There is no exclusive “For Sale” tag.
 
 ### Detail page (`comp_article_detail`)
 
@@ -157,7 +159,7 @@ Builds fact rows (`Est`, `Bd`, `Ba`, sqft, price/sqft, year). When `allAttrs ===
 
 Guard each include; pass `getSrc` / `getHref` from `BaseController.toPage()` model.
 
-List grid: [`demo.ejs`](../server/ejs/demo.ejs) loops `articleComponent.data` and includes `comp_article`. List cards use the shared `.article` markup: `dl.dict` for `attrs` (`dt` = key/`abbr`, `dd` = value/`span`), `figure`/`figcaption` for photo credit, and overlay tags as `.tags-top`.
+List grid: [`demo.ejs`](../server/ejs/property.ejs) loops `articleComponent.data` and includes `comp_article`. List cards use the shared `.article` markup: `dl.dict` for `attrs` (`dt` = key/`abbr`, `dd` = value/`span`), `figure`/`figcaption` for photo credit, and overlay `.tags-top` with only the first tag. The full tag list still maps on the article and on the detail page.
 
 ---
 
@@ -170,7 +172,7 @@ List grid: [`demo.ejs`](../server/ejs/demo.ejs) loops `articleComponent.data` an
 | **Theme inline CSS** | yes | no |
 | **`getHref` / `getSrc`** | on model | no |
 | **Static HTML cache** | optional write | no |
-| **Typical routes** | `demo.js`, `page.js`, `default.js` | `/api/demo/detail/:prId`, `/api/geo`, etc. |
+| **Typical routes** | `property.js`, `page.js`, `default.js` | `/api/property/detail/:prId`, `/api/geo`, etc. |
 
 Both call the same `config.get()` — demo SSR and SPA share one data builder.
 
@@ -190,11 +192,11 @@ EJS must emit matching `data-role` and `data-*` options. Example: `comp_album.ej
 
 ### Demo client router
 
-- `client/pages/demo/index.js` — `Router` rules for grid / detail / map; `linkScope: 'demo'`.
+- `client/pages/property/index.js` — `Router` rules for grid / detail / map; `linkScope: 'property'`.
 - `push` / `replace` / `goto` contract: [`docs/client-js-lifecycle.md` §4](client-js-lifecycle.md#4-client-router-contract).
-- Detail navigation: `fetch('/api/demo/detail/:prId')` → `buildDemoSpaInnerHtml(envelope.data)` in [`client/pages/demo/detailSpa.js`](../client/pages/demo/detailSpa.js) (renders [`comp_article_detail.ejs`](../server/ejs/comp_article_detail.ejs) + [`comp_demo_nearby.ejs`](../server/ejs/comp_demo_nearby.ejs) via [`client/js/core/renderEjs.js`](../client/js/core/renderEjs.js)) → `outerHTML` on `#detail` and nearby `section.result`.
+- Detail navigation: `fetch('/api/property/detail/:prId')` → `buildPropertySpaInnerHtml(envelope.data)` in [`client/pages/property/detailSpa.js`](../client/pages/property/detailSpa.js) (renders [`comp_article_detail.ejs`](../server/ejs/comp_article_detail.ejs) + [`comp_property_nearby.ejs`](../server/ejs/comp_property_nearby.ejs) via [`client/js/core/renderEjs.js`](../client/js/core/renderEjs.js)) → `outerHTML` on `#detail` and nearby `section.result`.
 
-**Data and markup** match SSR (`demo.get()` + same EJS comps). Render context (`getHref`, `getSrc`) comes from [`helpers/ejsRenderContext.js`](../helpers/ejsRenderContext.js).
+**Data and markup** match SSR (`property.get()` + same EJS comps). Render context (`getHref`, `getSrc`) comes from [`helpers/ejsRenderContext.js`](../helpers/ejsRenderContext.js).
 
 ---
 
@@ -248,16 +250,16 @@ No Playwright/e2e in repo; optional Lighthouse via `npm run test:lighthouse`.
 
 ### Route patterns
 
-- Server: regexes in `server/routes/demo.js`.
-- Client: regexes in `client/pages/demo/index.js`.
-- **Direction:** shared route manifest (e.g. `data/routes/demo.json`) consumed by both sides.
+- Server: regexes in `server/routes/property.js`.
+- Client: regexes in `client/pages/property/index.js`.
+- **Direction:** shared route manifest (e.g. `data/routes/property.json`) consumed by both sides.
 
 ### Optional shared route manifest (RFC sketch)
 
 ```json
 {
   "detail": {
-    "pattern": "^/demo/detail/([a-z]{2})/([0-9a-z-]+)/([0-9a-z-]+)/?$",
+    "pattern": "^/property/detail/([a-z]{2})/([0-9a-z-]+)/([0-9a-z-]+)/?$",
     "params": ["state", "zip", "prId"],
     "query": { "geoPath": "{state}/{zip}", "prId": 2 }
   }

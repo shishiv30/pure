@@ -38,6 +38,7 @@ import layoutToggle from './_layout-toggle.js';
 import groupDropdown from './_groupdropdown.js';
 import rangeSlider from './_rangeslider.js';
 import theme from './_theme.js';
+import chatgpt from './_chatgpt.js';
 
 export default {
 	collapse,
@@ -77,6 +78,7 @@ export default {
 	groupdropdown: 	groupDropdown,
 	rangeSlider,
 	theme,
+	chatgpt,
 	// view,
 	// carousel,
 	// scrollspy,

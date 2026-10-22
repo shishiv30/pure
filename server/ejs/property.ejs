@@ -21,12 +21,12 @@
 <% if (data.detail) { %>
   <%- include('comp_article_detail', { detail: data.detail, getSrc, getHref }) %>
 <% } else { %>
-  <section class="detail demo-detail" id="detail"></section>
+  <section class="detail property-detail" id="detail"></section>
 <% } %>
 
 
 <%_ if (data.articleComponent) { _%>
-  <%- include('comp_demo_nearby', { articleComponent: data.articleComponent, getHref, getSrc }) %>
+  <%- include('comp_property_nearby', { articleComponent: data.articleComponent, getHref, getSrc }) %>
 <%_ } _%>
 
 <%- include('html_menu') %>

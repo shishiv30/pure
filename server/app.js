@@ -57,7 +57,7 @@ app.use('/', router);
 	app.listen(config.port, function () {
 		console.log(`Example app listening on host ${config.appHost}`);
 		console.log(`API docs available at ${config.appHost}/api-docs`);
-		console.log(`Demo docs available at state like ${config.appHost}/demo/tx`);
+		console.log(`Listing pages available at state like ${config.appHost}/property/tx`);
 		console.log(`About page available at ${config.appHost}/about`);
 	});
 })();

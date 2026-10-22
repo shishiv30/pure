@@ -24,5 +24,8 @@ CMD ["npm", "run", "build:dev"]
 
 # Production: build assets at image build time, then run server
 FROM base AS production
+# Optional: override .env.production hosts baked into built assets (unset = use .env.production)
+ARG CDN_HOST
+ARG APP_HOST
 RUN npm run build:prod
 CMD ["npm", "run", "start"]

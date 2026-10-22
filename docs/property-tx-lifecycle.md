@@ -1,6 +1,6 @@
-# Demo `/demo/tx` lifecycle
+# Demo `/property/tx` lifecycle
 
-End-to-end map of **`GET /demo/tx`**: webpack build vs SSR EJS, Express request → HTML, SOA/APIs (shapes and errors), and client Plugin/Router phases.
+End-to-end map of **`GET /property/tx`**: webpack build vs SSR EJS, Express request → HTML, SOA/APIs (shapes and errors), and client Plugin/Router phases.
 
 Related docs:
 
@@ -18,12 +18,12 @@ Related docs:
 ```mermaid
 flowchart TB
   subgraph build [Build time webpack]
-    Entry[client/pages/demo/index.js]
-    Webpack[webpack emit dist/demo.min.js css]
+    Entry[client/pages/property/index.js]
+    Webpack[webpack emit dist/property.min.js css]
     SpaEjs[ejs-client-loader compiles SPA partials]
   end
   subgraph ssr [Request time Express]
-    Route[registerDemo geo match /demo/tx]
+    Route[registerProperty geo match /property/tx]
     Ctrl[BaseController demo beforeGet get]
     Soa[SOA searchHouse]
     ToPage[toPage meta seo breadcrumb]
@@ -48,42 +48,42 @@ flowchart TB
 
 | Phase | What actually happens | Key files |
 |-------|----------------------|-----------|
-| **Source** | Demo page entry, SCSS, SPA HTML builders | [`client/pages/demo/index.js`](../client/pages/demo/index.js), [`client/scss/demo.scss`](../client/scss/demo.scss), [`detailSpa.js`](../client/pages/demo/detailSpa.js) |
+| **Source** | Demo page entry, SCSS, SPA HTML builders | [`client/pages/property/index.js`](../client/pages/property/index.js), [`client/scss/property.scss`](../client/scss/property.scss), [`detailSpa.js`](../client/pages/property/detailSpa.js) |
 | **Webpack transform (“compile”)** | Babel/SCSS; **SPA** EJS partials → client `render()` via ejs-client-loader | [`webpack.config.base.js`](../webpack.config.base.js), [`webpack.config.base.page.js`](../webpack.config.base.page.js), [`helpers/ejs-client-loader.js`](../helpers/ejs-client-loader.js) |
-| **Webpack emit (“build”)** | `dist/demo.min.js`, `demo.min.css`, shell `dist/demo.html` | `npm run build:prod` / `build:stage` / `dev` |
+| **Webpack emit (“build”)** | `dist/property.min.js`, `property.min.css`, shell `dist/property.html` | `npm run build:prod` / `build:stage` / `dev` |
 | **No separate CLI** | There is **no** `npm run compile` | — |
-| **SSR EJS** | **Not** baked into live `/demo/tx` HTML at webpack time; rendered per request | Express views [`server/ejs/`](../server/ejs/) |
+| **SSR EJS** | **Not** baked into live `/property/tx` HTML at webpack time; rendered per request | Express views [`server/ejs/`](../server/ejs/) |
 | **Dev HMR** | When `webpackHotReload` is on | [`webpack.config.dev.js`](../webpack.config.dev.js), [`server/config.js`](../server/config.js) |
 
-Live URL `http://localhost:3000/demo/tx` is **Express SSR** (`demo.ejs`), not the webpack HtmlWebpackPlugin shell `dist/demo.html`.
+Live URL `http://localhost:3000/property/tx` is **Express SSR** (`demo.ejs`), not the webpack HtmlWebpackPlugin shell `dist/property.html`.
 
 | Informal name | Meaning here |
 |---------------|--------------|
 | Compile | Webpack loaders transforming source (incl. SPA EJS → functions) |
 | Build | Webpack writing `dist/` assets |
-| Dynamic inject | Browser SPA replacing `#detail` / nearby HTML after `GET /api/demo/detail/:prId` |
+| Dynamic inject | Browser SPA replacing `#detail` / nearby HTML after `GET /api/property/detail/:prId` |
 
 ---
 
-## 2. Server request → response (`GET /demo/tx`)
+## 2. Server request → response (`GET /property/tx`)
 
 ### Middleware and routing
 
 Ordered path (no `beforeRequest` / `afterResponse` hooks):
 
-1. [`server/app.js`](../server/app.js) — `compression` → session → Referrer-Policy → CORS → `express.static('dist')` (may serve a previously saved `dist/demo/tx.html`) → `app.use('/', router)`
-2. [`server/routes/index.js`](../server/routes/index.js) — `registerDemo` among other registrars
-3. [`server/routes/demo.js`](../server/routes/demo.js) — geo catch-all `createDemoSpaRegExp('geo')` matches `/demo/tx`
+1. [`server/app.js`](../server/app.js) — `compression` → session → Referrer-Policy → CORS → `express.static('dist')` (may serve a previously saved `dist/property/tx.html`) → `app.use('/', router)`
+2. [`server/routes/index.js`](../server/routes/index.js) — `registerProperty` among other registrars
+3. [`server/routes/property.js`](../server/routes/property.js) — geo catch-all `createPropertySpaRegExp('geo')` matches `/property/tx`
    - `tail` → `"/tx"`
-   - `getCanonicalDemoGeoRedirectPath(tail)` → **`null`** for bare `tx` (no 301)
+   - `getCanonicalPropertyGeoRedirectPath(tail)` → **`null`** for bare `tx` (no 301)
    - `req.query.geoPath = tail`
-   - `handleDemoRoute(new BaseController(req, res, 'demo'), res)`
+   - `handlePropertyRoute(new BaseController(req, res, 'property'), res)`
 
 ### Controller hooks that exist (demo config)
 
 Contract: [`server/controllers/configbase.js`](../server/controllers/configbase.js). Demo implements:
 
-| Hook | Role on `/demo/tx` |
+| Hook | Role on `/property/tx` |
 |------|--------------------|
 | `beforeGet` | `getGeoByPath(geoPath)` → `{ geo: { state: 'tx', type: 'state' }, prId }` |
 | `get` | Parallel SOA; map articles; return page `data` |
@@ -92,9 +92,9 @@ Contract: [`server/controllers/configbase.js`](../server/controllers/configbase.
 
 **Not on demo (and not inventable as Express phases):** `onError`, `beforePost`/`post`/`update`/`delete`, `beforeRequest`, `afterRequest`, `afterGet`, `afterPage`.
 
-### `demo.get()` for `/demo/tx`
+### `property.get()` for `/property/tx`
 
-[`server/controllers/demo.js`](../server/controllers/demo.js):
+[`server/controllers/property.js`](../server/controllers/property.js):
 
 ```text
 Promise.all([
@@ -114,19 +114,19 @@ SOA helpers live in [`server/routes/api.soa.property.js`](../server/routes/api.s
 
 [`BaseController.toPage`](../server/controllers/index.js):
 
-1. `initialMeta` — `meta.css` / `meta.js` → `/demo.min.css`, `/demo.min.js`; merges `preload`
+1. `initialMeta` — `meta.css` / `meta.js` → `/property.min.css`, `/property.min.js`; merges `preload`
 2. `initialSeo` / `initialBreadcrumb` / theme `inlineCss`
 3. Attach `getHref`, `getSrc`
 4. `res.render('demo.ejs', model)` → `res.send(html)`
-5. Optional `saveStaticHtml` → `dist/demo/tx.html`
+5. Optional `saveStaticHtml` → `dist/property/tx.html`
 
-### EJS include order ([`demo.ejs`](../server/ejs/demo.ejs))
+### EJS include order ([`demo.ejs`](../server/ejs/property.ejs))
 
 1. `html_above` — SEO, CSS/JS preload, theme
 2. Header (`comp_header` via component or fallback)
 3. `comp_breadcrumb`
 4. `comp_article_detail` — **skipped** (`detail` is null)
-5. `comp_demo_nearby` → each `comp_article` (omitted if no cards)
+5. `comp_property_nearby` → each `comp_article` (omitted if no cards)
 6. `html_menu`
 7. Footer
 8. `html_below` — `window.context = JSON.stringify(data)` + `<script src="<%= meta.js %>">`
@@ -138,8 +138,8 @@ SOA helpers live in [`server/routes/api.soa.property.js`](../server/routes/api.s
 | Normal (incl. empty listings) | **200** HTML |
 | `get()` throws → `code === 500` | **500** plain text: `Unable to load this page…` |
 | EJS render error | **500** plain text |
-| Non-canonical geo (e.g. `/demo/austin/tx`) | **301** to canonical path |
-| `/demo` alone | **301** → `/demo/sitemap` |
+| Non-canonical geo (e.g. `/property/austin/tx`) | **301** to canonical path |
+| `/property` alone | **301** → `/property/sitemap` |
 
 ---
 
@@ -147,15 +147,15 @@ SOA helpers live in [`server/routes/api.soa.property.js`](../server/routes/api.s
 
 ### Summary
 
-| Endpoint | Used on cold `/demo/tx`? | Used after article click? | Envelope |
+| Endpoint | Used on cold `/property/tx`? | Used after article click? | Envelope |
 |----------|--------------------------|---------------------------|----------|
-| `GET /demo/tx` (HTML) | Yes | No (SPA stays on client) | HTML + `window.context` |
-| `GET /api/demo/detail/:prId` | No | Yes | `{ code, data, error, cost }` |
-| `GET /api/demo/:geoPath(*)` | No | No (geo SPA only switches view) | Same BaseController envelope |
-| `GET /api/demo/search/:path(*)` | No | No | Ad-hoc `{ articles, totalCount }` |
+| `GET /property/tx` (HTML) | Yes | No (SPA stays on client) | HTML + `window.context` |
+| `GET /api/property/detail/:prId` | No | Yes | `{ code, data, error, cost }` |
+| `GET /api/property/:geoPath(*)` | No | No (geo SPA only switches view) | Same BaseController envelope |
+| `GET /api/property/search/:path(*)` | No | No | Ad-hoc `{ articles, totalCount }` |
 | SOA (server-only) | `searchHouse` | Detail API also hits listing + histories | Internal; not browser-visible |
 
-### HTML / `window.context` (`model.data` for `/demo/tx`)
+### HTML / `window.context` (`model.data` for `/property/tx`)
 
 ```js
 {
@@ -181,7 +181,7 @@ After `toPage`, the render model also has top-level `meta`, `seo`, `breadcrumb`,
   metadata: /* mapSOADataToMetadata output */,
   img, imgTag, imgAlt,
   title,                    // display address
-  path: '/demo/detail/{state}/{zip}/{prId}',
+  path: '/property/detail/{state}/{zip}/{prId}',
   tags: [{ text, className }],
   attrs: [{ key, value, desc, className }],
 }
@@ -189,7 +189,7 @@ After `toPage`, the render model also has top-level `meta`, `seo`, `breadcrumb`,
 
 `getHref(article)` builds the `<a href>` from `appHost` + `path`.
 
-### `GET /api/demo/detail/:prId`
+### `GET /api/property/detail/:prId`
 
 - **Route:** [`server/routes/api.js`](../server/routes/api.js) — sets `req.query.prId` → `BaseController('demo').get()` → [`toData`](../server/controllers/index.js)
 - **Success (typical):** HTTP status = `code` (200)
@@ -207,11 +207,11 @@ After `toPage`, the render model also has top-level `meta`, `seo`, `breadcrumb`,
 ```
 
 - **Error from `get()` throw:** `{ code: 500, error: string, data: null }` via `exceptionDataHandler` (demo has **no** `onError`). Note: `toData` assigns `model.data.meta`; a true `data: null` error can throw before JSON is sent.
-- **Client fail rule** ([`updateDetail`](../client/pages/demo/index.js)): treat as failure if `code !== 200` or truthy `error`.
+- **Client fail rule** ([`updateDetail`](../client/pages/property/index.js)): treat as failure if `code !== 200` or truthy `error`.
 
 With `prId`, server SOA calls **listing + histories + nearby** (geo from detail query when set by HTML detail route; API detail path sets `prId` only — see route handler).
 
-### `GET /api/demo/search/:path(*)`
+### `GET /api/property/search/:path(*)`
 
 Not used by the demo SPA Router. Ad-hoc JSON (not `code`/`cost` envelope):
 
@@ -221,13 +221,13 @@ Not used by the demo SPA Router. Ad-hoc JSON (not `code`/`cost` envelope):
 | 400 | `{ error: 'Invalid geo path' }` |
 | 500 | `{ error: 'Internal server error' }` |
 
-### `GET /api/demo/:geoPath(*)`
+### `GET /api/property/:geoPath(*)`
 
-Same `demo.get()` + `toData` envelope as detail. Exists for JSON consumers; **demo client geo navigation does not call it** (only `switchToGrid`).
+Same `property.get()` + `toData` envelope as detail. Exists for JSON consumers; **demo client geo navigation does not call it** (only `switchToGrid`).
 
-### Server-only SOA (not `/api/demo/*` from the browser)
+### Server-only SOA (not `/api/property/*` from the browser)
 
-| Function | SOA target (approx.) | On `/demo/tx` SSR |
+| Function | SOA target (approx.) | On `/property/tx` SSR |
 |----------|----------------------|-------------------|
 | `searchHouse(geo)` | `POST …/listings/nearbysearch/v2` — geo `input` only; no filter. Five input methods and the 33 optional filter fields are in [`listing-data-pipeline.md`](listing-data-pipeline.md). | Yes |
 | `getPropertyListingInfoById` | `GET …/properties/{id}/primary-listing` | No |
@@ -254,22 +254,22 @@ Demo settings define only **`init`**, **`load`**, **`render`**. Before/After wra
 Bus events that **do** exist: `dom.load`, `dom.updated`, `dom.resize`, `dom.scroll`.  
 **Not** events: `beforeLoad`, `page.ready`, `initBefore` (as `emit` names).
 
-### Cold boot on `/demo/tx`
+### Cold boot on `/property/tx`
 
 | Step | What runs | Where |
 |------|-----------|--------|
 | 1 | Parse SSR HTML | `demo.ejs` |
 | 2 | `window.context = …` | `html_below.ejs` |
-| 3 | Load `/demo.min.js` | `meta.js` |
+| 3 | Load `/property.min.js` | `meta.js` |
 | 4 | `installDOMHooks()` then `main(window, demo)` | [`client/js/index.js`](../client/js/index.js) |
 | 5 | Register widget plugins; `new Page` → `page.init()` | Page extends Plugin |
-| 6 | **init** — `defBool` / `defEnum`, `updateDetail`, `new Router({ linkScope: 'demo' })` → click/popstate + `replace(pathname)` | [`demo/index.js`](../client/pages/demo/index.js), [`router.js`](../client/js/core/router.js) |
-| 7 | Register page instance on `body` + `loaded=2` | [`page.js`](../client/js/core/page.js) — prevents `dom.load` → `refreshComponents` from re-initing body/`data-role="demo"` (second Router) |
+| 6 | **init** — `defBool` / `defEnum`, `updateDetail`, `new Router({ linkScope: 'property' })` → click/popstate + `replace(pathname)` | [`demo/index.js`](../client/pages/property/index.js), [`router.js`](../client/js/core/router.js) |
+| 7 | Register page instance on `body` + `loaded=2` | [`page.js`](../client/js/core/page.js) — prevents `dom.load` → `refreshComponents` from re-initing body/`data-role="property"` (second Router) |
 | 8 | **load** — `switchToGrid()` (no `context.detail`); resolve after **1000ms** | `demo.load` |
 | 9 | **render** — `Page.eventListener()`; `emit('dom.load')` | Page wrapper; demo `render` is empty |
 | 10 | Debounced `refreshComponents` → `[data-role]` widgets | `page.js` |
 
-Router rules (order): **detail** → **map** → **geo**. On `/demo/tx`, `replace` matches **geo** → `loading` only calls `switchToGrid` (no fetch). Detail `loading` skips fetch only on initial `replace` (SSR detail hard load). Back/forward uses `goto` and must still `updateDetail` + `switchToDetail` because the browser already changed the URL. Contract: [`client-js-lifecycle.md` §4](client-js-lifecycle.md#4-client-router-contract).
+Router rules (order): **detail** → **map** → **geo**. On `/property/tx`, `replace` matches **geo** → `loading` only calls `switchToGrid` (no fetch). Detail `loading` skips fetch only on initial `replace` (SSR detail hard load). Back/forward uses `goto` and must still `updateDetail` + `switchToDetail` because the browser already changed the URL. Contract: [`client-js-lifecycle.md` §4](client-js-lifecycle.md#4-client-router-contract).
 
 ### SPA click on article `<a>`
 
@@ -278,8 +278,8 @@ document click → getInternalPath → shouldHandleDemoLink
 → preventDefault → Router.push
 → routerTo(detail) → navigate → rule.loading
 → updateDetail(prId)
-→ fetch GET /api/demo/detail/:prId
-→ buildDemoSpaInnerHtml → injectDemoSpaHtml (#detail + section.result)
+→ fetch GET /api/property/detail/:prId
+→ buildPropertySpaInnerHtml → injectDemoSpaHtml (#detail + section.result)
 → Object.assign(window.context, …) → emit('dom.load')
 → switchToDetail (or switchToGrid on fail)
 → history.pushState
@@ -293,23 +293,23 @@ Sitemap paths and modifier-clicks use **full navigation** (`shouldHandleDemoLink
 
 ## 5. Two timelines side-by-side
 
-### Cold load `GET /demo/tx`
+### Cold load `GET /property/tx`
 
 | Time | Layer | Action |
 |------|-------|--------|
-| Ahead of request | Build | `demo.min.js` / `.css` already in `dist/` (or webpack-dev-server) |
+| Ahead of request | Build | `property.min.js` / `.css` already in `dist/` (or webpack-dev-server) |
 | Request | Express | Geo route → `beforeGet` → `get` → SOA nearby → `toPage` → `demo.ejs` |
 | Response | Browser | HTML + `window.context` |
 | After script | Client | Plugin init → Router → load (grid + 1s) → render → `dom.load` widgets |
 
-No browser call to `/api/demo/*` on first paint.
+No browser call to `/api/property/*` on first paint.
 
 ### Click listing title (detail SPA)
 
 | Time | Layer | Action |
 |------|-------|--------|
-| Click | Router | Intercept `<a href="…/demo/detail/…">` |
-| Request | Browser | **One** `GET /api/demo/detail/:prId` |
+| Click | Router | Intercept `<a href="…/property/detail/…">` |
+| Request | Browser | **One** `GET /api/property/detail/:prId` |
 | Response | JSON | Envelope with `data.detail` + nearby, etc. |
 | After | Client | Inject HTML → view-detail → `pushState` (no full document reload) |
 

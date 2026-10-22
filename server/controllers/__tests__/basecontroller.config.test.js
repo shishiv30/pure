@@ -290,7 +290,7 @@ describe('BaseController + route config', () => {
 	});
 
 	test('initialBreadcrumb falls back to geo when no breadcrumb', async () => {
-		const cfg = { name: 'demo', get: async () => ({}) };
+		const cfg = { name: 'property', get: async () => ({}) };
 		const c = new TestBaseController(createMockReq(), createMockRes(), cfg);
 		const bc = c.initialBreadcrumb({
 			data: { geo: { state: 'TX' } },

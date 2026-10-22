@@ -108,12 +108,11 @@
 
 		&::before {
 			@include icon();
-			content: $icon-refresh;
+			content: $icon-trash;
 			font-size: var(--font-size-6);
 			line-height: 1;
 			display: inline-block;
 			color: var(--group-dropdown-button-color-bg);
-			transition: transform var(--animation-time) ease-out;
 		}
 
 		&:hover {
@@ -121,7 +120,6 @@
 
 			&::before {
 				color: var(--group-dropdown-button-color-bg-hover);
-				transform: rotate(90deg);
 			}
 		}
 

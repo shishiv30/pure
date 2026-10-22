@@ -1,8 +1,8 @@
 <%_ if (detail) { _%>
-<section class="detail demo-detail" id="detail">
+<section class="detail property-detail" id="detail">
 	<div class="detail-body grid grid-xs-1">
 		<%_ if (detail.title) { _%>
-			<h1 class="h3"><%= detail.title %></h1>
+			<h1 class="h4 m-t-3"><%= detail.title %></h1>
 		<%_ } _%>
 		<%_ if (detail.tags) { _%>
 			<%- include('comp_tags', { tags: detail.tags }) %>

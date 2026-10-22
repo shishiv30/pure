@@ -4,14 +4,14 @@ import { createHeaderComponent } from '../ejs/comp_header.js';
 import { createFooterComponent } from '../ejs/comp_footer.js';
 import { createLinksComponent } from '../ejs/comp_links.js';
 
-const SITEMAP_BASE = '/demo/sitemap';
+const SITEMAP_BASE = '/property/sitemap';
 
 export default {
-	name: 'demo-sitemap-county',
-	assetName: 'demo',
+	name: 'property-sitemap-county',
+	assetName: 'property',
 	beforeGet: function (req, payload) {
-		// Extract state and county from path (e.g., /demo/sitemap/ca/los-angeles_county)
-		const pathMatch = req.path.match(/^\/demo\/sitemap\/([a-z]{2})\/([^\/]+)_county$/i);
+		// Extract state and county from path (e.g., /property/sitemap/ca/los-angeles_county)
+		const pathMatch = req.path.match(/^\/property\/sitemap\/([a-z]{2})\/([^\/]+)_county$/i);
 		if (pathMatch) {
 			const stateCode = pathMatch[1].toUpperCase();
 			const countyCode = pathMatch[2].replace(/-/g, ' ');
@@ -64,9 +64,9 @@ export default {
 		const countyGeo = { state: stateCode, county: countyName, type: 'county' };
 		const breadcrumb = getBreadcrumbByGeo(countyGeo, SITEMAP_BASE);
 		if (breadcrumb && breadcrumb.links) {
-			// Replace first link to point to /demo/sitemap
-			breadcrumb.links[0] = { text: 'Home', href: '/demo' };
-			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/demo/sitemap' });
+			// Replace first link to point to /property/sitemap
+			breadcrumb.links[0] = { text: 'Home', href: '/property' };
+			breadcrumb.links.splice(1, 0, { text: 'Sitemap', href: '/property/sitemap' });
 			// Last item is current (no href)
 			const lastLink = breadcrumb.links[breadcrumb.links.length - 1];
 			if (lastLink) {

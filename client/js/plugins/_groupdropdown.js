@@ -272,7 +272,8 @@ export default {
 				return;
 			}
 			const original = button.textContent;
-			const keyed = !!panel.querySelector('[data-role="rangeslider"], input[type="range"], input[type="number"]');
+			const slider = panel.querySelector('[data-role="rangeslider"]');
+			const keyed = !slider && !!panel.querySelector('input[type="range"], input[type="number"]');
 			panel.addEventListener('valuechange', (event) => {
 				const { value, label, html } = event.detail;
 				const shown = label || value;

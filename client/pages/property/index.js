@@ -3,16 +3,16 @@ import { main } from '../../js/index.js';
 import { Router } from '../../js/core/router.js';
 import { emit } from '../../js/core/event.js';
 import {
-	createDemoSpaRegExp,
-	DEMO_SPA_ROUTES,
-	matchDemoSpaRoute,
-} from '../../../helpers/routes/demoSpaRoutes.js';
-import { buildDemoSpaInnerHtml } from './detailSpa.js';
+	createPropertySpaRegExp,
+	PROPERTY_SPA_ROUTES,
+	matchPropertySpaRoute,
+} from '../../../helpers/routes/propertySpaRoutes.js';
+import { buildPropertySpaInnerHtml } from './detailSpa.js';
 import { getQueryStringByFilter } from '../../../helpers/filter.js';
 import { getPathByGeo } from '../../../helpers/geo.js';
-import nearbyTpl from '../../../server/ejs/comp_demo_nearby.ejs';
+import nearbyTpl from '../../../server/ejs/comp_property_nearby.ejs';
 import { renderEjsTemplate } from '../../js/core/renderEjs.js';
-import '../../scss/demo.scss';
+import '../../scss/property.scss';
 
 const boolStatus = ['lock', 'collapse', 'menu'];
 
@@ -23,8 +23,8 @@ const enumStatus = [
 	},
 ];
 
-const demoSpaRootSel = '#detail';
-const demoSpaNearbySel = 'section.result';
+const propertySpaRootSel = '#detail';
+const propertySpaNearbySel = 'section.result';
 const viewFlipMs = 500;
 
 /**
@@ -35,7 +35,7 @@ function bindViewFlip(page, opt) {
 	let flipToken = 0;
 
 	function resultItems() {
-		return Array.from(document.querySelectorAll(`${demoSpaNearbySel} li.item`));
+		return Array.from(document.querySelectorAll(`${propertySpaNearbySel} li.item`));
 	}
 
 	function currentView() {
@@ -166,7 +166,7 @@ function bindViewFlip(page, opt) {
 
 	function detailBody() {
 		const root =
-			document.querySelector(demoSpaRootSel) || document.querySelector('section.detail');
+			document.querySelector(propertySpaRootSel) || document.querySelector('section.detail');
 		return root ? root.querySelector('.detail-body') : null;
 	}
 
@@ -275,7 +275,7 @@ function injectDemoSpaHtml(html) {
 	if (!detailSection) {
 		return false;
 	}
-	let root = document.querySelector(demoSpaRootSel);
+	let root = document.querySelector(propertySpaRootSel);
 	if (!root) {
 		root = document.querySelector('section.detail');
 		if (root) {
@@ -286,7 +286,7 @@ function injectDemoSpaHtml(html) {
 		root.outerHTML = detailSection.outerHTML;
 	} else {
 		// Geo SSR has no detail block — insert mount before nearby results.
-		const resultEl = document.querySelector(demoSpaNearbySel);
+		const resultEl = document.querySelector(propertySpaNearbySel);
 		const anchor =
 			resultEl ||
 			document.querySelector('.breadcrumb') ||
@@ -302,8 +302,8 @@ function injectDemoSpaHtml(html) {
 			anchor.appendChild(detailSection);
 		}
 	}
-	const nearbySection = wrap.querySelector(demoSpaNearbySel);
-	const resultEl = document.querySelector(demoSpaNearbySel);
+	const nearbySection = wrap.querySelector(propertySpaNearbySel);
+	const resultEl = document.querySelector(propertySpaNearbySel);
 	if (nearbySection && resultEl) {
 		resultEl.outerHTML = nearbySection.outerHTML;
 	}
@@ -312,9 +312,9 @@ function injectDemoSpaHtml(html) {
 
 const detailRevealSlots = [
 	'h1',
-	'.demo-detail-tags',
-	'.demo-slider',
-	'.demo-detail-description',
+	'.property-detail-tags',
+	'.property-slider',
+	'.property-detail-description',
 ];
 
 /**
@@ -327,12 +327,12 @@ function revealPlaceholder(html, isCurrent) {
 	const wrap = document.createElement('div');
 	wrap.innerHTML = html.trim();
 	const nextBody = wrap.querySelector('.detail-body');
-	const body = document.querySelector(`${demoSpaRootSel} .detail-body`);
+	const body = document.querySelector(`${propertySpaRootSel} .detail-body`);
 	if (!nextBody || !body) {
 		return Promise.resolve(false);
 	}
-	const nearbySection = wrap.querySelector(demoSpaNearbySel);
-	const resultEl = document.querySelector(demoSpaNearbySel);
+	const nearbySection = wrap.querySelector(propertySpaNearbySel);
+	const resultEl = document.querySelector(propertySpaNearbySel);
 	if (nearbySection && resultEl) {
 		resultEl.outerHTML = nearbySection.outerHTML;
 	}
@@ -363,7 +363,7 @@ function revealPlaceholder(html, isCurrent) {
 			return false;
 		}
 		body.classList.remove('placeholder');
-		body.querySelectorAll('.demo-detail-block').forEach((node) => {
+		body.querySelectorAll('.property-detail-block').forEach((node) => {
 			node.remove();
 		});
 		Array.from(nextBody.children).forEach((node) => {
@@ -446,7 +446,7 @@ function sameListingPath(left, right) {
 }
 
 function listingGeoPath() {
-	const matched = matchDemoSpaRoute(window.location.pathname);
+	const matched = matchPropertySpaRoute(window.location.pathname);
 	if (matched?.id === 'geo' && matched.params.tail) {
 		return matched.params.tail.replace(/^\/+/, '');
 	}
@@ -463,7 +463,7 @@ async function refreshListing(to) {
 	if (!geoPath) {
 		return;
 	}
-	const url = `/api/demo/search/${geoPath}${to.search || ''}`;
+	const url = `/api/property/search/${geoPath}${to.search || ''}`;
 	const response = await fetch(url, { headers: { Accept: 'application/json' } });
 	if (!response.ok || requestId !== listingRequestId) {
 		return;
@@ -471,6 +471,10 @@ async function refreshListing(to) {
 	const payload = await response.json();
 	if (requestId !== listingRequestId) {
 		return;
+	}
+	if (window.context && Array.isArray(payload.curls)) {
+		window.context.curls = payload.curls;
+		window.context.logs = payload.logs || { curls: payload.curls };
 	}
 	const articles = Array.isArray(payload.articles) ? payload.articles : [];
 	const html = articles.length
@@ -480,16 +484,16 @@ async function refreshListing(to) {
 			window.context || {},
 		)
 		: '';
-	const current = document.querySelector(demoSpaNearbySel);
+	const current = document.querySelector(propertySpaNearbySel);
 	if (html) {
 		const wrap = document.createElement('div');
 		wrap.innerHTML = html.trim();
-		const next = wrap.querySelector(demoSpaNearbySel);
+		const next = wrap.querySelector(propertySpaNearbySel);
 		if (next && current) {
 			current.replaceWith(next);
 		} else if (next) {
 			const anchor =
-				document.querySelector(demoSpaRootSel) || document.querySelector('nav.listing-nav');
+				document.querySelector(propertySpaRootSel) || document.querySelector('nav.listing-nav');
 			if (anchor) {
 				anchor.insertAdjacentElement('afterend', next);
 			}
@@ -550,7 +554,7 @@ function bindListingFilter() {
 }
 
 let demo = {
-	name: 'demo',
+	name: 'property',
 	init: function ($el, opt, exportObj) {
 		bindListingFilter();
 		boolStatus.forEach((name) => {
@@ -577,13 +581,13 @@ let demo = {
 				return false;
 			}
 			const root =
-				document.querySelector(demoSpaRootSel) ||
+				document.querySelector(propertySpaRootSel) ||
 				document.querySelector('section.detail');
 			if (root) {
 				root.outerHTML = gridSnapshot;
 			}
 			if (resultSnapshot) {
-				const resultEl = document.querySelector(demoSpaNearbySel);
+				const resultEl = document.querySelector(propertySpaNearbySel);
 				if (resultEl) {
 					resultEl.outerHTML = resultSnapshot;
 				}
@@ -593,13 +597,13 @@ let demo = {
 		}
 
 		const detailPlaceholderHtml = [
-			'<h1 class="demo-title"></h1>',
-			'<div class="filter demo-detail-tags"></div>',
-			'<div class="slider demo-slider"></div>',
-			'<div class="demo-detail-description"></div>',
-			'<div class="demo-detail-block"></div>',
-			'<div class="demo-detail-block"></div>',
-			'<div class="demo-detail-block"></div>',
+			'<h1 class="property-title"></h1>',
+			'<div class="filter property-detail-tags"></div>',
+			'<div class="slider property-slider"></div>',
+			'<div class="property-detail-description"></div>',
+			'<div class="property-detail-block"></div>',
+			'<div class="property-detail-block"></div>',
+			'<div class="property-detail-block"></div>',
 		].join('');
 
 		exportObj.updateDetail = function (prId) {
@@ -612,7 +616,7 @@ let demo = {
 			const requestId = ++detailRequestId;
 			const shownId = window.context?.detail?.metadata?.prId;
 			const detailRoot =
-				document.querySelector(demoSpaRootSel) || document.querySelector('section.detail');
+				document.querySelector(propertySpaRootSel) || document.querySelector('section.detail');
 			const body = detailRoot ? detailRoot.querySelector('.detail-body') : null;
 			const skeletonAt = Date.now();
 			let showedSkeleton = false;
@@ -635,7 +639,7 @@ let demo = {
 				});
 			};
 
-			return fetch(`/api/demo/detail/${encodeURIComponent(prId)}`, { signal })
+			return fetch(`/api/property/detail/${encodeURIComponent(prId)}`, { signal })
 				.then((r) => {
 					if (!r.ok) {
 						throw new Error(`Detail request failed (${r.status})`);
@@ -659,16 +663,16 @@ let demo = {
 						return null;
 					}
 					const root =
-						document.querySelector(demoSpaRootSel) ||
+						document.querySelector(propertySpaRootSel) ||
 						document.querySelector('section.detail');
 					if (gridSnapshot === null && root) {
 						gridSnapshot = root.outerHTML;
-						const resultEl = document.querySelector(demoSpaNearbySel);
+						const resultEl = document.querySelector(propertySpaNearbySel);
 						if (resultEl) {
 							resultSnapshot = resultEl.outerHTML;
 						}
 					}
-					const html = buildDemoSpaInnerHtml(envelope.data);
+					const html = buildPropertySpaInnerHtml(envelope.data);
 					const revealed = showedSkeleton
 						? await revealPlaceholder(html, () => requestId === detailRequestId)
 						: false;
@@ -694,22 +698,22 @@ let demo = {
 				});
 		};
 
-		if (window.location.pathname.indexOf('/demo/sitemap') > -1) {
+		if (window.location.pathname.indexOf('/property/sitemap') > -1) {
 			return;
 		}
 		return new Router(
 			[
 				{
-					reg: createDemoSpaRegExp('detail'),
+					reg: createPropertySpaRegExp('detail'),
 					loading: async (to, from, method) => {
 						if (method === 'replace') {
 							return null;
 						}
-						const propertyId = to.params[DEMO_SPA_ROUTES.detail.prIdParamIndex];
+						const propertyId = to.params[PROPERTY_SPA_ROUTES.detail.prIdParamIndex];
 						const sameDetail =
 							from &&
 							from.params &&
-							from.params[DEMO_SPA_ROUTES.detail.prIdParamIndex] === propertyId;
+							from.params[PROPERTY_SPA_ROUTES.detail.prIdParamIndex] === propertyId;
 						if (!sameDetail) {
 							const detailLoaded = await exportObj.updateDetail(propertyId);
 							if (detailLoaded == null) {
@@ -727,7 +731,7 @@ let demo = {
 					},
 				},
 				{
-					reg: createDemoSpaRegExp('map'),
+					reg: createPropertySpaRegExp('map'),
 					loading: async (to, _from, method) => {
 						exportObj.switchToMap();
 						if (method !== 'replace') {
@@ -737,7 +741,7 @@ let demo = {
 					},
 				},
 				{
-					reg: createDemoSpaRegExp('geo'),
+					reg: createPropertySpaRegExp('geo'),
 					loading: async (to, from, method) => {
 						if (method === 'replace') {
 							restoreGridSnapshots();
@@ -754,7 +758,7 @@ let demo = {
 					},
 				},
 			],
-			{ linkScope: 'demo' },
+			{ linkScope: 'property' },
 		);
 	},
 	load: function ($el, opt, exportObj) {

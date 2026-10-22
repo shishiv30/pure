@@ -19,7 +19,7 @@ function geoToLink(geo, base, textOverride) {
 
 export default {
 	name: 'sitemap',
-	assetName: 'demo',
+	assetName: 'property',
 	seo() {
 		return {
 			title: 'States Sitemap',

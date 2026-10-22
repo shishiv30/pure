@@ -1,5 +1,5 @@
 <%_ if (album && album.images && album.images.length) { _%>
-  <div class="slider demo-slider" data-role="slider" data-index="<%= album.initialIndex || 0 %>"
+  <div class="slider property-slider" data-role="slider" data-index="<%= album.initialIndex || 0 %>"
     data-images='<%- JSON.stringify(album.images) %>'>
     <div class="slider-list">
       <img src="<%= getSrc(album.images[album.initialIndex || 0]) %>" loading="lazy" alt="<%= album.alt || '' %>">

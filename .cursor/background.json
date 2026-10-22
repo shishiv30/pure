@@ -60,11 +60,12 @@
       "client.md",
       "server.md",
       "build-system.md",
+      "deploy.md",
       "docs/development-workflow.md",
       "docs/routes-reference.md",
       "docs/listing-data-pipeline.md",
       "docs/client-js-lifecycle.md",
-      "docs/demo-tx-lifecycle.md",
+      "docs/property-tx-lifecycle.md",
       "cms/API.md"
     ],
     "usage": [
@@ -321,7 +322,7 @@
             ]
           },
           "plugin_pattern": [
-            "Define arrays like boolStatus and enumStatus inside a plugin/page (see client/js/plugins/_header.js and client/pages/demo/index.js)",
+            "Define arrays like boolStatus and enumStatus inside a plugin/page (see client/js/plugins/_header.js and client/pages/property/index.js)",
             "In init($el, opt, exportObj), loop through boolStatus and enumStatus and call defBool/defEnum to attach all status methods",
             "After init, use the generated methods on exportObj inside the plugin and in templates"
           ]
@@ -549,7 +550,7 @@
         "purpose": "Page-specific configurations",
         "pages": [
           "animation",
-          "demo",
+          "property",
           "index",
           "3d",
           "about",
@@ -1099,7 +1100,7 @@
       },
       "listing_pipeline": {
         "doc": "docs/listing-data-pipeline.md",
-        "purpose": "SOA Pure → mapSOADataToMetadata (property.js) → mapPropertyToArticle / mapPropertyDetailToArticle + mapXToComp (article.js) → EJS/plugins; demo is reference"
+        "purpose": "SOA Pure → mapSOADataToMetadata (helpers/property.js) → mapPropertyToArticle / mapPropertyDetailToArticle + mapXToComp (article.js) → EJS/plugins; listing SPA is client/pages/property"
       },
       "property": {
         "file": "helpers/property.js",

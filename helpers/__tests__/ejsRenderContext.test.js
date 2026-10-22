@@ -9,7 +9,7 @@ describe('createEjsRenderContext', () => {
 			appHost: 'https://app.example.com',
 			cdnHost: 'https://cdn.example.com',
 		});
-		assert.equal(ctx.getHref({ path: '/demo/tx' }), 'https://app.example.com/demo/tx');
+		assert.equal(ctx.getHref({ path: '/property/tx' }), 'https://app.example.com/property/tx');
 		assert.equal(
 			ctx.getSrc({ path: '/welcome.webp' }),
 			'https://cdn.example.com/images/welcome.webp',

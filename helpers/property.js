@@ -296,8 +296,8 @@ export function mapOpenHousesToComp(openHouses) {
  * @param {string} [basePath]
  * @returns {{ links: Array<{ text: string, href: string }> }}
  */
-export function buildDetailBreadcrumb(prop, basePath = '/demo') {
-	const base = basePath.replace(/\/$/, '') || '/demo';
+export function buildDetailBreadcrumb(prop, basePath = '/property') {
+	const base = basePath.replace(/\/$/, '') || '/property';
 	const links = [{ text: 'Home', href: base }];
 	if (prop.state) {
 		links.push({ text: prop.state, href: `${base}/${getStatePath(prop.state)}` });

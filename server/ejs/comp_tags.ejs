@@ -1,9 +1,10 @@
 <%_ if (tags && tags.items && tags.items.length) { _%>
-<div class="filter demo-detail-tags">
+<div class="filter property-detail-tags">
 	<span class="f7">Tags</span>
 	<%_ for (var t = 0; t < tags.items.length; t++) { _%>
 		<%_ const tag = tags.items[t]; _%>
-		<span class="tag<%= tag.className ? ' ' + tag.className : '' %>"><%= tag.text != null ? tag.text : (tag.value || '') %></span>
+		<span class="tag<%= tag.className ? ' ' + tag.className : '' %>"><%_ if (tag.icon) { _%>
+<i class="icon-<%= tag.icon %>"></i><%_ } _%><%= tag.text != null ? tag.text : (tag.value || '') %></span>
 	<%_ } _%>
 </div>
 <%_ } _%>

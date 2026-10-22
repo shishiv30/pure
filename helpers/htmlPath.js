@@ -45,8 +45,8 @@ export function appBaseFromPublicPath(publicPath) {
 }
 
 /**
- * Drop a deploy base so route regexes stay rooted at `/demo/...`.
- * `/pure/demo/tx` + `/pure` → `/demo/tx`. Unknown bases are left unchanged.
+ * Drop a deploy base so route regexes stay rooted at `/property/...`.
+ * `/pure/property/tx` + `/pure` → `/property/tx`. Unknown bases are left unchanged.
  * @param {string} pathname
  * @param {string} base
  * @returns {string}

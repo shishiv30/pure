@@ -48,87 +48,106 @@
 	//in a custom property is substituted against the declaring element, so an
 	//alias declared here would freeze the light value on <html> forever.
 	--color-root-lightness: 5%;
+	--color-root-lightness-hover: 13%;
 	--color-root-lightness-l1: 60%;
+	--color-root-lightness-l1-hover: 80%;
 	--color-root-saturation: 1%;
 	--color-root-saturation-l1: 4%;
 
 	--color-root-bg-lightness: 100%;
+	--color-root-bg-lightness-hover: 94%;
 	--color-root-bg-lightness-l1: 95%;
+	--color-root-bg-lightness-l1-hover: 98%;
 	--color-root-bg-saturation: 1%;
 	--color-root-bg-saturation-l1: 4%;
 
-
 	--color-root-border-lightness: 80%;
+	--color-root-border-lightness-hover: 90%;
 	--color-root-border-lightness-l1: 45%;
+	--color-root-border-lightness-l1-hover: 29%;
 	--color-root-border-saturation: 1%;
 	--color-root-border-saturation-l1: 4%;
 
 	--color-root-major-hue: 216;
 	--color-root-major-lightness: 23%;
+	--color-root-major-lightness-hover: 31%;
 	--color-root-major-lightness-l1: 95%;
+	--color-root-major-lightness-l1-hover: 99%;
 	--color-root-major-saturation: 100%;
 	--color-root-major-saturation-l1: 100%;
 
 	--color-root-minor-hue: 280;
 	--color-root-minor-lightness: 31%;
+	--color-root-minor-lightness-hover: 25%;
 	--color-root-minor-lightness-l1: 95%;
+	--color-root-minor-lightness-l1-hover: 100%;
 	--color-root-minor-saturation: 100%;
 	--color-root-minor-saturation-l1: 100%;
 
 	--color-root-safe-hue: 179;
 	--color-root-safe-lightness: 25%;
+	--color-root-safe-lightness-hover: 11%;
 	--color-root-safe-lightness-l1: 95%;
+	--color-root-safe-lightness-l1-hover: 87%;
 	--color-root-safe-saturation: 100%;
 	--color-root-safe-saturation-l1: 100%;
 
 	--color-root-danger-hue: 343;
 	--color-root-danger-lightness: 48%;
+	--color-root-danger-lightness-hover: 42%;
 	--color-root-danger-lightness-l1: 92%;
+	--color-root-danger-lightness-l1-hover: 76%;
 	--color-root-danger-saturation: 100%;
 	--color-root-danger-saturation-l1: 100%;
 
 	--color-root-tip-hue: 45;
 	--color-root-tip-lightness: 34%;
+	--color-root-tip-lightness-hover: 18%;
 	--color-root-tip-lightness-l1: 95%;
+	--color-root-tip-lightness-l1-hover: 77%;
 	--color-root-tip-saturation: 100%;
 	--color-root-tip-saturation-l1: 100%;
 
 	--color-root: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness));
 	--color-root-l1: hsl(var(--color-root-major-hue), var(--color-root-saturation-l1), var(--color-root-lightness-l1));
-	--color-root-hover: color-mix(in hsl, var(--color-root) 92%, var(--color-root-paper));
-	--color-root-l1-hover: color-mix(in hsl, var(--color-root-l1) 50%, var(--color-root-paper));
 
 	--color-root-bg: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation), var(--color-root-bg-lightness));
 	--color-root-bg-l1: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation-l1), var(--color-root-bg-lightness-l1));
-	--color-root-bg-hover: color-mix(in hsl, var(--color-root-bg) 94%, var(--color-root-ink));
-	--color-root-bg-l1-hover: color-mix(in hsl, var(--color-root-bg-l1) 50%, var(--color-root-paper));
 
 	--color-root-border: hsl(var(--color-root-major-hue), var(--color-root-border-saturation), var(--color-root-border-lightness));
 	--color-root-border-l1: hsl(var(--color-root-major-hue), var(--color-root-border-saturation-l1), var(--color-root-border-lightness-l1));
-	--color-root-border-hover: color-mix(in hsl, var(--color-root-border) 50%, var(--color-root-paper));
-	--color-root-border-l1-hover: color-mix(in hsl, var(--color-root-border-l1) 65%, var(--color-root-ink));
-
+	--color-root-border-hover: hsl(var(--color-root-major-hue), var(--color-root-border-saturation), var(--color-root-border-lightness-hover));
+	--color-root-border-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-border-saturation-l1), var(--color-root-border-lightness-l1-hover));
 
 	--color-root-major: hsl(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness));
 	--color-root-major-l1: hsl(var(--color-root-major-hue), var(--color-root-major-saturation-l1), var(--color-root-major-lightness-l1));
-	--color-root-major-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation), calc(var(--color-root-major-lightness) + 8%));
-	--color-root-major-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation-l1), calc(var(--color-root-major-lightness-l1) + 4%));
+
 	--color-root-minor: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation), var(--color-root-minor-lightness));
 	--color-root-minor-l1: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation-l1), var(--color-root-minor-lightness-l1));
-	--color-root-minor-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation), calc(var(--color-root-minor-lightness) - 6%));
-	--color-root-minor-l1-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation-l1), calc(var(--color-root-minor-lightness-l1) + 14%));
+
 	--color-root-safe: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation), var(--color-root-safe-lightness));
 	--color-root-safe-l1: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation-l1), var(--color-root-safe-lightness-l1));
-	--color-root-safe-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation), calc(var(--color-root-safe-lightness) - 14%));
-	--color-root-safe-l1-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation-l1), calc(var(--color-root-safe-lightness-l1) - 8%));
+
 	--color-root-danger: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation), var(--color-root-danger-lightness));
 	--color-root-danger-l1: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation-l1), var(--color-root-danger-lightness-l1));
-	--color-root-danger-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation), calc(var(--color-root-danger-lightness) - 6%));
-	--color-root-danger-l1-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation-l1), calc(var(--color-root-danger-lightness-l1) - 16%));
+
 	--color-root-tip: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation), var(--color-root-tip-lightness));
 	--color-root-tip-l1: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation-l1), var(--color-root-tip-lightness-l1));
-	--color-root-tip-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation), calc(var(--color-root-tip-lightness) - 16%));
-	--color-root-tip-l1-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation-l1), calc(var(--color-root-tip-lightness-l1) - 18%));
+
+	--color-root-hover: hsl(var(--color-root-major-hue), var(--color-root-saturation), var(--color-root-lightness-hover));
+	--color-root-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-saturation-l1), var(--color-root-lightness-l1-hover));
+	--color-root-bg-hover: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation), var(--color-root-bg-lightness-hover));
+	--color-root-bg-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-bg-saturation-l1), var(--color-root-bg-lightness-l1-hover));
+	--color-root-major-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation), var(--color-root-major-lightness-hover));
+	--color-root-major-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation-l1), var(--color-root-major-lightness-l1-hover));
+	--color-root-minor-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation), var(--color-root-minor-lightness-hover));
+	--color-root-minor-l1-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation-l1), var(--color-root-minor-lightness-l1-hover));
+	--color-root-safe-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation), var(--color-root-safe-lightness-hover));
+	--color-root-safe-l1-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation-l1), var(--color-root-safe-lightness-l1-hover));
+	--color-root-danger-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation), var(--color-root-danger-lightness-hover));
+	--color-root-danger-l1-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation-l1), var(--color-root-danger-lightness-l1-hover));
+	--color-root-tip-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation), var(--color-root-tip-lightness-hover));
+	--color-root-tip-l1-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation-l1), var(--color-root-tip-lightness-l1-hover));
 
 
 	--logo: url('../assets/img/logo.svg');
@@ -289,34 +308,33 @@ body {
 @mixin theme-dark-tokens {
 		--logo: url('../assets/img/logo-bg.svg');
 		--color-root-lightness: 95%;
+		--color-root-lightness-hover: 95%;
 		--color-root-lightness-l1: 60%;
+		--color-root-lightness-l1-hover: 39%;
 		--color-root-bg-lightness: 10%;
+		--color-root-bg-lightness-hover: 6%;
 		--color-root-bg-lightness-l1: 100%;
+		--color-root-bg-lightness-l1-hover: 100%;
 		--color-root-major-lightness: 90%;
+		--color-root-major-lightness-hover: 86%;
 		--color-root-major-lightness-l1: 10%;
-
+		--color-root-major-lightness-l1-hover: 24%;
 		--color-root-minor-lightness: 90%;
+		--color-root-minor-lightness-hover: 82%;
 		--color-root-minor-lightness-l1: 10%;
+		--color-root-minor-lightness-l1-hover: 28%;
 		--color-root-safe-lightness: 90%;
+		--color-root-safe-lightness-hover: 72%;
 		--color-root-safe-lightness-l1: 10%;
+		--color-root-safe-lightness-l1-hover: 22%;
 		--color-root-danger-lightness: 90%;
+		--color-root-danger-lightness-hover: 82%;
 		--color-root-danger-lightness-l1: 10%;
+		--color-root-danger-lightness-l1-hover: 30%;
 		--color-root-tip-lightness: 90%;
+		--color-root-tip-lightness-hover: 70%;
 		--color-root-tip-lightness-l1: 10%;
-
-		//dark mode swaps which token is light: solid goes paler, l1 goes deeper
-		--color-root-l1-hover: color-mix(in hsl, var(--color-root-l1) 65%, var(--color-root-ink));
-		--color-root-bg-l1-hover: color-mix(in hsl, var(--color-root-bg-l1) 50%, var(--color-root-paper));
-		--color-root-major-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation), calc(var(--color-root-major-lightness) - 4%));
-		--color-root-major-l1-hover: hsl(var(--color-root-major-hue), var(--color-root-major-saturation-l1), calc(var(--color-root-major-lightness-l1) + 14%));
-		--color-root-minor-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation), calc(var(--color-root-minor-lightness) - 8%));
-		--color-root-minor-l1-hover: hsl(var(--color-root-minor-hue), var(--color-root-minor-saturation-l1), calc(var(--color-root-minor-lightness-l1) + 18%));
-		--color-root-safe-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation), calc(var(--color-root-safe-lightness) - 18%));
-		--color-root-safe-l1-hover: hsl(var(--color-root-safe-hue), var(--color-root-safe-saturation-l1), calc(var(--color-root-safe-lightness-l1) + 12%));
-		--color-root-danger-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation), calc(var(--color-root-danger-lightness) - 8%));
-		--color-root-danger-l1-hover: hsl(var(--color-root-danger-hue), var(--color-root-danger-saturation-l1), calc(var(--color-root-danger-lightness-l1) + 20%));
-		--color-root-tip-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation), calc(var(--color-root-tip-lightness) - 20%));
-		--color-root-tip-l1-hover: hsl(var(--color-root-tip-hue), var(--color-root-tip-saturation-l1), calc(var(--color-root-tip-lightness-l1) + 22%));
+		--color-root-tip-lightness-l1-hover: 32%;
 
 		--color-root-0-lightness: 10%;
 		--color-root-1-lightness: 20%;

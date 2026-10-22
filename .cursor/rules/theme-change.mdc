@@ -46,9 +46,9 @@ export default {
   },
   dark: {
     '--color-root-bg-lightness': '75%',
-    '--color-root-bg-l1-lightness': '55%',
+    '--color-root-bg-lightness-l1': '55%',
     '--color-root-lightness': '95%',
-    '--color-root-l1-lightness': '100%',
+    '--color-root-lightness-l1': '100%',
     '--color-root-major-lightness': '75%',
     '--color-root-major-lightness-l1': '15%',
     '--logo': '…',

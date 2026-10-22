@@ -5,6 +5,13 @@ import { getGeoByPath } from '../../helpers/geo.js';
 import { getFilterByQuery } from '../../helpers/filter.js';
 import { mapSOADataListToArticles } from '../../helpers/article.js';
 import { searchHouse } from './api.soa.property.js';
+import { attachSoaLogs } from '../controllers/realestate.js';
+
+router.get(/^\/demo(\/.*)?$/, (req, res) => {
+	const rest = req.params[0] || '';
+	const q = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+	res.redirect(301, `/api/property${rest}${q}`);
+});
 
 /**
  * @swagger
@@ -100,7 +107,7 @@ router.get('/geo', async (req, res) => {
 
 /**
  * @swagger
- * /demo/detail/{prId}:
+ * /property/detail/{prId}:
  *   get:
  *     summary: Demo property detail (JSON)
  *     description: Same data as the demo HTML detail page for SPA clients.
@@ -111,7 +118,7 @@ router.get('/geo', async (req, res) => {
  *         schema:
  *           type: string
  *           example: "45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
- *         description: MLS public record id (`mlsPublicRecordAssociation.id`; same as third segment of /demo/detail/{state}/{zip}/{prId})
+ *         description: MLS public record id (`mlsPublicRecordAssociation.id`; same as third segment of /property/detail/{state}/{zip}/{prId})
  *     responses:
  *       200:
  *         description: BaseController JSON envelope
@@ -136,16 +143,16 @@ router.get('/geo', async (req, res) => {
  *     tags:
  *       - Demo
  */
-router.get('/demo/detail/:prId', async (req, res) => {
+router.get('/property/detail/:prId', async (req, res) => {
 	req.query.prId = req.params.prId;
-	const controller = new BaseController(req, res, 'demo');
+	const controller = new BaseController(req, res, 'property');
 	const result = await controller.get();
 	controller.toData(result);
 });
 
 /**
  * @swagger
- * /demo/search/{path}:
+ * /property/search/{path}:
  *   get:
  *     summary: Demo property search by geo path (JSON)
  *     description: |
@@ -206,12 +213,12 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
  *                       title:
  *                         type: string
- *                         description: Street address only
- *                         example: "101 Mel St"
+ *                         description: Full listing address
+ *                         example: "101 Mel St, Winters, Runnels County, TX 79567"
  *                       path:
  *                         type: string
  *                         description: Demo SPA detail route
- *                         example: "/demo/detail/tx/79567/45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
+ *                         example: "/property/detail/tx/79567/45a6f0ff-21ec-45f6-8a35-69de1bc9368d"
  *                       tags:
  *                         type: array
  *                         description: Status and price-change badges (className/text)
@@ -268,7 +275,7 @@ router.get('/demo/detail/:prId', async (req, res) => {
  *     tags:
  *       - Demo
  */
-router.get('/demo/search/:path(*)', async (req, res) => {
+router.get('/property/search/:path(*)', async (req, res) => {
 	try {
 		const { path } = req.params;
 		const geo = getGeoByPath(path);
@@ -284,7 +291,7 @@ router.get('/demo/search/:path(*)', async (req, res) => {
 				mapSOADataListToArticles(nearbyProperties.listings);
 			totalCount = nearbyProperties.totalCount;
 		}
-		res.json({ articles, totalCount });
+		res.json(attachSoaLogs({ articles, totalCount }));
 	} catch (error) {
 		console.error('Error fetching properties:', error);
 		res.status(500).json({ error: 'Internal server error' });
@@ -293,12 +300,12 @@ router.get('/demo/search/:path(*)', async (req, res) => {
 
 /**
  * @swagger
- * /demo/{geoPath}:
+ * /property/{geoPath}:
  *   get:
  *     summary: Demo geo page (JSON)
  *     description: |
- *       Same full page model as the demo HTML route `/demo/{geoPath}` (e.g. `/demo/tx/austin`,
- *       `/demo/tx/78717`). Sets `geoPath` on the demo config; no canonical-path redirect.
+ *       Same full page model as the demo HTML route `/property/{geoPath}` (e.g. `/property/tx/austin`,
+ *       `/property/tx/78717`). Sets `geoPath` on the demo config; no canonical-path redirect.
  *     parameters:
  *       - in: path
  *         name: geoPath
@@ -343,9 +350,9 @@ router.get('/demo/search/:path(*)', async (req, res) => {
  *     tags:
  *       - Demo
  */
-router.get('/demo/:geoPath(*)', async (req, res) => {
+router.get('/property/:geoPath(*)', async (req, res) => {
 	req.query.geoPath = req.params.geoPath;
-	const controller = new BaseController(req, res, 'demo');
+	const controller = new BaseController(req, res, 'property');
 	const result = await controller.get();
 	controller.toData(result);
 });

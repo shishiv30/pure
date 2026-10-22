@@ -195,11 +195,11 @@ describe('mapPropertyToArticle', () => {
 		assert.equal(article.img, meta.photos[0]);
 		assert.equal(
 			article.path,
-			`/demo/detail/${meta.geo.state.toLowerCase()}/${meta.geo.zipcode}/${meta.prId}`,
+			`/property/detail/${meta.geo.state.toLowerCase()}/${meta.geo.zipcode}/${meta.prId}`,
 		);
 		assert.equal(
 			article.title,
-			'101 Mel St',
+			'101 Mel St, Winters, Runnels County, TX 79567',
 		);
 		assert.equal(article.imgTag, 'Hunter Ranch and Realty');
 		assert.deepEqual(article.tags, [{ text: 'Pending', className: 'tip' }]);
@@ -211,6 +211,73 @@ describe('mapPropertyToArticle', () => {
 			{ key: '/Sqft', value: '108', desc: 'Price Per Sqft' },
 			{ key: 'Yr', value: 1958, desc: 'Year Built' },
 		]);
+	});
+
+	test('orders tags Open House, Sold, price change, New', () => {
+		const meta = mapSOADataToMetadata({
+			...soaPureListing,
+			listingStatus: { name: 'SOLD' },
+			daysOnMarket: 3,
+			priceChangeAmount: -15000,
+			currentOpenHouses: [{ date: '2026-10-22' }],
+		});
+		const article = mapPropertyToArticle(meta);
+		assert.deepEqual(
+			article.tags.map((tag) => tag.text),
+			['Open', 'Sold', '15.0K', 'New'],
+		);
+		assert.equal(article.tags[0].className, 'major active');
+		assert.equal(article.tags[1].className, 'active');
+		assert.equal(article.tags[2].className, 'danger');
+		assert.equal(article.tags[2].icon, 'arrow-circle-down');
+		assert.equal(article.tags[3].className, 'safe active');
+	});
+
+	test('uses default Sold tag and green Open House / New tags', () => {
+		const sold = mapPropertyToArticle(
+			mapSOADataToMetadata({
+				...soaPureListing,
+				listingStatus: { name: 'SOLD' },
+				daysOnMarket: 40,
+				currentOpenHouses: [],
+			}),
+		);
+		assert.deepEqual(sold.tags, [{ className: 'active', text: 'Sold' }]);
+
+		const openHouse = mapPropertyToArticle(
+			mapSOADataToMetadata({
+				...soaPureListing,
+				listingStatus: { name: 'ACTIVE' },
+				daysOnMarket: 20,
+				currentOpenHouses: [{ date: '2026-10-22' }],
+			}),
+		);
+		assert.deepEqual(openHouse.tags, [{ className: 'major active', text: 'Open' }]);
+
+		const isNew = mapPropertyToArticle(
+			mapSOADataToMetadata({
+				...soaPureListing,
+				listingStatus: { name: 'ACTIVE' },
+				daysOnMarket: 2,
+				currentOpenHouses: [],
+			}),
+		);
+		assert.deepEqual(isNew.tags, [{ className: 'safe active', text: 'New' }]);
+
+		const increased = mapPropertyToArticle(
+			mapSOADataToMetadata({
+				...soaPureListing,
+				listingStatus: { name: 'ACTIVE' },
+				daysOnMarket: 20,
+				priceChangeAmount: 15000,
+				currentOpenHouses: [],
+			}),
+		);
+		assert.deepEqual(increased.tags, [{
+			className: 'safe',
+			icon: 'arrow-circle-up',
+			text: '15.0K',
+		}]);
 	});
 });
 
@@ -249,7 +316,7 @@ describe('mapPropertyDetailToArticle', () => {
 				histories: [{ eventDate: '2024-06-01', eventType: 'Listed', price: 135000 }],
 			},
 		);
-		assert.equal(detail.title, '101 Mel St');
+		assert.equal(detail.title, '101 Mel St, Winters, Runnels County, TX 79567');
 		assert.deepEqual(detail.tags.items.slice(-2), [
 			{ text: 'Winters', className: 'default' },
 			{ text: '79567', className: 'default' },

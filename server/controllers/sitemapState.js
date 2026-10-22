@@ -18,7 +18,7 @@ function geoToLink(geo, base) {
 
 export default {
 	name: 'sitemap-state',
-	assetName: 'demo',
+	assetName: 'property',
 	beforeGet(req, payload) {
 		const pathMatch = req.path.match(/^\/sitemap\/([a-z]{2})\/?$/i);
 		if (pathMatch) {

@@ -1,15 +1,15 @@
 ---
-name: demo-listing-pipeline
-description: When touching demo, property detail, listing cards, or SOA Pure mapping, read the listing data pipeline doc first and follow metadata → article → EJS/plugin layers.
+name: property-listing-pipeline
+description: When touching property listing, property detail, listing cards, or SOA Pure mapping, read the listing data pipeline doc first and follow metadata → article → EJS/plugin layers.
 ---
 
-# Demo listing pipeline
+# Property listing pipeline
 
 ## When to use
 
-- Changes to `server/controllers/demo.js`, demo routes, demo SPA URL shapes (`helpers/routes/demoSpaRoutes.js`), or `/api/demo/detail`
+- Changes to `server/controllers/property.js`, listing routes, SPA URL shapes (`helpers/routes/propertySpaRoutes.js`), or `/api/property/detail`
 - `helpers/property.js`, `helpers/article.js`, `comp_article`, `comp_article_detail`
-- Demo SPA (`client/pages/demo/`, `detailSpa.js`)
+- Listing SPA (`client/pages/property/`, `detailSpa.js`)
 
 ## Required reading
 

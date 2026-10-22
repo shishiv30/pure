@@ -37,7 +37,7 @@ function matchCityBySlug(cities, stateCode, citySlug) {
 
 export default {
 	name: 'sitemap-city',
-	assetName: 'demo',
+	assetName: 'property',
 		beforeGet(req, payload) {
 		const pathMatch = req.path.match(/^\/sitemap\/([a-z]{2})\/([^/]+)\/?$/i);
 		if (pathMatch) {

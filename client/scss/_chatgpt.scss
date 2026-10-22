@@ -1,0 +1,7 @@
+.chatgpt {
+	position: fixed;
+	right: var(--g3);
+	bottom: var(--g3);
+	z-index: var(--ui-chatgpt-index);
+	text-decoration: none;
+}

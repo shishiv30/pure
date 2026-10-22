@@ -2,7 +2,7 @@
 
 Canonical reference for how webpack page bundles boot, run the Page/plugin pipeline, wire the demo Router, and refresh `[data-role]` components. Use this when debugging duplicate `init`, double fetches, or missing plugin binding after SPA HTML inject. **Router `push` / `replace` / `goto` contract:** [§4](#4-client-router-contract).
 
-For the full `/demo/tx` path (build + Express SSR + APIs + client), see [`demo-tx-lifecycle.md`](demo-tx-lifecycle.md).
+For the full `/property/tx` path (build + Express SSR + APIs + client), see [`property-tx-lifecycle.md`](property-tx-lifecycle.md).
 
 ---
 
@@ -20,8 +20,8 @@ sequenceDiagram
 		SSR->>Browser: window.context = JSON
 		SSR->>Browser: meta.js script tag
 	end
-	HTML->>Bundle: Load e.g. demo.min.js
-	Note over Bundle: Entry client/pages/demo/index.js
+	HTML->>Bundle: Load e.g. property.min.js
+	Note over Bundle: Entry client/pages/property/index.js
 	Bundle->>Bundle: import chain loads core + plugins SCSS
 ```
 
@@ -93,13 +93,13 @@ flowchart TB
 | `page.init()` | `client/js/index.js` | Direct call on `Page` instance (not via `data-role` scan) |
 | `exportObj` | Same | Exposed as `window.exportObj` after promise resolves |
 
-**Important:** Widget plugins use `data-role` + `refreshComponents`. The **page/demo** plugin runs only via `main()` → `page.init()`, not by scanning the body for `data-role="demo"`.
+**Important:** Widget plugins use `data-role` + `refreshComponents`. The **page/demo** plugin runs only via `main()` → `page.init()`, not by scanning the body for `data-role="property"`.
 
 ---
 
 ## 4. Client Router contract
 
-Source: [`client/js/core/router.js`](../client/js/core/router.js). Demo rules: [`client/pages/demo/index.js`](../client/pages/demo/index.js). URL patterns: [`helpers/routes/demoSpaRoutes.js`](../helpers/routes/demoSpaRoutes.js).
+Source: [`client/js/core/router.js`](../client/js/core/router.js). Demo rules: [`client/pages/property/index.js`](../client/pages/property/index.js). URL patterns: [`helpers/routes/propertySpaRoutes.js`](../helpers/routes/propertySpaRoutes.js).
 
 ```text
 new Router(rules, options)
@@ -121,13 +121,13 @@ new Router(rules, options)
 1. Do **not** use `to.pathname === window.location.pathname` to mean “initial load.” Use `method === 'replace'` (or `from == null`).
 2. On `goto` / `replace`, the address bar is already correct; `loading` must still update the DOM when the view should change.
 3. `loading` is the only hook. Return values are unused.
-4. Demo pages must pass `{ linkScope: 'demo' }` so `/page`, `/api`, and `/demo/sitemap` are not hijacked. Omitting `linkScope` intercepts every same-origin path `getInternalPath` can parse.
+4. Demo pages must pass `{ linkScope: 'property' }` so `/page`, `/api`, and `/property/sitemap` are not hijacked. Omitting `linkScope` intercepts every same-origin path `getInternalPath` can parse.
 
 Example (detail skip only on SSR boot):
 
 ```javascript
 {
-  reg: createDemoSpaRegExp('detail'),
+  reg: createPropertySpaRegExp('detail'),
   loading: async (to, from, method) => {
     if (method === 'replace') {
       return null; // SSR already painted this page
@@ -141,7 +141,7 @@ Example (detail skip only on SSR boot):
 
 ## 5. Demo `init`: Router and global listeners
 
-Inside `demo.init` ([`client/pages/demo/index.js`](../client/pages/demo/index.js)):
+Inside `demo.init` ([`client/pages/property/index.js`](../client/pages/property/index.js)):
 
 ```mermaid
 flowchart LR
@@ -160,7 +160,7 @@ flowchart LR
 
 | `Router.init` | Effect |
 |---------------|--------|
-| `click` | Intercepts same-origin `/demo/` links → `push()` → rule `loading` |
+| `click` | Intercepts same-origin `/property/` links → `push()` → rule `loading` |
 | `popstate` | Back/forward → `navigate(..., 'goto')` |
 | `replace(pathname)` | Initial route sync (`method === 'replace'`; detail skips fetch — SSR already painted) |
 
@@ -198,7 +198,7 @@ sequenceDiagram
 	participant Router
 	participant Index as demo_index.js
 	participant API as GET_api_demo_detail
-	participant EJS as detailSpa_buildDemoSpaInnerHtml
+	participant EJS as detailSpa_buildPropertySpaInnerHtml
 	participant DOM as inject_outerHTML
 	participant Ev as emit_dom_load
 
@@ -215,7 +215,7 @@ sequenceDiagram
 
 | Piece | Role |
 |-------|------|
-| `client/pages/demo/detailSpa.js` | Webpack-compiled EJS → HTML |
+| `client/pages/property/detailSpa.js` | Webpack-compiled EJS → HTML |
 | `client/js/core/renderEjs.js` + `helpers/ejsRenderContext.js` | `getHref` / `getSrc` like SSR |
 | `injectDemoSpaHtml` | Replaces `#detail` and `section.result` `outerHTML` |
 | `emit('dom.load')` | Re-binds plugins on new markup |

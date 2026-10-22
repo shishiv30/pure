@@ -1,6 +1,6 @@
 # Pure
 
-> Server-rendered real-estate demo. Search is a path under `/demo/`, not a query string. Read this file before building a search URL.
+> Server-rendered real-estate demo. Search is a path under `/property/`, not a query string. Read this file before building a search URL.
 
 Pages that cover this site link it with `rel="describedby"` (`/llms.txt`). On GitHub Pages the site lives under `/pure/`, so the same file is `/pure/llms.txt` and every search path below is prefixed with `/pure`. The `/pure` segment is the deploy folder, not part of the search.
 
@@ -8,29 +8,31 @@ Pages that cover this site link it with `rel="describedby"` (`/llms.txt`). On Gi
 
 Lowercase the state code. Turn spaces into hyphens. Strip a trailing word `city` or `county` from those names.
 
-- State: `/demo/{state}` — `/demo/tx`
-- County: `/demo/{state}/{county}_county` — `/demo/tx/harris_county`
-- City: `/demo/{state}/{city}` — `/demo/tx/houston`
-- Zip: `/demo/{state}/{zip}` — `/demo/tx/77002`
-- Neighborhood: `/demo/{state}/{city}/{neighborhood}_neighborhood`
-- Address: `/demo/{state}/{city}/{address}_address`
-- School: `/demo/{state}/{city}/{id}_school` — `{id}` is the school id (NCES id). Homes are those inside that school boundary. Example: `/demo/tx/austin/483808012358_school`
+- State: `/property/{state}` — `/property/tx`
+- County: `/property/{state}/{county}_county` — `/property/tx/harris_county`
+- City: `/property/{state}/{city}` — `/property/tx/houston`
+- Zip: `/property/{state}/{zip}` — `/property/tx/77002`
+- Neighborhood: `/property/{state}/{city}/{neighborhood}_neighborhood`
+- Address: `/property/{state}/{city}/{address}_address`
+- School: `/property/{state}/{city}/{id}_school` — `{id}` is the school id (NCES id). Homes are those inside that school boundary. Example: `/property/tx/austin/483808012358_school`
 
-`/demo` and `/demo/` redirect to `/demo/sitemap`. Sitemap drills down: `/demo/sitemap`, `/demo/sitemap/{state}`, `/demo/sitemap/{state}/{county}_county`, `/demo/sitemap/{state}/{city}`.
+`/property` and `/property/` redirect to `/property/sitemap`. Sitemap drills down: `/property/sitemap`, `/property/sitemap/{state}`, `/property/sitemap/{state}/{county}_county`, `/property/sitemap/{state}/{city}`.
 
-A property detail URL is `/demo/detail/{state}/{zip}/{propertyId}`. A map URL is `/demo/{state}/{slug}/@{lat},{lng}`.
+A property detail URL is `/property/detail/{state}/{zip}/{propertyId}`. A map URL is `/property/{state}/{slug}/@{lat},{lng}`.
 
-A non-canonical geo path redirects to the normalized path. Example: `/demo/austin/tx` redirects to `/demo/tx/austin`.
+A non-canonical geo path redirects to the normalized path. Example: `/property/austin/tx` redirects to `/property/tx/austin`.
 
 Filters are query parameters on the geo path. Enums are lowercase. A range is `{min}_{max}`; either side may be empty.
 
 - `price` — `minPrice` / `maxPrice`
 - `bed` — `minBed` / `maxBed`
 - `bath` — `minBath` / `maxBath`
-- `propertyType[]` — `single_family`, `condo`, `townhouse`, `multi_family`, `mobile`, `land`, `other`
+- `propertyType[]` — `single_family`, `condo`, `multi_family`, `mobile`, `land`, `other`
 - `propertyStatus[]` — `sold`, `rental`. Omitted means for sale
 - `photo=true`
 - `construction=true` — dropped when status is `sold` or `rental`
 - `openhouse=true` — dropped when status is `sold` or `rental`
 - `size` — page size
 - `index` — page index
+- `sort` — `price`, `list_date`
+- `order` — `asc`, `desc`

@@ -1,11 +1,11 @@
 @use './_var.screen.scss' as *;
 @use './_mixins.scss' as *;
 @forward './_theme.default.scss';
-@forward './demo/demo-animation.scss';
+@forward './property/property-animation.scss';
 @forward './base.scss';
-@forward './demo.article.scss';
+@forward './property.article.scss';
 
-.page-demo {
+.page-property {
     --header-height: 56px;
     --breadcrumb-height: var(--comp-size-3);
     --item-width: 260px;
@@ -113,10 +113,10 @@
     }
 
     .detail-body.placeholder {
-        h1.demo-title:empty,
-        .demo-detail-tags:empty,
-        .demo-slider:empty,
-        .demo-detail-block:empty {
+        h1.property-title:empty,
+        .property-detail-tags:empty,
+        .property-slider:empty,
+        .property-detail-block:empty {
             display: block;
             border-radius: var(--g0);
             background: linear-gradient(
@@ -129,26 +129,26 @@
             animation: detail-skeleton-shimmer 1s infinite;
         }
 
-        h1.demo-title:empty {
-            height: var(--demo-title-height);
+        h1.property-title:empty {
+            height: var(--property-title-height);
             width: 62%;
         }
 
-        .demo-detail-tags:empty {
-            height: var(--demo-detail-tags-height);
+        .property-detail-tags:empty {
+            height: var(--property-detail-tags-height);
             width: 40%;
             border-radius: var(--g1);
         }
 
-        .demo-slider:empty {
+        .property-slider:empty {
             width: 100%;
             aspect-ratio: 16 / 9;
             height: auto;
         }
 
-        .demo-detail-description:empty {
-            --line: var(--demo-detail-description-line-height);
-            --gap: var(--demo-detail-description-gap);
+        .property-detail-description:empty {
+            --line: var(--property-detail-description-line-height);
+            --gap: var(--property-detail-description-gap);
             display: block;
             width: 100%;
             height: calc(10 * var(--line) + 9 * var(--gap));
@@ -167,8 +167,8 @@
             );
         }
 
-        .demo-detail-block:empty {
-            height: var(--demo-detail-block-height);
+        .property-detail-block:empty {
+            height: var(--property-detail-block-height);
             width: 100%;
         }
     }
@@ -200,7 +200,7 @@
     }
 
     .result {
-        margin-top: var(--g2);
+        margin-top: var(--g4);
         grid-area: result;
     }
 
@@ -357,23 +357,23 @@
         }
     }
 }
-.demo-title {
-    --demo-title-height: 30px;
+.property-title {
+    --property-title-height: 30px;
 }
 
-.demo-detail-tags {
-    --demo-detail-tags-height: 25.5px;
+.property-detail-tags {
+    --property-detail-tags-height: 25.5px;
 }
 
-.demo-detail-description {
-    --demo-detail-description-line-height: 14px;
-    --demo-detail-description-gap: 6px;
+.property-detail-description {
+    --property-detail-description-line-height: 14px;
+    --property-detail-description-gap: 6px;
     line-height: 1.5;
 }
 
-.demo-slider {
-    --demo-slider-height: 400px;
-    max-height: var(--demo-slider-height);
+.property-slider {
+    --property-slider-height: 400px;
+    max-height: var(--property-slider-height);
     border-radius: var(--g0);
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -381,8 +381,8 @@
     overflow: hidden;
 }
 
-.demo-detail-block {
-    --demo-detail-block-height: 400px;
+.property-detail-block {
+    --property-detail-block-height: 400px;
 }
 
 .filter {
@@ -422,10 +422,10 @@
 }
 
 
-.page-demo-sitemap,
-.page-demo-sitemap-state,
-.page-demo-sitemap-county,
-.page-demo-sitemap-city {
+.page-property-sitemap,
+.page-property-sitemap-state,
+.page-property-sitemap-county,
+.page-property-sitemap-city {
     .menu {
         display: none;
     }

@@ -12,6 +12,29 @@ export function getSoaLogs() {
 	return { curls: store ? store.curls.slice() : [] };
 }
 
+/** SOA curl debug on HTML/JSON page data (dev and stage only). */
+export function soaDebugEnabled() {
+	return config.mode !== 'production';
+}
+
+/**
+ * Attach `logs` / `curls` for `window.context` when not production.
+ * @param {unknown} data
+ * @returns {unknown}
+ */
+export function attachSoaLogs(data) {
+	if (!data || typeof data !== 'object' || Array.isArray(data)) {
+		return data;
+	}
+	if (!soaDebugEnabled()) {
+		return data;
+	}
+	const logs = getSoaLogs();
+	data.logs = logs;
+	data.curls = logs.curls;
+	return data;
+}
+
 /**
  * Default headers for Geoarea SOA API. Uses X-MData-Key from config (SOA_API_KEY).
  */
@@ -123,7 +146,7 @@ function recordSoaCurl(curl) {
 	if (store) {
 		store.curls.push(curl);
 	}
-	if (process.env.NODE_ENV === 'development') {
+	if (soaDebugEnabled()) {
 		console.info(curl);
 	}
 }

@@ -3,7 +3,7 @@
  */
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import demoConfig from '../demo.js';
+import propertyConfig from '../property.js';
 import { mapPropertyDetailToArticle } from '../../../helpers/article.js';
 
 const DETAIL_COMP_KEYS = [
@@ -37,9 +37,9 @@ const soaPureListing = {
 	yearBuilt: 1958,
 };
 
-describe('demo.get', () => {
+describe('property.get', () => {
 	test('returns page model keys without prId (detail null)', async () => {
-		const model = await demoConfig.get({ geo: undefined, prId: undefined });
+		const model = await propertyConfig.get({ geo: undefined, prId: undefined });
 
 		assert.equal(model.detail, null);
 		assert.ok(model.seo && typeof model.seo.title === 'string');

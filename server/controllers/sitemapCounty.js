@@ -39,7 +39,7 @@ function matchCountyBySlug(counties, stateCode, countySlug) {
 
 export default {
 	name: 'sitemap-county',
-	assetName: 'demo',
+	assetName: 'property',
 	beforeGet(req, payload) {
 		const pathMatch = req.path.match(/^\/sitemap\/([a-z]{2})\/([^/]+)_county\/?$/i);
 		if (pathMatch) {

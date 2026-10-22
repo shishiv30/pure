@@ -103,6 +103,22 @@ Responsive definition list for property facts and similar data.
 - **Server:** `server/ejs/comp_record.ejs` renders the same structure for demo detail SSR.
 - **SPA:** demo detail uses the same `server/ejs/comp_record.ejs` as SSR (via `renderEjsTemplate`); no hand-built record HTML.
 
+### `chatgpt` (float button)
+
+Fixed button that opens ChatGPT in a new tab with a warmup prompt (current page URL + `/llms.txt`).
+
+```html
+<a class="chatgpt circle major large" data-role="chatgpt" href="https://chatgpt.com/" target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Ask ChatGPT about this page">
+  <i class="icon-commenting" aria-hidden="true"></i>
+</a>
+```
+
+- **SSR:** [server/ejs/html_below.ejs](server/ejs/html_below.ejs)
+- **Static pages:** [client/components/footer.html](client/components/footer.html)
+- ChatGPT prefills `?q=`; it does not auto-submit.
+
 ## CSS and Theme System
 
 Token names, `:root` vs `body` alias rules, and the token audit live in **[`docs/css-design-system.md`](docs/css-design-system.md)**.
@@ -117,14 +133,14 @@ Token names, `:root` vs `body` alias rules, and the token audit live in **[`docs
 
 - Core visual tokens are CSS custom properties.
 - Base theme defaults live in SCSS.
-- Runtime theme values can be injected server-side from theme comps (`data/comps/theme*.js` + `server/ejs/comp_theme.js`).
+- Runtime theme values can be injected server-side onto `:root` from theme comps (`data/comps/theme*.js` + `server/ejs/comp_theme.js`).
 - Dark mode behavior is controlled with theme variable overrides.
 
 ## Router and demo SPA
 
-[`client/js/core/router.js`](client/js/core/router.js) matches URL paths to handlers. The demo page ([`client/pages/demo/index.js`](client/pages/demo/index.js)) uses `linkScope: 'demo'` for grid, detail, and map views.
+[`client/js/core/router.js`](client/js/core/router.js) matches URL paths to handlers. The demo page ([`client/pages/property/index.js`](client/pages/property/index.js)) uses `linkScope: 'property'` for grid, detail, and map views.
 
-Detail navigation fetches `GET /api/demo/detail/:prId` (same model as SSR `demo.get()`), renders [`server/ejs/comp_article_detail.ejs`](server/ejs/comp_article_detail.ejs) and [`comp_demo_nearby.ejs`](server/ejs/comp_demo_nearby.ejs) in [`client/pages/demo/detailSpa.js`](client/pages/demo/detailSpa.js) via [`client/js/core/renderEjs.js`](client/js/core/renderEjs.js), replaces `#detail` / nearby `section.result` `outerHTML`, then `emit('dom.load')` so plugins re-bind.
+Detail navigation fetches `GET /api/property/detail/:prId` (same model as SSR `property.get()`), renders [`server/ejs/comp_article_detail.ejs`](server/ejs/comp_article_detail.ejs) and [`comp_property_nearby.ejs`](server/ejs/comp_property_nearby.ejs) in [`client/pages/property/detailSpa.js`](client/pages/property/detailSpa.js) via [`client/js/core/renderEjs.js`](client/js/core/renderEjs.js), replaces `#detail` / nearby `section.result` `outerHTML`, then `emit('dom.load')` so plugins re-bind.
 
 EJS comps define `data-role` (e.g. `comp_album.ejs` → `slider`); client reuse keeps SSR and SPA markup aligned. See [`docs/listing-data-pipeline.md`](docs/listing-data-pipeline.md).
 

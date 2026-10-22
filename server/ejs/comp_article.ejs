@@ -20,14 +20,11 @@
       <img src="<%= article.img || getSrc({ path: '/n_a.svg' }) %>" alt="<%=article.imgAlt%>" loading="lazy" data-role="imgerror">
       <figcaption><%=article.imgTag%></figcaption>
   </figure>
-  <%_if(article.tags && article.tags.length){_%>
+  <%_ const topTag = article.tags && article.tags[0]; _%>
+  <%_if(topTag && (topTag.text || topTag.icon)){_%>
   <div class="tags-top">
-    <%_for(var i=0; i<article.tags.length; i++){_%>
-    <%_ const tag = article.tags[i]; _%>
-    <%_if(tag.text){_%>
-    <span class="tag<%=tag.className ? ' ' + tag.className : ''%>"><%=tag.text%></span>
-    <%_}_%>
-    <%_}_%>
+    <span class="tag<%=topTag.className ? ' ' + topTag.className : ''%>"><%_if(topTag.icon){_%>
+<i class="icon-<%=topTag.icon%>"></i>&nbsp;<%_}_%><%=topTag.text || ''%></span>
   </div>
   <%_}_%>
 </article>

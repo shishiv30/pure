@@ -1,7 +1,7 @@
 import { template } from '../comps/comp_template.js';
 /**
  * AI Trend page section data as array in render order: hero, scrollview, points, gallery, timeline.
- * Image paths are relative to assets/images; links are path-only (e.g. /demo/ny/new-york).
+ * Image paths are relative to assets/images; links are path-only (e.g. /property/ny/new-york).
  * Seed to CMS: node cms/scripts/seed-and-sync.js (add key to pagePath in header.js)
  */
 export const name = 'ai-trend';
