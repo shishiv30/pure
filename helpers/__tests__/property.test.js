@@ -1,5 +1,15 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
+dotenv.config({ path: path.join(rootDir, '.env'), override: false });
+dotenv.config({ path: path.join(rootDir, '.env.local'), override: true });
+
+const cdnHost = (process.env.CDN_HOST || '').replace(/\/$/, '');
+const photoUrl = (file) => `${cdnHost}/p/402/${file}`;
 import {
 	mapAlbumToComp,
 	mapParagraphToComp,
@@ -48,8 +58,8 @@ const soaPureListing = {
 	officeListName: 'Hunter Ranch and Realty',
 	photoCount: 29,
 	photos: [
-		{ url: 'https://pi.movoto.com/p/402/21259416_0_ZjJZN2.webp' },
-		{ url: 'https://pi.movoto.com/p/402/21259416_0_YVZb7M.webp' },
+		{ url: photoUrl('21259416_0_ZjJZN2.webp') },
+		{ url: photoUrl('21259416_0_YVZb7M.webp') },
 	],
 	priceChangeAmount: null,
 	sqftTotal: 1246,
@@ -114,8 +124,8 @@ describe('mapSOADataToMetadata', () => {
 		assert.equal(meta.pricePerArea, 135000 / 1246);
 		assert.equal(meta.yearBuilt, 1958);
 		assert.deepEqual(meta.photos, [
-			'https://pi.movoto.com/p/402/21259416_0_ZjJZN2_p.webp',
-			'https://pi.movoto.com/p/402/21259416_0_YVZb7M_p.webp',
+			photoUrl('21259416_0_ZjJZN2_p.webp'),
+			photoUrl('21259416_0_YVZb7M_p.webp'),
 		]);
 		assert.equal(meta.photoCount, 29);
 		assert.equal(meta.officeListName, 'Hunter Ranch and Realty');
@@ -136,13 +146,13 @@ describe('mapSOADataToMetadata', () => {
 
 	test('collectPhotoUrls reads photos[].url from SOA Pure', () => {
 		assert.deepEqual(collectPhotoUrls(soaPureListing), [
-			'https://pi.movoto.com/p/402/21259416_0_ZjJZN2_p.webp',
-			'https://pi.movoto.com/p/402/21259416_0_YVZb7M_p.webp',
+			photoUrl('21259416_0_ZjJZN2_p.webp'),
+			photoUrl('21259416_0_YVZb7M_p.webp'),
 		]);
 	});
 
 	test('toSoaPreviewPhotoUrl normalizes webp suffixes to _p.webp', () => {
-		const base = 'https://pi.movoto.com/p/402/21259416_0_ZjJZN2';
+		const base = photoUrl('21259416_0_ZjJZN2');
 		assert.equal(toSoaPreviewPhotoUrl(`${base}.webp`), `${base}_p.webp`);
 		assert.equal(toSoaPreviewPhotoUrl(`${base}_r.webp`), `${base}_p.webp`);
 		assert.equal(toSoaPreviewPhotoUrl(`${base}_l.webp`), `${base}_p.webp`);

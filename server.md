@@ -115,8 +115,8 @@ Environment resolution is controlled in `server/config.js`:
 
 Defaults:
 
-- `PORT=3000`
-- webpack dev server port `3001`
+- `PORT=4000`
+- webpack dev server port `4001`
 
 ## Testing Status (Server Focus)
 

@@ -78,13 +78,13 @@ Both run through `run-docker.sh` and Docker Compose.
 
 - Serves from `dist/`.
 - Writes generated assets to disk (`devMiddleware.writeToDisk = true`) so Node can serve them.
-- Proxies non-asset requests to `config.appHost` (usually `http://localhost:3000`).
+- Proxies non-asset requests to `config.appHost` (usually `http://localhost:4000`).
 
 Default ports from `server/config.js` when env vars are absent:
 
-- Node: `3000`
-- Webpack dev server: `3001`
-- Docker host mapped port: `3002`
+- Node: `4000`
+- Webpack dev server: `4001`
+- Docker host mapped port: `4002`
 
 ## Page Entry Model
 

@@ -578,9 +578,9 @@
         "command": "npm run dev",
         "config": "webpack.config.dev.js",
         "features": [
-          "webpack-dev-server (default port WEBPACK_DEV_SERVER_PORT=3001)",
+          "webpack-dev-server (default port WEBPACK_DEV_SERVER_PORT=4001)",
           "devMiddleware.writeToDisk so Node can read built assets from dist/",
-          "proxy non-asset requests to app server (APP_HOST, default http://localhost:3000)",
+          "proxy non-asset requests to app server (APP_HOST, default http://localhost:4000)",
           "Hot reloading",
           "Source maps",
           "Auto browser open"
@@ -665,7 +665,7 @@
     },
     "build_process": {
       "flow": [
-        "Development: npm run dev → webpack dev server (default :3001) + Node (:3000), proxy between them; hot reload",
+        "Development: npm run dev → webpack dev server (default :4001) + Node (:4000), proxy between them; hot reload",
         "Local build: npm run build:dev → .env, dist/ output",
         "Stage (GitHub): npm run build:stage → .env.stage → then npm run deploy-gh",
         "Production (AWS): npm run build:prod or npm run build-docker:prod → .env.production",
@@ -693,7 +693,7 @@
     },
     "troubleshooting": {
       "common_issues": [
-        "Port conflicts: Node PORT (default 3000), webpack dev server WEBPACK_DEV_SERVER_PORT (default 3001), Docker host DOCKER_PORT (default 3002)",
+        "Port conflicts: Node PORT (default 4000), webpack dev server WEBPACK_DEV_SERVER_PORT (default 4001), Docker host DOCKER_PORT (default 4002)",
         "Build failures (check syntax errors)",
         "Asset loading (verify file paths)",
         "Deployment issues (check GitHub Pages branch)"

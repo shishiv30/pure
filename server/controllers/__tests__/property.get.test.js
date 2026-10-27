@@ -3,8 +3,17 @@
  */
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import propertyConfig from '../property.js';
 import { mapPropertyDetailToArticle } from '../../../helpers/article.js';
+
+const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+dotenv.config({ path: path.join(rootDir, '.env'), override: false });
+dotenv.config({ path: path.join(rootDir, '.env.local'), override: true });
+
+const cdnHost = (process.env.CDN_HOST || '').replace(/\/$/, '');
 
 const DETAIL_COMP_KEYS = [
 	'metadata',
@@ -32,7 +41,7 @@ const soaPureListing = {
 	listPrice: 135000,
 	listingStatus: { displayName: 'Active', name: 'ACTIVE' },
 	listingUrl: 'winters-tx/101-mel-st-winters-tx-79567/pid_dh5p9ng4nh/',
-	photos: [{ url: 'https://pi.movoto.com/p/402/21259416_0_ZjJZN2.webp' }],
+	photos: [{ url: `${cdnHost}/p/402/21259416_0_ZjJZN2.webp` }],
 	sqftTotal: 1246,
 	yearBuilt: 1958,
 };

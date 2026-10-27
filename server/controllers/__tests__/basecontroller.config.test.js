@@ -20,14 +20,14 @@ function createMockReq(overrides = {}) {
 		headers: {
 			'user-agent': 'Mozilla/5.0 (test)',
 			'accept-language': 'en-US,en;q=0.9',
-			origin: 'http://localhost:3000',
+			origin: 'http://localhost:4000',
 			...overrides.headers,
 		},
 		query: { a: '1', b: '2' },
 		body: { x: 10, y: 20 },
 		path: '/test-contract',
 		protocol: 'http',
-		get: (/** @type {string} */ h) => (String(h).toLowerCase() === 'host' ? 'localhost:3000' : ''),
+		get: (/** @type {string} */ h) => (String(h).toLowerCase() === 'host' ? 'localhost:4000' : ''),
 		acceptsLanguages: () => ['en-US'],
 	};
 	return { ...base, ...overrides };

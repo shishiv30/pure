@@ -30,9 +30,9 @@ npm run dev
 
 Local URLs:
 
-- App server: `http://localhost:3000`
-- Webpack dev server: `http://localhost:3001`
-- Swagger docs: `http://localhost:3000/api-docs`
+- App server: `http://localhost:4000`
+- Webpack dev server: `http://localhost:4001`
+- Swagger docs: `http://localhost:4000/api-docs`
 
 ## Development Modes
 
@@ -77,9 +77,9 @@ Runtime env resolution is defined in `server/config.js`:
 
 Default ports when unset:
 
-- Node `PORT`: `3000`
-- Webpack dev server `WEBPACK_DEV_SERVER_PORT`: `3001`
-- Docker host `DOCKER_PORT`: `3002`
+- Node `PORT`: `4000`
+- Webpack dev server `WEBPACK_DEV_SERVER_PORT`: `4001`
+- Docker host `DOCKER_PORT`: `4002`
 
 ## Docker
 
@@ -89,7 +89,7 @@ This repo uses Docker Compose helpers through `run-docker.sh`.
 - Prod image + run (uses `.env.production`): `npm run build-docker:prod`
 - Run existing image/container flow: `npm run docker:run`
 
-Default Docker access URL: `http://localhost:3002`
+Default Docker access URL: `http://localhost:4002`
 
 ## Build and Deploy
 

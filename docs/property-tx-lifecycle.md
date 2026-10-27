@@ -55,7 +55,7 @@ flowchart TB
 | **SSR EJS** | **Not** baked into live `/property/tx` HTML at webpack time; rendered per request | Express views [`server/ejs/`](../server/ejs/) |
 | **Dev HMR** | When `webpackHotReload` is on | [`webpack.config.dev.js`](../webpack.config.dev.js), [`server/config.js`](../server/config.js) |
 
-Live URL `http://localhost:3000/property/tx` is **Express SSR** (`demo.ejs`), not the webpack HtmlWebpackPlugin shell `dist/property.html`.
+Live URL `http://localhost:4000/property/tx` is **Express SSR** (`property.ejs`), not the webpack HtmlWebpackPlugin shell `dist/property.html`.
 
 | Informal name | Meaning here |
 |---------------|--------------|

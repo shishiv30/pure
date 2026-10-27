@@ -16,7 +16,7 @@ const FETCH_MS = 60000;
 
 const BASE =
 	process.env.DEMO_BASE_URL ||
-	`http://localhost:${process.env.PORT || 3000}`;
+	`http://localhost:${process.env.PORT || 4000}`;
 
 const CITY_POOL = [
 	getCityPath('Los Angeles', 'CA'),

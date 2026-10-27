@@ -92,7 +92,7 @@ This document outlines the role-based access control for all CMS API endpoints.
 
 ### Admin Accessing Users (✅ Allowed)
 ```bash
-curl -X GET http://localhost:3003/api/users \
+curl -X GET http://localhost:4003/api/users \
   -H "Cookie: connect.sid=..." \
   -b cookies.txt
 # Returns: 200 OK with user list
@@ -100,7 +100,7 @@ curl -X GET http://localhost:3003/api/users \
 
 ### User Accessing Users (❌ Denied)
 ```bash
-curl -X GET http://localhost:3003/api/users \
+curl -X GET http://localhost:4003/api/users \
   -H "Cookie: connect.sid=..." \
   -b cookies.txt
 # Returns: 403 Forbidden - "Admin access required"
@@ -108,7 +108,7 @@ curl -X GET http://localhost:3003/api/users \
 
 ### User Accessing Pages (✅ Read-only)
 ```bash
-curl -X GET http://localhost:3003/api/pages \
+curl -X GET http://localhost:4003/api/pages \
   -H "Cookie: connect.sid=..." \
   -b cookies.txt
 # Returns: 200 OK with published pages only
@@ -116,7 +116,7 @@ curl -X GET http://localhost:3003/api/pages \
 
 ### User Creating Page (❌ Denied)
 ```bash
-curl -X POST http://localhost:3003/api/pages \
+curl -X POST http://localhost:4003/api/pages \
   -H "Content-Type: application/json" \
   -H "Cookie: connect.sid=..." \
   -b cookies.txt \
@@ -126,7 +126,7 @@ curl -X POST http://localhost:3003/api/pages \
 
 ### Public Accessing Page Content (✅ Allowed)
 ```bash
-curl http://localhost:3003/api/pages/getPageContentByName?name=about
+curl http://localhost:4003/api/pages/getPageContentByName?name=about
 # Returns: 200 OK with page content (if published)
 ```
 
@@ -144,7 +144,7 @@ To test API protection:
 
 1. **Login as Admin:**
 ```bash
-curl -X POST http://localhost:3003/api/auth/login \
+curl -X POST http://localhost:4003/api/auth/login \
   -H "Content-Type: application/json" \
   -c cookies.txt \
   -d '{"email":"admin@example.com","password":"password"}'
@@ -152,13 +152,13 @@ curl -X POST http://localhost:3003/api/auth/login \
 
 2. **Test Admin Access:**
 ```bash
-curl http://localhost:3003/api/users -b cookies.txt
+curl http://localhost:4003/api/users -b cookies.txt
 # Should return 200 OK
 ```
 
 3. **Login as User:**
 ```bash
-curl -X POST http://localhost:3003/api/auth/login \
+curl -X POST http://localhost:4003/api/auth/login \
   -H "Content-Type: application/json" \
   -c cookies-user.txt \
   -d '{"email":"user@example.com","password":"password"}'
@@ -166,12 +166,12 @@ curl -X POST http://localhost:3003/api/auth/login \
 
 4. **Test User Access (Should Fail):**
 ```bash
-curl http://localhost:3003/api/users -b cookies-user.txt
+curl http://localhost:4003/api/users -b cookies-user.txt
 # Should return 403 Forbidden
 ```
 
 5. **Test User Read Access (Should Succeed):**
 ```bash
-curl http://localhost:3003/api/pages -b cookies-user.txt
+curl http://localhost:4003/api/pages -b cookies-user.txt
 # Should return 200 OK with published pages only
 ```

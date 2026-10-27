@@ -4,12 +4,12 @@ services:
       context: .
       target: ${DOCKER_BUILD_TARGET:-production}
     ports:
-      - "${DOCKER_PORT:-3003}:${PORT:-3003}"
+      - "${DOCKER_PORT:-4003}:${PORT:-4003}"
     env_file:
       - .env
     environment:
       - NODE_ENV=${NODE_ENV:-production}
-      - PORT=${PORT:-3003}
+      - PORT=${PORT:-4003}
       - DB_PATH=${DB_PATH:-./data/cms.db}
       - SESSION_SECRET=${SESSION_SECRET}
       - CORS_ORIGINS=${CORS_ORIGINS}

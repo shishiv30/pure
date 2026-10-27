@@ -202,7 +202,7 @@ router.get('/property/detail/:prId', async (req, res) => {
  *                       img:
  *                         type: string
  *                         description: First listing photo URL (preview)
- *                         example: "https://pi.movoto.com/p/402/21259416_0_ZjJZN2_p.webp"
+ *                         example: "{cdnHost}/p/402/21259416_0_ZjJZN2_p.webp"
  *                       imgTag:
  *                         type: string
  *                         description: Listing office name

@@ -17,7 +17,7 @@ COPY . .
 # Create data directory
 RUN mkdir -p /app/data
 
-EXPOSE 3003
+EXPOSE 4003
 
 # Development stage
 FROM base AS development

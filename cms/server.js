@@ -22,12 +22,12 @@ import compRoutes from './routes/comp.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 4003;
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret-in-production';
 const DB_PATH = process.env.DB_PATH || './data/cms.db';
 const CORS_ORIGINS = process.env.CORS_ORIGINS 
 	? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-	: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
+	: ['http://localhost:4000', 'http://localhost:4001', 'http://localhost:4002'];
 
 // Trust first proxy (ALB) so req.protocol and req.secure are correct for cookies
 app.set('trust proxy', 1);

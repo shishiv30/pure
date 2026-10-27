@@ -23,7 +23,7 @@ cp .env.example .env
 npm run dev
 ```
 
-The CMS will be available at `http://localhost:3003`
+The CMS will be available at `http://localhost:4003`
 
 ## First Time Setup
 
@@ -41,24 +41,24 @@ After creating the admin account, you'll be automatically logged in.
 
 **Get page content by name**:
 ```bash
-curl http://localhost:3003/api/pages/getPageContentByName?name=about
+curl http://localhost:4003/api/pages/getPageContentByName?name=about
 ```
 
 **Get page content by name (path param)**:
 ```bash
-curl http://localhost:3003/api/pages/content/about
+curl http://localhost:4003/api/pages/content/about
 ```
 
 **Get active sitemap entries**:
 ```bash
-curl http://localhost:3003/api/sitemap/public
+curl http://localhost:4003/api/sitemap/public
 ```
 
 ### Authentication
 
 **Login**:
 ```bash
-curl -X POST http://localhost:3003/api/auth/login \
+curl -X POST http://localhost:4003/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"yourpassword"}' \
   -c cookies.txt
@@ -66,19 +66,19 @@ curl -X POST http://localhost:3003/api/auth/login \
 
 **Get current user**:
 ```bash
-curl http://localhost:3003/api/auth/me -b cookies.txt
+curl http://localhost:4003/api/auth/me -b cookies.txt
 ```
 
 **Logout**:
 ```bash
-curl -X POST http://localhost:3003/api/auth/logout -b cookies.txt
+curl -X POST http://localhost:4003/api/auth/logout -b cookies.txt
 ```
 
 ### Admin Operations
 
 **Create a page** (requires admin login):
 ```bash
-curl -X POST http://localhost:3003/api/pages \
+curl -X POST http://localhost:4003/api/pages \
   -H "Content-Type: application/json" \
   -b cookies.txt \
   -d '{
@@ -92,7 +92,7 @@ curl -X POST http://localhost:3003/api/pages \
 
 **Update a page**:
 ```bash
-curl -X PUT http://localhost:3003/api/pages/1 \
+curl -X PUT http://localhost:4003/api/pages/1 \
   -H "Content-Type: application/json" \
   -b cookies.txt \
   -d '{
@@ -111,9 +111,9 @@ docker build -t pure-cms .
 
 # Run container
 docker run -d \
-  -p 3003:3003 \
+  -p 4003:4003 \
   -e NODE_ENV=production \
-  -e PORT=3003 \
+  -e PORT=4003 \
   -e SESSION_SECRET=your-secret-key \
   -v $(pwd)/data:/app/data \
   pure-cms
@@ -154,9 +154,9 @@ aws ecr create-repository --repository-name pure-cms --region us-east-1
 4. **Run on ECS/EC2**:
 ```bash
 docker run -d \
-  -p 3003:3003 \
+  -p 4003:4003 \
   -e NODE_ENV=production \
-  -e PORT=3003 \
+  -e PORT=4003 \
   -e SESSION_SECRET=your-secret \
   -e DB_PATH=/app/data/cms.db \
   -v cms-data:/app/data \
@@ -176,7 +176,7 @@ server {
     server_name cms.conjee.com;
 
     location / {
-        proxy_pass http://localhost:3003;
+        proxy_pass http://localhost:4003;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -212,7 +212,7 @@ To migrate to PostgreSQL (future):
 ## Troubleshooting
 
 **Port already in use**:
-- Change `PORT` in `.env` to a different port (e.g., 3004)
+- Change `PORT` in `.env` to a different port (e.g., 4004)
 
 **Database locked**:
 - Ensure only one instance of the CMS is running

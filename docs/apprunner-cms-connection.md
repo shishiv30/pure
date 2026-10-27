@@ -9,7 +9,7 @@ The server reads `process.env.CMS_HOST` (see `server/config.js`). If set, it fet
 - **In the image:** `.env.production` is copied into the image and loaded when `NODE_ENV=production`, so `CMS_HOST=https://cms.conjeezou.com` is used unless overridden.
 - **On App Runner:** You can override env in the service. To rely on the file, do **not** set `CMS_HOST` in App Runner. If you do set it, use the real CMS URL:
   - **Correct:** `CMS_HOST=https://cms.conjeezou.com`
-  - **Wrong:** empty, `http://localhost:3003`, or a typo.
+  - **Wrong:** empty, `http://localhost:4003`, or a typo.
 
 To check or set in AWS Console:
 

@@ -21,7 +21,7 @@ if (NODE_ENV === 'production') {
 let config = {
 	// Server Configuration
 	sessionSecret: process.env.SESSION_SECRET || '',
-	port: parseInt(process.env.PORT) || 3000,
+	port: parseInt(process.env.PORT) || 4000,
 	domain: process.env.DOMAIN,
 	mode: NODE_ENV,
 
@@ -60,21 +60,21 @@ let config = {
 	// Docker sets CDN_HOST/APP_HOST in run-docker.sh.
 	appHost:
 		process.env.APP_HOST ||
-		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 3000}`,
+		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 4000}`,
 	cdnHost:
 		process.env.CDN_HOST ||
 		process.env.APP_HOST ||
-		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 3000}`,
+		`http://${process.env.DOMAIN || 'localhost'}:${process.env.PORT || 4000}`,
 	webpackDevServerUrl: `http://${process.env.WEBPACK_DEV_SERVER_HOST}:${process.env.WEBPACK_DEV_SERVER_PORT}`,
 
 	// Development Configuration
-	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 3001,
+	webpackDevServerPort: parseInt(process.env.WEBPACK_DEV_SERVER_PORT) || 4001,
 	webpackDevServerHost: process.env.WEBPACK_DEV_SERVER_HOST || 'localhost',
 	webpackHotReload: process.env.WEBPACK_HOT_RELOAD === 'true' || NODE_ENV === 'development',
 
 	// Docker only: host-mapped port for CORS when running in container (run-docker.sh sets CDN_HOST)
 	dockerPort:
-		process.env.CDN_HOST ? (parseInt(process.env.DOCKER_PORT) || 3002) : undefined,
+		process.env.CDN_HOST ? (parseInt(process.env.DOCKER_PORT) || 4002) : undefined,
 
 	// Production Configuration (production and stage use minified builds)
 	webpackMinimize:

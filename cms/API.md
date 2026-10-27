@@ -2,7 +2,7 @@
 
 Use these endpoints to update `pages` and `comps` without running `seed-and-sync.js` (which rewrites broad data sets).
 
-Base URL: your CMS origin, for example `http://localhost:3003` locally.
+Base URL: your CMS origin, for example `http://localhost:4003` locally.
 
 Most write routes require admin authentication (session cookie after login).
 

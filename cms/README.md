@@ -79,7 +79,7 @@ npm run dev
 
 6. **Create admin user** (first time only):
 ```bash
-curl -X POST http://localhost:3003/api/setup/create-admin \
+curl -X POST http://localhost:4003/api/setup/create-admin \
   -H "Content-Type: application/json" \
   -d '{
     "email": "admin@example.com",
@@ -184,9 +184,9 @@ chmod +x scripts/deploy-aws-ecr.sh
 4. **Run on ECS/EC2**:
 ```bash
 docker run -d \
-  -p 3003:3003 \
+  -p 4003:4003 \
   -e NODE_ENV=production \
-  -e PORT=3003 \
+  -e PORT=4003 \
   -e SESSION_SECRET=your-secret \
   -e DB_PATH=/app/data/cms.db \
   -v cms-data:/app/data \
@@ -251,7 +251,7 @@ The `cms/scripts/aws/` folder contains an ECS + EFS setup so the SQLite database
 ## Environment Variables
 
 - `NODE_ENV` - Environment (development/production)
-- `PORT` - Server port (default: 3003)
+- `PORT` - Server port (default: 4003)
 - `DOMAIN` - Domain name
 - `SESSION_SECRET` - Session secret key (required)
 - `DB_PATH` - Database file path (default: ./data/cms.db)

@@ -47,10 +47,10 @@ Configured in `server/config.js`:
 
 ## Ports (defaults)
 
-- App: `3000`
-- Webpack dev server: `3001`
-- Docker host port: `3002`
-- CMS local app (separate project): `3003`
+- App: `4000`
+- Webpack dev server: `4001`
+- Docker host port: `4002`
+- CMS local app (separate project): `4003`
 
 ## Adding a listing-backed feature (demo pattern)
 

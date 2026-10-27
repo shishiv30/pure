@@ -35,11 +35,11 @@ else
 	load_env_file "$SCRIPT_DIR/.env.local"
 fi
 
-# Defaults only when not set by env files. All envs: host 3002 (DOCKER_PORT), Node listener 3000 (PORT).
-PORT=${PORT:-3000}
+# Defaults only when not set by env files. All envs: host 4002 (DOCKER_PORT), Node listener 4000 (PORT).
+PORT=${PORT:-4000}
 DOMAIN=${DOMAIN:-localhost}
 SESSION_SECRET=${SESSION_SECRET:-dev-session-secret-change-in-production}
-DOCKER_PORT=${DOCKER_PORT:-3002}
+DOCKER_PORT=${DOCKER_PORT:-4002}
 DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-$([ "$NODE_ENV" = "development" ] && echo "development" || echo "production")}
 # build-docker:dev → CDN_HOST = DOMAIN:DOCKER_PORT; build-docker:prod → CDN_HOST from .env.production
 echo "☁️  CDN HOST: $CDN_HOST"
@@ -105,15 +105,15 @@ echo ""
 echo "💡 Port Configuration:"
 echo "  - Docker external port: $DOCKER_PORT (localhost:$DOCKER_PORT)"
 echo "  - Container internal port: $PORT (internal container port)"
-echo "  - Local dev uses: localhost:3000 (no conflict)"
+echo "  - Local dev uses: localhost:4000 (no conflict)"
 echo ""
 echo "💡 To override settings, set environment variables:"
 echo "  NODE_ENV=production DOCKER_PORT=8080 ./run-docker.sh"
 echo "  # This will use production config and map to port 8080"
 echo ""
 echo "💡 To avoid conflicts with local development:"
-echo "  - Local dev (npm run dev): uses localhost:3000"
-echo "  - Docker: uses localhost:3002 (mapped from internal port 3000)"
-echo "  - CDN_HOST: automatically set to localhost:3002 for Docker"
+echo "  - Local dev (npm run dev): uses localhost:4000"
+echo "  - Docker: uses localhost:4002 (mapped from internal port 4000)"
+echo "  - CDN_HOST: automatically set to localhost:4002 for Docker"
 echo ""
 echo "📝 Config: build-docker:dev → .env + .env.local, CDN_HOST=DOMAIN:DOCKER_PORT; build-docker:prod → .env.production, CDN_HOST from file"

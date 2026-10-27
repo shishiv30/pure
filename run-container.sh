@@ -33,9 +33,9 @@ else
 fi
 load_env_file "$SCRIPT_DIR/.env.local"
 
-PORT=${PORT:-3000}
+PORT=${PORT:-4000}
 DOMAIN=${DOMAIN:-localhost}
-DOCKER_PORT=${DOCKER_PORT:-3002}
+DOCKER_PORT=${DOCKER_PORT:-4002}
 CDN_HOST=${CDN_HOST:-"http://${DOMAIN}:${DOCKER_PORT}"}
 [[ "$NODE_ENV" = "development" ]] && CDN_HOST="http://localhost:${DOCKER_PORT}"
 

@@ -10,7 +10,7 @@
  *
  * Usage: node scripts/run-lighthouse.js
  * Env:
- *   DOCKER_PORT (default 3002)
+ *   DOCKER_PORT (default 4002)
  *   LIGHTHOUSE_URL (default /document) - path to test, e.g. /document, /page/index
  *   LIGHTHOUSE_OUTPUT (default ./dist/lighthouse-report) - base path for .report.html and .report.json
  */
@@ -30,7 +30,7 @@ const WAIT_MS = 30000;
 const POLL_MS = 500;
 
 function getPort() {
-	let port = Number(process.env.DOCKER_PORT) || 3002;
+	let port = Number(process.env.DOCKER_PORT) || 4002;
 	const envFiles = ['.env', '.env.local', '.env.production'];
 	for (const name of envFiles) {
 		const envPath = path.join(ROOT, name);
